@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Login } from './Components/Restricted/Login';
 
 function App() {
+  const [use, setUse] = React.useState(0);
   return (
     <div className='App'>
       <Router>
