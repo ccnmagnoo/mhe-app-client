@@ -12,7 +12,7 @@
 /build
 
 # dataBaseconfig
-/Config
+/src/Config
 
 # misc
 .DS_Store
