@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Box } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 import React from 'react';
 
 import { Link } from 'react-router-dom';
