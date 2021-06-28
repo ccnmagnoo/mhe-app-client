@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import { Link, Route, Switch, withRouter, useRouteMatch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import GridListTile from '@material-ui/core/GridListTile';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -10,34 +10,48 @@ import { ClassroomCreate } from './Classroom.Create';
 import { Container } from '@material-ui/core';
 
 const Dashboard = (props: any) => {
+  //nested routing
+  let { path, url } = useRouteMatch();
+
   return (
-    <Container maxWidth='sm'>
-      <Grid
-        container
-        spacing={1}
-        direction='column'
-        justify='center'
-        alignItems='center'
-        alignContent='center'
-        wrap='wrap'
-      >
-        <Grid item>
-          <ButtonGroup
-            variant='outlined'
-            color='primary'
-            aria-label='dashboad commands'
-            fullWidth
-          >
-            <Button>dashboard</Button>
-            <Button>+actividad</Button>
-            <Button>+edit</Button>
-          </ButtonGroup>
-        </Grid>
-        <Grid item>
-          <ClassroomCreate />
-        </Grid>
+    <Grid
+      container
+      spacing={1}
+      direction='column'
+      justify='center'
+      alignItems='center'
+      alignContent='center'
+      wrap='wrap'
+    >
+      <Grid item>
+        <ButtonGroup variant='outlined' color='primary' aria-label='dashboad commands'>
+          <Button component={Link} to={url}>
+            main
+          </Button>
+          <Button component={Link} to={`${url}/ahead`}>
+            futuro
+          </Button>
+          <Button component={Link} to={`${url}/done`}>
+            pasado
+          </Button>
+          <Button component={Link} to={`${url}/create`}>
+            crear
+          </Button>
+        </ButtonGroup>
       </Grid>
-    </Container>
+      <Grid item>
+        <Switch>
+          <Route exact path={path}>
+            Principal : {path}
+          </Route>
+          <Route path={`${path}/ahead`}>planificación</Route>
+          <Route path={`${path}/done`}>realizadas</Route>
+          <Route path={`${path}/create`}>
+            <ClassroomCreate />
+          </Route>
+        </Switch>
+      </Grid>
+    </Grid>
   );
 };
 
