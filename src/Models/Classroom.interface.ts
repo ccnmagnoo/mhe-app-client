@@ -5,10 +5,12 @@ import { IPlace } from './Place.interface';
 export interface IClassroom {
   uuid: string;
   idCal: string;
+  dateInstance: Date;
   enrolled: Person[];
   attendees: Beneficiary[];
   placeActivity: IPlace;
   placeDispatch?: IPlace;
   allowedCities: string[];
-  city: string;
+  cityOnOp: string;
+  colaborator: string;
 }
