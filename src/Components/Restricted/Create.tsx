@@ -11,10 +11,11 @@ import {
   Select,
   TextFieldProps,
 } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Alert, Autocomplete } from '@material-ui/lab';
 import firebase from 'firebase';
 import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useRouteMatch, withRouter } from 'react-router-dom';
 import { auth } from '../../Config/firebase';
 import {
   getCityList,
@@ -23,15 +24,19 @@ import {
 } from '../../Functions/GetTerritoryList';
 import { IClassroom } from '../../Models/Classroom.interface';
 
-export const Create = () => {
+const Create = (props: any) => {
+  //router
+  let { path, url } = useRouteMatch();
+
   //Land type and land list
   const [landList, setLandList] = React.useState<string[]>([]);
   const [placeDate, setPlaceDate] = React.useState<Date>(new Date());
   const [postDate, setPostDate] = React.useState<Date>(new Date());
+  const [error, setError] = React.useState<string | null>(null);
 
   //set form inputs init state
   const initInput: Input = {
-    idCal: '0',
+    idCal: '',
     colaborator: '',
     placeName: '',
     placeDir: '',
@@ -59,9 +64,7 @@ export const Create = () => {
   };
 
   //Land Name
-  const [landName, setLandName] = React.useState<string>('');
   const handleLandNameChange = (event: React.ChangeEvent<{}>, value: string | null) => {
-    setLandName(value ?? 'Valparaíso');
     setInputData({ ...inputData, landName: value ?? 'Valparaíso' });
   };
 
@@ -86,25 +89,15 @@ export const Create = () => {
 
   const {
     register,
-    handleSubmit,
     watch,
     reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit: SubmitHandler<Input> = (data, e) => {
-    console.log('create', 'on init', true);
+  const createClassRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    console.log('create', data);
-    setInputData(data as Input);
-
-    createClassRoom();
-
-    e?.target.reset();
-    reset();
-  };
-
-  const createClassRoom = async () => {
+    console.log('create', 'on init', true);
+    console.log('create', JSON.stringify(inputData));
     try {
       if (inputData !== null) {
         //firestore🔥🔥🔥
@@ -123,7 +116,7 @@ export const Create = () => {
 
           const classRoom: IClassroom = {
             uuid: uuid,
-            idCal: `R${inputData}`,
+            idCal: `R${inputData.idCal}`,
             dateInstance: inputData.placeDate,
             colaborator: inputData.colaborator,
             enrolled: [],
@@ -147,10 +140,15 @@ export const Create = () => {
         //return classoom with UUID
         const newClassroom = buildObject(inputData, req.id);
 
-        req.set(newClassroom);
+        await req.set(newClassroom);
+
+        reset();
+        setError(null);
+        props.history.push('/dashboard');
       }
     } catch (error) {
       console.log('create classroom', false, error);
+      setError('no se pudo cargar actividad 🎃');
     }
   };
 
@@ -179,7 +177,7 @@ export const Create = () => {
           padding: 15,
         }}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={createClassRoom}>
           <Grid
             container
             spacing={2}
@@ -384,8 +382,7 @@ export const Create = () => {
             </Grid>
 
             <Grid item xs={12}>
-              innputs: {watch('place.name')} {watch('place.date')} {watch('landName')}{' '}
-              {watch('colaborator')}
+              <Alert severity='error'>{error}</Alert>
             </Grid>
           </Grid>
         </form>
@@ -393,3 +390,5 @@ export const Create = () => {
     </Container>
   );
 };
+
+export default withRouter(Create);
