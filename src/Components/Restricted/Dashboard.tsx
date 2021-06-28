@@ -1,13 +1,14 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import { Link, Route, Switch, withRouter, useRouteMatch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import GridListTile from '@material-ui/core/GridListTile';
-import ListSubheader from '@material-ui/core/ListSubheader';
+
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import { ClassroomCreate } from './Classroom.Create';
-import { Container } from '@material-ui/core';
+import { Create } from './Create';
+
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import HomeIcon from '@material-ui/icons/Home';
+import { Edit as Edition } from './Edition';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -24,9 +25,14 @@ const Dashboard = (props: any) => {
       wrap='wrap'
     >
       <Grid item>
-        <ButtonGroup variant='outlined' color='primary' aria-label='dashboad commands'>
+        <ButtonGroup
+          variant='outlined'
+          color='primary'
+          aria-label='dashboad commands'
+          fullWidth
+        >
           <Button component={Link} to={url}>
-            main
+            <HomeIcon />
           </Button>
           <Button component={Link} to={`${url}/ahead`}>
             futuro
@@ -35,19 +41,22 @@ const Dashboard = (props: any) => {
             pasado
           </Button>
           <Button component={Link} to={`${url}/create`}>
-            crear
+            <AddCircleOutlineIcon />
           </Button>
         </ButtonGroup>
       </Grid>
       <Grid item>
         <Switch>
           <Route exact path={path}>
-            Principal : {path}
+            Principal
           </Route>
           <Route path={`${path}/ahead`}>planificación</Route>
           <Route path={`${path}/done`}>realizadas</Route>
           <Route path={`${path}/create`}>
-            <ClassroomCreate />
+            <Create />
+          </Route>
+          <Route path={`${path}/edition`}>
+            <Edition />
           </Route>
         </Switch>
       </Grid>
