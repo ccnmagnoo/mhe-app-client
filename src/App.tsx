@@ -1,8 +1,8 @@
 import React from 'react';
-import { Welcome } from './Components/Welcome';
+import { Welcome } from './Components/Public/Welcome';
 import { Container } from '@material-ui/core';
-import { Logo } from './Components/Logo';
-import { ButtonNav } from './Components/ButtonNav';
+import { Logo } from './Components/Public/Logo';
+import { ButtonNav } from './Components/Public/ButtonNav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';

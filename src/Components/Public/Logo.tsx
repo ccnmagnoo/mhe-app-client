@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../Assets/cbelogo.svg';
+import logo from '../../Assets/cbelogo.svg';
 
 type LogoProps = {
   size: number;
