@@ -6,7 +6,6 @@ import {
   Container,
   Button,
   FormControl,
-  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -15,16 +14,14 @@ import {
 import { Autocomplete } from '@material-ui/lab';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { cities, City } from '../../Assets/cities';
 import { getTerritoryNames, LandType } from '../../Functions/GetTerritoryList';
-import { IClassroom } from '../../Models/Classroom.interface';
-import { IPlace } from '../../Models/Place.interface';
 
-export const ClassroomCreate = () => {
+export const Create = () => {
   //Land type and land list
   const [landType, setLandType] = React.useState<LandType>(LandType.region);
   const [landList, setLandList] = React.useState<string[]>([]);
   const [selectDate, setSelectDate] = React.useState<Date>(new Date());
+  const [postDate, setPostDate] = React.useState<Date>(new Date());
 
   React.useEffect(() => {
     setLandList(getTerritoryNames(landType));
@@ -36,6 +33,10 @@ export const ClassroomCreate = () => {
 
   const handlePlaceDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectDate(event.target.value as Date);
+    setPostDate(event.target.value as Date);
+  };
+  const handlePostDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setPostDate(event.target.value as Date);
   };
 
   const {
@@ -75,7 +76,7 @@ export const ClassroomCreate = () => {
           padding: 15,
         }}
       >
-        <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+        <form autoComplete='on' onSubmit={handleSubmit(onSubmit)}>
           <Grid
             container
             spacing={2}
@@ -121,7 +122,7 @@ export const ClassroomCreate = () => {
                 })}
                 error={errors.placeDate && true}
                 onChange={handlePlaceDateChange}
-                helperText={errors.placeDate && true ? 'fecha pasada' : undefined}
+                helperText={errors.placeDate && true ? 'en el pasado?' : undefined}
               />
             </Grid>
 
@@ -133,6 +134,7 @@ export const ClassroomCreate = () => {
                 type='text'
                 label='lugar'
                 variant='outlined'
+                inputProps={{ style: { textTransform: 'capitalize' } }}
                 fullWidth
                 {...register('placeName', {})}
               />
@@ -145,6 +147,7 @@ export const ClassroomCreate = () => {
                 type='text'
                 label='dirección'
                 variant='outlined'
+                inputProps={{ style: { textTransform: 'capitalize' } }}
                 fullWidth
                 {...register('placeDir', {})}
               />
@@ -191,9 +194,9 @@ export const ClassroomCreate = () => {
                 renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
                   <TextField
                     {...params}
+                    required
                     label='territorio'
                     variant='filled'
-                    required
                     {...register('landName', {})}
                     error={errors.land && true}
                     helperText={errors.land && true ? 'nombre requerido' : undefined}
@@ -215,16 +218,19 @@ export const ClassroomCreate = () => {
                 label='fecha/hora'
                 variant='outlined'
                 color='primary'
-                value={selectDate}
+                value={postDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 fullWidth
                 {...register('postDate', {
-                  validate: { morThan: (v) => v > Date.now() },
+                  validate: { lessThan: (v: Date) => v >= selectDate },
                 })}
-                error={errors.placeDate && true}
-                helperText={errors.placeDate && true ? 'fecha pasada' : undefined}
+                onChange={handlePostDateChange}
+                error={errors.postDate && true}
+                helperText={
+                  errors.postDate && true ? 'no puedes antes de la actividad' : undefined
+                }
               />
             </Grid>
 
@@ -237,6 +243,7 @@ export const ClassroomCreate = () => {
                 label='lugar entrega'
                 variant='outlined'
                 fullWidth
+                inputProps={{ style: { textTransform: 'capitalize' } }}
                 {...register('postName', {})}
               />
             </Grid>
@@ -249,12 +256,13 @@ export const ClassroomCreate = () => {
                 label='dirección'
                 variant='outlined'
                 fullWidth
+                inputProps={{ style: { textTransform: 'capitalize' } }}
                 {...register('postDir', {})}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <Button variant='contained' color='primary' fullWidth>
+              <Button variant='contained' color='primary' type='submit' fullWidth>
                 crear
               </Button>
             </Grid>
