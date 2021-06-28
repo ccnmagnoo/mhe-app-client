@@ -8,7 +8,6 @@ import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';
 
 function App() {
-  const [use, setUse] = React.useState(0);
   return (
     <div className='App'>
       <Router>
@@ -19,10 +18,13 @@ function App() {
           <ButtonNav />
           <br />
           <Switch>
-            <Route path='/login' exact>
+            <Route path='/suscription'>suscription page</Route>
+            <Route path='/validation'>validation page</Route>
+            <Route path='/help'>Q&A page</Route>
+            <Route path='/login'>
               <Login />
             </Route>
-            <Route path='/dashboard' exact>
+            <Route path='/dashboard'>
               <Dashboard />
             </Route>
             <Route path='/' exact>

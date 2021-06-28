@@ -14,9 +14,15 @@ export const ButtonNav = () => {
           fullWidth
           size='large'
         >
-          <Button>Incribete</Button>
-          <Button>Valida</Button>
-          <Button>Ayuda</Button>
+          <Button component={Link} to='/suscription'>
+            Incribete
+          </Button>
+          <Button component={Link} to='/validation'>
+            Valida
+          </Button>
+          <Button component={Link} to='/help'>
+            Consultas
+          </Button>
           <Button component={Link} to='/login'>
             Admin
           </Button>

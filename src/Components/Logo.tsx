@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../Assets/cbelogo.svg';
 
 type LogoProps = {
@@ -9,7 +10,9 @@ type LogoProps = {
 export const Logo = (props: LogoProps) => {
   return (
     <React.Fragment>
-      <img src={logo} alt='logo taller' width={props.size} />
+      <Link to='/'>
+        <img className='button' src={logo} alt='logo taller' width={props.size} />
+      </Link>
     </React.Fragment>
   );
 };
