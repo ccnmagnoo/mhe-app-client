@@ -10,4 +10,5 @@ export interface IClassroom {
   placeActivity: IPlace;
   placeDispatch?: IPlace;
   allowedCities: string[];
+  city: string;
 }

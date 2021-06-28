@@ -11,12 +11,14 @@ export class Classroom implements IClassroom {
   allowedCities: string[] = [];
   placeActivity: IPlace;
   placeDispatch?: IPlace | undefined;
+  city: string;
 
   constructor(
     uuid: string,
     idCal: string,
     enrolled: Person[],
     attendees: Beneficiary[],
+    city: string,
     allowedCities: string[],
     placeActivity: IPlace,
     placeDispatch?: IPlace
@@ -25,6 +27,7 @@ export class Classroom implements IClassroom {
     this.idCal = idCal;
     this.enrolled = enrolled;
     this.attendees = attendees;
+    this.city = city;
     this.placeActivity = placeActivity;
     this.placeDispatch = placeDispatch;
     this.allowedCities = allowedCities;
