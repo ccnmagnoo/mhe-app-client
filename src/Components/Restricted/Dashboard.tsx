@@ -8,11 +8,38 @@ import { Create } from './Create';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 import { Edit as Edition } from './Edition';
+import { auth } from '../../Config/firebase';
+import firebase from 'firebase/app';
+import Typography from '@material-ui/core/Typography';
 
 const Dashboard = (props: any) => {
   //nested routing
   let { path, url } = useRouteMatch();
+
+  //
+  const [admin, setAdmin] = React.useState<firebase.User | null>(null);
+
+  //protected routing
+  React.useEffect(() => {
+    if (auth.currentUser) {
+      console.log('admin is logged?', true);
+      setAdmin(auth.currentUser);
+    } else {
+      //kick out to login retrited place
+      console.log('admin is logged?', false);
+      props.history.push('/login');
+    }
+  }, [props.history]);
+
+  const closeAdmin = () => {
+    auth.signOut().then(() => {
+      console.log('admin is loggin out', false);
+      props.history.push('/login');
+    });
+  };
 
   return (
     <Grid
@@ -43,12 +70,17 @@ const Dashboard = (props: any) => {
           <Button component={Link} to={`${url}/create`}>
             <AddCircleOutlineIcon />
           </Button>
+          <Button onClick={closeAdmin}>
+            <ExitToAppIcon />
+          </Button>
         </ButtonGroup>
       </Grid>
       <Grid item>
         <Switch>
           <Route exact path={path}>
-            Principal
+            <Typography variant='body2' color='primary'>
+              Bienvenido {admin?.email}
+            </Typography>
           </Route>
           <Route path={`${path}/ahead`}>planificación</Route>
           <Route path={`${path}/done`}>realizadas</Route>
