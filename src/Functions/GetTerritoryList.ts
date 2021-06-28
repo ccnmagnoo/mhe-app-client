@@ -1,6 +1,6 @@
 import { cities, City } from '../Assets/cities';
 
-export function getCityList(territory: string, landType: TerritoryType): string[] {
+export function getCityList(territory: string, landType: LandType): string[] {
   /**
    * this function return all the cities in the territory requersted
    */
@@ -16,7 +16,7 @@ export function getCityList(territory: string, landType: TerritoryType): string[
   return result;
 }
 
-export function getTerritoryNames(landType: TerritoryType): string[] {
+export function getTerritoryNames(landType: LandType): string[] {
   /**
    * this function return all the names of specifict land type
    */
@@ -31,7 +31,7 @@ export function getTerritoryNames(landType: TerritoryType): string[] {
   return unique;
 }
 
-export enum TerritoryType {
+export enum LandType {
   city = 'city',
   province = 'province',
   region = 'region',

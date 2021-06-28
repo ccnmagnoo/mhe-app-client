@@ -1,5 +1,5 @@
 export interface IPlace {
-  dateActivity: Date;
-  placeName: string;
-  placeDir: string;
+  date: Date;
+  name: string;
+  dir: string;
 }
