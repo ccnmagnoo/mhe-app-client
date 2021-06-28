@@ -1,38 +1,66 @@
 import React from 'react';
 import { Welcome } from './Components/Public/Welcome';
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import { Logo } from './Components/Public/Logo';
 import { ButtonNav } from './Components/Public/ButtonNav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';
+import { auth } from './Config/firebase';
+import firebase from 'firebase/app';
 
 function App() {
-  return (
-    <div className='App'>
-      <Router>
+  //auth user firebase
+  const [firebaseUser, setFirebaseUser] = React.useState<firebase.User | null | boolean>(
+    null
+  );
+
+  React.useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      console.log('current user', user);
+      if (user) {
+        setFirebaseUser(user);
+        //set user if true, and set FALSE if not😮😮
+      } else {
+        //present null on problems of conection 🧠❔
+        setFirebaseUser(null);
+      }
+    });
+  }, []);
+
+  const landingPage = (
+    <Router>
+      <br />
+      <Container maxWidth='sm'>
+        <Logo size={200} name={'Con Buena Energía'} />
         <br />
-        <Container maxWidth='sm'>
-          <Logo size={200} name={'Con Buena Energía'} />
-          <br />
-          <ButtonNav />
-          <br />
-          <Switch>
-            <Route path='/suscription'>suscription page</Route>
-            <Route path='/validation'>validation page</Route>
-            <Route path='/help'>Q&A page</Route>
-            <Route path='/login'>
-              <Login />
-            </Route>
-            <Route path='/dashboard'>
-              <Dashboard />
-            </Route>
-            <Route path='/' exact>
-              <Welcome />
-            </Route>
-          </Switch>
-        </Container>
-      </Router>
+        <ButtonNav />
+        <br />
+        <Switch>
+          <Route path='/suscription'>suscription page</Route>
+          <Route path='/validation'>validation page</Route>
+          <Route path='/help'>Q&A page</Route>
+          <Route path='/login'>
+            <Login />
+          </Route>
+          <Route path='/dashboard'>
+            <Dashboard />
+          </Route>
+          <Route path='/' exact>
+            <Welcome />
+          </Route>
+        </Switch>
+      </Container>
+    </Router>
+  );
+
+  return firebaseUser !== false ? (
+    <div className='App'>{landingPage}</div>
+  ) : (
+    <div>
+      <Typography variant='subtitle2' color='initial'>
+        cargando usuario
+      </Typography>
     </div>
   );
 }
