@@ -22,6 +22,7 @@ import {
   getTerritoryNames,
   LandType,
 } from '../../Functions/GetTerritoryList';
+import { pad } from '../../Functions/paddingNumber';
 import { IClassroom } from '../../Models/Classroom.interface';
 
 const Create = (props: any) => {
@@ -36,7 +37,7 @@ const Create = (props: any) => {
 
   //set form inputs init state
   const initInput: Input = {
-    idCal: '',
+    idCal: 0,
     colaborator: '',
     placeName: '',
     placeDir: '',
@@ -122,7 +123,7 @@ const Create = (props: any) => {
 
           const classRoom: IClassroom = {
             uuid: uuid,
-            idCal: `R${inputData.idCal}`,
+            idCal: `R${pad(inputData.idCal, 3)}`,
             colaborator: inputData.colaborator,
             enrolled: [],
             attendees: [],
@@ -159,7 +160,7 @@ const Create = (props: any) => {
   };
 
   type Input = {
-    idCal: string;
+    idCal: number;
     colaborator: string;
     //place class 📌
     placeName: string;
