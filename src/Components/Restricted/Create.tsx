@@ -74,17 +74,21 @@ const Create = (props: any) => {
 
   const handlePlaceDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     //set state activity time
-    setPlaceDate(event.target.value as Date);
+    const newDatePlace = event.target.value as Date;
+
+    setPlaceDate(newDatePlace);
     //set state delivery time
-    setPostDate(event.target.value as Date);
+    setPostDate(newDatePlace);
     //set state input
-    setInputData({ ...inputData, placeDate: event.target.value as Date });
+    setInputData({ ...inputData, placeDate: newDatePlace });
   };
   const handlePostDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newPostDate = event.target.value as Date;
+
     //set state delivery time
-    setPostDate(event.target.value as Date);
+    setPostDate(newPostDate);
     //set state of inputs
-    setInputData({ ...inputData, postDate: event.target.value as Date });
+    setInputData({ ...inputData, postDate: newPostDate });
   };
 
   const {
@@ -113,24 +117,26 @@ const Create = (props: any) => {
             inputData.landName,
             inputData.landType as LandType
           );
+          const datePlaceSetting = new Date(inputData.placeDate);
+          const datePostSetting = new Date(inputData.postDate);
 
           const classRoom: IClassroom = {
             uuid: uuid,
             idCal: `R${inputData.idCal}`,
-            dateInstance: inputData.placeDate,
             colaborator: inputData.colaborator,
             enrolled: [],
             attendees: [],
+            dateInstance: datePlaceSetting,
             placeActivity: {
               name: inputData.placeName,
               dir: inputData.placeDir,
-              date: inputData.placeDate,
+              date: datePlaceSetting,
             },
 
             placeDispatch: {
               name: inputData.postName,
               dir: inputData.postDir,
-              date: inputData.postDate,
+              date: datePostSetting,
             },
             allowedCities: listOfCities,
             cityOnOp: listOfCities[0],
@@ -177,7 +183,7 @@ const Create = (props: any) => {
           padding: 15,
         }}
       >
-        <form onSubmit={createClassRoom}>
+        <form onSubmit={createClassRoom} autoComplete='on'>
           <Grid
             container
             spacing={2}
@@ -215,6 +221,7 @@ const Create = (props: any) => {
                 label='fecha/hora'
                 variant='outlined'
                 color='primary'
+                value={placeDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -382,7 +389,7 @@ const Create = (props: any) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Alert severity='error'>{error}</Alert>
+              {error !== null ? <Alert severity='error'>{error}</Alert> : undefined}
             </Grid>
           </Grid>
         </form>
