@@ -27,7 +27,7 @@ import { IClassroom } from '../../Models/Classroom.interface';
 
 const Create = (props: any) => {
   //router
-  let { path, url } = useRouteMatch();
+  //let { path, url } = useRouteMatch();
 
   //Land type and land list
   const [landList, setLandList] = React.useState<string[]>([]);
@@ -94,15 +94,19 @@ const Create = (props: any) => {
 
   const {
     register,
-    watch,
+    handleSubmit,
+    //watch,
     reset,
     formState: { errors },
   } = useForm();
 
-  const createClassRoom = async (e: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
+  function onSubmit() {
     console.log('create', 'on init', true);
     console.log('create', JSON.stringify(inputData));
+    createClassRoom();
+  }
+
+  const createClassRoom = async () => {
     try {
       if (inputData !== null) {
         //firestore🔥🔥🔥
@@ -184,7 +188,7 @@ const Create = (props: any) => {
           padding: 15,
         }}
       >
-        <form onSubmit={createClassRoom} autoComplete='on'>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='on'>
           <Grid
             container
             spacing={2}
@@ -206,8 +210,8 @@ const Create = (props: any) => {
                 type='number'
                 variant='outlined'
                 {...register('idCal', {
-                  max: { value: 1000, message: 'muy grande' },
-                  min: { value: 0, message: 'no negativo' },
+                  max: { value: 999, message: 'muy grande' },
+                  min: { value: 1, message: 'no menor a 0' },
                 })}
                 onChange={handleInputChange}
                 error={errors.idCal && true}
@@ -227,9 +231,7 @@ const Create = (props: any) => {
                   shrink: true,
                 }}
                 fullWidth
-                {...register('placeDate', {
-                  validate: { morThan: (v) => v > Date.now() },
-                })}
+                {...register('placeDate')}
                 error={errors.placeDate && true}
                 helperText={errors.placeDate && true ? 'en el pasado?' : undefined}
                 onChange={handlePlaceDateChange}
