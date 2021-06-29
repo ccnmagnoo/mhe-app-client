@@ -1,13 +1,32 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Box, Paper, List, ListItem, ListItemIcon } from '@material-ui/core';
-import moment from 'moment';
+import { ListItemText, TextField, Grid, Fab, Button } from '@material-ui/core';
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { ListItemText, TextField, Grid } from '@material-ui/core';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { isRol as rolChecker } from '../../Functions/isRol';
+import { SettingsRemote } from '@material-ui/icons';
 
 export const Suscription = () => {
   const dateLimit = new Date('2017-12-31');
+
+  //hooks
+  const [setADisable, setStepADisable] = React.useState(false);
+  const [isRol, setIsRol] = React.useState<boolean | null>(null);
+
+  //React hook form
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Input>();
+
+  type Input = {
+    rut: string;
+  };
 
   //Return stactic content
   const titleMessage = (
@@ -39,7 +58,7 @@ export const Suscription = () => {
       sub: 'solo se permite un Kit por hogar',
     },
     {
-      main: `el grupo familiar no haya recibido Kit después de esta fecha`,
+      main: `no haya recibido Kit después de esta fecha`,
       sub: dateLimit.toLocaleDateString(),
     },
     {
@@ -74,26 +93,67 @@ export const Suscription = () => {
   );
 
   //form step
+  const onSubmitStepA: SubmitHandler<Input> = (data) => {
+    console.log('register', 'step A', true);
+    console.log('submit A', data);
+
+    //checking rut
+    setIsRol(rolChecker(data.rut));
+    console.log('is rol valid?', isRol);
+
+    //setStepADisable(true);
+  };
 
   const stepAform = (
     <React.Fragment>
-      <Paper elevation={2}>
-        <Grid container spacing={1} justify='flex-start'>
-          <Grid item xs={6}>
-            <Typography variant='h6' color='initial'>
-              Paso 1
-            </Typography>
+      <form onSubmit={handleSubmit(onSubmitStepA)}>
+        <Paper elevation={2}>
+          <Grid
+            container
+            direction='row'
+            spacing={1}
+            justify='space-between'
+            alignItems='center'
+          >
+            <Grid item xs={3}>
+              <Typography variant='subtitle2' color='primary'>
+                Paso 1
+              </Typography>
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                required
+                disabled={setADisable}
+                id='check-rut'
+                label='verifica rut'
+                type='text'
+                variant='filled'
+                {...register('rut', {
+                  pattern: {
+                    value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
+                    message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                  },
+                })}
+                error={errors.rut && true}
+                helperText={errors.rut?.message}
+              />
+              {isRol}
+            </Grid>
+
+            <Grid item xs={2}>
+              <Button
+                type='submit'
+                variant='outlined'
+                color='primary'
+                disabled={setADisable}
+              >
+                Check
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              id='check-rut'
-              label='verifica rut'
-              variant='filled'
-              onChange={(params) => {}}
-            />
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </form>
     </React.Fragment>
   );
 
