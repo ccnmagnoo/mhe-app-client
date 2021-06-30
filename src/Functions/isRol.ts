@@ -14,7 +14,7 @@ export function isRol(rol: string): boolean {
       return false;
     } else {
       const rolSplited = rol.split('-');
-      let rolDigit = rolSplited[1];
+      let rolDigit: string = rolSplited[1];
       const rolBody = rolSplited[0];
 
       if (rolDigit === 'K') {
@@ -34,7 +34,7 @@ export function isRol(rol: string): boolean {
       S = (S + (rol % 10) * (9 - (M++ % 6))) % 11;
     }
 
-    return S.toString() ? (S - 1).toString() : 'k';
+    return S ? (S - 1).toString() : 'k';
   };
 
   return rolChecker(rol);
