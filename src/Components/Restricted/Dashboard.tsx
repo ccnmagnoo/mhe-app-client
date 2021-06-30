@@ -12,7 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Edit as Edition } from './Edition';
 import { auth } from '../../Config/firebase';
-import firebase from 'firebase/app';
+import { firebase } from '../../Config/firebase';
 import Typography from '@material-ui/core/Typography';
 
 const Dashboard = (props: any) => {
