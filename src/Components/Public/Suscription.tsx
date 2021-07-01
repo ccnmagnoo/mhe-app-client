@@ -658,7 +658,7 @@ export const Suscription = () => {
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={2}>
                   <Button
                     type='submit'
                     variant='outlined'

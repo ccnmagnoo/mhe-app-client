@@ -18,7 +18,6 @@ type SuccessProps = {
 
 export const OnSuccessSuscription = (props: SuccessProps) => {
   //referencias
-  const person = props.person;
   const classroom = props.classroom;
 
   const getUrl = (chain?: string) => {
@@ -75,15 +74,19 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                       {getUrl(classroom?.placeActivity.dir)}
                     </Typography>
                     {/*snack bar warning 💥*/}
-                    <Alert severity='error'>
+                    <Alert severity='info'>
                       <Typography variant='body1' color='textSecondary'>
                         Su Kit de Ahorro <strong>se entregará</strong> a partir del <br />
                         {moment(classroom?.placeDispatch?.date).format(
-                          'DD [de] MMMM [a partir las] h:mm a'
+                          'DD [de] MMMM [desde las] h:mm a'
                         )}{' '}
                         en la siguiente dirección <br />
                         <strong> {classroom?.placeDispatch?.name}</strong> <br />
                         {getUrl(classroom?.placeDispatch?.dir)}
+                      </Typography>
+                      <Typography variant='caption' color='secondary'>
+                        el retiro del kit es de su exclusiva{' '}
+                        <strong>responsabilidad</strong> .
                       </Typography>
                     </Alert>
                   </CardContent>
