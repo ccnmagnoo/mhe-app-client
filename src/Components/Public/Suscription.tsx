@@ -15,6 +15,11 @@ import {
   Avatar,
   CardHeader,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core';
 
 import moment from 'moment';
@@ -38,6 +43,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Grow from '@material-ui/core/Grow';
 import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
+import { OnSuccessSuscription } from './Suscription.onSuccess';
 
 export const Suscription = () => {
   //hooks
@@ -45,9 +51,14 @@ export const Suscription = () => {
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
   const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
+  //objects states
+
   const [selectedClassroom, setSelectedClassroom] = React.useState<
     IClassroom | undefined
   >(undefined);
+  const [suscribedPerson, setSuscribedPerson] = React.useState<IPerson | undefined>(
+    undefined
+  );
 
   //form is disabled
   const [stepAisDisable, setStepAisDisable] = React.useState(false);
@@ -456,6 +467,7 @@ export const Suscription = () => {
     if (isUploaded) {
       setStepCisDisable(true);
       setSuscribed(true);
+      setDialogOpen(true);
     } else {
       //set error snack bar
       setSuscribed(false);
@@ -488,6 +500,7 @@ export const Suscription = () => {
         address: { dir: data.dir, city: data.city },
       };
 
+      setSuscribedPerson(person);
       ref.set(person);
 
       return true;
@@ -667,6 +680,40 @@ export const Suscription = () => {
     </React.Fragment>
   );
 
+  //Dialog on success suscription
+  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+  const dialogOnSuccess = (
+    <Dialog
+      open={dialogOpen}
+      onClose={() => {
+        setDialogOpen(false);
+        reset();
+      }}
+      aria-labelledby='success suscription'
+    >
+      <DialogTitle id='index'>
+        <Typography variant='subtitle1' color='primary'>
+          Felicidades {suscribedPerson?.name.firstName.toUpperCase()} ya estás inscrit@
+          🎉✨
+        </Typography>
+      </DialogTitle>
+      <DialogContent>
+        <OnSuccessSuscription person={suscribedPerson} classroom={selectedClassroom} />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setDialogOpen(false);
+          }}
+          color='primary'
+          variant='outlined'
+        >
+          Gracias nos vemos 👋
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   //SUSCRIPTION APP
   return (
     <React.Fragment>
@@ -677,6 +724,7 @@ export const Suscription = () => {
       {stepC ? stepCform : undefined}
       <br />
       {stepAisDisable ? undefined : <Requirements />}
+      {dialogOnSuccess}
     </React.Fragment>
   );
 };
