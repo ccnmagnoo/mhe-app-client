@@ -146,17 +146,18 @@ export const Suscription = () => {
 
       const listDocs: IConsolidated[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
-        return {
+        const result: IConsolidated = {
           uuid: doc.id,
           classroom: {
-            idCal: it.idCal,
-            uuid: it.uuid,
-            dateInstance: it.dateInstance.toDate(),
+            idCal: it.classroom.idCal,
+            uuid: it.classroom.uuid,
+            dateInstance: it.classroom.dateInstance.toDate(),
           },
           dateBenefit: it.dateBenefit.toDate(),
           rut: it.rut,
           sign: it.sign,
         };
+        return result;
       });
 
       listDocs.filter((cvn) => {
@@ -164,10 +165,11 @@ export const Suscription = () => {
       });
 
       console.log('benefits after date limit', listDocs.length);
-
+      //true: failure false:go go go
       return listDocs.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
+      return true;
     }
   }
 
