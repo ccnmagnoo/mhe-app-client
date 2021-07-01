@@ -1,16 +1,16 @@
 import { IBeneficiary } from './Beneficiary.interface';
 import { Person } from './Person';
+import { IPerson } from './Person.Interface';
 
 export class Beneficiary extends Person implements IBeneficiary {
   sign?: string | undefined;
   dateSign: Date;
 
-  constructor(person: Person, dateSign: Date, sign?: string) {
+  constructor(person: IPerson, dateSign: Date, sign?: string) {
     super(
       person.uuid,
       person.name,
       person.rut,
-      person.document,
       person.email,
       person.phone,
       person.address
