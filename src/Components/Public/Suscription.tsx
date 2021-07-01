@@ -1,7 +1,25 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { Box, Paper, TextFieldProps } from '@material-ui/core';
-import { TextField, Grid, Button } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Paper,
+  TextFieldProps,
+} from '@material-ui/core';
+import {
+  TextField,
+  Grid,
+  Button,
+  Avatar,
+  CardHeader,
+  IconButton,
+  CardMedia,
+} from '@material-ui/core';
+
+import moment from 'moment';
+import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
@@ -14,8 +32,12 @@ import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
 import { IClassroom } from '../../Models/Classroom.interface';
 
+//icons
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 //transitions
 import Grow from '@material-ui/core/Grow';
+import { MoreVert as MoreVertIcon, PanoramaWideAngleTwoTone } from '@material-ui/icons';
 
 export const Suscription = () => {
   //hooks
@@ -23,9 +45,9 @@ export const Suscription = () => {
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
   const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
-  const [selectedClassroom, setSelectedClassroom] = React.useState<string | undefined>(
-    undefined
-  );
+  const [selectedClassroom, setSelectedClassroom] = React.useState<
+    IClassroom | undefined
+  >(undefined);
 
   //form is disabled
   const [stepAisDisable, setStepAisDisable] = React.useState(false);
@@ -61,10 +83,10 @@ export const Suscription = () => {
   const titleMessage = (
     <React.Fragment>
       <Typography variant='h5' color='primary'>
-        aquí puedes inscribirte al taller
+        Inscripción a Con Buena Energía
       </Typography>
       <Typography variant='body1' color='initial'>
-        recuerde tener su carnet💳 a mano 🙌{' '}
+        recuerde tener su carnet💳 a mano 🙌
       </Typography>
     </React.Fragment>
   );
@@ -406,10 +428,10 @@ export const Suscription = () => {
                   <Button
                     disabled={stepBisDisable}
                     type='submit'
-                    variant='contained'
+                    variant='outlined'
                     color='primary'
                   >
-                    {stepBisDisable ? '✅' : 'Ingresar'}{' '}
+                    {stepBisDisable ? '✅' : 'Check'}{' '}
                   </Button>
                 </Grid>
               </Grid>
@@ -443,6 +465,85 @@ export const Suscription = () => {
     }
   };
 
+  const miniCardClassroom = (params: IClassroom) => {
+    return (
+      <React.Fragment>
+        <Card>
+          <CardHeader
+            avatar={<Avatar aria-label='idcal'>{params.idCal.replace('R', '')}</Avatar>}
+            action={
+              <IconButton aria-label='seleccionar'>
+                <CheckCircleIcon
+                  color={selectedClassroom?.uuid === params.uuid ? 'primary' : 'action'}
+                />
+              </IconButton>
+            }
+            title={`${params.idCal} ${params.colaborator}`}
+            subheader={moment(params.dateInstance).format(
+              'dddd MMMM YYYY [a las] h:mm a'
+            )}
+          />
+          <CardActions>
+            <Button
+              size='small'
+              color={selectedClassroom?.uuid === params.uuid ? 'primary' : 'default'}
+              variant={selectedClassroom?.uuid === params.uuid ? 'contained' : 'outlined'}
+              onClick={() => {
+                console.log('selected class', params.idCal);
+                setSelectedClassroom(params);
+              }}
+            >
+              selecionar
+            </Button>
+          </CardActions>
+        </Card>
+      </React.Fragment>
+    );
+  };
+
+  const classRoomsAvaliableDisplay = () => {
+    if (avaliableClassrooms.length > 0) {
+      avaliableClassrooms.map((item, index) => {
+        return (
+          <Grid item xs={6} key={index}>
+            {miniCardClassroom(item)}
+          </Grid>
+        );
+      });
+    } else {
+      return (
+        <Grid item xs={8}>
+          <Card>
+            <CardHeader
+              avatar={<Avatar aria-label='idcal'>?</Avatar>}
+              action={
+                <IconButton aria-label='seleccionar'>
+                  <CheckCircleIcon color='action' />
+                </IconButton>
+              }
+              title='Lo sentimos'
+              subheader='no hay talleres cercanos disponibles'
+            />
+            <CardContent>
+              <Typography variant='subtitle2' color='primary'>
+                ¿Como puedo participar en un taller?
+              </Typography>
+              <Typography variant='body2' color='textSecondary'>
+                Los talleres son implementados por el Ministerio de energía en
+                coordinación con una
+                <strong> institución municipal o servicio público</strong>, puede
+                acercarse a sus oficinas sociales para solicitar un taller o escribanos a
+                <strong>
+                  <a href=' ccamposn@minenergia.cl'> ccamposn@minenergia.cl </a>
+                </strong>
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      );
+    }
+  };
+
   const stepCform = (
     <React.Fragment>
       <br />
@@ -453,15 +554,13 @@ export const Suscription = () => {
               <Grid container spacing={2} justify='flex-end'>
                 <Grid item xs={12}>
                   <Typography variant='subtitle2' color='primary'>
-                    Paso final
+                    Paso final: selecciona tu taller
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <ul>
-                    {avaliableClassrooms.map((item, index) => {
-                      return <li key={index}>{item.idCal}</li>;
-                    })}
-                  </ul>
+                  <Grid container spacing={1}>
+                    {classRoomsAvaliableDisplay()}
+                  </Grid>
                 </Grid>
 
                 <Grid item xs={6}>
@@ -487,7 +586,7 @@ export const Suscription = () => {
                     fullWidth
                     disabled={stepCisDisable}
                     id='phone-text-field'
-                    label='teléfono'
+                    label='teléfono (opcional)'
                     type='phone'
                     variant='outlined'
                     {...register('phone', {})}
@@ -527,7 +626,7 @@ export const Suscription = () => {
       {stepB ? stepBform : undefined}
       {stepC ? stepCform : undefined}
       <br />
-      <Requirements />
+      {stepAisDisable ? undefined : <Requirements />}
     </React.Fragment>
   );
 };

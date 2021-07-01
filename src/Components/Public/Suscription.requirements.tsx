@@ -19,7 +19,7 @@ export const Requirements = () => {
     },
     {
       main: 'haberse inscrito en esta mini app',
-      sub: 'on-line sin salir de casa 🏡',
+      sub: 'on-line sin salir de casa 🏡, antes del taller',
     },
     {
       main: 'pertenecer al registro social de hogares',
