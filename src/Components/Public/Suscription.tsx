@@ -15,7 +15,6 @@ import {
   Avatar,
   CardHeader,
   IconButton,
-  CardMedia,
 } from '@material-ui/core';
 
 import moment from 'moment';
@@ -37,7 +36,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 //transitions
 import Grow from '@material-ui/core/Grow';
-import { MoreVert as MoreVertIcon, PanoramaWideAngleTwoTone } from '@material-ui/icons';
 import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 
@@ -482,7 +480,7 @@ export const Suscription = () => {
         },
         dateUpdate: new Date(),
         email: data.email,
-        phone: data.phone,
+        phone: data.phone ?? '0',
         address: { dir: data.dir, city: data.city },
       };
 
@@ -505,8 +503,8 @@ export const Suscription = () => {
     } else {
       return (
         <Alert severity='success'>
-          Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, te
-          esperamos.
+          Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, es{' '}
+          {moment(selectedClassroom?.dateInstance).endOf('day').fromNow()}, te esperamos.
         </Alert>
       );
     }
@@ -527,7 +525,7 @@ export const Suscription = () => {
             }
             title={`${params.idCal} ${params.colaborator}`}
             subheader={moment(params.dateInstance).format(
-              'dddd MMMM YYYY [a las] h:mm a'
+              'dddd DD MMMM YYYY [a las] h:mm a'
             )}
           />
           <CardActions>
