@@ -18,7 +18,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
 
@@ -51,6 +50,8 @@ export const Suscription = () => {
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
   const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
+  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+
   //objects states
 
   const [selectedClassroom, setSelectedClassroom] = React.useState<
@@ -67,13 +68,12 @@ export const Suscription = () => {
   //hooks or form is visible
   const [stepB, setStepB] = React.useState(false);
   const [stepC, setStepC] = React.useState(false);
-  const [stepD, setStepD] = React.useState(false);
 
   //React hook form
   const {
     register,
     handleSubmit,
-    watch,
+
     reset,
     formState: { errors },
   } = useForm<Input>();
@@ -500,8 +500,8 @@ export const Suscription = () => {
         address: { dir: data.dir, city: data.city },
       };
 
-      setSuscribedPerson(person);
       ref.set(person);
+      setSuscribedPerson(person);
 
       return true;
     } catch (error) {
@@ -527,21 +527,21 @@ export const Suscription = () => {
     }
   };
   //card adapter to show classrooms avaliable
-  const miniCardClassroom = (params: IClassroom) => {
+  const miniCardClassroom = (item: IClassroom) => {
     return (
       <React.Fragment>
         <Card>
           <CardHeader
-            avatar={<Avatar aria-label='idcal'>{params.idCal.replace('R', '')}</Avatar>}
+            avatar={<Avatar aria-label='idcal'>{item.idCal.replace('R', '')}</Avatar>}
             action={
               <IconButton aria-label='seleccionar'>
                 <CheckCircleIcon
-                  color={selectedClassroom?.uuid === params.uuid ? 'primary' : 'action'}
+                  color={selectedClassroom?.uuid === item.uuid ? 'primary' : 'action'}
                 />
               </IconButton>
             }
-            title={`${params.idCal} ${params.colaborator}`}
-            subheader={moment(params.dateInstance).format(
+            title={`${item.idCal} ${item.colaborator}`}
+            subheader={moment(item.dateInstance).format(
               'dddd DD MMMM YYYY [a las] h:mm a'
             )}
           />
@@ -549,11 +549,11 @@ export const Suscription = () => {
             <Button
               size='small'
               disabled={stepCisDisable}
-              color={selectedClassroom?.uuid === params.uuid ? 'primary' : 'default'}
-              variant={selectedClassroom?.uuid === params.uuid ? 'contained' : 'outlined'}
+              color={selectedClassroom?.uuid === item.uuid ? 'primary' : 'default'}
+              variant={selectedClassroom?.uuid === item.uuid ? 'contained' : 'outlined'}
               onClick={() => {
-                console.log('selected class', params.idCal);
-                setSelectedClassroom(params);
+                console.log('selected class', item.idCal);
+                setSelectedClassroom(item);
               }}
             >
               selecionar
@@ -681,7 +681,6 @@ export const Suscription = () => {
   );
 
   //Dialog on success suscription
-  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const dialogOnSuccess = (
     <Dialog
       open={dialogOpen}
