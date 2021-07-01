@@ -137,8 +137,11 @@ export const Suscription = () => {
         const it = doc.data();
         return {
           uuid: doc.id,
-          idCal: it.idCal,
-          classroomUuid: it.classroomUuid,
+          classroom: {
+            idCal: it.idCal,
+            uuid: it.uuid,
+            dateInstance: it.dateInstance.toDate(),
+          },
           dateBenefit: it.dateBenefit.toDate(),
           rut: it.rut,
           sign: it.sign,
@@ -454,7 +457,8 @@ export const Suscription = () => {
       setStepCisDisable(true);
       setSuscribed(true);
     } else {
-      setSuscribed(true);
+      //set error snack bar
+      setSuscribed(false);
     }
   };
 
