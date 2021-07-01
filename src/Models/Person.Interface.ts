@@ -2,11 +2,12 @@ export interface IPerson {
   uuid: string;
   name: Name;
   rut: string;
-  document: string;
-  email: string;
-  phone?: number;
-  address?: Dir;
+  classroom: { idCal: string; uuid: string; dateInstance: Date };
   gender: Gender;
+  dateUpdate: Date;
+  email: string;
+  phone?: string;
+  address?: Dir;
 }
 
 export type Name = {
@@ -16,7 +17,7 @@ export type Name = {
 };
 
 export type Dir = {
-  street: string;
+  dir: string;
   city: string;
 };
 

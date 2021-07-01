@@ -7,24 +7,27 @@ export class Person implements IPerson {
   name: Name;
   gender: Gender;
   rut: string;
-  document: string;
+  dateUpdate: Date = new Date();
+  classroom: { idCal: string; uuid: string; dateInstance: Date } = {
+    idCal: '',
+    uuid: '',
+    dateInstance: new Date(),
+  };
   email: string;
-  phone?: number | undefined;
+  phone?: string;
   address?: Dir | undefined;
 
   constructor(
     uuid: string,
     name: Name,
     rut: string,
-    document: string,
     email: string,
-    phone?: number,
+    phone?: string,
     address?: Dir
   ) {
     this.uuid = uuid;
     this.name = name;
     this.rut = rut;
-    this.document = document;
     this.email = email;
     this.phone = phone;
     this.address = address;
