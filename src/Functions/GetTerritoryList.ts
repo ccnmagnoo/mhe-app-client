@@ -24,6 +24,7 @@ export function getTerritoryNames(landType: LandType): string[] {
     const cityObject: { [key: string]: string } = { ...land };
     return cityObject[landType];
   });
+  //getting unique values of region/province/city
   const unique = territories.filter(function (elem, index, self) {
     return index === self.indexOf(elem);
   });
