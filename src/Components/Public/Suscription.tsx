@@ -38,6 +38,8 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 //transitions
 import Grow from '@material-ui/core/Grow';
 import { MoreVert as MoreVertIcon, PanoramaWideAngleTwoTone } from '@material-ui/icons';
+import { IPerson } from '../../Models/Person.Interface';
+import { getGender } from '../../Functions/getGender';
 
 export const Suscription = () => {
   //hooks
@@ -445,10 +447,55 @@ export const Suscription = () => {
   //FORM C 💖💖💗
   const onSubmitStepC: SubmitHandler<Input> = async (data) => {
     console.log('form C', data);
-    setStepCisDisable(true);
-    setSuscribed(true);
+
+    //load to firebase Suscribed 🔥🔥🔥
+    const isUploaded = await createSuscribed(data);
+    console.log('is uploaded?', isUploaded);
+
+    if (isUploaded) {
+      setStepCisDisable(true);
+      setSuscribed(true);
+    } else {
+      setSuscribed(true);
+    }
   };
-  //ALERT SNACK BAR💥💢
+
+  //firebase create Suscribed
+  async function createSuscribed(data: Input) {
+    try {
+      console.log('prepare to upload suscription', data.email);
+      const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
+
+      const person: IPerson = {
+        uuid: ref.id,
+        name: {
+          firstName: data.name,
+          fatherName: data.fatherName,
+          motherName: data.motherName,
+        },
+        rut: data.rut,
+        gender: getGender(data.name),
+        classroom: {
+          idCal: selectedClassroom?.idCal ?? 'R000',
+          uuid: selectedClassroom?.uuid ?? 'no-data',
+          dateInstance: selectedClassroom?.dateInstance ?? new Date(),
+        },
+        dateUpdate: new Date(),
+        email: data.email,
+        phone: data.phone,
+        address: { dir: data.dir, city: data.city },
+      };
+
+      ref.set(person);
+
+      return true;
+    } catch (error) {
+      console.log('no upload', error);
+      return false;
+    }
+  }
+
+  //alert: snack bar💥💢
   const stepCsnackBar = () => {
     if (suscribed === undefined) {
       return undefined;
@@ -464,7 +511,7 @@ export const Suscription = () => {
       );
     }
   };
-
+  //card adapter to show classrooms avaliable
   const miniCardClassroom = (params: IClassroom) => {
     return (
       <React.Fragment>
@@ -500,10 +547,10 @@ export const Suscription = () => {
       </React.Fragment>
     );
   };
-
+  // cards of avaliables classrooms or not
   const classRoomsAvaliableDisplay = () => {
     if (avaliableClassrooms.length > 0) {
-      avaliableClassrooms.map((item, index) => {
+      return avaliableClassrooms.map((item, index) => {
         return (
           <Grid item xs={6} key={index}>
             {miniCardClassroom(item)}
@@ -512,7 +559,7 @@ export const Suscription = () => {
       });
     } else {
       return (
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <Card>
             <CardHeader
               avatar={<Avatar aria-label='idcal'>?</Avatar>}
