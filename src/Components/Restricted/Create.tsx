@@ -15,7 +15,7 @@ import { Alert, Autocomplete } from '@material-ui/lab';
 import firebase from 'firebase';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouteMatch, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { auth } from '../../Config/firebase';
 import {
   getCityList,

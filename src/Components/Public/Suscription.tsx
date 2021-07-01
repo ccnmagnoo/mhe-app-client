@@ -11,16 +11,26 @@ import { IConsolidated } from '../../Models/Consolidated.interface';
 import { dateLimit } from '../../Config/credential';
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
+import { cities } from '../../Assets/cities';
+import { IClassroom } from '../../Models/Classroom.interface';
 
 //transitions
 import Grow from '@material-ui/core/Grow';
-import { cities } from '../../Assets/cities';
 
 export const Suscription = () => {
   //hooks
-  const [stepAisDisable, setStepAisDisable] = React.useState(false);
   const [isRol, setIsRol] = React.useState<boolean | null>(null);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
+  const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
+  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
+  const [selectedClassroom, setSelectedClassroom] = React.useState<string | undefined>(
+    undefined
+  );
+
+  //form is disabled
+  const [stepAisDisable, setStepAisDisable] = React.useState(false);
+  const [stepBisDisable, setStepBisDisable] = React.useState(false);
+  const [stepCisDisable, setStepCisDisable] = React.useState(false);
   //hooks or form is visible
   const [stepB, setStepB] = React.useState(false);
   const [stepC, setStepC] = React.useState(false);
@@ -126,7 +136,7 @@ export const Suscription = () => {
   }
 
   //ALERT SNACK BAR💥💢
-  const stepAlert = () => {
+  const stepAsnackBar = () => {
     if (gotBenefit === undefined) {
       return undefined;
     } else if (gotBenefit === true) {
@@ -145,7 +155,7 @@ export const Suscription = () => {
             <Grid
               container
               direction='row'
-              spacing={1}
+              spacing={2}
               justify='space-between'
               alignItems='center'
             >
@@ -162,7 +172,7 @@ export const Suscription = () => {
                   id='check-rut'
                   label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
                   type='text'
-                  variant='filled'
+                  variant='outlined'
                   {...register('rut', {
                     pattern: {
                       value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
@@ -189,7 +199,7 @@ export const Suscription = () => {
 
               <Grid item xs={12}>
                 {/*response alert*/}
-                {stepAlert()}
+                {stepAsnackBar()}
               </Grid>
             </Grid>
           </Box>
@@ -202,7 +212,74 @@ export const Suscription = () => {
 
   const onSubmitStepB: SubmitHandler<Input> = async (data) => {
     console.log('form B', data);
+    setStepBisDisable(true);
+
+    //fetch Classrooms form firebase 🔥🔥🔥
+    const getClassrooms = await fetchClassrooms(data);
+    console.log('getClassrooms result', getClassrooms);
+    //open form C
+    setStepC(true);
   };
+
+  async function fetchClassrooms(data: Input) {
+    /**
+     * @function fetchClassrooms got active incoming classrooms
+     * INSIDE the territory suscription
+     */
+    try {
+      //firestore🔥🔥🔥
+      const rightNow = new Date();
+      const req = db.collection(`Activity/${refUuid}/Classroom`);
+      console.log('requested city', data.city);
+
+      const queryDocs = await req.where('dateInstance', '>', rightNow).get();
+      console.log('incoming classrooms', queryDocs.docs);
+
+      const listClassrooms: IClassroom[] = queryDocs.docs.map((doc) => {
+        const it = doc.data();
+        const classroom: IClassroom = {
+          uuid: doc.id,
+          idCal: it.idCal,
+          colaborator: it.colaborator,
+          enrolled: [],
+          attendees: [],
+          dateInstance: it.dateInstance.toDate(),
+          placeActivity: {
+            name: it.placeActivity.name,
+            dir: it.placeActivity.dir,
+            date: it.placeActivity.date.toDate(),
+          },
+
+          placeDispatch: {
+            name: it.placeDispatch.name,
+            dir: it.placeDispatch.dir,
+            date: it.placeDispatch.date.toDate(),
+          },
+          allowedCities: it.allowedCities,
+          cityOnOp: it.cityOnOp,
+        };
+        return classroom;
+      });
+
+      const filterClassrooms = listClassrooms.filter((classroom) => {
+        return classroom.allowedCities.indexOf(data.city) !== -1;
+      });
+
+      console.log(
+        'list of avaliable classrooms on city',
+        data.city,
+        filterClassrooms.length,
+        filterClassrooms.map((it) => it.idCal)
+      );
+
+      //set classrooms avaliable state hook
+      setAvaliableClassrooms(filterClassrooms);
+
+      return listClassrooms.length > 0 ? true : false;
+    } catch (error) {
+      console.log('fetch classrooms', error);
+    }
+  }
 
   const stepBform = (
     <React.Fragment>
@@ -211,7 +288,7 @@ export const Suscription = () => {
         <Paper elevation={2}>
           <Box p={1}>
             <form onSubmit={handleSubmit(onSubmitStepB)}>
-              <Grid container spacing={1}>
+              <Grid container spacing={1} justify='flex-end'>
                 <Grid item sm={4}>
                   <Typography variant='subtitle2' color='primary'>
                     Paso 2
@@ -220,11 +297,12 @@ export const Suscription = () => {
                 <Grid item sm={8}>
                   <TextField
                     required
+                    disabled={stepBisDisable}
                     fullWidth
                     id='document-number'
                     label='número de documento o serie'
                     type='text'
-                    variant='filled'
+                    variant='outlined'
                     {...register('documentNumber', {
                       pattern: {
                         value: /\w*\d{3}[.]?\d{3}[.]?\d{3,4}/,
@@ -239,11 +317,12 @@ export const Suscription = () => {
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
                     required
+                    disabled={stepBisDisable}
                     id='name-field'
                     label='nombre(s)'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
-                    variant='filled'
+                    variant='outlined'
                     {...register('name', {
                       minLength: { value: 3, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
@@ -255,11 +334,12 @@ export const Suscription = () => {
                 <Grid item sm={4}>
                   <TextField
                     required
+                    disabled={stepBisDisable}
                     id='name-field'
                     label='paterno'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
-                    variant='filled'
+                    variant='outlined'
                     {...register('fatherName', {
                       minLength: { value: 3, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
@@ -271,11 +351,12 @@ export const Suscription = () => {
                 <Grid item sm={4}>
                   <TextField
                     required
+                    disabled={stepBisDisable}
                     id='name-field'
                     label='materno'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
-                    variant='filled'
+                    variant='outlined'
                     {...register('motherName', {
                       minLength: { value: 3, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
@@ -288,11 +369,12 @@ export const Suscription = () => {
                   {/*dirección: 🌐🗺🚗*/}
                   <TextField
                     id='name-field'
+                    disabled={stepBisDisable}
                     fullWidth
                     label='dirección o sector'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
-                    variant='filled'
+                    variant='outlined'
                     {...register('dir', {
                       maxLength: { value: 50, message: 'muy largo' },
                     })}
@@ -303,26 +385,130 @@ export const Suscription = () => {
                 <Grid item sm={6}>
                   <Autocomplete
                     id='combo-box-demo'
+                    disabled={stepBisDisable}
                     options={cities}
                     getOptionLabel={(option) => option.city}
-                    {...register('city', {})}
                     renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
                       <TextField
                         {...params}
                         required
-                        label='territorio'
-                        variant='filled'
+                        label='ciudad'
+                        variant='outlined'
                         type='text'
+                        {...register('city', {})}
                         error={errors.city && true}
-                        helperText={errors.city && true ? 'nombre requerido' : undefined}
+                        helperText={errors.city && true ? 'requerido' : undefined}
                       />
                     )}
                   />
                 </Grid>
-                <Grid item sm={4}>
-                  <Button type='submit' variant='contained' color='primary'>
-                    ingresar datos
+                <Grid item sm={2}>
+                  <Button
+                    disabled={stepBisDisable}
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    {stepBisDisable ? '✅' : 'Ingresar'}{' '}
                   </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Paper>
+      </Grow>
+    </React.Fragment>
+  );
+
+  //FORM C 💖💖💗
+  const onSubmitStepC: SubmitHandler<Input> = async (data) => {
+    console.log('form C', data);
+    setStepCisDisable(true);
+    setSuscribed(true);
+  };
+  //ALERT SNACK BAR💥💢
+  const stepCsnackBar = () => {
+    if (suscribed === undefined) {
+      return undefined;
+    } else if (suscribed === false) {
+      //if condition true means this person already has valid benefits active
+      return <Alert severity='error'>error en la inscripción</Alert>;
+    } else {
+      return (
+        <Alert severity='success'>
+          Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, te
+          esperamos.
+        </Alert>
+      );
+    }
+  };
+
+  const stepCform = (
+    <React.Fragment>
+      <br />
+      <Grow in={stepC}>
+        <Paper>
+          <Box p={1}>
+            <form onSubmit={handleSubmit(onSubmitStepC)}>
+              <Grid container spacing={2} justify='flex-end'>
+                <Grid item xs={12}>
+                  <Typography variant='subtitle2' color='primary'>
+                    Paso final
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <ul>
+                    {avaliableClassrooms.map((item, index) => {
+                      return <li key={index}>{item.idCal}</li>;
+                    })}
+                  </ul>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    disabled={stepCisDisable}
+                    id='email-text-field'
+                    label='email'
+                    type='email'
+                    variant='outlined'
+                    {...register('email', {
+                      pattern: {
+                        value: /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/,
+                        message: 'email inválido',
+                      },
+                    })}
+                    error={errors.email && true}
+                    helperText={errors.email?.message}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    disabled={stepCisDisable}
+                    id='phone-text-field'
+                    label='teléfono'
+                    type='phone'
+                    variant='outlined'
+                    {...register('phone', {})}
+                    error={errors.phone && true}
+                    helperText={errors.phone?.message}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button
+                    type='submit'
+                    variant='outlined'
+                    color='primary'
+                    disabled={stepCisDisable}
+                  >
+                    {stepCisDisable ? '✅' : 'Incripción'}
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  {/*response alert*/}
+                  {stepCsnackBar()}
                 </Grid>
               </Grid>
             </form>
@@ -339,6 +525,7 @@ export const Suscription = () => {
       <br />
       {stepAform}
       {stepB ? stepBform : undefined}
+      {stepC ? stepCform : undefined}
       <br />
       <Requirements />
     </React.Fragment>
