@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { Box, Paper } from '@material-ui/core';
+import { Box, Paper, TextFieldProps } from '@material-ui/core';
 import { TextField, Grid, Button } from '@material-ui/core';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,7 +10,11 @@ import { db } from '../../Config/firebase';
 import { IConsolidated } from '../../Models/Consolidated.interface';
 import { dateLimit } from '../../Config/credential';
 import { Requirements } from './Suscription.requirements';
-import { Alert } from '@material-ui/lab';
+import { Alert, Autocomplete } from '@material-ui/lab';
+
+//transitions
+import Grow from '@material-ui/core/Grow';
+import { cities } from '../../Assets/cities';
 
 export const Suscription = () => {
   //hooks
@@ -33,6 +37,14 @@ export const Suscription = () => {
 
   type Input = {
     rut: string;
+    documentNumber: string;
+    name: string;
+    fatherName: string;
+    motherName: string;
+    dir: string;
+    city: string;
+    email: string;
+    phone: string;
   };
 
   //Return stactic content
@@ -47,7 +59,8 @@ export const Suscription = () => {
     </React.Fragment>
   );
 
-  //form step
+  //FORM A 💖💖💗
+
   const onSubmitStepA: SubmitHandler<Input> = async (data) => {
     console.log('register', 'step A', true);
     console.log('submit A', data);
@@ -60,10 +73,20 @@ export const Suscription = () => {
     const result = await checkBenefitOnDataBase(data);
     setGotBenefit(result);
     console.log('got benefits?', result);
-
-    //is everything ok the must be done🆗👌
-    //setStepAisDisable(true);
   };
+
+  //on result of onSubmitStepA
+  React.useEffect(() => {
+    //is everything ok the must be done🆗👌
+    if (gotBenefit === false) {
+      //on success 👌 disable RUT input
+      setStepAisDisable(true);
+      //set visible second form 👁‍🗨
+      setStepB(true);
+    } else {
+      setStepAisDisable(false);
+    }
+  }, [gotBenefit]);
 
   async function checkBenefitOnDataBase(data: Input) {
     /**
@@ -102,6 +125,7 @@ export const Suscription = () => {
     }
   }
 
+  //ALERT SNACK BAR💥💢
   const stepAlert = () => {
     if (gotBenefit === undefined) {
       return undefined;
@@ -174,7 +198,139 @@ export const Suscription = () => {
     </React.Fragment>
   );
 
-  const stepBform = <React.Fragment></React.Fragment>;
+  //FROM B 💖💖💗
+
+  const onSubmitStepB: SubmitHandler<Input> = async (data) => {
+    console.log('form B', data);
+  };
+
+  const stepBform = (
+    <React.Fragment>
+      <br />
+      <Grow in={stepB}>
+        <Paper elevation={2}>
+          <Box p={1}>
+            <form onSubmit={handleSubmit(onSubmitStepB)}>
+              <Grid container spacing={1}>
+                <Grid item sm={4}>
+                  <Typography variant='subtitle2' color='primary'>
+                    Paso 2
+                  </Typography>
+                </Grid>
+                <Grid item sm={8}>
+                  <TextField
+                    required
+                    fullWidth
+                    id='document-number'
+                    label='número de documento o serie'
+                    type='text'
+                    variant='filled'
+                    {...register('documentNumber', {
+                      pattern: {
+                        value: /\w*\d{3}[.]?\d{3}[.]?\d{3,4}/,
+                        message: 'esto parace un error',
+                      },
+                    })}
+                    error={errors.documentNumber && true}
+                    helperText={errors.documentNumber?.message}
+                  />
+                </Grid>
+                <Grid item sm={4}>
+                  {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
+                  <TextField
+                    required
+                    id='name-field'
+                    label='nombre(s)'
+                    type='text'
+                    inputProps={{ style: { textTransform: 'capitalize' } }}
+                    variant='filled'
+                    {...register('name', {
+                      minLength: { value: 3, message: 'muy corto' },
+                      maxLength: { value: 30, message: 'muy largo' },
+                    })}
+                    error={errors.name && true}
+                    helperText={errors.name?.message}
+                  />
+                </Grid>
+                <Grid item sm={4}>
+                  <TextField
+                    required
+                    id='name-field'
+                    label='paterno'
+                    type='text'
+                    inputProps={{ style: { textTransform: 'capitalize' } }}
+                    variant='filled'
+                    {...register('fatherName', {
+                      minLength: { value: 3, message: 'muy corto' },
+                      maxLength: { value: 30, message: 'muy largo' },
+                    })}
+                    error={errors.fatherName && true}
+                    helperText={errors.fatherName?.message}
+                  />
+                </Grid>
+                <Grid item sm={4}>
+                  <TextField
+                    required
+                    id='name-field'
+                    label='materno'
+                    type='text'
+                    inputProps={{ style: { textTransform: 'capitalize' } }}
+                    variant='filled'
+                    {...register('motherName', {
+                      minLength: { value: 3, message: 'muy corto' },
+                      maxLength: { value: 30, message: 'muy largo' },
+                    })}
+                    error={errors.motherName && true}
+                    helperText={errors.motherName?.message}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  {/*dirección: 🌐🗺🚗*/}
+                  <TextField
+                    id='name-field'
+                    fullWidth
+                    label='dirección o sector'
+                    type='text'
+                    inputProps={{ style: { textTransform: 'capitalize' } }}
+                    variant='filled'
+                    {...register('dir', {
+                      maxLength: { value: 50, message: 'muy largo' },
+                    })}
+                    error={errors.dir && true}
+                    helperText={errors.dir?.message}
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <Autocomplete
+                    id='combo-box-demo'
+                    options={cities}
+                    getOptionLabel={(option) => option.city}
+                    {...register('city', {})}
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
+                      <TextField
+                        {...params}
+                        required
+                        label='territorio'
+                        variant='filled'
+                        type='text'
+                        error={errors.city && true}
+                        helperText={errors.city && true ? 'nombre requerido' : undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item sm={4}>
+                  <Button type='submit' variant='contained' color='primary'>
+                    ingresar datos
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Paper>
+      </Grow>
+    </React.Fragment>
+  );
 
   //SUSCRIPTION APP
   return (
@@ -182,6 +338,7 @@ export const Suscription = () => {
       {titleMessage}
       <br />
       {stepAform}
+      {stepB ? stepBform : undefined}
       <br />
       <Requirements />
     </React.Fragment>
