@@ -535,6 +535,7 @@ export const Suscription = () => {
           <CardActions>
             <Button
               size='small'
+              disabled={stepCisDisable}
               color={selectedClassroom?.uuid === params.uuid ? 'primary' : 'default'}
               variant={selectedClassroom?.uuid === params.uuid ? 'contained' : 'outlined'}
               onClick={() => {
