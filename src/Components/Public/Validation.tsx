@@ -98,7 +98,7 @@ export const Validation = () => {
                 />
               </Grid>
 
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Button
                   type='submit'
                   variant='outlined'

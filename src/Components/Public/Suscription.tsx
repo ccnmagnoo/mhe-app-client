@@ -224,7 +224,7 @@ export const Suscription = () => {
                 {isRol}
               </Grid>
 
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Button
                   type='submit'
                   variant='outlined'
@@ -327,12 +327,12 @@ export const Suscription = () => {
           <Box p={1}>
             <form onSubmit={handleSubmit(onSubmitStepB)}>
               <Grid container spacing={1} justify='flex-end'>
-                <Grid item sm={4}>
+                <Grid item xs={4}>
                   <Typography variant='subtitle2' color='primary'>
                     Paso 2
                   </Typography>
                 </Grid>
-                <Grid item sm={8}>
+                <Grid item xs={8}>
                   <TextField
                     required
                     disabled={stepBisDisable}
@@ -351,7 +351,7 @@ export const Suscription = () => {
                     helperText={errors.documentNumber?.message}
                   />
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item xs={4}>
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
                     required
@@ -369,7 +369,7 @@ export const Suscription = () => {
                     helperText={errors.name?.message}
                   />
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item xs={4}>
                   <TextField
                     required
                     disabled={stepBisDisable}
@@ -386,7 +386,7 @@ export const Suscription = () => {
                     helperText={errors.fatherName?.message}
                   />
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item xs={4}>
                   <TextField
                     required
                     disabled={stepBisDisable}
@@ -403,7 +403,7 @@ export const Suscription = () => {
                     helperText={errors.motherName?.message}
                   />
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item xs={6}>
                   {/*dirección: 🌐🗺🚗*/}
                   <TextField
                     id='name-field'
@@ -420,7 +420,7 @@ export const Suscription = () => {
                     helperText={errors.dir?.message}
                   />
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item xs={6}>
                   <Autocomplete
                     id='combo-box-demo'
                     disabled={stepBisDisable}
@@ -440,7 +440,7 @@ export const Suscription = () => {
                     )}
                   />
                 </Grid>
-                <Grid item sm={2}>
+                <Grid item xs={3}>
                   <Button
                     disabled={stepBisDisable}
                     type='submit'
@@ -660,7 +660,7 @@ export const Suscription = () => {
                   />
                 </Grid>
 
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <Button
                     type='submit'
                     variant='outlined'
