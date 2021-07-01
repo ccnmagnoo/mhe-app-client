@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { auth, firebase } from '../../Config/firebase';
 
 export const Admin = (props: { history: string[] }) => {
