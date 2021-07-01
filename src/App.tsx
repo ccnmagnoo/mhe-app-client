@@ -9,6 +9,7 @@ import Dashboard from './Components/Restricted/Dashboard';
 import { auth } from './Config/firebase';
 import firebase from 'firebase/app';
 import { Suscription } from './Components/Public/Suscription';
+import { Validation } from './Components/Public/Validation';
 
 function App() {
   //auth user firebase
@@ -42,7 +43,9 @@ function App() {
           <Route path='/suscription'>
             <Suscription />
           </Route>
-          <Route path='/validation'>validation page</Route>
+          <Route path='/validation'>
+            <Validation />
+          </Route>
           <Route path='/help'>Q&A page</Route>
           <Route path='/login'>
             <Login />
