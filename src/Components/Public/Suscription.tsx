@@ -179,9 +179,18 @@ export const Suscription = () => {
       return undefined;
     } else if (gotBenefit === true) {
       //if condition true means this person already has valid benefits active
-      return <Alert severity='error'>no cumple los requisitos 🙈</Alert>;
+      return (
+        <Grid item xs={12}>
+          {' '}
+          <Alert severity='error'>no cumple los requisitos 🙈</Alert>
+        </Grid>
+      );
     } else {
-      return <Alert severity='success'>cumple los requisitos 😃</Alert>;
+      return (
+        <Grid item xs={12}>
+          <Alert severity='success'>cumple los requisitos 😃</Alert>
+        </Grid>
+      );
     }
   };
 
@@ -235,10 +244,8 @@ export const Suscription = () => {
                 </Button>
               </Grid>
 
-              <Grid item xs={12}>
-                {/*response alert*/}
-                {stepAsnackBar()}
-              </Grid>
+              {/*response alert*/}
+              {stepAsnackBar()}
             </Grid>
           </Box>
         </Paper>

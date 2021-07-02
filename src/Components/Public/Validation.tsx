@@ -39,6 +39,15 @@ export const Validation = () => {
     message: string;
   }>(null);
 
+  const snackBarA = () => {
+    if (errorOnA !== null) {
+      if (errorOnA.value) {
+      }
+    } else {
+      return undefined;
+    }
+  };
+
   const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A validation', true, data.rut);
 
@@ -56,7 +65,25 @@ export const Validation = () => {
 
       const suscriptions = queryDocs.docs.map((doc) => {
         const it = doc.data();
-        const person: IPerson = it as IPerson;
+        const person: IPerson = {
+          uuid: it.uuid,
+          name: {
+            firstName: it.firstName,
+            fatherName: it.fatherName,
+            motherName: it.motherName,
+          },
+          rut: it.rut,
+          classroom: {
+            idCal: it.classroom.idCal,
+            uuid: it.classroom.uuid,
+            dateInstance: it.classroom.dateInstance.toDate(),
+          },
+          gender: it.gender,
+          dateUpdate: it.dateUpdate.toDate(),
+          email: it.email,
+          phone: it.phone,
+          address: { dir: it.address.dir, city: it.address.city },
+        };
         return person;
       });
 
@@ -68,11 +95,40 @@ export const Validation = () => {
           return prev.dateUpdate > next.dateUpdate ? prev : next;
         });
         //checking if this person is on schechule to sign
+        const now = new Date();
+        const act = lastSus.classroom.dateInstance;
         const timeGap = lastSus.classroom.dateInstance;
+        console.log('date instance', timeGap);
         timeGap.setDate(timeGap.getDate() + 3);
+        console.log('time gap', timeGap);
 
-        if (new Date() < timeGap) {
-          //this human being is on time 👌
+        switch (true) {
+          case now > act && now < timeGap: {
+            //   //this human being is on time 👌
+            setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
+            console.log(errorOnA);
+            break;
+          }
+          case now < act: {
+            // this bunny is running to fast, too early 🐇
+            setErrorOnA({
+              value: true,
+              message: 'no nos adelantemos, primero el taller 🤗',
+            });
+            console.log(errorOnA);
+            break;
+          }
+          default: {
+            //this turtle is not in time 🐢 🚫
+            setErrorOnA({ value: true, message: 'no llegaste a tiempo 😥 ' });
+            console.log(errorOnA);
+            break;
+          }
+        }
+
+        /*if (now < timeGap) {
+          //this human being is on time 👌 but
+
           setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
           console.log(errorOnA);
         } else {
@@ -80,6 +136,7 @@ export const Validation = () => {
           setErrorOnA({ value: true, message: 'no llegaste a tiempo 😥 ' });
           console.log(errorOnA);
         }
+      */
       } else {
         //return error no suscription found
         console.log('no suscriptions detected', suscriptions.length);
