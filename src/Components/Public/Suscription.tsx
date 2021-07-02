@@ -48,26 +48,25 @@ export const Suscription = () => {
   //hooks
   const [isRol, setIsRol] = React.useState<boolean | null>(null);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
-  const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
-  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
-  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //objects states
-
+  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
   const [selectedClassroom, setSelectedClassroom] = React.useState<
     IClassroom | undefined
   >(undefined);
+  const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
   const [suscribedPerson, setSuscribedPerson] = React.useState<IPerson | undefined>(
     undefined
   );
+  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //form is disabled
-  const [stepAisDisable, setStepAisDisable] = React.useState(false);
-  const [stepBisDisable, setStepBisDisable] = React.useState(false);
-  const [stepCisDisable, setStepCisDisable] = React.useState(false);
+  const [disableA, setDisableA] = React.useState(false);
+  const [disableB, setDisableB] = React.useState(false);
+  const [disableC, setDisableC] = React.useState(false);
   //hooks or form is visible
-  const [stepB, setStepB] = React.useState(false);
-  const [stepC, setStepC] = React.useState(false);
+  const [visibleB, setVisibleB] = React.useState(false);
+  const [visibleC, setVisibleC] = React.useState(false);
 
   //React hook form
   const {
@@ -104,7 +103,7 @@ export const Suscription = () => {
 
   //FORM A 💖💖💗
 
-  const onSubmitStepA: SubmitHandler<Input> = async (data) => {
+  const onSubmitA: SubmitHandler<Input> = async (data) => {
     console.log('register', 'step A', true);
     console.log('submit A', data);
 
@@ -113,7 +112,7 @@ export const Suscription = () => {
     console.log('is rol valid?', isRol);
 
     //check is already got kit 👁‍🗨👁‍🗨
-    const result = await checkBenefitOnDataBase(data);
+    const result = await checkBenefit(data);
     setGotBenefit(result);
     console.log('got benefits?', result);
   };
@@ -123,15 +122,15 @@ export const Suscription = () => {
     //is everything ok the must be done🆗👌
     if (gotBenefit === false) {
       //on success 👌 disable RUT input
-      setStepAisDisable(true);
+      setDisableA(true);
       //set visible second form 👁‍🗨
-      setStepB(true);
+      setVisibleB(true);
     } else {
-      setStepAisDisable(false);
+      setDisableA(false);
     }
   }, [gotBenefit]);
 
-  async function checkBenefitOnDataBase(data: Input) {
+  async function checkBenefit(data: Input) {
     /**
      * @function checkFirebase got is she got old active benefits
      */
@@ -174,7 +173,7 @@ export const Suscription = () => {
   }
 
   //ALERT SNACK BAR💥💢
-  const stepAsnackBar = () => {
+  const snackbarA = () => {
     if (gotBenefit === undefined) {
       return undefined;
     } else if (gotBenefit === true) {
@@ -194,9 +193,9 @@ export const Suscription = () => {
     }
   };
 
-  const stepAform = (
+  const formA = (
     <React.Fragment>
-      <form onSubmit={handleSubmit(onSubmitStepA)}>
+      <form onSubmit={handleSubmit(onSubmitA)}>
         <Paper elevation={2}>
           <Box p={1}>
             <Grid
@@ -215,7 +214,7 @@ export const Suscription = () => {
               <Grid item xs={6}>
                 <TextField
                   required
-                  disabled={stepAisDisable}
+                  disabled={disableA}
                   id='check-rut'
                   label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
                   type='text'
@@ -238,14 +237,14 @@ export const Suscription = () => {
                   type='submit'
                   variant='outlined'
                   color='primary'
-                  disabled={stepAisDisable}
+                  disabled={disableA}
                 >
-                  {stepAisDisable ? '✅' : 'Check'}
+                  {disableA ? '✅' : 'Check'}
                 </Button>
               </Grid>
 
               {/*response alert*/}
-              {stepAsnackBar()}
+              {snackbarA()}
             </Grid>
           </Box>
         </Paper>
@@ -255,15 +254,15 @@ export const Suscription = () => {
 
   //FROM B 💖💖💗
 
-  const onSubmitStepB: SubmitHandler<Input> = async (data) => {
+  const onSubmitB: SubmitHandler<Input> = async (data) => {
     console.log('form B', data);
-    setStepBisDisable(true);
+    setDisableB(true);
 
     //fetch Classrooms form firebase 🔥🔥🔥
     const getClassrooms = await fetchClassrooms(data);
     console.log('getClassrooms result', getClassrooms);
     //open form C
-    setStepC(true);
+    setVisibleC(true);
   };
 
   async function fetchClassrooms(data: Input) {
@@ -326,13 +325,13 @@ export const Suscription = () => {
     }
   }
 
-  const stepBform = (
+  const formB = (
     <React.Fragment>
       <br />
-      <Grow in={stepB}>
+      <Grow in={visibleB}>
         <Paper elevation={2}>
           <Box p={1}>
-            <form onSubmit={handleSubmit(onSubmitStepB)}>
+            <form onSubmit={handleSubmit(onSubmitB)}>
               <Grid container spacing={1} justify='flex-end'>
                 <Grid item xs={4}>
                   <Typography variant='subtitle2' color='primary'>
@@ -342,7 +341,7 @@ export const Suscription = () => {
                 <Grid item xs={8}>
                   <TextField
                     required
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     fullWidth
                     id='document-number'
                     label='número de documento o serie'
@@ -362,7 +361,7 @@ export const Suscription = () => {
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
                     required
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     id='name-field'
                     label='nombre(s)'
                     type='text'
@@ -379,7 +378,7 @@ export const Suscription = () => {
                 <Grid item xs={4}>
                   <TextField
                     required
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     id='name-field'
                     label='paterno'
                     type='text'
@@ -396,7 +395,7 @@ export const Suscription = () => {
                 <Grid item xs={4}>
                   <TextField
                     required
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     id='name-field'
                     label='materno'
                     type='text'
@@ -414,7 +413,7 @@ export const Suscription = () => {
                   {/*dirección: 🌐🗺🚗*/}
                   <TextField
                     id='name-field'
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     fullWidth
                     label='dirección o sector'
                     type='text'
@@ -430,7 +429,7 @@ export const Suscription = () => {
                 <Grid item xs={6}>
                   <Autocomplete
                     id='combo-box-demo'
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     options={cities}
                     getOptionLabel={(option) => option.city}
                     renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
@@ -449,12 +448,12 @@ export const Suscription = () => {
                 </Grid>
                 <Grid item xs={3}>
                   <Button
-                    disabled={stepBisDisable}
+                    disabled={disableB}
                     type='submit'
                     variant='outlined'
                     color='primary'
                   >
-                    {stepBisDisable ? '✅' : 'Check'}{' '}
+                    {disableB ? '✅' : 'Check'}{' '}
                   </Button>
                 </Grid>
               </Grid>
@@ -466,15 +465,15 @@ export const Suscription = () => {
   );
 
   //FORM C 💖💖💗
-  const onSubmitStepC: SubmitHandler<Input> = async (data) => {
+  const onSubmitC: SubmitHandler<Input> = async (data) => {
     console.log('form C', data);
 
     //load to firebase Suscribed 🔥🔥🔥
-    const isUploaded = await createSuscribed(data);
+    const isUploaded = await createSuscription(data);
     console.log('is uploaded?', isUploaded);
 
     if (isUploaded) {
-      setStepCisDisable(true);
+      setDisableC(true);
       setSuscribed(true);
       setDialogOpen(true);
     } else {
@@ -484,7 +483,7 @@ export const Suscription = () => {
   };
 
   //firebase create Suscribed
-  async function createSuscribed(data: Input) {
+  async function createSuscription(data: Input) {
     try {
       console.log('prepare to upload suscription', data.email);
       const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
@@ -520,7 +519,7 @@ export const Suscription = () => {
   }
 
   //alert: snack bar💥💢
-  const stepCsnackBar = () => {
+  const snackbarC = () => {
     if (suscribed === undefined) {
       return undefined;
     } else if (suscribed === false) {
@@ -557,7 +556,7 @@ export const Suscription = () => {
           <CardActions>
             <Button
               size='small'
-              disabled={stepCisDisable}
+              disabled={disableC}
               color={selectedClassroom?.uuid === item.uuid ? 'primary' : 'default'}
               variant={selectedClassroom?.uuid === item.uuid ? 'contained' : 'outlined'}
               onClick={() => {
@@ -616,13 +615,13 @@ export const Suscription = () => {
     }
   };
 
-  const stepCform = (
+  const formC = (
     <React.Fragment>
       <br />
-      <Grow in={stepC}>
+      <Grow in={visibleC}>
         <Paper>
           <Box p={1}>
-            <form onSubmit={handleSubmit(onSubmitStepC)}>
+            <form onSubmit={handleSubmit(onSubmitC)}>
               <Grid container spacing={2} justify='flex-end'>
                 <Grid item xs={12}>
                   <Typography variant='subtitle2' color='primary'>
@@ -638,7 +637,7 @@ export const Suscription = () => {
                 <Grid item xs={6}>
                   <TextField
                     required
-                    disabled={stepCisDisable}
+                    disabled={disableC}
                     id='email-text-field'
                     label='email'
                     type='email'
@@ -656,7 +655,7 @@ export const Suscription = () => {
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    disabled={stepCisDisable}
+                    disabled={disableC}
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
@@ -672,14 +671,14 @@ export const Suscription = () => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={stepCisDisable}
+                    disabled={disableC}
                   >
-                    {stepCisDisable ? '✅' : 'Incripción'}
+                    {disableC ? '✅' : 'Incripción'}
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   {/*response alert*/}
-                  {stepCsnackBar()}
+                  {snackbarC()}
                 </Grid>
               </Grid>
             </form>
@@ -727,11 +726,11 @@ export const Suscription = () => {
     <React.Fragment>
       {titleMessage}
       <br />
-      {stepAform}
-      {stepB ? stepBform : undefined}
-      {stepC ? stepCform : undefined}
+      {formA}
+      {visibleB ? formB : undefined}
+      {visibleC ? formC : undefined}
       <br />
-      {stepAisDisable ? undefined : <Requirements />}
+      {disableA ? undefined : <Requirements />}
       {dialogOnSuccess}
     </React.Fragment>
   );
