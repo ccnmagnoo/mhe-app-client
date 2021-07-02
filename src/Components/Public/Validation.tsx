@@ -34,6 +34,11 @@ export const Validation = () => {
   };
 
   //form A ✅✅
+  const [errorOnA, setErrorOnA] = React.useState<null | {
+    value: boolean;
+    message: string;
+  }>(null);
+
   const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A validation', true, data.rut);
 
@@ -55,9 +60,39 @@ export const Validation = () => {
         return person;
       });
 
-      console.log('detected suscriptions', suscriptions.length);
+      //there's suscriptions?
+      if (suscriptions.length > 0) {
+        console.log('detected suscriptions', suscriptions.length);
+        //getting last suscription in time...
+        const lastSus = suscriptions.reduce((prev, next) => {
+          return prev.dateUpdate > next.dateUpdate ? prev : next;
+        });
+        //checking if this person is on schechule to sign
+        const timeGap = lastSus.classroom.dateInstance;
+        timeGap.setDate(timeGap.getDate() + 3);
+
+        if (new Date() < timeGap) {
+          //this human being is on time 👌
+          setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
+          console.log(errorOnA);
+        } else {
+          //this turtle is not in time 🚫
+          setErrorOnA({ value: true, message: 'no llegaste a tiempo 😥 ' });
+          console.log(errorOnA);
+        }
+      } else {
+        //return error no suscription found
+        console.log('no suscriptions detected', suscriptions.length);
+        setErrorOnA({
+          value: true,
+          message: 'no encuentro inscripciones con este rut 🙊',
+        });
+        console.log(errorOnA);
+      }
     } catch (error) {
       console.log('error in validation', error);
+      setErrorOnA({ value: true, message: 'no pude obtener los datos 🙈' });
+      console.log(errorOnA);
     }
   }
 
