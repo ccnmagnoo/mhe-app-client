@@ -1,14 +1,34 @@
 import { Box, Paper, Grid, Button, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import moment from 'moment';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
+import { isUrl } from '../../Functions/IsURL';
 import { IPerson } from '../../Models/Person.Interface';
 
 export const Validation = () => {
-  //State Hooks
+  //converter Url
+  const convertToUrl = (chain?: string) => {
+    //check definition
+    if (chain === undefined) return undefined;
+    //check if dir is url or physical
+    const gmaps = 'https://www.google.com/maps?q=';
+    if (isUrl(chain)) {
+      return <a href={chain}> {chain}</a>;
+    } else {
+      return <a href={`${gmaps}${chain.replace(' ', '+')}`}>{chain}</a>;
+    }
+  };
+
+  //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
+  const [disableB, setDisableB] = React.useState(false);
+
+  //State hooks visibility
+  const [visibleB, setVisibleB] = React.useState(false);
 
   //React hook form
   const {
@@ -42,6 +62,19 @@ export const Validation = () => {
   const snackBarA = () => {
     if (errorOnA !== null) {
       if (errorOnA.value) {
+        //if error true 😡❌📛
+        return (
+          <Grid item xs={12}>
+            <Alert severity='error'>{errorOnA.message}</Alert>
+          </Grid>
+        );
+      } else {
+        //if validation is success ✅
+        return (
+          <Grid item xs={12}>
+            <Alert severity='success'>{errorOnA.message}</Alert>
+          </Grid>
+        );
       }
     } else {
       return undefined;
@@ -53,8 +86,16 @@ export const Validation = () => {
 
     //fetch suscriptions
     const check = await checkSuscription(data);
+    if (check !== undefined) {
+      //disableA
+      setDisableA(true);
+      setVisibleB(true);
+      console.log('active B', true);
+    } else {
+    }
   };
 
+  //Database part 🔥🔥🔥
   async function checkSuscription(data: Input) {
     try {
       //search in Suscribed collection 🔥🔥🔥
@@ -89,15 +130,26 @@ export const Validation = () => {
 
       //there's suscriptions?
       if (suscriptions.length > 0) {
+        //if this human  has a valid suscription
         console.log('detected suscriptions', suscriptions.length);
         //getting last suscription in time...
         const lastSus = suscriptions.reduce((prev, next) => {
           return prev.dateUpdate > next.dateUpdate ? prev : next;
         });
+        console.log('last suscription was', lastSus.dateUpdate);
+
+        //fetch date of classrooom from classRoom document 🔥
+        const queryClassroom = await db
+          .collection(`Activity/${refUuid}/Classroom`)
+          .doc(lastSus.classroom.uuid)
+          .get();
+        const classroom = queryClassroom.data();
+
         //checking if this person is on schechule to sign
         const now = new Date();
-        const act = lastSus.classroom.dateInstance;
+        const act = classroom?.placeActivity.date.toDate();
         const timeGap = lastSus.classroom.dateInstance;
+        const dirUrl = classroom?.placeActivity.dir;
         console.log('date instance', timeGap);
         timeGap.setDate(timeGap.getDate() + 3);
         console.log('time gap', timeGap);
@@ -107,22 +159,28 @@ export const Validation = () => {
             //   //this human being is on time 👌
             setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
             console.log(errorOnA);
-            break;
+            return lastSus;
           }
           case now < act: {
             // this bunny is running to fast, too early 🐇
             setErrorOnA({
               value: true,
-              message: 'no nos adelantemos, primero el taller 🤗',
+              message: `estás aquí, pero no nos adelantemos,el taller es ${moment(act)
+                .endOf('days')
+                .fromNow()} 🤗,\n 
+                dirección: ${dirUrl}`,
             });
             console.log(errorOnA);
-            break;
+            return undefined;
           }
           default: {
-            //this turtle is not in time 🐢 🚫
-            setErrorOnA({ value: true, message: 'no llegaste a tiempo 😥 ' });
+            //this turtle was not in time 🐢 🚫
+            setErrorOnA({
+              value: true,
+              message: 'no llegaste a tiempo 😥, debes esperar a otro taller ',
+            });
             console.log(errorOnA);
-            break;
+            return undefined;
           }
         }
 
@@ -200,10 +258,7 @@ export const Validation = () => {
                   {disableA ? '✅' : 'Check'}
                 </Button>
               </Grid>
-
-              <Grid item xs={12}>
-                {/*response alert 📞*/}
-              </Grid>
+              {snackBarA()}
             </Grid>
           </Box>
         </Paper>
