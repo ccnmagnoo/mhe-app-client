@@ -10,18 +10,8 @@ import { isUrl } from '../../Functions/IsURL';
 import { IPerson } from '../../Models/Person.Interface';
 
 export const Validation = () => {
-  //converter Url
-  const convertToUrl = (chain?: string) => {
-    //check definition
-    if (chain === undefined) return undefined;
-    //check if dir is url or physical
-    const gmaps = 'https://www.google.com/maps?q=';
-    if (isUrl(chain)) {
-      return <a href={chain}> {chain}</a>;
-    } else {
-      return <a href={`${gmaps}${chain.replace(' ', '+')}`}>{chain}</a>;
-    }
-  };
+  //State hook with information
+  const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
 
   //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
@@ -85,13 +75,16 @@ export const Validation = () => {
     console.log('form A validation', true, data.rut);
 
     //fetch suscriptions
-    const check = await checkSuscription(data);
-    if (check !== undefined) {
+    const checkSuscribed = await checkSuscription(data);
+    if (checkSuscribed !== undefined) {
       //disableA
+      console.log('suscribed result', checkSuscribed);
       setDisableA(true);
       setVisibleB(true);
+      setPerson(checkSuscribed);
       console.log('active B', true);
     } else {
+      console.log('validation A on suspense', checkSuscribed);
     }
   };
 
@@ -144,6 +137,8 @@ export const Validation = () => {
           .doc(lastSus.classroom.uuid)
           .get();
         const classroom = queryClassroom.data();
+        //set state of current classroom
+        //TODO: setCurrentClass
 
         //checking if this person is on schechule to sign
         const now = new Date();
@@ -231,6 +226,7 @@ export const Validation = () => {
 
               <Grid item xs={6}>
                 <TextField
+                  disabled={disableA}
                   required
                   id='check-rut'
                   label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
@@ -266,11 +262,30 @@ export const Validation = () => {
     </React.Fragment>
   );
 
+  //form B
+  const validationB = (
+    <React.Fragment>
+      <br />
+      <form onSubmit={handleSubmit(() => {})}>
+        <Paper>
+          <Box p={1}>
+            <Grid container spacing={1} justify='flex-end'>
+              <Typography variant='subtitle2' color='primary'>
+                firma Compromiso
+              </Typography>
+            </Grid>
+          </Box>
+        </Paper>
+      </form>
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
       {titleMessage}
       <br />
       {validationA}
+      {visibleB ? validationB : undefined}
     </React.Fragment>
   );
 };
