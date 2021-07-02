@@ -14,10 +14,20 @@ export const Welcome = () => {
         <CardContent>
           <Grid container spacing={3} justify='center'>
             <Grid item>
-              <Typography variant='subtitle1' color='inherit'>
-                aquí te podrás suscribirte previo a los talleres y posteriormente podrás
-                validar tu asistencia a los Talleres de capacitación de{' '}
-                <strong>Seremi Energía Valparaíso</strong> .
+              <Typography variant='subtitle1' color='inherit' align='justify' paragraph>
+                con esta mini app podrás suscribirte a los talleres y posteriormente
+                podrás validar tu asistencia a los Talleres de capacitación de{' '}
+                <strong>Seremi Energía Valparaíso</strong> de forma{' '}
+                <strong>on-line</strong>.
+              </Typography>
+              <Typography variant='caption' color='initial' paragraph>
+                {' '}
+                Si tienes dudas escribenos a{' '}
+                <a href='mailto:ccamposn@minenergia.cl'>ccamposn@minenergia.cl</a>{' '}
+              </Typography>
+              <Typography variant='caption' color='initial'>
+                {' '}
+                Popipo🦜Soft &trade;
               </Typography>
             </Grid>
           </Grid>
