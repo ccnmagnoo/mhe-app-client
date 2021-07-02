@@ -11,9 +11,9 @@ export const SignDocument = (props: PropsDS) => {
   const personData = [
     {
       key: 'Nombre',
-      value: `${pers?.name.firstName ?? 'nombres'} ${
-        pers?.name.fatherName ?? 'paterno'
-      } ${pers?.name.motherName ?? 'materno'}`,
+      value: `${pers?.name.firstName ?? 'nombres'} 
+      ${pers?.name.fatherName ?? 'paterno'} 
+        ${pers?.name.motherName ?? 'materno'}`,
     },
     { key: 'Rut', value: pers?.rut ?? '12.345.678-0' },
     {
@@ -25,7 +25,7 @@ export const SignDocument = (props: PropsDS) => {
   return (
     <React.Fragment>
       <Paper elevation={0} variant='outlined'>
-        <Box p={2}>
+        <Box p={3}>
           <Grid container spacing={2} justify='center' alignItems='baseline'>
             <Grid item xs={12}>
               <Typography variant='subtitle1' color='primary' align='center'>
@@ -38,23 +38,24 @@ export const SignDocument = (props: PropsDS) => {
 
             <Grid item xs={12}>
               <Typography variant='caption' align='justify' color='textSecondary'>
-                id:{room?.uuid} mesa:virtual idCal:{room?.idCal}{' '}
-                version:rev.eco.9.0miniApp
+                🆔: {room?.uuid} mesa: virtual idCal: {room?.idCal}{' '}
+                version:rev.rjs.9.0miniApp
               </Typography>
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant='body2' color='initial' align='justify'>
+              <Typography variant='caption' color='textSecondary' align='justify'>
                 En el marco del programa
-                <strong>Difusión y educación para el buen uso de la energía</strong> , que
-                desarrolla la SEREMI de Energía de la Región de Valparaíso y la
-                Subsecretaría de Energía, se deja constancia por este medio de lo
-                siguiente:
+                <strong> Difusión y educación para el buen uso de la energía</strong> ,
+                que desarrolla la SEREMI de Energía regional y la Subsecretaría de
+                Energía, se deja constancia por este medio de lo siguiente que:
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Divider />
               <Grid container spacing={0}>
+                {/*Person data 🙇‍♂️🙇‍♂️🙇‍♀️*/}
+
                 {personData.map((doc) => {
                   return (
                     <React.Fragment>
@@ -64,7 +65,7 @@ export const SignDocument = (props: PropsDS) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={8}>
-                        <Typography variant='body2' color='primary'>
+                        <Typography variant='caption' color='primary'>
                           {doc.value}
                         </Typography>
                       </Grid>
@@ -76,7 +77,12 @@ export const SignDocument = (props: PropsDS) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant='caption' color='textSecondary' align='left' paragraph>
+              <Typography
+                variant='caption'
+                color='textSecondary'
+                align='justify'
+                paragraph
+              >
                 💠 Declara que reconoce el derecho a un solo kit de eficiencia energética
                 y que es de su exclusiva responsabilidad el retiro de este material desde
                 el punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
