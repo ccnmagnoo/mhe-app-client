@@ -6,9 +6,16 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
+import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
+
+//canvas
+import { useSvgDrawing } from 'react-hooks-svgdrawing';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Fab } from '@material-ui/core';
 
 export const Validation = () => {
   //State hook with information
@@ -29,6 +36,20 @@ export const Validation = () => {
     reset,
     formState: { errors },
   } = useForm<Input>();
+
+  //canvas hookconst
+  const [renderRef, draw] = useSvgDrawing({
+    penWidth: 3, // pen width
+    penColor: 'blue', // pen color
+    close: false, // Use close command for path. Default is false
+    curve: true, // Use curve command for path. Default is true.
+    delay: 5, // Set how many ms to draw points every.
+    fill: 'none', // Set fill attribute for path. default is `none`
+  });
+  const Drawing = () => {
+    // Drawing area will be resized to fit the rendering area
+    return <div style={{ width: '100%', height: 180 }} ref={renderRef} />;
+  };
 
   const titleMessage = (
     <React.Fragment>
@@ -286,27 +307,56 @@ export const Validation = () => {
       <form onSubmit={handleSubmit(() => {})}>
         <Paper>
           <Box p={1}>
-            <SignDocument person={person} classroom={classroom} />
+            <SignDocument person={person as IBeneficiary} classroom={classroom} />
             <Paper variant='outlined'>
-              <Grid container spacing={1} justify='flex-end'>
-                <Grid item xs={3}>
+              <Grid container spacing={1} justify='center' direction='row'>
+                <Grid item xs={12}>
                   <Typography variant='subtitle2' color='primary'>
                     firme aquí ✍
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={6}></Grid>
+                {/*canvas ✍✍✍*/}
+                <Grid item xs={1}></Grid>
+                <Grid item xs={9}>
+                  <Paper variant='outlined'>
+                    <Box m={2} color='info.main'>
+                      {Drawing}
+                    </Box>
+                  </Paper>
+                </Grid>
+                <Grid item xs={2} direction='column'>
+                  <Fab
+                    color='secondary'
+                    aria-label='limpiar'
+                    onClick={() => {
+                      setDisableB(true);
+                      draw.undo();
+                    }}
+                  >
+                    {/*🔽*/}
+                    <HighlightOffIcon />
+                  </Fab>
+
+                  <Fab
+                    color='primary'
+                    aria-label='done'
+                    onClick={() => {
+                      setDisableB(false);
+                    }}
+                  >
+                    <div> </div>
+                    {/*🔽*/}
+                    <CheckCircleOutlineIcon />
+                  </Fab>
+                </Grid>
 
                 <br />
                 <br />
-                <Grid item xs={12} justify='center'>
-                  <Button
-                    variant='contained'
-                    color='secondary'
-                    fullWidth={true}
-                    disabled={disableB}
-                  >
-                    ingresar
-                  </Button>
+                <Grid item justify='center'>
+                  <Fab variant='extended' color='secondary' disabled={disableB}>
+                    <CheckCircleOutlineIcon />
+                    firmar y validar
+                  </Fab>
                 </Grid>
               </Grid>
             </Paper>

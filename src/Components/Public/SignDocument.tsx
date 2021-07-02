@@ -1,11 +1,11 @@
 import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
 import React from 'react';
+import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
-import { IPerson } from '../../Models/Person.Interface';
 
 export const SignDocument = (props: PropsDS) => {
   //little refs
-  const pers = props.person;
+  let pers = props.person;
   const room = props.classroom;
 
   const personData = [
@@ -21,6 +21,25 @@ export const SignDocument = (props: PropsDS) => {
       value: `${pers?.address?.dir ?? 'calle Nro 0'}, ${pers?.address?.city ?? 'ciudad'}`,
     },
   ];
+
+  const signSection = () => {
+    if (pers?.sign !== undefined) {
+      return (
+        <React.Fragment>
+          <Grid item xs={12}>
+            <Typography variant='body2' color='primary'>
+              firma beneficiado {pers?.dateSign}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} justify='center'>
+            firma firma ✨
+          </Grid>
+        </React.Fragment>
+      );
+    } else {
+      return undefined;
+    }
+  };
 
   return (
     <React.Fragment>
@@ -121,6 +140,7 @@ export const SignDocument = (props: PropsDS) => {
                 ni darle un uso diverso al señalado en este documento.
               </Typography>
             </Grid>
+            {signSection()}
           </Grid>
         </Box>
       </Paper>
@@ -129,6 +149,6 @@ export const SignDocument = (props: PropsDS) => {
 };
 
 type PropsDS = {
-  person?: IPerson;
+  person?: IBeneficiary;
   classroom?: IClassroom;
 };
