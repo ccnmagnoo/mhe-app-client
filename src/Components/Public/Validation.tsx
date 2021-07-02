@@ -17,7 +17,7 @@ export const Validation = () => {
 
   //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
-  const [disableB, setDisableB] = React.useState(false);
+  const [disableB, setDisableB] = React.useState(true);
 
   //State hooks visibility
   const [visibleB, setVisibleB] = React.useState(false);
@@ -299,7 +299,12 @@ export const Validation = () => {
                 <br />
                 <br />
                 <Grid item xs={12} justify='center'>
-                  <Button variant='contained' color='secondary' fullWidth={true}>
+                  <Button
+                    variant='contained'
+                    color='secondary'
+                    fullWidth={true}
+                    disabled={disableB}
+                  >
                     ingresar
                   </Button>
                 </Grid>
