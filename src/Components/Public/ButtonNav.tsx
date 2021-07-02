@@ -1,7 +1,7 @@
 import { Button, ButtonGroup } from '@material-ui/core';
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const ButtonNav = () => {
   return (
@@ -13,16 +13,16 @@ export const ButtonNav = () => {
         fullWidth
         size='large'
       >
-        <Button component={Link} to='/suscription'>
+        <Button component={NavLink} to='/suscription'>
           Incribete
         </Button>
-        <Button component={Link} to='/validation'>
+        <Button component={NavLink} to='/validation' color='secondary'>
           Valida
         </Button>
-        <Button component={Link} to='/help'>
+        <Button component={NavLink} to='/help'>
           Consultas
         </Button>
-        <Button component={Link} to='/login'>
+        <Button component={NavLink} to='/login'>
           Admin
         </Button>
       </ButtonGroup>
