@@ -33,7 +33,7 @@ export const Validation = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    //reset,
     formState: { errors },
   } = useForm<Input>();
 
