@@ -20,7 +20,8 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
   //referencias
   const classroom = props.classroom;
 
-  const getUrl = (chain?: string) => {
+  //converter Url
+  const convertToUrl = (chain?: string) => {
     //check definition
     if (chain === undefined) return undefined;
     //check if dir is url or physical
@@ -71,7 +72,7 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                       el taller de capacitación de realizará en{' '}
                       {classroom?.placeActivity.name} con la siguiente dirección <br />
                       {}
-                      {getUrl(classroom?.placeActivity.dir)}
+                      {convertToUrl(classroom?.placeActivity.dir)}
                     </Typography>
                     {/*snack bar warning 💥*/}
                     <Alert severity='info'>
@@ -82,7 +83,7 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                         )}{' '}
                         en la siguiente dirección <br />
                         <strong> {classroom?.placeDispatch?.name}</strong> <br />
-                        {getUrl(classroom?.placeDispatch?.dir)}
+                        {convertToUrl(classroom?.placeDispatch?.dir)}
                       </Typography>
                       <Typography variant='caption' color='secondary'>
                         el retiro del kit es de su exclusiva{' '}
