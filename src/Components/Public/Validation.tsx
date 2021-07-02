@@ -6,12 +6,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { isUrl } from '../../Functions/IsURL';
+import { IClassroom } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
+import { SignDocument } from './SignDocument';
 
 export const Validation = () => {
   //State hook with information
   const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
+  const [classroom, setClassroom] = React.useState<IClassroom | undefined>(undefined);
 
   //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
@@ -102,9 +104,9 @@ export const Validation = () => {
         const person: IPerson = {
           uuid: it.uuid,
           name: {
-            firstName: it.firstName,
-            fatherName: it.fatherName,
-            motherName: it.motherName,
+            firstName: it.name.firstName,
+            fatherName: it.name.fatherName,
+            motherName: it.name.motherName,
           },
           rut: it.rut,
           classroom: {
@@ -136,15 +138,39 @@ export const Validation = () => {
           .collection(`Activity/${refUuid}/Classroom`)
           .doc(lastSus.classroom.uuid)
           .get();
-        const classroom = queryClassroom.data();
+        const room = queryClassroom.data();
         //set state of current classroom
         //TODO: setCurrentClass
+        if (room !== undefined) {
+          const classroom: IClassroom = {
+            uuid: room.uuid,
+            idCal: room.idCal,
+            dateInstance: room?.dateInstance.toDate(),
+            enrolled: [],
+            attendees: [],
+            placeActivity: {
+              name: room.placeActivity.name,
+              date: room.placeActivity.date.toDate(),
+              dir: room.placeActivity.dir,
+            },
+            placeDispatch: {
+              name: room.placeDispatch?.name,
+              date: room.placeDispatch?.date.toDate(),
+              dir: room.placeDispatch?.dir,
+            },
+            allowedCities: room.allowedCities,
+            cityOnOp: room.cityOnOp,
+            colaborator: room.colaborator,
+          };
+          console.log('set classroom state', classroom.uuid);
+          setClassroom(classroom);
+        }
 
         //checking if this person is on schechule to sign
         const now = new Date();
-        const act = classroom?.placeActivity.date.toDate();
+        const act = room?.placeActivity.date.toDate();
         const timeGap = lastSus.classroom.dateInstance;
-        const dirUrl = classroom?.placeActivity.dir;
+        const dirUrl = room?.placeActivity.dir;
         console.log('date instance', timeGap);
         timeGap.setDate(timeGap.getDate() + 3);
         console.log('time gap', timeGap);
@@ -152,7 +178,10 @@ export const Validation = () => {
         switch (true) {
           case now > act && now < timeGap: {
             //   //this human being is on time 👌
-            setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
+            setErrorOnA({
+              value: false,
+              message: 'estamos ok, continue para validarse 🤗',
+            });
             console.log(errorOnA);
             return lastSus;
           }
@@ -178,18 +207,6 @@ export const Validation = () => {
             return undefined;
           }
         }
-
-        /*if (now < timeGap) {
-          //this human being is on time 👌 but
-
-          setErrorOnA({ value: false, message: 'estás a tiempo, continue 🤗' });
-          console.log(errorOnA);
-        } else {
-          //this turtle is not in time 🚫
-          setErrorOnA({ value: true, message: 'no llegaste a tiempo 😥 ' });
-          console.log(errorOnA);
-        }
-      */
       } else {
         //return error no suscription found
         console.log('no suscriptions detected', suscriptions.length);
@@ -269,11 +286,25 @@ export const Validation = () => {
       <form onSubmit={handleSubmit(() => {})}>
         <Paper>
           <Box p={1}>
-            <Grid container spacing={1} justify='flex-end'>
-              <Typography variant='subtitle2' color='primary'>
-                firma Compromiso
-              </Typography>
-            </Grid>
+            <SignDocument person={person} classroom={classroom} />
+            <Paper variant='outlined'>
+              <Grid container spacing={1} justify='flex-end'>
+                <Grid item xs={3}>
+                  <Typography variant='subtitle2' color='primary'>
+                    firme aquí ✍
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}></Grid>
+
+                <br />
+                <br />
+                <Grid item xs={12} justify='center'>
+                  <Button variant='contained' color='secondary' fullWidth={true}>
+                    ingresar
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
           </Box>
         </Paper>
       </form>
