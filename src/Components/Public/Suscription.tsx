@@ -2,6 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
   Box,
+  capitalize,
   Card,
   CardActions,
   CardContent,
@@ -491,9 +492,9 @@ export const Suscription = () => {
       const person: IPerson = {
         uuid: ref.id,
         name: {
-          firstName: data.name,
-          fatherName: data.fatherName,
-          motherName: data.motherName,
+          firstName: capitalize(data.name),
+          fatherName: capitalize(data.fatherName),
+          motherName: capitalize(data.motherName),
         },
         rut: data.rut,
         gender: getGender(data.name),
@@ -505,7 +506,7 @@ export const Suscription = () => {
         dateUpdate: new Date(),
         email: data.email,
         phone: data.phone ?? '0',
-        address: { dir: data.dir, city: data.city },
+        address: { dir: capitalize(data.dir), city: data.city },
       };
 
       ref.set(person);
