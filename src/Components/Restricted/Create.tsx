@@ -17,6 +17,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { withRouter } from 'react-router-dom';
 import { auth } from '../../Config/firebase';
+import { capitalWord } from '../../Functions/capitalWord';
 import {
   getCityList,
   getTerritoryNames,
@@ -117,30 +118,27 @@ const Create = (props: any) => {
           .collection('Classroom')
           .doc();
         //build object function
-        const buildObject = (inputData: Input, uuid: string) => {
-          const listOfCities = getCityList(
-            inputData.landName,
-            inputData.landType as LandType
-          );
-          const datePlaceSetting = new Date(inputData.placeDate);
-          const datePostSetting = new Date(inputData.postDate);
+        const buildObject = (data: Input, uuid: string) => {
+          const listOfCities = getCityList(data.landName, data.landType as LandType);
+          const datePlaceSetting = new Date(data.placeDate);
+          const datePostSetting = new Date(data.postDate);
 
           const classRoom: IClassroom = {
             uuid: uuid,
-            idCal: `R${pad(inputData.idCal, 3)}`,
-            colaborator: inputData.colaborator,
+            idCal: `R${pad(data.idCal, 3)}`,
+            colaborator: capitalWord(data.colaborator),
             enrolled: [],
             attendees: [],
             dateInstance: datePlaceSetting,
             placeActivity: {
-              name: inputData.placeName,
-              dir: inputData.placeDir,
+              name: data.placeName,
+              dir: data.placeDir,
               date: datePlaceSetting,
             },
 
             placeDispatch: {
-              name: inputData.postName,
-              dir: inputData.postDir,
+              name: data.postName,
+              dir: data.postDir,
               date: datePostSetting,
             },
             allowedCities: listOfCities,

@@ -2,7 +2,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {
   Box,
-  capitalize,
   Card,
   CardActions,
   CardContent,
@@ -44,6 +43,7 @@ import Grow from '@material-ui/core/Grow';
 import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
+import { capitalWord } from '../../Functions/capitalWord';
 
 export const Suscription = () => {
   //hooks
@@ -492,9 +492,9 @@ export const Suscription = () => {
       const person: IPerson = {
         uuid: ref.id,
         name: {
-          firstName: capitalize(data.name),
-          fatherName: capitalize(data.fatherName),
-          motherName: capitalize(data.motherName),
+          firstName: capitalWord(data.name),
+          fatherName: capitalWord(data.fatherName),
+          motherName: capitalWord(data.motherName),
         },
         rut: data.rut,
         gender: getGender(data.name),
@@ -506,7 +506,7 @@ export const Suscription = () => {
         dateUpdate: new Date(),
         email: data.email,
         phone: data.phone ?? '0',
-        address: { dir: capitalize(data.dir), city: data.city },
+        address: { dir: capitalWord(data.dir), city: data.city },
       };
 
       ref.set(person);
