@@ -161,7 +161,6 @@ export const Validation = () => {
           .get();
         const room = queryClassroom.data();
         //set state of current classroom
-        //TODO: setCurrentClass
         if (room !== undefined) {
           const classroom: IClassroom = {
             uuid: room.uuid,
@@ -182,6 +181,7 @@ export const Validation = () => {
             allowedCities: room.allowedCities,
             cityOnOp: room.cityOnOp,
             colaborator: room.colaborator,
+            land: { type: room.land.type, name: room.land.name },
           };
           console.log('set classroom state', classroom.uuid);
           setClassroom(classroom);
@@ -301,6 +301,13 @@ export const Validation = () => {
   );
 
   //form B
+  const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
+    console.log('init valudation B', data);
+    //upload sign SVG to storage 🔥🔥💾
+
+    //upload IBeneficiary to Consolidated 🔥🔥🔥
+  };
+
   const validationB = (
     <React.Fragment>
       <br />
@@ -353,7 +360,12 @@ export const Validation = () => {
                 <br />
                 <br />
                 <Grid item justify='center'>
-                  <Fab variant='extended' color='secondary' disabled={disableB}>
+                  <Fab
+                    variant='extended'
+                    color='secondary'
+                    disabled={disableB}
+                    onSubmit={handleSubmit(onSubmitB)}
+                  >
                     <CheckCircleOutlineIcon />
                     firmar y validar
                   </Fab>

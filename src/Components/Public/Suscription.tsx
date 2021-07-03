@@ -44,6 +44,7 @@ import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
+import { LandType } from '../../Functions/GetTerritoryList';
 
 export const Suscription = () => {
   //hooks
@@ -302,6 +303,7 @@ export const Suscription = () => {
           },
           allowedCities: it.allowedCities,
           cityOnOp: it.cityOnOp,
+          land: { type: it.land.type as LandType, name: it.land.name },
         };
         return classroom;
       });

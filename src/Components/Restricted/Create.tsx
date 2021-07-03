@@ -143,6 +143,7 @@ const Create = (props: any) => {
             },
             allowedCities: listOfCities,
             cityOnOp: listOfCities[0],
+            land: { type: data.landType as LandType, name: data.landName },
           };
           return classRoom;
         };

@@ -51,7 +51,7 @@ export const SignDocument = (props: PropsDS) => {
                 Identificación Conforme de Beneficio
               </Typography>
               <Typography variant='subtitle2' color='textSecondary' align='center'>
-                <strong>Con Buena Energía</strong> en {room?.cityOnOp}
+                <strong>Con Buena Energía</strong> en {room?.land.name}
               </Typography>
             </Grid>
 
