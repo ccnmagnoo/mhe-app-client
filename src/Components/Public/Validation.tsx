@@ -295,15 +295,22 @@ export const Validation = () => {
   );
 
   //form B  ✅✅
+  const [errorB, setErrorB] = React.useState<{ value: boolean; message: string } | null>(
+    null
+  );
+
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
     console.log('init valudation B', data);
     //upload sign SVG to storage 🔥🔥💾
 
     //upload IBeneficiary to Consolidated 🔥🔥🔥
-    postSignToStorage();
+    const result = await postBeneficiary();
+
+    //setState
+    setDisableB(result); /*on success*/
   };
 
-  async function postSignToStorage() {
+  async function postBeneficiary() {
     try {
       //format svg
       const now = new Date();
@@ -313,15 +320,37 @@ export const Validation = () => {
       //new beneficiary
       if (person !== undefined) {
         const beneficiary: IBeneficiary = { ...person, sign: signSvg, dateSign: now };
-        //push sign database
-        const post = db.collection(`Activity/${refUuid}/Consolidated`).doc(person?.uuid);
-        await post.set(beneficiary);
-        console.log('posted beneficiary', beneficiary.uuid);
+
+        //push sign database ⏫⏫⏫
+        const refDoc = db
+          .collection(`Activity/${refUuid}/Consolidated`)
+          .doc(person?.uuid);
+
+        //check is this benefit was already signed
+        const req = await refDoc.get();
+        if (req.data() === undefined) {
+          //if it dosent exist, human can sign ✅
+          await refDoc.set(beneficiary);
+          console.log('posted beneficiary', beneficiary.uuid);
+          setErrorB({ value: false, message: 'beneficiario validado 😀' });
+          return true;
+        } else {
+          //if it's exist, human can not sign ⛔
+          console.log(' benefit is already signed', beneficiary.uuid);
+          setErrorB({ value: true, message: 'beneficiario ya validado  🤔' });
+          return false;
+        }
       } else {
-        return;
+        //definition problem on referenced person ⛔
+        console.log('error person ', undefined);
+        setErrorB({ value: true, message: 'beneficiario no definido' });
+        return false;
       }
     } catch (error) {
+      //error on firebase.set() method ⛔
       console.log('error on post beneficiary', error);
+      setErrorB({ value: true, message: 'no se pudo cargar beneficiario 🙉' });
+      return false;
     }
   }
 
