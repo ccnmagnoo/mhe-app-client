@@ -1,5 +1,6 @@
 import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
 import React from 'react';
+import { testSign } from '../../Functions/svgString';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
 
@@ -7,6 +8,8 @@ export const SignDocument = (props: PropsDS) => {
   //little refs
   let pers = props.person;
   const room = props.classroom;
+
+  //image SVG 📷📷📷📷
 
   const personData = [
     {
@@ -54,11 +57,11 @@ export const SignDocument = (props: PropsDS) => {
                 <strong>Con Buena Energía</strong> en {room?.land.name}
               </Typography>
             </Grid>
+            <Grid item xs={12}></Grid>
 
             <Grid item xs={12}>
               <Typography variant='caption' align='justify' color='textSecondary'>
-                🆔: {room?.uuid} mesa: virtual idCal: {room?.idCal}{' '}
-                version:rev.rjs.9.0miniApp
+                🆔: {room?.uuid} 📆idCal: {room?.idCal} version:rev.rjs.9.0miniApp
               </Typography>
             </Grid>
 
@@ -75,9 +78,9 @@ export const SignDocument = (props: PropsDS) => {
               <Grid container spacing={0}>
                 {/*Person data 🙇‍♂️🙇‍♂️🙇‍♀️*/}
 
-                {personData.map((doc) => {
+                {personData.map((doc, key) => {
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={key}>
                       <Grid item xs={4}>
                         <Typography variant='body2' color='textSecondary'>
                           {doc.key}:
@@ -140,6 +143,8 @@ export const SignDocument = (props: PropsDS) => {
                 ni darle un uso diverso al señalado en este documento.
               </Typography>
             </Grid>
+            <Grid item xs={12}></Grid>
+
             {signSection()}
           </Grid>
         </Box>

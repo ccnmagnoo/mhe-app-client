@@ -4,7 +4,7 @@ import moment from 'moment';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
+import { db, store } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
@@ -39,11 +39,11 @@ export const Validation = () => {
 
   //canvas hookconst
   const [renderRef, draw] = useSvgDrawing({
-    penWidth: 3, // pen width
+    penWidth: 2, // pen width
     penColor: 'blue', // pen color
     close: false, // Use close command for path. Default is false
     curve: true, // Use curve command for path. Default is true.
-    delay: 5, // Set how many ms to draw points every.
+    delay: 50, // Set how many ms to draw points every.
     fill: 'none', // Set fill attribute for path. default is `none`
   });
   const Drawing = () => {
@@ -249,13 +249,7 @@ export const Validation = () => {
       <form onSubmit={handleSubmit(onSubmitA)}>
         <Paper elevation={2}>
           <Box p={1}>
-            <Grid
-              container
-              direction='row'
-              spacing={2}
-              justify='space-between'
-              alignItems='center'
-            >
+            <Grid container spacing={2} alignItems='center' direction='row'>
               <Grid item xs={3}>
                 <Typography variant='subtitle2' color='primary'>
                   Verificador
@@ -300,28 +294,35 @@ export const Validation = () => {
     </React.Fragment>
   );
 
-  //form B
+  //form B  ✅✅
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
     console.log('init valudation B', data);
     //upload sign SVG to storage 🔥🔥💾
-
+    console.log('xml', draw.getSvgXML());
     //upload IBeneficiary to Consolidated 🔥🔥🔥
   };
+
+  async function postSignToStorage() {
+    //push draw to storage
+  }
 
   const validationB = (
     <React.Fragment>
       <br />
-      <form onSubmit={handleSubmit(() => {})}>
+      <form onSubmit={handleSubmit(onSubmitB)}>
         <Paper>
           <Box p={1}>
             <SignDocument person={person as IBeneficiary} classroom={classroom} />
-            <Paper variant='outlined'>
+            <Paper variant='outlined' elevation={1}>
               <Grid container spacing={1} justify='center' direction='row'>
                 <Grid item xs={12}>
-                  <Typography variant='subtitle2' color='primary'>
+                  <Typography variant='subtitle2' color='primary' align='left'>
                     firme aquí ✍
                   </Typography>
                 </Grid>
+
+                <Grid item xs={12}></Grid>
+
                 {/*canvas ✍✍✍*/}
                 <Grid item xs={1}></Grid>
                 <Grid item xs={9}>
@@ -360,15 +361,16 @@ export const Validation = () => {
                 <br />
                 <br />
                 <Grid item justify='center'>
-                  <Fab
-                    variant='extended'
+                  <Button
+                    variant='contained'
+                    type='submit'
                     color='secondary'
                     disabled={disableB}
-                    onSubmit={handleSubmit(onSubmitB)}
+                    startIcon={<CheckCircleOutlineIcon />}
                   >
-                    <CheckCircleOutlineIcon />
                     firmar y validar
-                  </Fab>
+                  </Button>
+                  <br />
                 </Grid>
               </Grid>
             </Paper>

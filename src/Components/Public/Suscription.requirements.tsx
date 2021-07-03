@@ -51,7 +51,7 @@ export const Requirements = () => {
           <List dense={true}>
             {requirementList.map((item, index) => {
               return (
-                <ListItem>
+                <ListItem key={index}>
                   <ListItemIcon>
                     <CheckBoxIcon color='primary' />
                   </ListItemIcon>
