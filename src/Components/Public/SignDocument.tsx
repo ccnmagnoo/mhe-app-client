@@ -9,8 +9,6 @@ export const SignDocument = (props: PropsDS) => {
   let pers = props.person;
   const room = props.classroom;
 
-  //image SVG 📷📷📷📷
-
   const personData = [
     {
       key: 'Nombre',
@@ -57,7 +55,6 @@ export const SignDocument = (props: PropsDS) => {
                 <strong>Con Buena Energía</strong> en {room?.land.name}
               </Typography>
             </Grid>
-            <Grid item xs={12}></Grid>
 
             <Grid item xs={12}>
               <Typography variant='caption' align='justify' color='textSecondary'>
