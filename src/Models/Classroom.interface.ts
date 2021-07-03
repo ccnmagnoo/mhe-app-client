@@ -7,8 +7,8 @@ export interface IClassroom {
   uuid: string;
   idCal: string;
   dateInstance: Date;
-  enrolled: Person[];
-  attendees: Beneficiary[];
+  enrolled: string[];
+  attendees: string[];
   placeActivity: IPlace;
   placeDispatch?: IPlace;
   allowedCities: string[];

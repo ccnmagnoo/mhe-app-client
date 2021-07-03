@@ -1,15 +1,15 @@
 import { LandType } from '../Functions/GetTerritoryList';
-import { Beneficiary } from './Beneficiary';
+
 import { IClassroom } from './Classroom.interface';
-import { Person } from './Person';
+
 import { IPlace } from './Place.interface';
 
 export class Classroom implements IClassroom {
   uuid: string;
   idCal: string;
   dateInstance: Date;
-  enrolled: Person[] = [];
-  attendees: Beneficiary[] = [];
+  enrolled: string[] = [];
+  attendees: string[] = [];
   allowedCities: string[] = [];
   placeActivity: IPlace;
   placeDispatch?: IPlace | undefined;
@@ -20,8 +20,8 @@ export class Classroom implements IClassroom {
   constructor(
     uuid: string,
     idCal: string,
-    enrolled: Person[],
-    attendees: Beneficiary[],
+    enrolled: string[],
+    attendees: string[],
     colaborator: string,
     city: string,
     landName: string,
