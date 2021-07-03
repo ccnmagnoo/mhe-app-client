@@ -298,12 +298,31 @@ export const Validation = () => {
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
     console.log('init valudation B', data);
     //upload sign SVG to storage 🔥🔥💾
-    console.log('xml', draw.getSvgXML());
+
     //upload IBeneficiary to Consolidated 🔥🔥🔥
+    postSignToStorage();
   };
 
   async function postSignToStorage() {
-    //push draw to storage
+    try {
+      //format svg
+      const now = new Date();
+      const signSvg = draw
+        .getSvgXML()
+        ?.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+      //new beneficiary
+      if (person !== undefined) {
+        const beneficiary: IBeneficiary = { ...person, sign: signSvg, dateSign: now };
+        //push sign database
+        const post = db.collection(`Activity/${refUuid}/Consolidated`).doc(person?.uuid);
+        await post.set(beneficiary);
+        console.log('posted beneficiary', beneficiary.uuid);
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log('error on post beneficiary', error);
+    }
   }
 
   const validationB = (
