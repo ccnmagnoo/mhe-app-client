@@ -53,10 +53,9 @@ export const Suscription = () => {
 
   //objects states
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
-  const [selectedClassroom, setSelectedClassroom] = React.useState<
-    IClassroom | undefined
-  >(undefined);
-  const [suscribed, setSuscribed] = React.useState<boolean | undefined>(undefined);
+  const [selectedRoom, setSelectedRoom] = React.useState<IClassroom | undefined>(
+    undefined
+  );
   const [suscribedPerson, setSuscribedPerson] = React.useState<IPerson | undefined>(
     undefined
   );
@@ -104,7 +103,6 @@ export const Suscription = () => {
   );
 
   //FORM A 💖💖💗
-
   const onSubmitA: SubmitHandler<Input> = async (data) => {
     console.log('register', 'step A', true);
     console.log('submit A', data);
@@ -174,7 +172,7 @@ export const Suscription = () => {
     }
   }
 
-  //ALERT SNACK BAR💥💢
+  //alert snackbar A💥💢
   const snackbarA = () => {
     if (gotBenefit === undefined) {
       return undefined;
@@ -283,6 +281,8 @@ export const Suscription = () => {
 
       const listClassrooms: IClassroom[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
+        console.log('data classroom', it);
+
         const classroom: IClassroom = {
           uuid: doc.id,
           idCal: it.idCal,
@@ -303,6 +303,7 @@ export const Suscription = () => {
           },
           allowedCities: it.allowedCities,
           cityOnOp: it.cityOnOp,
+
           land: { type: it.land.type as LandType, name: it.land.name },
         };
         return classroom;
@@ -477,62 +478,104 @@ export const Suscription = () => {
 
     if (isUploaded) {
       setDisableC(true);
-      setSuscribed(true);
       setDialogOpen(true);
-    } else {
-      //set error snack bar
-      setSuscribed(false);
     }
   };
 
   //firebase create Suscribed
+  const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
+    null
+  );
+
   async function createSuscription(data: Input) {
     try {
-      console.log('prepare to upload suscription', data.email);
-      const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
+      //TODO:check if already has a suscription to this class
+      const susRef = db.collection(`Activity/${refUuid}/Suscribed`);
+      const susQuery = await susRef.where('rut', '==', data.rut).get();
+      const susDocs = susQuery.docs.map((sus) => {
+        const it = sus.data() as IPerson;
+        return it.classroom.uuid;
+      });
 
-      const person: IPerson = {
-        uuid: ref.id,
-        name: {
-          firstName: capitalWord(data.name),
-          fatherName: capitalWord(data.fatherName),
-          motherName: capitalWord(data.motherName),
-        },
-        rut: data.rut,
-        gender: getGender(data.name),
-        classroom: {
-          idCal: selectedClassroom?.idCal ?? 'R000',
-          uuid: selectedClassroom?.uuid ?? 'no-data',
-          dateInstance: selectedClassroom?.dateInstance ?? new Date(),
-        },
-        dateUpdate: new Date(),
-        email: data.email,
-        phone: data.phone ?? '0',
-        address: { dir: capitalWord(data.dir), city: data.city },
-      };
+      const isNotSuscribed = susDocs.indexOf(selectedRoom?.uuid ?? '') === -1;
+      if (isNotSuscribed) {
+        //prepare to upload new suscription
+        console.log('prepare to upload suscription', data.email);
+        //create reference of new doc Suscribed
+        const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
 
-      ref.set(person);
-      setSuscribedPerson(person);
+        const person: IPerson = {
+          uuid: ref.id,
+          name: {
+            firstName: capitalWord(data.name),
+            fatherName: capitalWord(data.fatherName),
+            motherName: capitalWord(data.motherName),
+          },
+          rut: data.rut,
+          gender: getGender(data.name),
+          classroom: {
+            idCal: selectedRoom?.idCal ?? 'R000',
+            uuid: selectedRoom?.uuid ?? 'no-data',
+            dateInstance: selectedRoom?.dateInstance ?? new Date(),
+          },
+          dateUpdate: new Date(),
+          email: data.email,
+          phone: data.phone ?? '0',
+          address: { dir: capitalWord(data.dir), city: data.city },
+        };
 
-      return true;
+        await ref.set(person);
+        setSuscribedPerson(person);
+        console.log('human already suscribed on', selectedRoom?.idCal);
+        setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
+
+        return true;
+      } else {
+        console.log('human already suscribed on', selectedRoom?.idCal);
+        setErrorC({
+          value: true,
+          message: 'tranquilidad, ya estabas a este taller 🤔 ',
+        });
+        return false;
+      }
     } catch (error) {
       console.log('no upload', error);
       return false;
     }
   }
 
-  //alert: snack bar💥💢
+  async function updateClassroom() {
+    try {
+      //fetch classroom
+      const refRoom = db
+        .collection(`Activity/${refUuid}/Classroom`)
+        .doc(selectedRoom?.uuid);
+      const query = await refRoom.get();
+      const room: IClassroom = query.data() as IClassroom;
+
+      //grab attendees array and updated it
+      if (suscribedPerson !== undefined) {
+        room.enrolled.push(suscribedPerson.uuid);
+        refRoom.set(room, { merge: true });
+        console.log('updated classroom enrolled', suscribedPerson.uuid);
+      }
+    } catch (error) {
+      console.log('update classroom enrolled: error', error);
+    }
+  }
+
+  //alert: snack bar C💥💢
   const snackbarC = () => {
-    if (suscribed === undefined) {
+    if (errorC === null) {
       return undefined;
-    } else if (suscribed === false) {
+    } else if (errorC.value === true) {
       //if condition true means this person already has valid benefits active
-      return <Alert severity='error'>error en la inscripción</Alert>;
+      return <Alert severity='error'>{errorC.message}</Alert>;
     } else {
       return (
         <Alert severity='success'>
           Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, es{' '}
-          {moment(selectedClassroom?.dateInstance).endOf('day').fromNow()}, te esperamos.
+          {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos.
         </Alert>
       );
     }
@@ -547,7 +590,7 @@ export const Suscription = () => {
             action={
               <IconButton aria-label='seleccionar'>
                 <CheckCircleIcon
-                  color={selectedClassroom?.uuid === item.uuid ? 'primary' : 'action'}
+                  color={selectedRoom?.uuid === item.uuid ? 'primary' : 'action'}
                 />
               </IconButton>
             }
@@ -560,11 +603,11 @@ export const Suscription = () => {
             <Button
               size='small'
               disabled={disableC}
-              color={selectedClassroom?.uuid === item.uuid ? 'primary' : 'default'}
-              variant={selectedClassroom?.uuid === item.uuid ? 'contained' : 'outlined'}
+              color={selectedRoom?.uuid === item.uuid ? 'primary' : 'default'}
+              variant={selectedRoom?.uuid === item.uuid ? 'contained' : 'outlined'}
               onClick={() => {
                 console.log('selected class', item.idCal);
-                setSelectedClassroom(item);
+                setSelectedRoom(item);
               }}
             >
               selecionar
@@ -708,7 +751,7 @@ export const Suscription = () => {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <OnSuccessSuscription person={suscribedPerson} classroom={selectedClassroom} />
+        <OnSuccessSuscription person={suscribedPerson} classroom={selectedRoom} />
       </DialogContent>
       <DialogActions>
         <Button
