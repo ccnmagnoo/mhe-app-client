@@ -558,26 +558,6 @@ export const Suscription = () => {
     }
   }
 
-  async function updateClassroomEnrolled() {
-    try {
-      //fetch classroom
-      const refRoom = db
-        .collection(`Activity/${refUuid}/Classroom`)
-        .doc(selectedRoom?.uuid);
-      const query = await refRoom.get();
-      const room: IClassroom = query.data() as IClassroom;
-
-      //grab attendees array and updated it
-      if (suscribedPerson !== undefined) {
-        room.enrolled.push(suscribedPerson.uuid);
-        refRoom.set({ enrolled: room.enrolled }, { merge: true });
-        console.log('updated classroom enrolled', suscribedPerson.uuid);
-      }
-    } catch (error) {
-      console.log('update classroom enrolled: error', error);
-    }
-  }
-
   //alert: snack bar C💥💢
   const snackbarC = () => {
     if (errorC === null) {
