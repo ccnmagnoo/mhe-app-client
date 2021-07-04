@@ -526,8 +526,9 @@ export const Suscription = () => {
 
         await ref.set(person);
         setSuscribedPerson(person);
-        console.log('human already suscribed on', selectedRoom?.idCal);
+        console.log('person suscription success 👌', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
+        updateClassroomEnrolled();
 
         return true;
       } else {
@@ -544,7 +545,7 @@ export const Suscription = () => {
     }
   }
 
-  async function updateClassroom() {
+  async function updateClassroomEnrolled() {
     try {
       //fetch classroom
       const refRoom = db
