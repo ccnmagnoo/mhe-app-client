@@ -35,7 +35,7 @@ export const Validation = () => {
   //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
   const [disableB, setDisableB] = React.useState(true);
-  const [signCtrl, setSignCtrl] = React.useState(true);
+  const [disableCtrl, setDisableCtrl] = React.useState(false);
 
   //State hooks visibility
   const [visibleB, setVisibleB] = React.useState(false);
@@ -63,7 +63,7 @@ export const Validation = () => {
   };
 
   //converter function
-  const convertToUrl = (chain?: string) => {
+  const converToChip = (chain?: string) => {
     //check definition
     if (chain === undefined) return undefined;
     //check if dir is url or physical
@@ -125,8 +125,7 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='error'>
-              {errorA.message}
-              {convertToUrl(classroom?.placeActivity.dir)}
+              {errorA.message} {converToChip(classroom?.placeActivity.dir)}
             </Alert>
           </Grid>
         );
@@ -135,7 +134,7 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='success'>
-              {errorA.message} <br /> {convertToUrl(classroom?.placeActivity.dir)}
+              {errorA.message} {converToChip(classroom?.placeActivity.dir)}
             </Alert>
           </Grid>
         );
@@ -199,13 +198,23 @@ export const Validation = () => {
       if (suscriptions.length > 0) {
         //if this human  has a valid suscription
         console.log('detected suscriptions', suscriptions.length);
-        //getting last suscription in time...
+
+        //getting last suscription in time...🚩🕜
         const lastSus = suscriptions.reduce((prev, next) => {
           return prev.dateUpdate > next.dateUpdate ? prev : next;
         });
+
         console.log('last suscription was', lastSus.dateUpdate);
 
-        //fetch date of classrooom from classRoom document 🔥
+        //check if this person already signed
+        const isConsolidated = await checkConsolidated(lastSus.uuid);
+        if (isConsolidated) {
+          console.log(' benefit is already signed', lastSus.uuid);
+          setErrorA({ value: true, message: 'usted ya se validó 🤔' });
+          return undefined;
+        }
+
+        //fetch date of classroom from document 🔥
         const queryClassroom = await db
           .collection(`Activity/${refUuid}/Classroom`)
           .doc(lastSus.classroom.uuid)
@@ -295,6 +304,19 @@ export const Validation = () => {
     }
   }
 
+  async function checkConsolidated(suscription: string) {
+    const queryCvn = await db
+      .collection(`Activity/${refUuid}/Consolidated`)
+      .doc(suscription)
+      .get();
+    const result = queryCvn.data();
+    if (result === undefined) {
+      return false; /*not consolidated*/
+    } else {
+      return true; /* already consolidated*/
+    }
+  }
+
   const validationA = (
     <React.Fragment>
       <form onSubmit={handleSubmit(onSubmitA)}>
@@ -380,7 +402,7 @@ export const Validation = () => {
 
     //setState
     setDisableB(result); /*on success*/
-    setSignCtrl(!result);
+    setDisableCtrl(result);
   };
 
   async function postBeneficiary() {
@@ -469,7 +491,7 @@ export const Validation = () => {
                 </Grid>
                 <Grid item xs={2} direction='column'>
                   <Fab
-                    disabled={signCtrl}
+                    disabled={disableCtrl}
                     color='secondary'
                     aria-label='limpiar'
                     onClick={() => {
@@ -482,7 +504,7 @@ export const Validation = () => {
                   </Fab>
 
                   <Fab
-                    disabled={signCtrl}
+                    disabled={disableCtrl}
                     color='primary'
                     aria-label='done'
                     onClick={() => {
