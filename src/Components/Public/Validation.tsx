@@ -322,7 +322,13 @@ export const Validation = () => {
       <form onSubmit={handleSubmit(onSubmitA)}>
         <Paper elevation={2}>
           <Box p={1}>
-            <Grid container spacing={2} alignItems='center' direction='row'>
+            <Grid
+              container
+              spacing={2}
+              alignItems='center'
+              justify='space-between'
+              direction='row'
+            >
               <Grid item xs={3}>
                 <Typography variant='subtitle2' color='primary'>
                   Verificador
@@ -349,7 +355,7 @@ export const Validation = () => {
                 />
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid item xs={3} sm={'auto'}>
                 <Button
                   type='submit'
                   variant='outlined'
@@ -519,7 +525,7 @@ export const Validation = () => {
 
                 <br />
                 <br />
-                <Grid item justify='center'>
+                <Grid item xs={3} sm={'auto'} justify='center'>
                   <Button
                     variant='contained'
                     type='submit'

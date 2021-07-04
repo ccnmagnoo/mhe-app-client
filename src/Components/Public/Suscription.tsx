@@ -65,6 +65,7 @@ export const Suscription = () => {
   const [disableA, setDisableA] = React.useState(false);
   const [disableB, setDisableB] = React.useState(false);
   const [disableC, setDisableC] = React.useState(false);
+  const [disableS, setDisableS] = React.useState(true); /*final submit button*/
   //hooks or form is visible
   const [visibleB, setVisibleB] = React.useState(false);
   const [visibleC, setVisibleC] = React.useState(false);
@@ -232,7 +233,7 @@ export const Suscription = () => {
                 {isRol}
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid item xs={3} sm={'auto'}>
                 <Button
                   type='submit'
                   variant='outlined'
@@ -361,10 +362,11 @@ export const Suscription = () => {
                     helperText={errors.documentNumber?.message}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} sm={4}>
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
                     required
+                    fullWidth
                     disabled={disableB}
                     id='name-field'
                     label='nombre(s)'
@@ -379,7 +381,7 @@ export const Suscription = () => {
                     helperText={errors.name?.message}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6} sm={4}>
                   <TextField
                     required
                     disabled={disableB}
@@ -396,7 +398,7 @@ export const Suscription = () => {
                     helperText={errors.fatherName?.message}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6} sm={4}>
                   <TextField
                     required
                     disabled={disableB}
@@ -450,7 +452,7 @@ export const Suscription = () => {
                     )}
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={3} sm={'auto'}>
                   <Button
                     disabled={disableB}
                     type='submit'
@@ -491,7 +493,7 @@ export const Suscription = () => {
     try {
       //check selection o classroom
       if (selectedRoom === undefined) {
-        console.log('human already suscribed on', undefined);
+        console.log('isnt a selected room', undefined);
         setErrorC({
           value: true,
           message: 'no has selecionado un taller 🙊 ',
@@ -613,6 +615,7 @@ export const Suscription = () => {
               onClick={() => {
                 console.log('selected class', item.idCal);
                 setSelectedRoom(item);
+                setDisableS(false);
               }}
             >
               selecionar
@@ -627,7 +630,7 @@ export const Suscription = () => {
     if (avaliableClassrooms.length > 0) {
       return avaliableClassrooms.map((item, index) => {
         return (
-          <Grid item xs={12} key={index}>
+          <Grid item xs={12} sm={6} key={index}>
             {miniCardClassroom(item)}
           </Grid>
         );
@@ -685,10 +688,10 @@ export const Suscription = () => {
                   </Grid>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     required
-                    disabled={disableC}
+                    fullWidth
                     id='email-text-field'
                     label='email'
                     type='email'
@@ -703,9 +706,9 @@ export const Suscription = () => {
                     helperText={errors.email?.message}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
-                    disabled={disableC}
+                    fullWidth
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
@@ -716,14 +719,14 @@ export const Suscription = () => {
                   />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={3} sm={'auto'}>
                   <Button
                     type='submit'
-                    variant='outlined'
+                    variant='contained'
                     color='primary'
-                    disabled={disableC}
+                    disabled={disableS}
                   >
-                    {disableC ? '✅' : 'Incripción'}
+                    {disableC && disableS ? '✅' : 'Incripción'}
                   </Button>
                 </Grid>
                 <Grid item xs={12}>

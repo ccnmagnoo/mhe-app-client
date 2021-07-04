@@ -237,13 +237,13 @@ const Create = (props: any) => {
               />
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
               {/*lugar🔰📌*/}
               <TextField
                 required
                 id='standard-required'
                 type='text'
-                label='lugar'
+                label=' nombre lugar'
                 variant='outlined'
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 fullWidth
@@ -251,7 +251,7 @@ const Create = (props: any) => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={12} sm={7}>
               {/*dirección o url*/}
               <TextField
                 required
@@ -355,7 +355,7 @@ const Create = (props: any) => {
               />
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={5}>
               {/*lugar🔰📌*/}
               <TextField
                 required
@@ -369,7 +369,7 @@ const Create = (props: any) => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={12} sm={7}>
               {/*address 🗺🦝🗾*/}
               <TextField
                 required
