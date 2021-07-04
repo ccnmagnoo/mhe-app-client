@@ -16,6 +16,7 @@ import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Fab } from '@material-ui/core';
+import { isUrl } from '../../Functions/IsURL';
 
 export const Validation = () => {
   //State hook with information
@@ -51,6 +52,19 @@ export const Validation = () => {
     return <div style={{ width: '100%', height: 180 }} ref={renderRef} />;
   };
 
+  //converter function
+  const convertToUrl = (chain?: string) => {
+    //check definition
+    if (chain === undefined) return undefined;
+    //check if dir is url or physical
+    const gmaps = 'https://www.google.com/maps?q=';
+    if (isUrl(chain)) {
+      return <a href={chain}> {chain}</a>;
+    } else {
+      return <a href={`${gmaps}${chain.replace(' ', '+')}`}>{chain}</a>;
+    }
+  };
+
   const titleMessage = (
     <React.Fragment>
       <Typography variant='h5' color='primary'>
@@ -67,25 +81,28 @@ export const Validation = () => {
   };
 
   //form A ✅✅
-  const [errorOnA, setErrorOnA] = React.useState<null | {
+  const [errorA, setErrorA] = React.useState<null | {
     value: boolean;
     message: string;
   }>(null);
 
-  const snackBarA = () => {
-    if (errorOnA !== null) {
-      if (errorOnA.value) {
+  const snackbarA = () => {
+    if (errorA !== null) {
+      if (errorA.value) {
         //if error true 😡❌📛
         return (
           <Grid item xs={12}>
-            <Alert severity='error'>{errorOnA.message}</Alert>
+            <Alert severity='error'>
+              {errorA.message} <br /> dirección:
+              {convertToUrl(classroom?.placeActivity.dir)}
+            </Alert>
           </Grid>
         );
       } else {
         //if validation is success ✅
         return (
           <Grid item xs={12}>
-            <Alert severity='success'>{errorOnA.message}</Alert>
+            <Alert severity='success'>{errorA.message}</Alert>
           </Grid>
         );
       }
@@ -199,48 +216,49 @@ export const Validation = () => {
         switch (true) {
           case now > act && now < timeGap: {
             //   //this human being is on time 👌
-            setErrorOnA({
+            setErrorA({
               value: false,
               message: 'estamos ok, continue para validarse 🤗',
             });
-            console.log(errorOnA);
+            console.log(errorA);
             return lastSus;
           }
           case now < act: {
             // this bunny is running to fast, too early 🐇
-            setErrorOnA({
+            setErrorA({
               value: true,
-              message: `estás aquí, pero no nos adelantemos,el taller es ${moment(act)
+              message: `estás en el registro, pero no nos adelantemos,el taller es ${moment(
+                act
+              )
                 .endOf('days')
-                .fromNow()} 🤗,\n 
-                dirección: ${dirUrl}`,
+                .fromNow()} 🤗`,
             });
-            console.log(errorOnA);
+            console.log(errorA);
             return undefined;
           }
           default: {
             //this turtle was not in time 🐢 🚫
-            setErrorOnA({
+            setErrorA({
               value: true,
               message: 'no llegaste a tiempo 😥, debes esperar a otro taller ',
             });
-            console.log(errorOnA);
+            console.log(errorA);
             return undefined;
           }
         }
       } else {
         //return error no suscription found
         console.log('no suscriptions detected', suscriptions.length);
-        setErrorOnA({
+        setErrorA({
           value: true,
           message: 'no encuentro inscripciones con este rut 🙊',
         });
-        console.log(errorOnA);
+        console.log(errorA);
       }
     } catch (error) {
       console.log('error in validation', error);
-      setErrorOnA({ value: true, message: 'no pude obtener los datos 🙈' });
-      console.log(errorOnA);
+      setErrorA({ value: true, message: 'no pude obtener los datos 🙈' });
+      console.log(errorA);
     }
   }
 
@@ -286,7 +304,7 @@ export const Validation = () => {
                   {disableA ? '✅' : 'Check'}
                 </Button>
               </Grid>
-              {snackBarA()}
+              {snackbarA()}
             </Grid>
           </Box>
         </Paper>
@@ -298,6 +316,27 @@ export const Validation = () => {
   const [errorB, setErrorB] = React.useState<{ value: boolean; message: string } | null>(
     null
   );
+  const snackbarC = () => {
+    if (errorB !== null) {
+      if (errorB.value) {
+        //if error true 😡❌📛
+        return (
+          <Grid item xs={12}>
+            <Alert severity='error'>{errorB.message}</Alert>
+          </Grid>
+        );
+      } else {
+        //if validation is success ✅
+        return (
+          <Grid item xs={12}>
+            <Alert severity='success'>{errorB.message}</Alert>
+          </Grid>
+        );
+      }
+    } else {
+      return undefined;
+    }
+  };
 
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
     console.log('init valudation B', data);
@@ -332,6 +371,7 @@ export const Validation = () => {
           //if it dosent exist, human can sign ✅
           await refDoc.set(beneficiary);
           console.log('posted beneficiary', beneficiary.uuid);
+          //set errors false
           setErrorB({ value: false, message: 'beneficiario validado 😀' });
           return true;
         } else {
@@ -382,6 +422,7 @@ export const Validation = () => {
                 </Grid>
                 <Grid item xs={2} direction='column'>
                   <Fab
+                    disabled={disableB}
                     color='secondary'
                     aria-label='limpiar'
                     onClick={() => {
@@ -394,6 +435,7 @@ export const Validation = () => {
                   </Fab>
 
                   <Fab
+                    disabled={disableB}
                     color='primary'
                     aria-label='done'
                     onClick={() => {
@@ -420,6 +462,7 @@ export const Validation = () => {
                   </Button>
                   <br />
                 </Grid>
+                {snackbarC()}
               </Grid>
             </Paper>
           </Box>
