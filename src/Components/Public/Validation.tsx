@@ -1,4 +1,13 @@
-import { Box, Paper, Grid, Button, TextField, Typography } from '@material-ui/core';
+import {
+  Box,
+  Paper,
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  Chip,
+  Avatar,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import React from 'react';
@@ -59,9 +68,31 @@ export const Validation = () => {
     //check if dir is url or physical
     const gmaps = 'https://www.google.com/maps?q=';
     if (isUrl(chain)) {
-      return <a href={chain}> {chain}</a>;
+      return (
+        <Chip
+          avatar={<Avatar>Z</Avatar>}
+          label='link al taller'
+          href={chain}
+          target='_blank'
+          clickable
+          color='primary'
+          component='a'
+        />
+      );
+      //return <a href={chain}> link al taller </a>;
     } else {
-      return <a href={`${gmaps}${chain.replace(' ', '+')}`}>{chain}</a>;
+      return (
+        <Chip
+          avatar={<Avatar>D</Avatar>}
+          label='click dirección'
+          href={`${gmaps}${chain.replace(' ', '+')}`}
+          target='_blank'
+          clickable
+          color='primary'
+          component='a'
+        />
+      );
+      //return <a href={`${gmaps}${chain.replace(' ', '+')}`}> dirección del taller </a>;
     }
   };
 
@@ -93,7 +124,7 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='error'>
-              {errorA.message} <br /> dirección:
+              {errorA.message} <br />
               {convertToUrl(classroom?.placeActivity.dir)}
             </Alert>
           </Grid>
@@ -102,7 +133,9 @@ export const Validation = () => {
         //if validation is success ✅
         return (
           <Grid item xs={12}>
-            <Alert severity='success'>{errorA.message}</Alert>
+            <Alert severity='success'>
+              {errorA.message} <br /> {convertToUrl(classroom?.placeActivity.dir)}
+            </Alert>
           </Grid>
         );
       }
@@ -204,21 +237,20 @@ export const Validation = () => {
           setClassroom(classroom);
         }
 
-        //checking if this person is on schechule to sign
+        //checking if this person is on schechule ⏱⛅⛈to sign
         const now = new Date();
-        const act = room?.placeActivity.date.toDate();
-        const timeGap = lastSus.classroom.dateInstance;
-        const dirUrl = room?.placeActivity.dir;
+        const act = room?.placeActivity.date.toDate(); /*day of class 📆*/
+        const timeGap = lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
         console.log('date instance', timeGap);
         timeGap.setDate(timeGap.getDate() + 3);
         console.log('time gap', timeGap);
 
         switch (true) {
           case now > act && now < timeGap: {
-            //   //this human being is on time 👌
+            //this human being is on time 👌
             setErrorA({
               value: false,
-              message: 'estamos ok, continue para validarse 🤗',
+              message: 'continue para validarse 🤗',
             });
             console.log(errorA);
             return lastSus;
