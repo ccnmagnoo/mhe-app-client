@@ -751,6 +751,7 @@ export const Suscription = () => {
         </Typography>
       </DialogTitle>
       <DialogContent>
+        {/*dialog content 🧁*/}
         <OnSuccessSuscription person={suscribedPerson} classroom={selectedRoom} />
       </DialogContent>
       <DialogActions>
