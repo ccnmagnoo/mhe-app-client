@@ -624,7 +624,7 @@ export const Suscription = () => {
       });
     } else {
       return (
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardHeader
               avatar={<Avatar aria-label='idcal'>?</Avatar>}
