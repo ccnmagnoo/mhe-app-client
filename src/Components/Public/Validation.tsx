@@ -13,7 +13,7 @@ import moment from 'moment';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
-import { db, store } from '../../Config/firebase';
+import { db } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
@@ -124,7 +124,7 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='error'>
-              {errorA.message} <br />
+              {errorA.message}
               {convertToUrl(classroom?.placeActivity.dir)}
             </Alert>
           </Grid>
@@ -216,8 +216,8 @@ export const Validation = () => {
             uuid: room.uuid,
             idCal: room.idCal,
             dateInstance: room?.dateInstance.toDate(),
-            enrolled: [],
-            attendees: [],
+            enrolled: room.enrolled,
+            attendees: room.attendees,
             placeActivity: {
               name: room.placeActivity.name,
               date: room.placeActivity.date.toDate(),
@@ -403,6 +403,19 @@ export const Validation = () => {
           //if it dosent exist, human can sign ✅
           await refDoc.set(beneficiary);
           console.log('posted beneficiary', beneficiary.uuid);
+
+          //set attendees on classroom list : already validated
+          const refRoom = db
+            .collection(`Activity/${refUuid}/Classroom`)
+            .doc(classroom?.uuid);
+          const attendees = classroom?.attendees;
+
+          if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
+            attendees?.push(person.uuid);
+            refRoom.set({ attendees: attendees }, { merge: true });
+            console.log('updated classroom attendees', beneficiary?.uuid);
+          }
+
           //set errors false
           setErrorB({ value: false, message: 'beneficiario validado 😀' });
           return true;
@@ -454,7 +467,6 @@ export const Validation = () => {
                 </Grid>
                 <Grid item xs={2} direction='column'>
                   <Fab
-                    disabled={disableB}
                     color='secondary'
                     aria-label='limpiar'
                     onClick={() => {
@@ -467,7 +479,6 @@ export const Validation = () => {
                   </Fab>
 
                   <Fab
-                    disabled={disableB}
                     color='primary'
                     aria-label='done'
                     onClick={() => {
