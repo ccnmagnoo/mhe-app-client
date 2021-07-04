@@ -287,8 +287,8 @@ export const Suscription = () => {
           uuid: doc.id,
           idCal: it.idCal,
           colaborator: it.colaborator,
-          enrolled: [],
-          attendees: [],
+          enrolled: it.enrolled,
+          attendees: it.attendees,
           dateInstance: it.dateInstance.toDate(),
           placeActivity: {
             name: it.placeActivity.name,
@@ -524,11 +524,24 @@ export const Suscription = () => {
           address: { dir: capitalWord(data.dir), city: data.city },
         };
 
+        //set new suscription 🔥🔥🔥
+
         await ref.set(person);
         setSuscribedPerson(person);
         console.log('person suscription success 👌', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
-        updateClassroomEnrolled();
+
+        //set new enrolled 🔥🔥🔥
+        const refRoom = db
+          .collection(`Activity/${refUuid}/Classroom`)
+          .doc(selectedRoom?.uuid);
+
+        const enrolled = selectedRoom?.enrolled;
+        if (enrolled !== undefined) {
+          enrolled?.push(person.uuid);
+          refRoom.set({ enrolled: enrolled }, { merge: true });
+          console.log('updated classroom enrolled', person?.uuid);
+        }
 
         return true;
       } else {
@@ -557,7 +570,7 @@ export const Suscription = () => {
       //grab attendees array and updated it
       if (suscribedPerson !== undefined) {
         room.enrolled.push(suscribedPerson.uuid);
-        refRoom.set(room, { merge: true });
+        refRoom.set({ enrolled: room.enrolled }, { merge: true });
         console.log('updated classroom enrolled', suscribedPerson.uuid);
       }
     } catch (error) {
