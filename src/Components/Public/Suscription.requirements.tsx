@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Grow,
 } from '@material-ui/core';
 import React from 'react';
 import { dateLimit } from '../../Config/credential';
@@ -41,27 +42,29 @@ export const Requirements = () => {
 
   return (
     <React.Fragment>
-      <Paper>
-        <Box p={1}>
-          <Typography variant='subtitle1' color='primary'>
-            requisitos para recibir el beneficio del kit de ahorro 💡
-          </Typography>
-        </Box>
-        <Box p={2} mt={0}>
-          <List dense={true}>
-            {requirementList.map((item, index) => {
-              return (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <CheckBoxIcon color='primary' />
-                  </ListItemIcon>
-                  <ListItemText primary={item.main} secondary={item.sub} />
-                </ListItem>
-              );
-            })}
-          </List>
-        </Box>
-      </Paper>
+      <Grow in={true}>
+        <Paper>
+          <Box p={1}>
+            <Typography variant='subtitle1' color='primary'>
+              requisitos para recibir el beneficio del kit de ahorro 💡
+            </Typography>
+          </Box>
+          <Box p={2} mt={0}>
+            <List dense={true}>
+              {requirementList.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <CheckBoxIcon color='primary' />
+                    </ListItemIcon>
+                    <ListItemText primary={item.main} secondary={item.sub} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+        </Paper>
+      </Grow>
     </React.Fragment>
   );
 };

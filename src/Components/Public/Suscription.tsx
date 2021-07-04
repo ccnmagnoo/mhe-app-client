@@ -94,11 +94,11 @@ export const Suscription = () => {
   //Return stactic content
   const titleMessage = (
     <React.Fragment>
-      <Typography variant='h5' color='primary'>
-        Inscripción a Con Buena Energía
+      <Typography variant='h6' color='primary'>
+        Inscripción a capacitaciones
       </Typography>
       <Typography variant='body1' color='initial'>
-        recuerde tener su carnet💳 a mano 🙌
+        recuerde tener su carnet a mano 🙌💳
       </Typography>
     </React.Fragment>
   );
@@ -197,60 +197,62 @@ export const Suscription = () => {
 
   const formA = (
     <React.Fragment>
-      <form onSubmit={handleSubmit(onSubmitA)}>
-        <Paper elevation={2}>
-          <Box p={1}>
-            <Grid
-              container
-              direction='row'
-              spacing={2}
-              justify='space-between'
-              alignItems='center'
-            >
-              <Grid item xs={3}>
-                <Typography variant='subtitle2' color='primary'>
-                  Paso 1
-                </Typography>
-              </Grid>
+      <Grow in={true}>
+        <form onSubmit={handleSubmit(onSubmitA)}>
+          <Paper elevation={2}>
+            <Box p={1}>
+              <Grid
+                container
+                direction='row'
+                spacing={2}
+                justify='space-between'
+                alignItems='center'
+              >
+                <Grid item xs={3}>
+                  <Typography variant='subtitle2' color='primary'>
+                    Paso 1
+                  </Typography>
+                </Grid>
 
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  disabled={disableA}
-                  id='check-rut'
-                  label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
-                  type='text'
-                  variant='outlined'
-                  {...register('rut', {
-                    pattern: {
-                      value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                      message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
-                    },
-                    validate: { isTrue: (v) => rolChecker(v) === true },
-                  })}
-                  error={errors.rut && true}
-                  helperText={errors.rut?.message}
-                />
-                {isRol}
-              </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    disabled={disableA}
+                    id='check-rut'
+                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
+                    type='text'
+                    variant='outlined'
+                    {...register('rut', {
+                      pattern: {
+                        value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
+                        message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                      },
+                      validate: { isTrue: (v) => rolChecker(v) === true },
+                    })}
+                    error={errors.rut && true}
+                    helperText={errors.rut?.message}
+                  />
+                  {isRol}
+                </Grid>
 
-              <Grid item xs={3} sm={'auto'}>
-                <Button
-                  type='submit'
-                  variant='outlined'
-                  color='primary'
-                  disabled={disableA}
-                >
-                  {disableA ? '✅' : 'Check'}
-                </Button>
-              </Grid>
+                <Grid item xs={3} sm={'auto'}>
+                  <Button
+                    type='submit'
+                    variant='outlined'
+                    color='primary'
+                    disabled={disableA}
+                  >
+                    {disableA ? '✅' : 'Check'}
+                  </Button>
+                </Grid>
 
-              {/*response alert*/}
-              {snackbarA()}
-            </Grid>
-          </Box>
-        </Paper>
-      </form>
+                {/*response alert*/}
+                {snackbarA()}
+              </Grid>
+            </Box>
+          </Paper>
+        </form>
+      </Grow>
     </React.Fragment>
   );
 

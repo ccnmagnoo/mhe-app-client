@@ -7,6 +7,7 @@ import {
   Typography,
   Chip,
   Avatar,
+  Grow,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
@@ -334,57 +335,59 @@ export const Validation = () => {
 
   const validationA = (
     <React.Fragment>
-      <form onSubmit={handleSubmit(onSubmitA)}>
-        <Paper elevation={2}>
-          <Box p={1}>
-            <Grid
-              container
-              spacing={2}
-              alignItems='center'
-              justify='space-between'
-              direction='row'
-            >
-              <Grid item xs={3}>
-                <Typography variant='subtitle2' color='primary'>
-                  Verificador
-                </Typography>
-              </Grid>
+      <Grow in={true}>
+        <form onSubmit={handleSubmit(onSubmitA)}>
+          <Paper elevation={2}>
+            <Box p={1}>
+              <Grid
+                container
+                spacing={2}
+                alignItems='center'
+                justify='space-between'
+                direction='row'
+              >
+                <Grid item xs={3}>
+                  <Typography variant='subtitle2' color='primary'>
+                    Verificador
+                  </Typography>
+                </Grid>
 
-              <Grid item xs={6}>
-                <TextField
-                  disabled={disableA}
-                  required
-                  id='check-rut'
-                  label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
-                  type='text'
-                  variant='outlined'
-                  {...register('rut', {
-                    pattern: {
-                      value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                      message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
-                    },
-                    validate: { isTrue: (v) => rolChecker(v) === true },
-                  })}
-                  error={errors.rut && true}
-                  helperText={errors.rut?.message}
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    disabled={disableA}
+                    required
+                    id='check-rut'
+                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
+                    type='text'
+                    variant='outlined'
+                    {...register('rut', {
+                      pattern: {
+                        value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
+                        message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                      },
+                      validate: { isTrue: (v) => rolChecker(v) === true },
+                    })}
+                    error={errors.rut && true}
+                    helperText={errors.rut?.message}
+                  />
+                </Grid>
 
-              <Grid item xs={3} sm={'auto'}>
-                <Button
-                  type='submit'
-                  variant='outlined'
-                  color='primary'
-                  disabled={disableA}
-                >
-                  {disableA ? '✅' : 'Check'}
-                </Button>
+                <Grid item xs={3} sm={'auto'}>
+                  <Button
+                    type='submit'
+                    variant='outlined'
+                    color='primary'
+                    disabled={disableA}
+                  >
+                    {disableA ? '✅' : 'Check'}
+                  </Button>
+                </Grid>
+                {snackbarA()}
               </Grid>
-              {snackbarA()}
-            </Grid>
-          </Box>
-        </Paper>
-      </form>
+            </Box>
+          </Paper>
+        </form>
+      </Grow>
     </React.Fragment>
   );
 
@@ -487,77 +490,79 @@ export const Validation = () => {
   const validationB = (
     <React.Fragment>
       <br />
-      <form onSubmit={handleSubmit(onSubmitB)}>
-        <Paper>
-          <Box p={1}>
-            <SignDocument person={person as IBeneficiary} classroom={classroom} />
-            <Paper variant='outlined' elevation={1}>
-              <Grid container spacing={1} justify='center' direction='row'>
-                <Grid item xs={12}>
-                  <Typography variant='subtitle2' color='primary' align='left'>
-                    firme aquí ✍
-                  </Typography>
-                </Grid>
+      <Grow in={visibleB}>
+        <form onSubmit={handleSubmit(onSubmitB)}>
+          <Paper>
+            <Box p={1}>
+              <SignDocument person={person as IBeneficiary} classroom={classroom} />
+              <Paper variant='outlined' elevation={1}>
+                <Grid container spacing={1} justify='center' direction='row'>
+                  <Grid item xs={12}>
+                    <Typography variant='subtitle2' color='primary' align='left'>
+                      firme aquí ✍
+                    </Typography>
+                  </Grid>
 
-                <Grid item xs={12}></Grid>
+                  <Grid item xs={12}></Grid>
 
-                {/*canvas ✍✍✍*/}
-                <Grid item xs={1}></Grid>
-                <Grid item xs={9}>
-                  <Paper variant='outlined'>
-                    <Box m={2} color='info.main'>
-                      {Drawing}
-                    </Box>
-                  </Paper>
-                </Grid>
-                <Grid item xs={2} direction='column'>
-                  <Fab
-                    disabled={disableCtrl}
-                    color='secondary'
-                    aria-label='limpiar'
-                    onClick={() => {
-                      setDisableB(true);
-                      draw.undo();
-                    }}
-                  >
-                    {/*🔽*/}
-                    <HighlightOffIcon />
-                  </Fab>
+                  {/*canvas ✍✍✍*/}
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={9}>
+                    <Paper variant='outlined'>
+                      <Box m={2} color='info.main'>
+                        {Drawing}
+                      </Box>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={2} direction='column'>
+                    <Fab
+                      disabled={disableCtrl}
+                      color='secondary'
+                      aria-label='limpiar'
+                      onClick={() => {
+                        setDisableB(true);
+                        draw.undo();
+                      }}
+                    >
+                      {/*🔽*/}
+                      <HighlightOffIcon />
+                    </Fab>
 
-                  <Fab
-                    disabled={disableCtrl}
-                    color='primary'
-                    aria-label='done'
-                    onClick={() => {
-                      setDisableB(false);
-                    }}
-                  >
-                    <div> </div>
-                    {/*🔽*/}
-                    <CheckCircleOutlineIcon />
-                  </Fab>
-                </Grid>
+                    <Fab
+                      disabled={disableCtrl}
+                      color='primary'
+                      aria-label='done'
+                      onClick={() => {
+                        setDisableB(false);
+                      }}
+                    >
+                      <div> </div>
+                      {/*🔽*/}
+                      <CheckCircleOutlineIcon />
+                    </Fab>
+                  </Grid>
 
-                <br />
-                <br />
-                <Grid item xs={3} sm={'auto'} justify='center'>
-                  <Button
-                    variant='contained'
-                    type='submit'
-                    color='secondary'
-                    disabled={disableB}
-                    startIcon={<CheckCircleOutlineIcon />}
-                  >
-                    firmar y validar
-                  </Button>
                   <br />
+                  <br />
+                  <Grid item xs={3} sm={'auto'} justify='center'>
+                    <Button
+                      variant='contained'
+                      type='submit'
+                      color='secondary'
+                      disabled={disableB}
+                      startIcon={<CheckCircleOutlineIcon />}
+                    >
+                      firmar y validar
+                    </Button>
+                    <br />
+                  </Grid>
+                  {snackbarC()}
                 </Grid>
-                {snackbarC()}
-              </Grid>
-            </Paper>
-          </Box>
-        </Paper>
-      </form>
+              </Paper>
+            </Box>
+          </Paper>
+        </form>
+      </Grow>
     </React.Fragment>
   );
 
