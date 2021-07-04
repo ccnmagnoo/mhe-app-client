@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
-import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
@@ -26,6 +25,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { Fab } from '@material-ui/core';
 import { isUrl } from '../../Functions/IsURL';
+import React from 'react';
 
 export const Validation = () => {
   //State hook with information
@@ -35,6 +35,7 @@ export const Validation = () => {
   //State Hooks diable buttons
   const [disableA, setDisableA] = React.useState(false);
   const [disableB, setDisableB] = React.useState(true);
+  const [signCtrl, setSignCtrl] = React.useState(true);
 
   //State hooks visibility
   const [visibleB, setVisibleB] = React.useState(false);
@@ -379,6 +380,7 @@ export const Validation = () => {
 
     //setState
     setDisableB(result); /*on success*/
+    setSignCtrl(!result);
   };
 
   async function postBeneficiary() {
@@ -467,6 +469,7 @@ export const Validation = () => {
                 </Grid>
                 <Grid item xs={2} direction='column'>
                   <Fab
+                    disabled={signCtrl}
                     color='secondary'
                     aria-label='limpiar'
                     onClick={() => {
@@ -479,6 +482,7 @@ export const Validation = () => {
                   </Fab>
 
                   <Fab
+                    disabled={signCtrl}
                     color='primary'
                     aria-label='done'
                     onClick={() => {
