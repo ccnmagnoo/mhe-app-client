@@ -537,7 +537,8 @@ export const Suscription = () => {
           .doc(selectedRoom?.uuid);
 
         const enrolled = selectedRoom?.enrolled;
-        if (enrolled !== undefined) {
+        if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
+          //update classroom enrolled list is dosent exist, avoid duplication
           enrolled?.push(person.uuid);
           refRoom.set({ enrolled: enrolled }, { merge: true });
           console.log('updated classroom enrolled', person?.uuid);
