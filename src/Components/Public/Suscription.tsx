@@ -646,7 +646,7 @@ export const Suscription = () => {
                 <strong> institución municipal o servicio público</strong>, puede
                 acercarse a sus oficinas sociales para solicitar un taller o escribanos a
                 <strong>
-                  <a href=' ccamposn@minenergia.cl'> ccamposn@minenergia.cl </a>
+                  <a href='mailto:ccamposn@minenergia.cl'> enviar email </a>
                 </strong>
               </Typography>
             </CardContent>
