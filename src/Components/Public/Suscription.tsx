@@ -489,7 +489,17 @@ export const Suscription = () => {
 
   async function createSuscription(data: Input) {
     try {
-      //TODO:check if already has a suscription to this class
+      //check selection o classroom
+      if (selectedRoom === undefined) {
+        console.log('human already suscribed on', undefined);
+        setErrorC({
+          value: true,
+          message: 'no has selecionado un taller 🙊 ',
+        });
+        return false;
+      }
+
+      //check if already exist a suscription for this RUT
       const susRef = db.collection(`Activity/${refUuid}/Suscribed`);
       const susQuery = await susRef.where('rut', '==', data.rut).get();
       const susDocs = susQuery.docs.map((sus) => {
@@ -617,14 +627,14 @@ export const Suscription = () => {
     if (avaliableClassrooms.length > 0) {
       return avaliableClassrooms.map((item, index) => {
         return (
-          <Grid item xs={6} key={index}>
+          <Grid item xs={12} key={index}>
             {miniCardClassroom(item)}
           </Grid>
         );
       });
     } else {
       return (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Card>
             <CardHeader
               avatar={<Avatar aria-label='idcal'>?</Avatar>}
@@ -695,7 +705,6 @@ export const Suscription = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    fullWidth
                     disabled={disableC}
                     id='phone-text-field'
                     label='teléfono (opcional)'
