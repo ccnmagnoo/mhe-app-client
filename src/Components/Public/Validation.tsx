@@ -164,12 +164,13 @@ export const Validation = () => {
   //Database part 🔥🔥🔥
   async function checkSuscription(data: Input) {
     try {
-      //search in Suscribed collection 🔥🔥🔥
+      //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
       const queryDocs = await db
         .collection(`Activity/${refUuid}/Suscribed`)
         .where('rut', '==', data.rut)
         .get();
 
+      //map [{..}] of this RUT suscriptions
       const suscriptions = queryDocs.docs.map((doc) => {
         const it = doc.data();
         const person: IPerson = {
@@ -201,25 +202,33 @@ export const Validation = () => {
 
         //getting last suscription in time...🚩🕜
         const lastSus = suscriptions.reduce((prev, next) => {
+          /**
+           * this @param lastSus(last suscription) will only takes
+           * the LAST SUSCRIPTION 🧲 in time,
+           * if this person already has a second suscription, which is not,
+           * this logic will avoid other suscriptions in existance. */
+
           return prev.dateUpdate > next.dateUpdate ? prev : next;
         });
-
         console.log('last suscription was', lastSus.dateUpdate);
 
-        //check if this person already signed
+        //check if this person already if validate&signed this suscription🔥🔥🔥
         const isConsolidated = await checkConsolidated(lastSus.uuid);
         if (isConsolidated) {
+          //on consolidation ID existance; return undefined and error
           console.log(' benefit is already signed', lastSus.uuid);
-          setErrorA({ value: true, message: 'usted ya se validó 🤔' });
+          setErrorA({ value: true, message: 'usted ya se validó previamente 🤔' });
           return undefined;
         }
 
-        //fetch date of classroom from document 🔥
+        //ON success continue
+        //fetch date of classroom from document 🔥🔥🔥
         const queryClassroom = await db
           .collection(`Activity/${refUuid}/Classroom`)
           .doc(lastSus.classroom.uuid)
           .get();
         const room = queryClassroom.data();
+
         //set state of current classroom
         if (room !== undefined) {
           const classroom: IClassroom = {
@@ -247,12 +256,13 @@ export const Validation = () => {
           setClassroom(classroom);
         }
 
-        //checking if this person is on schechule ⏱⛅⛈to sign
+        //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
         const act = room?.placeActivity.date.toDate(); /*day of class 📆*/
         const timeGap = lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
-        console.log('date instance', timeGap);
         timeGap.setDate(timeGap.getDate() + 3);
+
+        console.log('date of class', act);
         console.log('time gap', timeGap);
 
         switch (true) {
@@ -305,6 +315,11 @@ export const Validation = () => {
   }
 
   async function checkConsolidated(suscription: string) {
+    /**
+     *  @function checkConsolidated 🔥🔥🔥 return if this suscription ID
+     * was already signed and validate, fetching sus ID inside Consolidated,
+     * if this is not (undefined) will return FALSE , which means is ok👌🆗:
+     */
     const queryCvn = await db
       .collection(`Activity/${refUuid}/Consolidated`)
       .doc(suscription)

@@ -112,9 +112,9 @@ export const Suscription = () => {
     setIsRol(rolChecker(data.rut));
     console.log('is rol valid?', isRol);
 
-    //check is already got kit 👁‍🗨👁‍🗨
+    //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
     const result = await checkBenefit(data);
-    setGotBenefit(result);
+    setGotBenefit(result); //state of having benefits active
     console.log('got benefits?', result);
   };
 
@@ -136,11 +136,10 @@ export const Suscription = () => {
      * @function checkFirebase got is she got old active benefits
      */
     try {
-      //firestore🔥🔥🔥
+      //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
       const req = db.collection(`Activity/${refUuid}/Consolidated`);
       console.log('firestore fetch rut', data.rut);
-
       const queryDocs = await req.where('rut', '==', data.rut).get();
       console.log('test', queryDocs.docs);
 
@@ -160,12 +159,13 @@ export const Suscription = () => {
         return result;
       });
 
+      //filter all benefits after date limit (now 31-01-2017)
       listDocs.filter((cvn) => {
         return cvn.dateBenefit > dateLimit;
       });
-
       console.log('benefits after date limit', listDocs.length);
-      //true: failure false:go go go
+
+      //true: failure, had benefits,  false:go go go, this person is ok
       return listDocs.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
@@ -178,7 +178,7 @@ export const Suscription = () => {
     if (gotBenefit === undefined) {
       return undefined;
     } else if (gotBenefit === true) {
-      //if condition true means this person already has valid benefits active
+      //active benefits, alert cant continue ❌❌
       return (
         <Grid item xs={12}>
           {' '}
@@ -187,6 +187,7 @@ export const Suscription = () => {
       );
     } else {
       return (
+        //non, active benefits , alert this person can continue ✅✅
         <Grid item xs={12}>
           <Alert severity='success'>cumple los requisitos 😃</Alert>
         </Grid>
@@ -254,7 +255,6 @@ export const Suscription = () => {
   );
 
   //FROM B 💖💖💗
-
   const onSubmitB: SubmitHandler<Input> = async (data) => {
     console.log('form B', data);
     setDisableB(true);
@@ -272,7 +272,7 @@ export const Suscription = () => {
      * INSIDE the territory suscription
      */
     try {
-      //firestore🔥🔥🔥
+      //firestore🔥🔥🔥: fetch incoming classes
       const rightNow = new Date();
       const req = db.collection(`Activity/${refUuid}/Classroom`);
       console.log('requested city', data.city);
@@ -283,7 +283,7 @@ export const Suscription = () => {
       const listClassrooms: IClassroom[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
         console.log('data classroom', it);
-
+        //creating maps {..}Iclassrooms
         const classroom: IClassroom = {
           uuid: doc.id,
           idCal: it.idCal,
@@ -310,19 +310,20 @@ export const Suscription = () => {
         return classroom;
       });
 
-      const filterClassrooms = listClassrooms.filter((classroom) => {
+      //filtering near classes🔎🔍📟
+      const nearClassrooms = listClassrooms.filter((classroom) => {
         return classroom.allowedCities.indexOf(data.city) !== -1;
       });
 
       console.log(
         'list of avaliable classrooms on city',
         data.city,
-        filterClassrooms.length,
-        filterClassrooms.map((it) => it.idCal)
+        nearClassrooms.length,
+        nearClassrooms.map((it) => it.idCal)
       );
 
-      //set classrooms avaliable state hook
-      setAvaliableClassrooms(filterClassrooms);
+      //set near classrooms avaliable state  🎣
+      setAvaliableClassrooms(nearClassrooms);
 
       return listClassrooms.length > 0 ? true : false;
     } catch (error) {
@@ -484,14 +485,14 @@ export const Suscription = () => {
     }
   };
 
-  //firebase create Suscribed
+  //firebase create Suscribed🔥🔥🔥
   const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
     null
   );
 
   async function createSuscription(data: Input) {
     try {
-      //check selection o classroom
+      //check if it's there a room selected ❓❓
       if (selectedRoom === undefined) {
         console.log('isnt a selected room', undefined);
         setErrorC({
@@ -501,14 +502,16 @@ export const Suscription = () => {
         return false;
       }
 
-      //check if already exist a suscription for this RUT
+      //check the selected ROOM has already this RUT 🔎👤
       const susRef = db.collection(`Activity/${refUuid}/Suscribed`);
       const susQuery = await susRef.where('rut', '==', data.rut).get();
       const susDocs = susQuery.docs.map((sus) => {
         const it = sus.data() as IPerson;
+        //create array maps of Rooms ID this RUT had suscribed
         return it.classroom.uuid;
       });
 
+      //if indexOf is -1: this person isnt suscribed to seleced room
       const isNotSuscribed = susDocs.indexOf(selectedRoom?.uuid ?? '') === -1;
       if (isNotSuscribed) {
         //prepare to upload new suscription
@@ -537,10 +540,9 @@ export const Suscription = () => {
         };
 
         //set new suscription 🔥🔥🔥
-
         await ref.set(person);
         setSuscribedPerson(person);
-        console.log('person suscription success 👌', selectedRoom?.idCal);
+        console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥
@@ -553,12 +555,11 @@ export const Suscription = () => {
           //update classroom enrolled list is dosent exist, avoid duplication
           enrolled?.push(person.uuid);
           refRoom.set({ enrolled: enrolled }, { merge: true });
-          console.log('updated classroom enrolled', person?.uuid);
+          console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
         }
-
         return true;
       } else {
-        console.log('human already suscribed on', selectedRoom?.idCal);
+        console.log('on previous existance on this room', selectedRoom?.idCal);
         setErrorC({
           value: true,
           message: 'tranquilidad, ya estabas a este taller 🤔 ',
