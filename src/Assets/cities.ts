@@ -478,7 +478,7 @@ export const cities: City[] = [
     provinceId: '055',
     province: 'Quillota',
     cityId: '05502',
-    city: 'Calera',
+    city: 'La Calera',
   },
   {
     regionId: '05',
@@ -574,7 +574,7 @@ export const cities: City[] = [
     provinceId: '057',
     province: 'San Felipe de Aconcagua',
     cityId: '05703',
-    city: 'Llaillay',
+    city: 'Llayllay',
   },
   {
     regionId: '05',
