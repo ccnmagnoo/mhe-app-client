@@ -1,20 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Card, CardContent, Grid, Avatar, CardHeader } from '@material-ui/core';
-import myOldData from '../../Config/mhe-data-rooms.json';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { IClassroom } from '../../Models/Classroom.interface';
-import { LandType } from '../../Functions/GetTerritoryList';
-
-type InputJson = {
-  city: string;
-  dataInstance: string;
-  dir: string;
-  colaborator: string;
-  uuid: string;
-  idcal: string;
-};
 
 export const Welcome = () => {
   return (
