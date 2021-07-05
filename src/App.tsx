@@ -10,6 +10,7 @@ import { auth } from './Config/firebase';
 import firebase from 'firebase/app';
 import { Suscription } from './Components/Public/Suscription';
 import { Validation } from './Components/Public/Validation';
+import { Help } from './Components/Public/Help';
 
 function App() {
   //auth user firebase
@@ -46,7 +47,9 @@ function App() {
           <Route path='/validation'>
             <Validation />
           </Route>
-          <Route path='/help'>Q&A page</Route>
+          <Route path='/help'>
+            <Help />
+          </Route>
           <Route path='/login'>
             <Login />
           </Route>
