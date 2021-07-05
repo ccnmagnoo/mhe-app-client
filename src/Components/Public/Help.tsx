@@ -241,7 +241,7 @@ export const Help = () => {
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
 
-      <Button variant='text' color='secondary' onClick={uploadPeople}>
+      <Button variant='text' color='secondary' onClick={(params) => {}}>
         populate firebase people
       </Button>
     </React.Fragment>
