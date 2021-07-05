@@ -6,20 +6,21 @@ import { LandType } from '../../Functions/GetTerritoryList';
 
 //external files to upload
 import roomsddbb from '../../Config/mhe-data-rooms.json';
-import cvn02000 from '../../Config/mhe-data-benefit-02000.json';
-import cvn04000 from '../../Config/mhe-data-benefit-04000.json';
-import cvn06000 from '../../Config/mhe-data-benefit-06000.json';
-import cvn08000 from '../../Config/mhe-data-benefit-08000.json';
-import cvn10000 from '../../Config/mhe-data-benefit-10000.json';
-import cvn12000 from '../../Config/mhe-data-benefit-12000.json';
-import cvn14000 from '../../Config/mhe-data-benefit-14000.json';
-import cvn16000 from '../../Config/mhe-data-benefit-16000.json';
-import cvn18000 from '../../Config/mhe-data-benefit-18000.json';
-import cvn20000 from '../../Config/mhe-data-benefit-20000.json';
-import cvn22000 from '../../Config/mhe-data-benefit-22000.json';
-import cvn24000 from '../../Config/mhe-data-benefit-22000.json';
-import cvn26000 from '../../Config/mhe-data-benefit-26000.json';
-import cvn28000 from '../../Config/mhe-data-benefit-28000.json';
+//import cvn02000 from '../../Config/mhe-data-benefit-02000.json';
+//import cvn04000 from '../../Config/mhe-data-benefit-04000.json';
+//import cvn06000 from '../../Config/mhe-data-benefit-06000.json';
+//import cvn08000 from '../../Config/mhe-data-benefit-08000.json';
+//import cvn10000 from '../../Config/mhe-data-benefit-10000.json';
+//import cvn12000 from '../../Config/mhe-data-benefit-12000.json';
+//import cvn14000 from '../../Config/mhe-data-benefit-14000.json';
+//import cvn16000 from '../../Config/mhe-data-benefit-16000.json';
+//import cvn18000 from '../../Config/mhe-data-benefit-18000.json';
+//import cvn20000 from '../../Config/mhe-data-benefit-20000.json';
+//import cvn22000 from '../../Config/mhe-data-benefit-22000.json';
+//import cvn24000 from '../../Config/mhe-data-benefit-22000.json';
+//import cvn26000 from '../../Config/mhe-data-benefit-26000.json';
+//import cvn28000 from '../../Config/mhe-data-benefit-28000.json';
+//import cvnToFix from '../../Config/mhe-data-benefit-toFix.json';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
@@ -52,20 +53,21 @@ export const Help = () => {
   //room database
   const roomDatabase = roomsddbb.classrooms; /*rooms ddbb*/
   const cvn: ConsolidatedJson[][] = [
-    cvn02000,
-    cvn04000,
-    cvn06000,
-    cvn08000,
-    cvn10000,
-    cvn12000,
-    cvn14000,
-    cvn16000,
-    cvn18000,
-    cvn20000,
-    cvn22000,
-    cvn24000,
-    cvn26000,
-    cvn28000,
+    //cvn02000,
+    //cvn04000,
+    //cvn06000,
+    //cvn08000,
+    //cvn10000,
+    //cvn12000,
+    //cvn14000,
+    //cvn16000,
+    //cvn18000,
+    //cvn20000,
+    //cvn22000,
+    //cvn24000,
+    //cvn26000,
+    //cvn28000,
+    //cvnToFix,
   ];
 
   function uploadRooms() {
@@ -241,7 +243,7 @@ export const Help = () => {
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
 
-      <Button variant='text' color='secondary' onClick={(params) => {}}>
+      <Button variant='text' color='secondary'>
         populate firebase people
       </Button>
     </React.Fragment>
