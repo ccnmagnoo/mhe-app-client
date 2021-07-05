@@ -1,8 +1,8 @@
 import { Alert } from '@material-ui/lab';
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import { IClassroom } from '../../Models/Classroom.interface';
-import { LandType } from '../../Functions/GetTerritoryList';
+//import Button from '@material-ui/core/Button';
+//import { IClassroom } from '../../Models/Classroom.interface';
+//import { LandType } from '../../Functions/GetTerritoryList';
 
 //external files to upload
 //import roomsddbb from '../../Config/mhe-data-rooms.json';
@@ -21,54 +21,55 @@ import { LandType } from '../../Functions/GetTerritoryList';
 //import cvn26000 from '../../Config/mhe-data-benefit-26000.json';
 //import cvn28000 from '../../Config/mhe-data-benefit-28000.json';
 //import cvnToFix from '../../Config/mhe-data-benefit-toFix.json';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { IBeneficiary } from '../../Models/Beneficiary.interface';
-import { Gender } from '../../Models/Person.Interface';
 
-type RoomJson = {
-  city: string;
-  dataInstance: string;
-  dir: string;
-  colaborator: string;
-  uuid: string;
-  idcal: string;
-};
-type ConsolidatedJson = {
-  reg: string;
-  puuid: string;
-  firstName: string;
-  fatherName: string;
-  motherName: string;
-  rut: string;
-  dir: string;
-  dateBenefit: string;
-  city: string;
-  gender: string;
-  idCal: string;
-  uuidRoom: string;
-};
+//import { refUuid } from '../../Config/credential';
+//import { db } from '../../Config/firebase';
+//import { IBeneficiary } from '../../Models/Beneficiary.interface';
+//import { Gender } from '../../Models/Person.Interface';
+
+//type RoomJson = {
+//city: string;
+//dataInstance: string;
+//dir: string;
+//colaborator: string;
+//uuid: string;
+//idcal: string;
+//};
+//type ConsolidatedJson = {
+//reg: string;
+//puuid: string;
+//firstName: string;
+//fatherName: string;
+//motherName: string;
+//rut: string;
+//dir: string;
+//dateBenefit: string;
+//city: string;
+//gender: string;
+//idCal: string;
+//uuidRoom: string;
+//};
 
 export const Help = () => {
   //room database
   //const roomDatabase = [];//roomsddbb.classrooms; /*rooms ddbb*/
-  const cvn: ConsolidatedJson[][] = [
-    //cvn02000,
-    //cvn04000,
-    //cvn06000,
-    //cvn08000,
-    //cvn10000,
-    //cvn12000,
-    //cvn14000,
-    //cvn16000,
-    //cvn18000,
-    //cvn20000,
-    //cvn22000,
-    //cvn24000,
-    //cvn26000,
-    //cvn28000,
-    //cvnToFix,
-  ];
+  //const cvn: ConsolidatedJson[][] = [
+  //cvn02000,
+  //cvn04000,
+  //cvn06000,
+  //cvn08000,
+  //cvn10000,
+  //cvn12000,
+  //cvn14000,
+  //cvn16000,
+  //cvn18000,
+  //cvn20000,
+  //cvn22000,
+  //cvn24000,
+  //cvn26000,
+  //cvn28000,
+  //cvnToFix,
+  //];
 
   //function uploadRooms() {
   //console.log('upload click');
@@ -242,10 +243,6 @@ export const Help = () => {
   return (
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
-
-      <Button variant='text' color='secondary'>
-        populate firebase people
-      </Button>
     </React.Fragment>
   );
 };
