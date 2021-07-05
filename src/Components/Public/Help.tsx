@@ -93,11 +93,24 @@ export const Help = () => {
           land: { type: LandType.city, name: rum.city },
         };
 
-        //get enrolled in this classroom
+        //get person in repository with this on site classroom
+        const attendeesList: string[] = [];
+        cvn.forEach((params) => {
+          params.forEach((person) => {
+            if (person.uuidRoom === classroom.uuid) {
+              classroom.attendees.push(person.puuid);
+              classroom.enrolled.push(person.puuid);
+            }
+          });
+        });
+
+        //upload to firebase:
+        console.log('builde clasroom', classroom.idCal, 'attendees', classroom.attendees);
       }
     };
 
-    //toFirestore();
+    toFirestore();
+
     console.countReset('data room to upload');
   }
 
