@@ -20,6 +20,8 @@ import cvn22000 from '../../Config/mhe-data-benefit-22000.json';
 import cvn24000 from '../../Config/mhe-data-benefit-22000.json';
 import cvn26000 from '../../Config/mhe-data-benefit-26000.json';
 import cvn28000 from '../../Config/mhe-data-benefit-28000.json';
+import { refUuid } from '../../Config/credential';
+import { db } from '../../Config/firebase';
 
 type RoomJson = {
   city: string;
@@ -64,7 +66,7 @@ export const Help = () => {
     cvn28000,
   ];
 
-  function upload() {
+  function uploadRooms() {
     console.log('upload click');
     console.log(
       'size of rooms list',
@@ -73,8 +75,8 @@ export const Help = () => {
       cvn.length
     );
 
-    const toFirestore = async () => {
-      for (let i = 0; i < 2 /*roomDatabase.length*/; i++) {
+    const roomsToFirestore = async () => {
+      for (let i = 0; i < roomDatabase.length; i++) {
         console.count('data room to upload');
         //conver to IClassroom
         const rum: RoomJson = roomDatabase[i];
@@ -94,7 +96,6 @@ export const Help = () => {
         };
 
         //get person in repository with this on site classroom
-        const attendeesList: string[] = [];
         cvn.forEach((params) => {
           params.forEach((person) => {
             if (person.uuidRoom === classroom.uuid) {
@@ -105,20 +106,35 @@ export const Help = () => {
         });
 
         //upload to firebase:
-        console.log('builde clasroom', classroom.idCal, 'attendees', classroom.attendees);
+        console.log(
+          'build clasroom',
+          classroom.idCal,
+          'attendees',
+          classroom.attendees.length
+        );
+        try {
+          await db
+            .collection(`Activity/${refUuid}/Classroom`)
+            .doc(classroom.uuid)
+            .set(classroom);
+          console.log('load success', classroom.idCal);
+        } catch (error) {
+          console.log('load fail', classroom.idCal);
+        }
       }
     };
-
-    toFirestore();
-
+    roomsToFirestore();
     console.countReset('data room to upload');
   }
 
   return (
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
-      <Button variant='text' color='secondary' onClick={upload}>
-        populate firebase
+      <Button variant='text' color='secondary' onClick={uploadRooms}>
+        populate firebase classrooms
+      </Button>
+      <Button variant='text' color='secondary' onClick={uploadRooms}>
+        populate firebase people
       </Button>
     </React.Fragment>
   );
