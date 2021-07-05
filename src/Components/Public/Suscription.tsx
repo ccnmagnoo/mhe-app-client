@@ -152,7 +152,7 @@ export const Suscription = () => {
             uuid: it.classroom.uuid,
             dateInstance: it.classroom.dateInstance.toDate(),
           },
-          dateBenefit: it.dateBenefit.toDate(),
+          dateBenefit: it.dateBenefit,
           rut: it.rut,
           sign: it.sign,
         };
@@ -160,13 +160,13 @@ export const Suscription = () => {
       });
 
       //filter all benefits after date limit (now 31-01-2017)
-      listDocs.filter((cvn) => {
+      const filterDocs = listDocs.filter((cvn) => {
         return cvn.dateBenefit > dateLimit;
       });
       console.log('benefits after date limit', listDocs.length);
 
       //true: failure, had benefits,  false:go go go, this person is ok
-      return listDocs.length > 0 ? true : false;
+      return filterDocs.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
       return true;
@@ -499,7 +499,7 @@ export const Suscription = () => {
         console.log('isnt a selected room', undefined);
         setErrorC({
           value: true,
-          message: 'no has selecionado un taller 🙊 ',
+          message: 'has selecionado un taller 🙊 ',
         });
         return false;
       }
