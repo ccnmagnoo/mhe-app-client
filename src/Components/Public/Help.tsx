@@ -5,7 +5,7 @@ import { IClassroom } from '../../Models/Classroom.interface';
 import { LandType } from '../../Functions/GetTerritoryList';
 
 //external files to upload
-import roomsddbb from '../../Config/mhe-data-rooms.json';
+//import roomsddbb from '../../Config/mhe-data-rooms.json';
 //import cvn02000 from '../../Config/mhe-data-benefit-02000.json';
 //import cvn04000 from '../../Config/mhe-data-benefit-04000.json';
 //import cvn06000 from '../../Config/mhe-data-benefit-06000.json';
@@ -51,7 +51,7 @@ type ConsolidatedJson = {
 
 export const Help = () => {
   //room database
-  const roomDatabase = roomsddbb.classrooms; /*rooms ddbb*/
+  //const roomDatabase = roomsddbb.classrooms; /*rooms ddbb*/
   const cvn: ConsolidatedJson[][] = [
     //cvn02000,
     //cvn04000,
