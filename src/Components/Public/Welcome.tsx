@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Card, CardContent, Grid, Avatar, CardHeader } from '@material-ui/core';
-
+import popipo from '../../Assets/popiposoft.svg';
 export const Welcome = () => {
   return (
     <React.Fragment>
@@ -27,7 +27,9 @@ export const Welcome = () => {
               </Typography>
               <Typography variant='caption' color='initial'>
                 {' '}
-                Popipo🦜Soft &trade;
+                Popipo
+                <img className='button' src={popipo} alt='logo taller' width={25} />
+                Soft &trade;
               </Typography>
             </Grid>
           </Grid>
