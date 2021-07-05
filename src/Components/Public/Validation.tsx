@@ -49,7 +49,7 @@ export const Validation = () => {
     formState: { errors },
   } = useForm<Input>();
 
-  //canvas hookconst
+  //canvas hookconst 👩‍🎨👨‍🎨🎨
   const [renderRef, draw] = useSvgDrawing({
     penWidth: 2, // pen width
     penColor: 'blue', // pen color
@@ -60,7 +60,7 @@ export const Validation = () => {
   });
   const Drawing = () => {
     // Drawing area will be resized to fit the rendering area
-    return <div style={{ width: '100%', height: 180 }} ref={renderRef} />;
+    return <div style={{ width: '100%', height: 200 }} ref={renderRef} />;
   };
 
   //converter function
@@ -304,7 +304,7 @@ export const Validation = () => {
         console.log('no suscriptions detected', suscriptions.length);
         setErrorA({
           value: true,
-          message: 'no encuentro inscripciones con este rut 🙊',
+          message: 'no encuentro este rut 🙊, tienes que que haberte inscrito antes',
         });
         console.log(errorA);
       }
@@ -436,7 +436,8 @@ export const Validation = () => {
       const signSvg = draw
         .getSvgXML()
         ?.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
-      //new beneficiary
+
+      //new beneficiary with sign SVG code✍✍✍✒
       if (person !== undefined) {
         const beneficiary: IBeneficiary = { ...person, sign: signSvg, dateSign: now };
 
@@ -544,7 +545,7 @@ export const Validation = () => {
 
                   <br />
                   <br />
-                  <Grid item xs={3} sm={'auto'} justify='center'>
+                  <Grid item xs={12} sm={'auto'} justify='center'>
                     <Button
                       variant='contained'
                       type='submit'
