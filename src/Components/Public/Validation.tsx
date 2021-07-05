@@ -363,7 +363,8 @@ export const Validation = () => {
                     {...register('rut', {
                       pattern: {
                         value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                        message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                        message:
+                          'rut inválido 🙅‍♂️: debe tener guión "-" y estár sin puntos "." 👌',
                       },
                       validate: { isTrue: (v) => rolChecker(v) === true },
                     })}
