@@ -127,13 +127,13 @@ export const Help = () => {
     console.countReset('data room to upload');
   }
 
+  function uploadPeople() {}
+
   return (
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
-      <Button variant='text' color='secondary' onClick={uploadRooms}>
-        populate firebase classrooms
-      </Button>
-      <Button variant='text' color='secondary' onClick={uploadRooms}>
+
+      <Button variant='text' color='secondary' onClick={uploadPeople}>
         populate firebase people
       </Button>
     </React.Fragment>
