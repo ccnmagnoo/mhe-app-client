@@ -286,6 +286,8 @@ export const Suscription = () => {
       const listClassrooms: IClassroom[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
         console.log('data classroom', it);
+        //seting vacancies: it
+        const itVacancies: number = it.vacancies === undefined ? 180 : it.vacancies;
         //creating maps {..}Iclassrooms
         const classroom: IClassroom = {
           uuid: doc.id,
@@ -307,8 +309,8 @@ export const Suscription = () => {
           },
           allowedCities: it.allowedCities,
           cityOnOp: it.cityOnOp,
-
           land: { type: it.land.type as LandType, name: it.land.name },
+          vacancies: itVacancies,
         };
         return classroom;
       });
@@ -318,17 +320,23 @@ export const Suscription = () => {
         return classroom.allowedCities.indexOf(data.city) !== -1;
       });
 
+      //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
+      const roomsWithVacancies = nearClassrooms.filter((classroom) => {
+        const vacancies: number = classroom.vacancies ?? 180;
+        return classroom.enrolled.length < vacancies;
+      });
+
       console.log(
         'list of avaliable classrooms on city',
         data.city,
-        nearClassrooms.length,
-        nearClassrooms.map((it) => it.idCal)
+        roomsWithVacancies.length,
+        roomsWithVacancies.map((it) => it.idCal)
       );
 
       //set near classrooms avaliable state  🎣
-      setAvaliableClassrooms(nearClassrooms);
+      setAvaliableClassrooms(roomsWithVacancies);
 
-      return listClassrooms.length > 0 ? true : false;
+      return roomsWithVacancies.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch classrooms', error);
     }
@@ -651,19 +659,19 @@ export const Suscription = () => {
                 </IconButton>
               }
               title='Lo sentimos'
-              subheader='no hay talleres cercanos disponibles'
+              subheader='no hay talleres con vacantes disponibles en su zona'
             />
             <CardContent>
               <Typography variant='subtitle2' color='primary'>
                 ¿Como puedo participar en un taller?
               </Typography>
-              <Typography variant='body2' color='textSecondary'>
+              <Typography variant='body2' color='textSecondary' paragraph align='justify'>
                 Los talleres son implementados por el Ministerio de energía en
                 coordinación con una
                 <strong> institución municipal o servicio público</strong>, puede
-                acercarse a sus oficinas sociales para solicitar un taller o escribanos a
+                acercarse a sus oficinas sociales para solicitar un taller o escribanos a{' '}
                 <strong>
-                  <a href='mailto:ccamposn@minenergia.cl'> enviar email </a>
+                  <a href='mailto:ccamposn@minenergia.cl'>este email </a>
                 </strong>
               </Typography>
             </CardContent>
