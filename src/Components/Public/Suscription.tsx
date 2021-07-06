@@ -152,7 +152,7 @@ export const Suscription = () => {
             uuid: it.classroom.uuid,
             dateInstance: it.classroom.dateInstance.toDate(),
           },
-          dateBenefit: it.dateBenefit,
+          dateBenefit: it.dateBenefit.toDate(),
           rut: it.rut,
           sign: it.sign,
         };
@@ -163,9 +163,10 @@ export const Suscription = () => {
       const filterDocs = listDocs.filter((cvn) => {
         return cvn.dateBenefit > dateLimit;
       });
-      console.log('benefits after date limit', listDocs.length);
+      console.log('benefits after date limit', filterDocs.length);
 
       //true: failure, had benefits,  false:go go go, this person is ok
+
       return filterDocs.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
@@ -727,7 +728,7 @@ export const Suscription = () => {
                     type='submit'
                     variant='contained'
                     color='primary'
-                    disabled={disableS}
+                    disabled={disableC && disableS}
                   >
                     {disableC && disableS ? '✅' : 'Incripción'}
                   </Button>
@@ -756,8 +757,8 @@ export const Suscription = () => {
     >
       <DialogTitle id='index'>
         <Typography variant='subtitle1' color='primary'>
-          Felicidades {suscribedPerson?.name.firstName.toUpperCase()} ya estás inscrit@
-          🎉✨
+          Felicidades <strong> {suscribedPerson?.name.firstName} </strong>ya estás
+          inscrit@ 🎉✨
         </Typography>
       </DialogTitle>
       <DialogContent>

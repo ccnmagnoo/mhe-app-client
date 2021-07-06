@@ -11,6 +11,7 @@ import {
 import React from 'react';
 import { dateLimit } from '../../Config/credential';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import moment from 'moment';
 
 export const Requirements = () => {
   const requirementList = [
@@ -32,7 +33,7 @@ export const Requirements = () => {
     },
     {
       main: `no haya recibido Kit después de esta fecha`,
-      sub: dateLimit.toLocaleDateString(),
+      sub: moment(dateLimit).format('DD [de] MMMM [de año] YYYY'),
     },
     {
       main: `participar y validar su asistencia al taller inscrito`,

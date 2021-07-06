@@ -68,7 +68,12 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                         {moment(classroom?.dateInstance).endOf('days').fromNow()}
                       </strong>
                     </Typography>
-                    <Typography variant='body1' color='textPrimary'>
+                    <Typography
+                      variant='body1'
+                      color='textPrimary'
+                      paragraph
+                      align='justify'
+                    >
                       el taller de capacitación de realizará en{' '}
                       {classroom?.placeActivity.name} con la siguiente dirección <br />
                       {}
@@ -86,7 +91,7 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                         {convertToUrl(classroom?.placeDispatch?.dir)}
                       </Typography>
                       <Typography variant='caption' color='secondary'>
-                        el retiro del kit es de su exclusiva{' '}
+                        el retiro del kit es de su exclusiva
                         <strong>responsabilidad</strong> .
                       </Typography>
                     </Alert>
