@@ -85,7 +85,7 @@ export const OnSuccessSuscription = (props: SuccessProps) => {
                         Su Kit de Ahorro <strong>se entregará</strong> a partir del <br />
                         {moment(classroom?.placeDispatch?.date).format(
                           'DD [de] MMMM [desde las] h:mm a'
-                        )}{' '}
+                        )}
                         en la siguiente dirección <br />
                         <strong> {classroom?.placeDispatch?.name}</strong> <br />
                         {convertToUrl(classroom?.placeDispatch?.dir)}
