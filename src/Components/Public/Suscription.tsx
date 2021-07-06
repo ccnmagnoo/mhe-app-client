@@ -141,8 +141,6 @@ export const Suscription = () => {
       const req = db.collection(`Activity/${refUuid}/Consolidated`);
       console.log('firestore fetch rut', data.rut);
       const queryDocs = await req.where('rut', '==', data.rut).get();
-      console.log('test', queryDocs.docs);
-
       const listDocs: IConsolidated[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
         const result: IConsolidated = {
@@ -323,6 +321,12 @@ export const Suscription = () => {
       //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
       const roomsWithVacancies = nearClassrooms.filter((classroom) => {
         const vacancies: number = classroom.vacancies ?? 180;
+        console.log(
+          'analizing vancacies, enrolled',
+          classroom.enrolled.length,
+          'vacancies: ',
+          vacancies
+        );
         return classroom.enrolled.length < vacancies;
       });
 
@@ -508,7 +512,7 @@ export const Suscription = () => {
         console.log('isnt a selected room', undefined);
         setErrorC({
           value: true,
-          message: 'has selecionado un taller 🙊 ',
+          message: 'no has selecionado un taller 🙊 ',
         });
         return false;
       }
