@@ -8,6 +8,8 @@ import {
   Chip,
   Avatar,
   Grow,
+  ButtonGroup,
+  makeStyles,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
@@ -20,15 +22,25 @@ import { IClassroom } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
 
-//canvas
-import { useSvgDrawing } from 'react-hooks-svgdrawing';
+//icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { Fab } from '@material-ui/core';
+import ReplayIcon from '@material-ui/icons/Replay';
+
+//canvas
+import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import { isUrl } from '../../Functions/IsURL';
 import React from 'react';
 
+//sign paper style
+const useStyles = makeStyles((theme) => ({
+  paperRoot: {
+    backgroundColor: '#e8eaf6',
+  },
+}));
+
 export const Validation = () => {
+  const signPaper = useStyles();
   //State hook with information
   const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
   const [classroom, setClassroom] = React.useState<IClassroom | undefined>(undefined);
@@ -491,62 +503,84 @@ export const Validation = () => {
 
   const validationB = (
     <React.Fragment>
-      <br />
       <Grow in={visibleB}>
         <form onSubmit={handleSubmit(onSubmitB)}>
-          <Paper>
+          <Paper elevation={0}>
             <Box p={1}>
+              {/*the DOCUMENT 🚩📖📚*/}
               <SignDocument person={person as IBeneficiary} classroom={classroom} />
               <Paper variant='outlined' elevation={1}>
-                <Grid container spacing={1} justify='center' direction='row'>
-                  <Grid item xs={12}>
+                <Grid
+                  container
+                  spacing={1}
+                  justify='center'
+                  direction='row'
+                  alignContent='center'
+                >
+                  <Grid item xs={12} sm={9}>
                     <Typography variant='subtitle2' color='primary' align='left'>
                       firme aquí ✍
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12}></Grid>
+                  {/*canvas control 🆓🆓✅*/}
+
+                  <Grid item xs={'auto'} sm={'auto'} justify='center'>
+                    <ButtonGroup
+                      variant='contained'
+                      color='inherit'
+                      aria-label='control-firma'
+                    >
+                      <Button
+                        disabled={disableCtrl}
+                        color='primary'
+                        aria-label='done'
+                        onClick={() => {
+                          setDisableB(false);
+                        }}
+                      >
+                        {/*🔽*/}
+                        <CheckCircleOutlineIcon />
+                      </Button>
+
+                      <Button
+                        disabled={disableCtrl}
+                        color='primary'
+                        aria-label='atrás'
+                        onClick={() => {
+                          setDisableB(true);
+                          draw.undo();
+                        }}
+                      >
+                        {/*🔽*/}
+                        <ReplayIcon />
+                      </Button>
+                      <Button
+                        disabled={disableCtrl}
+                        color='secondary'
+                        aria-label='borrar'
+                        onClick={() => {
+                          setDisableB(true);
+                          draw.clear();
+                        }}
+                      >
+                        {/*🔽*/}
+                        <HighlightOffIcon />
+                      </Button>
+                    </ButtonGroup>
+                  </Grid>
 
                   {/*canvas ✍✍✍*/}
-                  <Grid item xs={1}></Grid>
-                  <Grid item xs={9}>
-                    <Paper variant='outlined'>
-                      <Box m={2} color='info.main'>
+
+                  <Grid item xs={12} sm={9}>
+                    <Paper elevation={4} className={signPaper.paperRoot}>
+                      <Box m={2} p={2} color='secondary'>
                         {Drawing}
                       </Box>
                     </Paper>
                   </Grid>
-                  <Grid item xs={2} direction='column'>
-                    <Fab
-                      disabled={disableCtrl}
-                      color='secondary'
-                      aria-label='limpiar'
-                      onClick={() => {
-                        setDisableB(true);
-                        draw.undo();
-                      }}
-                    >
-                      {/*🔽*/}
-                      <HighlightOffIcon />
-                    </Fab>
-
-                    <Fab
-                      disabled={disableCtrl}
-                      color='primary'
-                      aria-label='done'
-                      onClick={() => {
-                        setDisableB(false);
-                      }}
-                    >
-                      <div> </div>
-                      {/*🔽*/}
-                      <CheckCircleOutlineIcon />
-                    </Fab>
-                  </Grid>
-
                   <br />
-                  <br />
-                  <Grid item xs={12} sm={'auto'} justify='center'>
+                  <Grid item xs={'auto'} sm={'auto'} justify='center'>
                     <Button
                       variant='contained'
                       type='submit'
@@ -573,6 +607,7 @@ export const Validation = () => {
       {titleMessage}
       <br />
       {validationA}
+      <br />
       {visibleB ? validationB : undefined}
     </React.Fragment>
   );
