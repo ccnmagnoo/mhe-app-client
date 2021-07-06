@@ -1,6 +1,5 @@
 import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
 import React from 'react';
-import { testSign } from '../../Functions/svgString';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
 
