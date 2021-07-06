@@ -45,13 +45,12 @@ const Dashboard = (props: any) => {
     <Grid
       container
       spacing={1}
-      direction='column'
+      direction='row'
       justify='center'
       alignItems='center'
       alignContent='center'
-      wrap='wrap'
     >
-      <Grid item>
+      <Grid item xs={12}>
         <ButtonGroup
           variant='outlined'
           color='primary'
@@ -62,10 +61,10 @@ const Dashboard = (props: any) => {
             <HomeIcon />
           </Button>
           <Button component={Link} to={`${url}/ahead`}>
-            futuro
+            planificación
           </Button>
           <Button component={Link} to={`${url}/done`}>
-            pasado
+            consolidado
           </Button>
           <Button component={Link} to={`${url}/create`}>
             <AddCircleOutlineIcon />
@@ -75,7 +74,7 @@ const Dashboard = (props: any) => {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Switch>
           <Route exact path={path}>
             <Typography variant='body2' color='primary'>
@@ -85,6 +84,7 @@ const Dashboard = (props: any) => {
           <Route path={`${path}/ahead`}>planificación</Route>
           <Route path={`${path}/done`}>realizadas</Route>
           <Route path={`${path}/create`}>
+            {/*create new classroom*/}
             <Create />
           </Route>
           <Route path={`${path}/edition`}>
