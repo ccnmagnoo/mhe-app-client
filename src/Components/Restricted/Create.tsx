@@ -122,6 +122,7 @@ const Create = (props: any) => {
           const listOfCities = getCityList(data.landName, data.landType as LandType);
           const datePlaceSetting = new Date(data.placeDate);
           const datePostSetting = new Date(data.postDate);
+          //TODO: add input: vancancies allowed
 
           const classRoom: IClassroom = {
             uuid: uuid,
@@ -130,6 +131,7 @@ const Create = (props: any) => {
             enrolled: [],
             attendees: [],
             dateInstance: datePlaceSetting,
+            vacancies: 180,
             placeActivity: {
               name: data.placeName,
               dir: data.placeDir,
