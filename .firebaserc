@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "myappt51"
+  },
+  "targets": {
+    "myappt51": {
+      "hosting": {
+        "conbuenaenergia": [
+          "myappt51"
+        ]
+      }
+    }
   }
 }
