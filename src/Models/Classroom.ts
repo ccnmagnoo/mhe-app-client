@@ -16,6 +16,7 @@ export class Classroom implements IClassroom {
   cityOnOp: string;
   colaborator: string;
   land: { type: LandType; name: string };
+  vacancies?: number;
 
   constructor(
     uuid: string,
@@ -26,6 +27,7 @@ export class Classroom implements IClassroom {
     city: string,
     landName: string,
     landType: LandType,
+    vacancies: number,
     allowedCities: string[],
     placeActivity: IPlace,
     placeDispatch?: IPlace
@@ -40,6 +42,7 @@ export class Classroom implements IClassroom {
     this.allowedCities = allowedCities;
     this.dateInstance = placeActivity.date;
     this.colaborator = colaborator;
+    this.vacancies = vacancies;
     this.land = { type: landType, name: landName };
   }
 }
