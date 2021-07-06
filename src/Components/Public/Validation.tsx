@@ -518,8 +518,8 @@ export const Validation = () => {
                   alignContent='center'
                 >
                   <Grid item xs={12} sm={9}>
-                    <Typography variant='subtitle2' color='primary' align='left'>
-                      firme aquí ✍
+                    <Typography variant='subtitle2' color='primary' align='center'>
+                      firme aquí ✍ {moment(new Date()).format('dddd DD MMMM YYYY')}
                     </Typography>
                   </Grid>
 
@@ -579,7 +579,7 @@ export const Validation = () => {
                       </Box>
                     </Paper>
                   </Grid>
-                  <br />
+
                   <Grid item xs={'auto'} sm={'auto'} justify='center'>
                     <Button
                       variant='contained'
@@ -590,8 +590,8 @@ export const Validation = () => {
                     >
                       firmar y validar
                     </Button>
-                    <br />
                   </Grid>
+
                   {snackbarC()}
                 </Grid>
               </Paper>
