@@ -15,6 +15,10 @@ import { auth } from '../../Config/firebase';
 import { firebase } from '../../Config/firebase';
 import Typography from '@material-ui/core/Typography';
 
+//icons
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+
 const Dashboard = (props: any) => {
   //nested routing
   let { path, url } = useRouteMatch();
@@ -61,10 +65,10 @@ const Dashboard = (props: any) => {
             <HomeIcon />
           </Button>
           <Button component={Link} to={`${url}/ahead`}>
-            planificación
+            <DateRangeIcon />
           </Button>
           <Button component={Link} to={`${url}/done`}>
-            consolidado
+            <EventAvailableIcon />
           </Button>
           <Button component={Link} to={`${url}/create`}>
             <AddCircleOutlineIcon />
