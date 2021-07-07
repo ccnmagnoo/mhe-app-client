@@ -1,6 +1,7 @@
 export enum dbKey {
-  classroom = 'Classroom',
-  consolidated = 'Consolidated',
-  activity = 'Activity',
-  suscribed = 'Suscribed',
+  room = 'Classroom',
+  cvn = 'Consolidated',
+  act = 'Activity',
+  sus = 'Suscribed',
+  uid = 'fa37Q3WqWOUoXCLXyAm0kRwmQaJ2',
 }
