@@ -1,9 +1,10 @@
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
+import { resolveModuleNameFromCache } from 'typescript';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 
 const Incoming = (props: any) => {
@@ -12,17 +13,34 @@ const Incoming = (props: any) => {
 
   //content data
   const [incoming, setIncoming] = React.useState<IClassroom[]>([]); /*rext activities*/
+
   React.useEffect(() => {
     //fetch next incoming classrooms with basic info 🔥🔥🔥
+
     const fetch = async () => {
       try {
-        const ref = db.collection(`${dbKey.act}/${refUuid}/${dbKey.room}`);
-        const snapshot = await ref.get();
-        console.log('amount next rooms', snapshot.docs.length);
+        //fetch
+        const rightNow = new Date();
+        const ref = db
+          .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
+          .where('dateInstance', '>=', rightNow)
+          .withConverter(iClassroomConverter);
+
+        const querySnapshot = await ref.get();
+        //snapshot
+        const rooms = querySnapshot.docs
+          .map((query) => {
+            return query.data();
+          })
+          .sort((a, b) => (a.placeActivity.date > b.placeActivity.date ? 1 : -1));
+
+        console.log('amount next rooms idcal', rooms);
       } catch (error) {
         console.log('amount next rooms', error);
       }
     };
+
+    fetch();
   }, []);
 
   const head = (
