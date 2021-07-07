@@ -144,7 +144,7 @@ const Create = (props: any) => {
             },
 
             placeDispatch: {
-              name: data.postName,
+              name: capitalWord(data.postName),
               dir: data.postDir,
               date: datePostSetting,
             },
@@ -200,7 +200,7 @@ const Create = (props: any) => {
             container
             spacing={2}
             direction='row'
-            justify='center'
+            justify='flex-start'
             alignItems='center'
             wrap='wrap'
           >
