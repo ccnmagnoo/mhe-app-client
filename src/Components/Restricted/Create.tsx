@@ -48,6 +48,7 @@ const Create = (props: any) => {
     postDate: new Date(),
     landType: LandType.city,
     landName: 'Valparaíso',
+    vacancies: 10,
   };
   const [inputData, setInputData] = React.useState<Input>(initInput);
 
@@ -59,7 +60,8 @@ const Create = (props: any) => {
   }
 
   //LandType
-  const [landType, setLandType] = React.useState<LandType>(LandType.region);
+  const [landType, setLandType] = React.useState<LandType>(LandType.city);
+
   const handleLandTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setLandType(event.target.value as LandType);
     setInputData({ ...inputData, landType: event.target.value as string });
@@ -71,6 +73,8 @@ const Create = (props: any) => {
   };
 
   React.useEffect(() => {
+    //for each change of land type, populate autocomplete list
+    console.log('land type input state:', landType);
     setLandList(getTerritoryNames(landType));
   }, [landType]);
 
@@ -112,18 +116,19 @@ const Create = (props: any) => {
       if (inputData !== null) {
         //firestore🔥🔥🔥
         const db = firebase.firestore();
-        const req = await db
+        const req = db
           .collection('Activity')
           .doc(auth.currentUser?.uid)
           .collection('Classroom')
           .doc();
+
         //build object function
         const buildObject = (data: Input, uuid: string) => {
           const listOfCities = getCityList(data.landName, data.landType as LandType);
           const datePlaceSetting = new Date(data.placeDate);
           const datePostSetting = new Date(data.postDate);
-          //TODO: add input: vancancies allowed
 
+          //Add input: vancancies allowed
           const classRoom: IClassroom = {
             uuid: uuid,
             idCal: `R${pad(data.idCal, 3)}`,
@@ -131,7 +136,7 @@ const Create = (props: any) => {
             enrolled: [],
             attendees: [],
             dateInstance: datePlaceSetting,
-            vacancies: 180,
+            vacancies: data.vacancies,
             placeActivity: {
               name: data.placeName,
               dir: data.placeDir,
@@ -149,9 +154,9 @@ const Create = (props: any) => {
           };
           return classRoom;
         };
-        //return classoom with UUID
-        const newClassroom = buildObject(inputData, req.id);
 
+        //Return classoom with UUID
+        const newClassroom = buildObject(inputData, req.id);
         await req.set(newClassroom);
 
         reset();
@@ -178,6 +183,7 @@ const Create = (props: any) => {
     postName: string;
     postDir: string;
     postDate: Date;
+    vacancies: number;
   };
 
   return (
@@ -203,7 +209,7 @@ const Create = (props: any) => {
                 nueva actividad
               </Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <TextField
                 required
                 id='standard-required'
@@ -219,7 +225,7 @@ const Create = (props: any) => {
                 helperText={errors.idCal?.message}
               />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={7}>
               {/*date picker 📆📅📆*/}
               <TextField
                 id='datetime-local'
@@ -298,13 +304,13 @@ const Create = (props: any) => {
                 <InputLabel id='type selector'>tipo</InputLabel>
                 <Select
                   labelId='type selector'
-                  id='demo-simple-select-required'
+                  id='land-type-selector'
                   value={inputData.landType}
                   onChange={handleLandTypeChange}
                 >
-                  <MenuItem value={LandType.city}>Comunal</MenuItem>
-                  <MenuItem value={LandType.province}>Provincial</MenuItem>
                   <MenuItem value={LandType.region}>Regional</MenuItem>
+                  <MenuItem value={LandType.province}>Provincial</MenuItem>
+                  <MenuItem value={LandType.city}>Comunal</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -333,7 +339,23 @@ const Create = (props: any) => {
                 Punto de entrega 🚚
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6} sm={5}>
+              <TextField
+                required
+                id='standard-required'
+                label='cupos'
+                type='number'
+                variant='outlined'
+                {...register('vacancies', {
+                  max: { value: 400, message: 'muy grande' },
+                  min: { value: 10, message: 'muy pocos' },
+                })}
+                onChange={handleInputChange}
+                error={errors.vacancies && true}
+                helperText={errors.vacancies?.message}
+              />
+            </Grid>
+            <Grid item xs={12} sm={7}>
               {/*date delivery Picker 📆📅*/}
               <TextField
                 id='datetime-local'
