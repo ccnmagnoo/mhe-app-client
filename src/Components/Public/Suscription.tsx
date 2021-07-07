@@ -33,7 +33,7 @@ import { dateLimit } from '../../Config/credential';
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -45,6 +45,7 @@ import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { LandType } from '../../Functions/GetTerritoryList';
+import { dbKey } from '../../Models/databaseKeys';
 
 export const Suscription = () => {
   //hooks
@@ -141,6 +142,7 @@ export const Suscription = () => {
       const req = db.collection(`Activity/${refUuid}/Consolidated`);
       console.log('firestore fetch rut', data.rut);
       const queryDocs = await req.where('rut', '==', data.rut).get();
+
       const listDocs: IConsolidated[] = queryDocs.docs.map((doc) => {
         const it = doc.data();
         const result: IConsolidated = {
@@ -275,60 +277,37 @@ export const Suscription = () => {
     try {
       //firestore🔥🔥🔥: fetch incoming classes
       const rightNow = new Date();
-      const req = db.collection(`Activity/${refUuid}/Classroom`);
+      const fetch = db
+        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
+        .where('dateInstance', '>', rightNow)
+        .withConverter(iClassroomConverter);
+
       console.log('requested city', data.city);
 
-      const queryDocs = await req.where('dateInstance', '>', rightNow).get();
-      console.log('incoming classrooms', queryDocs.docs);
+      const querySnapshot = await fetch.get();
+      console.log('incoming classrooms', querySnapshot.docs);
 
-      const listClassrooms: IClassroom[] = queryDocs.docs.map((doc) => {
-        const it = doc.data();
-        console.log('data classroom', it);
-        //seting vacancies: it
-        const itVacancies: number = it.vacancies === undefined ? 180 : it.vacancies;
-        //creating maps {..}Iclassrooms
-        const classroom: IClassroom = {
-          uuid: doc.id,
-          idCal: it.idCal,
-          colaborator: it.colaborator,
-          enrolled: it.enrolled,
-          attendees: it.attendees,
-          dateInstance: it.dateInstance.toDate(),
-          placeActivity: {
-            name: it.placeActivity.name,
-            dir: it.placeActivity.dir,
-            date: it.placeActivity.date.toDate(),
-          },
-
-          placeDispatch: {
-            name: it.placeDispatch.name,
-            dir: it.placeDispatch.dir,
-            date: it.placeDispatch.date.toDate(),
-          },
-          allowedCities: it.allowedCities,
-          cityOnOp: it.cityOnOp,
-          land: { type: it.land.type as LandType, name: it.land.name },
-          vacancies: itVacancies,
-        };
-        return classroom;
-      });
-
-      //filtering near classes🔎🔍📟
-      const nearClassrooms = listClassrooms.filter((classroom) => {
-        return classroom.allowedCities.indexOf(data.city) !== -1;
-      });
-
-      //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
-      const roomsWithVacancies = nearClassrooms.filter((classroom) => {
-        const vacancies: number = classroom.vacancies ?? 180;
-        console.log(
-          'analizing vancacies, enrolled',
-          classroom.enrolled.length,
-          'vacancies: ',
-          vacancies
-        );
-        return classroom.enrolled.length < vacancies;
-      });
+      const roomsWithVacancies: IClassroom[] = querySnapshot.docs
+        .map((doc) => {
+          //get list of classrooms
+          const it = doc.data();
+          return it;
+        })
+        .filter((classroom) => {
+          //filtering near classes🔎🔍📟
+          return classroom.allowedCities.indexOf(data.city) !== -1;
+        })
+        .filter((classroom) => {
+          //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
+          const vacancies: number = classroom.vacancies ?? 180;
+          console.log(
+            'analizing vancacies, enrolled',
+            classroom.enrolled.length,
+            'vacancies: ',
+            vacancies
+          );
+          return classroom.enrolled.length < vacancies;
+        });
 
       console.log(
         'list of avaliable classrooms on city',
