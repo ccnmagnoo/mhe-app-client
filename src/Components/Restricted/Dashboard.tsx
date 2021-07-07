@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Create from './Create';
+import Incoming from './Incoming';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import HomeIcon from '@material-ui/icons/Home';
@@ -64,7 +65,7 @@ const Dashboard = (props: any) => {
           <Button component={Link} to={url}>
             <HomeIcon />
           </Button>
-          <Button component={Link} to={`${url}/ahead`}>
+          <Button component={Link} to={`${url}/incoming`}>
             <DateRangeIcon />
           </Button>
           <Button component={Link} to={`${url}/done`}>
@@ -85,7 +86,9 @@ const Dashboard = (props: any) => {
               Bienvenido {admin?.email}
             </Typography>
           </Route>
-          <Route path={`${path}/ahead`}>planificación</Route>
+          <Route path={`${path}/incoming`}>
+            <Incoming />
+          </Route>
           <Route path={`${path}/done`}>realizadas</Route>
           <Route path={`${path}/create`}>
             {/*create new classroom*/}
