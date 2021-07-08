@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   TextFieldProps,
+  Slider,
 } from '@material-ui/core';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import firebase from 'firebase';
@@ -48,7 +49,7 @@ const Create = (props: any) => {
     postDate: new Date(),
     landType: LandType.city,
     landName: 'Valparaíso',
-    vacancies: 10,
+    vacancies: 150,
   };
   const [inputData, setInputData] = React.useState<Input>(initInput);
 
@@ -339,20 +340,22 @@ const Create = (props: any) => {
                 Punto de entrega 🚚
               </Typography>
             </Grid>
-            <Grid item xs={6} sm={5}>
-              <TextField
-                required
-                id='standard-required'
-                label='cupos'
-                type='number'
-                variant='outlined'
-                {...register('vacancies', {
-                  max: { value: 400, message: 'muy grande' },
-                  min: { value: 10, message: 'muy pocos' },
-                })}
-                onChange={handleInputChange}
-                error={errors.vacancies && true}
-                helperText={errors.vacancies?.message}
+            <Grid item xs={12} sm={5}>
+              <Slider
+                defaultValue={150}
+                aria-labelledby='discrete-slider'
+                step={25}
+                min={25}
+                max={250}
+                marks={[
+                  { value: 25, label: '25' },
+                  { value: 150, label: '150 cupos' },
+                ]}
+                valueLabelDisplay='auto'
+                onChange={(e, value) => {
+                  console.log('slider value:', value as number);
+                  setInputData({ ...inputData, vacancies: value as number });
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={7}>
