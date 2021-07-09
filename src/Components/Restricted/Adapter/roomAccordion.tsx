@@ -19,6 +19,7 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { UrlChip } from '../../Public/UrlChip';
 import { refUuid } from '../../../Config/credential';
@@ -44,7 +45,7 @@ const RoomAccordion = (props: {
 
   //call beneficiaries/suscribed
   const onSubmitBeneficiaries = async () => {
-    //call firebase suscribed
+    //call firebase suscribed 🔥🔥🔥🔥
     try {
       const ref = db
         .collection(`${dbKey.act}/${refUuid}/${dbKey.sus}`)
@@ -154,6 +155,11 @@ const RoomAccordion = (props: {
               </Button>
               <Button>editar</Button>
               <Button>borrar</Button>
+              {enrolled.length > 0 ? (
+                <Button>
+                  <GetAppIcon />
+                </Button>
+              ) : undefined}
             </ButtonGroup>
           </Grid>
 

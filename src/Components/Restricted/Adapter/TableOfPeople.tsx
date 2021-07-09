@@ -1,6 +1,5 @@
 import { IPerson } from '../../../Models/Person.Interface';
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
-import { Box } from '@material-ui/core';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 70 },
@@ -10,7 +9,9 @@ const columns: GridColDef[] = [
 ];
 
 export const TableOfPeople = (props: { people: IPerson[] }) => {
-  const people = props.people;
+  const people = props.people.sort((a, b) =>
+    a.name.fatherName > b.name.fatherName ? 1 : -1
+  );
 
   const rows = people.map((it, i) => {
     console.log('populating table rut:', it.rut);
@@ -27,15 +28,8 @@ export const TableOfPeople = (props: { people: IPerson[] }) => {
   //})}
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={20}
-        density='compact'
-        checkboxSelection
-      />
-      ;
+    <div style={{ height: 300, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={20} density='compact' />
     </div>
   );
 };
