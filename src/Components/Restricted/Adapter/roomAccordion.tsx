@@ -30,6 +30,7 @@ import { TableOfPeople } from './TableOfPeople';
 import { convertToMine, Mine } from '../../../Functions/convertToMine';
 
 const RoomAccordion = (props: {
+  workDone: boolean;
   room: IClassroom;
   expanded: string | boolean;
   handleAccordionChange: (
@@ -41,17 +42,20 @@ const RoomAccordion = (props: {
   const expanded = props.expanded;
   const handleAccordionChange = props.handleAccordionChange;
 
-  //states 🅿⛽
-  const [enrolled, setEnrolled] = React.useState<IPerson[]>([]);
+  //states 🅿⛽ list with details
+
+  const [persons, setPersons] = React.useState<IPerson[]>([]);
   const [csv, setCsv] = React.useState<Mine[]>([]);
 
   //call beneficiaries/suscribed
-  const onSubmitBeneficiaries = async () => {
+  const onSubmitPeople = async () => {
     //call firebase suscribed 🔥🔥🔥🔥
     try {
-      const ref = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.sus}`)
-        .withConverter(iPersonConverter);
+      //change colection router
+      const routeDb = props.workDone
+        ? `${dbKey.act}/${refUuid}/${dbKey.cvn}` /*consolidated route*/
+        : `${dbKey.act}/${refUuid}/${dbKey.sus}`; /*suscrubed route*/
+      const ref = db.collection(routeDb).withConverter(iPersonConverter);
       const promises = room.enrolled.map((uuid) => {
         return ref.doc(uuid).get();
       });
@@ -69,7 +73,7 @@ const RoomAccordion = (props: {
         }
       }
 
-      setEnrolled(listOfPerson);
+      setPersons(listOfPerson);
 
       //
     } catch (error) {
@@ -80,13 +84,13 @@ const RoomAccordion = (props: {
   const getList = () => {
     console.log(
       'loading list',
-      enrolled.map((it) => it.rut)
+      persons.map((it) => it.rut)
     );
 
-    if (enrolled.length > 0) {
+    if (persons.length > 0) {
       return (
         <Grid item xs={12}>
-          <TableOfPeople people={enrolled} />
+          <TableOfPeople people={persons} />
         </Grid>
       );
     } else {
@@ -96,9 +100,9 @@ const RoomAccordion = (props: {
 
   React.useEffect(() => {
     console.log('download csv suscribed');
-    const data = enrolled.map((it, i) => convertToMine(it, i));
+    const data = persons.map((it, i) => convertToMine(it, i));
     setCsv(data);
-  }, [enrolled]);
+  }, [persons]);
 
   return (
     <Accordion
@@ -115,18 +119,22 @@ const RoomAccordion = (props: {
             <Chip
               avatar={<Avatar>R</Avatar>}
               label={room.idCal.slice(1)}
-              color='secondary'
+              color={props.workDone ? 'primary' : 'secondary'}
             />
           </Grid>
           <Grid item xs={6} sm={3}>
             <Grid item xs={12}>
               <Typography variant='caption' color='initial'>
-                {moment(room.placeActivity.date).format('DD [de] MMM h:mm a')}
+                {props.workDone
+                  ? moment(room.placeActivity.date).format('DD [de] MMMM')
+                  : moment(room.placeActivity.date).format('DD [de] MMM h:mm a')}
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant='caption' color='primary'>
-                {moment(room.placeActivity.date).endOf('day').fromNow()}
+                {props.workDone
+                  ? moment(room.placeActivity.date).startOf('day').fromNow()
+                  : moment(room.placeActivity.date).endOf('day').fromNow()}
               </Typography>
             </Grid>
           </Grid>
@@ -148,7 +156,7 @@ const RoomAccordion = (props: {
       <AccordionDetails>
         <Grid container spacing={2} alignItems='center' justify='space-between'>
           <Grid item xs={6}>
-            <UrlChip url={room.placeActivity.dir} />
+            <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
           </Grid>
 
           <Grid item xs={6}>
@@ -158,12 +166,12 @@ const RoomAccordion = (props: {
               aria-label='actividades-view'
               size='small'
             >
-              <Button onClick={onSubmitBeneficiaries}>
+              <Button onClick={onSubmitPeople}>
                 <VisibilityIcon />
               </Button>
               <Button>editar</Button>
               <Button>borrar</Button>
-              {enrolled.length > 0 ? (
+              {persons.length > 0 ? (
                 <CSVLink
                   data={csv}
                   separator={';'}

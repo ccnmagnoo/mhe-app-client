@@ -79,6 +79,7 @@ const Incoming = (props: any) => {
                 <Grid item key={index} sm={12} xs={12}>
                   {/*roomSingleAccordion(room)*/}
                   <RoomAccordion
+                    workDone={false}
                     room={room}
                     expanded={expanded}
                     handleAccordionChange={handleAccordionChange}

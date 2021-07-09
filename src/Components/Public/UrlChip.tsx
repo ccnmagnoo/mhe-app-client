@@ -2,7 +2,8 @@ import { Chip, Avatar } from '@material-ui/core';
 import React from 'react';
 import { isUrl } from '../../Functions/IsURL';
 
-export const UrlChip = (props: { url?: string }) => {
+export const UrlChip = (props: { url?: string; isDisable?: boolean }) => {
+  const disable = props.isDisable ?? false;
   const converToChip = (chain?: string) => {
     //check definition
     if (chain === undefined) return undefined;
@@ -16,7 +17,7 @@ export const UrlChip = (props: { url?: string }) => {
           href={chain}
           target='_blank'
           clickable
-          color='primary'
+          color={disable ? 'default' : 'primary'}
           component='a'
         />
       );
@@ -29,7 +30,7 @@ export const UrlChip = (props: { url?: string }) => {
           href={`${gmaps}${chain.replace(' ', '+')}`}
           target='_blank'
           clickable
-          color='primary'
+          color={disable ? 'default' : 'primary'}
           component='a'
         />
       );

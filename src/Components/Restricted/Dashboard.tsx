@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 //icons
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import Outgoing from './Outgoing';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -68,7 +69,7 @@ const Dashboard = (props: any) => {
           <Button component={Link} to={`${url}/incoming`}>
             <DateRangeIcon />
           </Button>
-          <Button component={Link} to={`${url}/done`}>
+          <Button component={Link} to={`${url}/outgoing`}>
             <EventAvailableIcon />
           </Button>
           <Button component={Link} to={`${url}/create`}>
@@ -89,7 +90,9 @@ const Dashboard = (props: any) => {
           <Route path={`${path}/incoming`}>
             <Incoming />
           </Route>
-          <Route path={`${path}/done`}>realizadas</Route>
+          <Route path={`${path}/outgoing`}>
+            <Outgoing />
+          </Route>
           <Route path={`${path}/create`}>
             {/*create new classroom*/}
             <Create />
