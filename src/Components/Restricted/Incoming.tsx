@@ -1,4 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Avatar,
+  Chip,
+  Grid,
+} from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
@@ -9,6 +16,7 @@ import { dbKey } from '../../Models/databaseKeys';
 
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import moment from 'moment';
 
 const Incoming = (props: any) => {
   //router dom
@@ -44,6 +52,9 @@ const Incoming = (props: any) => {
         'amount next rooms idcal',
         rooms.map((it) => it.idCal)
       );
+
+      //set state
+      setIncoming(rooms);
     } catch (error) {
       console.log('amount next rooms idcal', error);
     }
@@ -78,8 +89,20 @@ const Incoming = (props: any) => {
             aria-controls='panel1bh-content'
             id='panel1bh-header'
           >
-            <Typography>{room.idCal}</Typography>
-            <Typography>I am an accordion</Typography>
+            <Grid container spacing={2} alignItems='center'>
+              <Grid item xs={3}>
+                <Chip
+                  avatar={<Avatar>R</Avatar>}
+                  label={room.idCal.slice(1)}
+                  color='secondary'
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant='caption' color='initial'>
+                  {moment(room.placeActivity.date).format('DD [de] MMMM YY h:mm a')}
+                </Typography>
+              </Grid>
+            </Grid>
           </AccordionSummary>
 
           <AccordionDetails>
@@ -93,7 +116,18 @@ const Incoming = (props: any) => {
   return (
     <React.Fragment>
       <Paper>
-        <Box p={1}>{head}</Box>
+        <Box p={1}>
+          {head}
+          <Grid container spacing={1}>
+            {incoming.map((room, index) => {
+              return (
+                <Grid item key={index} sm={12} xs={12}>
+                  {roomSingleAccordion(room)}
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
       </Paper>
     </React.Fragment>
   );
