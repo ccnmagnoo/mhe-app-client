@@ -17,6 +17,7 @@ import { dbKey } from '../../Models/databaseKeys';
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import moment from 'moment';
+import { RoomAccordion } from './Adapter/roomAccordion';
 
 const Incoming = (props: any) => {
   //router dom
@@ -75,43 +76,6 @@ const Incoming = (props: any) => {
     (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-  ////accordion view 👓
-
-  const roomSingleAccordion = (room: IClassroom) => {
-    return (
-      <>
-        <Accordion
-          expanded={expanded === room.idCal}
-          onChange={handleAccordionChange(room.idCal)}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1bh-content'
-            id='panel1bh-header'
-          >
-            <Grid container spacing={2} alignItems='center'>
-              <Grid item xs={3}>
-                <Chip
-                  avatar={<Avatar>R</Avatar>}
-                  label={room.idCal.slice(1)}
-                  color='secondary'
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant='caption' color='initial'>
-                  {moment(room.placeActivity.date).format('DD [de] MMMM YY h:mm a')}
-                </Typography>
-              </Grid>
-            </Grid>
-          </AccordionSummary>
-
-          <AccordionDetails>
-            <Typography>room content</Typography>
-          </AccordionDetails>
-        </Accordion>
-      </>
-    );
-  };
 
   return (
     <React.Fragment>
@@ -122,7 +86,12 @@ const Incoming = (props: any) => {
             {incoming.map((room, index) => {
               return (
                 <Grid item key={index} sm={12} xs={12}>
-                  {roomSingleAccordion(room)}
+                  {/*roomSingleAccordion(room)*/}
+                  <RoomAccordion
+                    room={room}
+                    expanded={expanded}
+                    handleAccordionChange={handleAccordionChange}
+                  />
                 </Grid>
               );
             })}
