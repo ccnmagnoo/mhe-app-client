@@ -31,6 +31,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import { isUrl } from '../../Functions/IsURL';
 import React from 'react';
+import { UrlChip } from './UrlChip';
 
 //sign paper style
 const useStyles = makeStyles((theme) => ({
@@ -75,41 +76,6 @@ export const Validation = () => {
     return <div style={{ width: '100%', height: 200 }} ref={renderRef} />;
   };
 
-  //converter function
-  const converToChip = (chain?: string) => {
-    //check definition
-    if (chain === undefined) return undefined;
-    //check if dir is url or physical
-    const gmaps = 'https://www.google.com/maps?q=';
-    if (isUrl(chain)) {
-      return (
-        <Chip
-          avatar={<Avatar>Z</Avatar>}
-          label='link al taller'
-          href={chain}
-          target='_blank'
-          clickable
-          color='primary'
-          component='a'
-        />
-      );
-      //return <a href={chain}> link al taller </a>;
-    } else {
-      return (
-        <Chip
-          avatar={<Avatar>D</Avatar>}
-          label='click dirección'
-          href={`${gmaps}${chain.replace(' ', '+')}`}
-          target='_blank'
-          clickable
-          color='primary'
-          component='a'
-        />
-      );
-      //return <a href={`${gmaps}${chain.replace(' ', '+')}`}> dirección del taller </a>;
-    }
-  };
-
   const titleMessage = (
     <React.Fragment>
       <Typography variant='h5' color='primary'>
@@ -138,7 +104,8 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='error'>
-              {errorA.message} {converToChip(classroom?.placeActivity.dir)}
+              {errorA.message}
+              <UrlChip url={classroom?.placeActivity.dir} />
             </Alert>
           </Grid>
         );
@@ -147,7 +114,7 @@ export const Validation = () => {
         return (
           <Grid item xs={12}>
             <Alert severity='success'>
-              {errorA.message} {converToChip(classroom?.placeActivity.dir)}
+              {errorA.message} <UrlChip url={classroom?.placeActivity.dir} />
             </Alert>
           </Grid>
         );
