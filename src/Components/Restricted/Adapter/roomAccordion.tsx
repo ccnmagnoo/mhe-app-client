@@ -9,11 +9,11 @@ import {
   Badge,
   Button,
   ButtonGroup,
-  Box,
 } from '@material-ui/core';
 import moment from 'moment';
 import React from 'react';
 import { IClassroom } from '../../../Models/Classroom.interface';
+import { CSVLink } from 'react-csv';
 
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -27,6 +27,7 @@ import { dbKey } from '../../../Models/databaseKeys';
 import { db } from '../../../Config/firebase';
 import { IPerson, iPersonConverter } from '../../../Models/Person.Interface';
 import { TableOfPeople } from './TableOfPeople';
+import { convertToMine, Mine } from '../../../Functions/convertToMine';
 
 const RoomAccordion = (props: {
   room: IClassroom;
@@ -35,13 +36,14 @@ const RoomAccordion = (props: {
     panel: string
   ) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => void;
 }) => {
-  //input props
+  //input props 🍗🎱🐣
   const room = props.room;
   const expanded = props.expanded;
   const handleAccordionChange = props.handleAccordionChange;
 
-  //states
+  //states 🅿⛽
   const [enrolled, setEnrolled] = React.useState<IPerson[]>([]);
+  const [csv, setCsv] = React.useState<Mine[]>([]);
 
   //call beneficiaries/suscribed
   const onSubmitBeneficiaries = async () => {
@@ -91,6 +93,12 @@ const RoomAccordion = (props: {
       return undefined;
     }
   };
+
+  React.useEffect(() => {
+    console.log('download csv suscribed');
+    const data = enrolled.map((it, i) => convertToMine(it, i));
+    setCsv(data);
+  }, [enrolled]);
 
   return (
     <Accordion
@@ -156,9 +164,15 @@ const RoomAccordion = (props: {
               <Button>editar</Button>
               <Button>borrar</Button>
               {enrolled.length > 0 ? (
-                <Button>
+                <CSVLink
+                  data={csv}
+                  separator={';'}
+                  filename={`${room.cityOnOp} ${
+                    room.idCal
+                  } ${room.dateInstance.toLocaleDateString()}.csv`}
+                >
                   <GetAppIcon />
-                </Button>
+                </CSVLink>
               ) : undefined}
             </ButtonGroup>
           </Grid>
