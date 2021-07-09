@@ -529,7 +529,7 @@ export const Suscription = () => {
           dateUpdate: new Date(),
           email: data.email.toLocaleLowerCase(),
           phone: data.phone ?? '0',
-          address: { dir: capitalWord(data.dir), city: data.city },
+          address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
         };
 
         //set new suscription 🔥🔥🔥

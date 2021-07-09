@@ -1,5 +1,6 @@
 import { wierdFemaleNames } from '../Assets/weirdFemaleNames';
 import { Gender } from '../Models/Person.Interface';
+import { capitalWord } from './capitalWord';
 
 export function getGender(name: string) {
   const firstName = name.toLocaleLowerCase();
@@ -7,7 +8,7 @@ export function getGender(name: string) {
 
   if (splitName === 'a') {
     return Gender.female;
-  } else if (wierdFemaleNames.indexOf(splitName) !== -1) {
+  } else if (wierdFemaleNames.indexOf(capitalWord(splitName)) !== -1) {
     return Gender.female;
   } else {
     return Gender.male;
