@@ -44,7 +44,6 @@ import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
-import { LandType } from '../../Functions/GetTerritoryList';
 import { dbKey } from '../../Models/databaseKeys';
 
 export const Suscription = () => {
@@ -528,7 +527,7 @@ export const Suscription = () => {
             dateInstance: selectedRoom?.dateInstance ?? new Date(),
           },
           dateUpdate: new Date(),
-          email: data.email,
+          email: data.email.toLocaleLowerCase(),
           phone: data.phone ?? '0',
           address: { dir: capitalWord(data.dir), city: data.city },
         };
