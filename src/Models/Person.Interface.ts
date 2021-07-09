@@ -37,7 +37,7 @@ export const iPersonConverter = {
     return {
       uuid: it.uuid,
       name: it.name,
-      rut: it.string,
+      rut: it.rut,
       classroom: {
         idCal: it.classroom.idCal,
         uuid: it.classroom.uuid,
