@@ -5,7 +5,7 @@ import { LandType } from '../../Functions/GetTerritoryList';
 import Button from '@material-ui/core/Button';
 
 //external files to upload
-import roomsddbb from '../../Config/mhe-data-rooms.json';
+import roomsToAdd from '../../Config/mhe-data-rooms-toAdd.json';
 import cvnToAdd from '../../Config/mhe-data-benefit-toAdd.json';
 
 import { refUuid } from '../../Config/credential';
@@ -38,8 +38,8 @@ type ConsolidatedJson = {
 
 export const Help = () => {
   //room database
-  const roomDatabase = roomsddbb.rooms; /*rooms ddbb*/
-  const cvn: ConsolidatedJson[][] = [cvnToAdd];
+  const roomDatabase = roomsToAdd.rooms; /*rooms ddbb*/
+  const cvn: ConsolidatedJson[][] = [cvnToAdd.cvn];
 
   function uploadRooms() {
     console.log('upload click');
@@ -51,7 +51,7 @@ export const Help = () => {
     );
 
     const roomsToFirestore = async () => {
-      for (let i = 229; i < 232 /*roomDatabase.length*/; i++) {
+      for (let i = 0; i < roomDatabase.length; i++) {
         console.count('data room to upload');
         //conver to IClassroom
         const rum: RoomJson = roomDatabase[i];
@@ -213,7 +213,7 @@ export const Help = () => {
   return (
     <React.Fragment>
       <Alert severity='info'>sección en construcción 🚧</Alert>
-      {/*<button onClick={uploadRooms}>talleres to firebase</button>*/}
+      {/* <button onClick={uploadRooms}>talleres to firebase</button>*/}
       {/*<button onClick={uploadPeople}>personas to firebase</button>*/}
     </React.Fragment>
   );
