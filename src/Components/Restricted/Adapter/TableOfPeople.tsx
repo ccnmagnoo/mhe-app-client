@@ -2,7 +2,7 @@ import { IPerson } from '../../../Models/Person.Interface';
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'id', width: 70 },
+  { field: 'id', headerName: 'id', width: 30 },
   { field: 'name', headerName: 'nombre', width: 130 },
   { field: 'surname', headerName: 'apellido', width: 130 },
   { field: 'rut', headerName: 'rut', width: 100 },
