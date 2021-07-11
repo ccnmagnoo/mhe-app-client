@@ -160,7 +160,10 @@ const RoomAccordion = (props: {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='caption' color='textSecondary' align='left'>
-                    {Math.floor((room.attendees.length / room.enrolled.length) * 100)}%
+                    {room.enrolled.length === 0
+                      ? 0
+                      : Math.floor((room.attendees.length / room.enrolled.length) * 100)}
+                    %
                   </Typography>
                 </Grid>
               </Grid>

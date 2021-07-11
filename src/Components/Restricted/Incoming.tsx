@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Divider, Grid } from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { dbKey } from '../../Models/databaseKeys';
 import { RoomAccordion } from './Adapter/RoomAccordion';
 
 //icons
+import DateRangeIcon from '@material-ui/icons/DateRange';
 
 const Incoming = (props: any) => {
   //router dom
@@ -53,11 +54,13 @@ const Incoming = (props: any) => {
     }
   };
 
-  const head = (
+  const header = (
     <React.Fragment>
       <Typography variant='subtitle1' color='primary'>
-        Próximas actividades
+        Próximas actividades <DateRangeIcon fontSize='small' /> {incoming.length}
       </Typography>
+      <Divider />
+      <br />
     </React.Fragment>
   );
 
@@ -73,7 +76,7 @@ const Incoming = (props: any) => {
     <React.Fragment>
       <Paper>
         <Box p={1}>
-          {head}
+          {header}
           <Grid container spacing={1}>
             {incoming.map((room, index) => {
               return (

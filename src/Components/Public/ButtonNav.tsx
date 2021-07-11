@@ -16,7 +16,7 @@ export const ButtonNav = () => {
         <Button component={NavLink} to='/suscription'>
           Incribete
         </Button>
-        <Button component={NavLink} to='/validation' color='secondary'>
+        <Button component={NavLink} to='/validation'>
           Valida
         </Button>
         <Button component={NavLink} to='/help'>

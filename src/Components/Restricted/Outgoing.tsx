@@ -1,4 +1,5 @@
 import { Grid } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
@@ -24,15 +25,19 @@ const Outgoing = (props: any) => {
     fetchRooms();
   }, []);
 
+  //firebase 🔥🔥🔥
   const fetchRooms = async () => {
     try {
       //fetch
       const rightNow = new Date();
+      //get init date of this year
+      const initYear = new Date(`${rightNow.getFullYear()}/1/1`);
       const ref = db
         .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
+        .where('dateInstance', '>=', initYear)
         .where('dateInstance', '<=', rightNow)
         .orderBy('dateInstance', 'desc')
-        .limit(10)
+        //.limit(10)
         .withConverter(iClassroomConverter);
 
       const snapshot = await ref.get();
@@ -55,14 +60,6 @@ const Outgoing = (props: any) => {
     }
   };
 
-  const head = (
-    <React.Fragment>
-      <Typography variant='subtitle1' color='primary'>
-        Actividades completadas ✔
-      </Typography>
-    </React.Fragment>
-  );
-
   //acoordion section
   ////accordion behavior 🎠
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -71,11 +68,47 @@ const Outgoing = (props: any) => {
       setExpanded(isExpanded ? panel : false);
     };
 
+  //year statictics
+  const [statistics, setStatisctis] = React.useState<{
+    quantity: number;
+    enrolled: number;
+    attendees: number;
+  }>({
+    quantity: 0,
+    enrolled: 0,
+    attendees: 0,
+  });
+
+  React.useEffect(() => {
+    if (outgoing.length !== 0) {
+      const result = {
+        quantity: outgoing.length,
+        enrolled: outgoing.map((it) => it.enrolled.length).reduce((a, b) => a + b),
+        attendees: outgoing.map((it) => it.attendees.length).reduce((a, b) => a + b),
+      };
+
+      setStatisctis(result);
+    }
+  }, [outgoing]);
+
+  const header = (
+    <React.Fragment>
+      <Typography variant='subtitle1' color='primary'>
+        Actividades completadas ✔ {statistics.quantity}{' '}
+        <Typography variant='subtitle2' color='textSecondary' display='inline'>
+          con <strong>{statistics.attendees}</strong> familias{' '}
+        </Typography>
+      </Typography>
+      <Divider />
+      <br />
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
       <Paper>
         <Box p={1}>
-          {head}
+          {header}
           <Grid container spacing={1}>
             {outgoing.map((room, index) => {
               return (

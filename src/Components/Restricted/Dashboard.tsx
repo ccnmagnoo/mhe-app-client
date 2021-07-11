@@ -7,16 +7,15 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Create from './Create';
 import Incoming from './Incoming';
 
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import HomeIcon from '@material-ui/icons/Home';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
 import { Edit as Edition } from './Edition';
 import { auth } from '../../Config/firebase';
 import { firebase } from '../../Config/firebase';
 import Typography from '@material-ui/core/Typography';
 
 //icons
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import Outgoing from './Outgoing';
