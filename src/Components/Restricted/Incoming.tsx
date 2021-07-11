@@ -13,6 +13,7 @@ import { RoomAccordion } from './Adapter/RoomAccordion';
 const Incoming = (props: any) => {
   //router dom
   let { path, url } = useRouteMatch();
+  console.log('router', path, url);
 
   //content data
   const [incoming, setIncoming] = React.useState<IClassroom[]>([]); /*rext activities*/
