@@ -29,7 +29,7 @@ import {
   iBeneficiaryConverter,
 } from '../../../Models/Beneficiary.interface';
 
-const RoomAccordion = (props: {
+const RoomView = (props: {
   workDone: boolean /*if true, so activity to fetch is consolidated in past*/;
   room: IClassroom;
   expanded: string | boolean;
@@ -202,4 +202,4 @@ const RoomAccordion = (props: {
   );
 };
 
-export { RoomAccordion };
+export { RoomView as RoomAccordion };

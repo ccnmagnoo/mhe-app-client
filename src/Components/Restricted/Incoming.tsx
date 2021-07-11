@@ -6,7 +6,7 @@ import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
-import { RoomAccordion } from './Adapter/RoomAccordion';
+import { RoomAccordion } from './Adapter/RoomView';
 
 //icons
 import DateRangeIcon from '@material-ui/icons/DateRange';
