@@ -12,8 +12,8 @@ export function convertToMine(p: IPerson, index?: number) {
     fecha: p.classroom.dateInstance.toLocaleDateString(),
     idcal: +p.classroom.idCal.slice(1),
     contact: p.email,
-    rsh: '%?',
-    mesa: 'mesa 0L',
+    rsh: '',
+    mesa: 'mesa OL',
     genero: p.gender,
   };
 
