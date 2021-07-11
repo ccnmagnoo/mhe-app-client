@@ -5,9 +5,14 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 import React from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
+
 //pdf
 import { Report } from '../Report/Report';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+
+//icons
+import TableChartIcon from '@material-ui/icons/TableChart';
+import ReceiptIcon from '@material-ui/icons/Receipt';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -26,7 +31,7 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
   const [csv, setCsv] = React.useState<Mine[]>([]);
   React.useEffect(() => {
     console.log('download csv suscribed');
-    const data = people.map((it, i) => convertToMine(it, i));
+    const data = people.map((it, i) => convertToMine(it, i + 1));
     setCsv(data);
   }, [people]);
 
@@ -41,11 +46,6 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
     };
   });
 
-  //gen Certificate
-  const [certificates, setCertificates] = React.useState<undefined | JSX.Element>(
-    undefined
-  );
-
   return (
     <>
       <div style={{ height: 400, width: '100%' }}>
@@ -57,33 +57,32 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
           checkboxSelection
         />
       </div>
-      <CSVLink
-        data={csv}
-        separator={';'}
-        filename={`${props.room.cityOnOp} ${
-          props.room.idCal
-        } ${props.room.dateInstance.toLocaleDateString()}.csv`}
-      >
-        <Button variant='contained' color='default' size='small'>
-          .CSV
-        </Button>
-      </CSVLink>
+      <br />
 
-      <PDFDownloadLink
-        document={<Report room={props.room} people={props.people} />}
-        fileName='movielist.pdf'
-        style={{
-          textDecoration: 'none',
-          padding: '10px',
-          color: '#4a4a4a',
-          backgroundColor: '#f2f2f2',
-          border: '1px solid #4a4a4a',
-        }}
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? 'Loading document...' : 'Download Pdf'
-        }
-      </PDFDownloadLink>
+      {/*datos csv 🎲🎲*/}
+      <Button variant='contained' color='primary' size='small'>
+        <CSVLink
+          data={csv}
+          separator={';'}
+          filename={`${props.room.cityOnOp} ${
+            props.room.idCal
+          } ${props.room.dateInstance.toLocaleDateString()}.csv`}
+        >
+          <TableChartIcon color='action' />
+        </CSVLink>
+      </Button>
+
+      {/*PDF 📃📃📃*/}
+      <Button variant='contained' color='secondary' size='small'>
+        <PDFDownloadLink
+          document={<Report room={props.room} people={props.people} />}
+          fileName='cvn.pdf'
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? 'generating...' : <ReceiptIcon color='action' />
+          }
+        </PDFDownloadLink>
+      </Button>
     </>
   );
 };

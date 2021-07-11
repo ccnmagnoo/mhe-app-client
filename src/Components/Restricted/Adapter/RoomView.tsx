@@ -16,8 +16,8 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import GroupIcon from '@material-ui/icons/Group';
+import TocIcon from '@material-ui/icons/Toc';
 
 import { UrlChip } from '../../Public/UrlChip';
 import { refUuid } from '../../../Config/credential';
@@ -187,7 +187,7 @@ const RoomView = (props: {
               size='small'
             >
               <Button onClick={onSubmitPeople}>
-                <VisibilityIcon />
+                <TocIcon />
               </Button>
               <Button>editar</Button>
               <Button>borrar</Button>
