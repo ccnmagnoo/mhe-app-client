@@ -102,6 +102,7 @@ const RoomAccordion = (props: {
       expanded={expanded === room.idCal}
       onChange={handleAccordionChange(room.idCal)}
     >
+      {/*summary accordion head 🤯🤯*/}
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls='panel1bh-content'
@@ -137,15 +138,38 @@ const RoomAccordion = (props: {
               {room.colaborator}
             </Typography>
           </Grid>
+          {!props.workDone ? (
+            <Grid item xs={6} sm={3}>
+              <Badge badgeContent={room.enrolled.length} color='secondary'>
+                <GroupIcon color='primary' titleAccess={'inscritos'} />
+              </Badge>
+            </Grid>
+          ) : undefined}
 
-          <Grid item xs={6} sm={3}>
-            <Badge badgeContent={room.enrolled.length} color='secondary'>
-              <GroupIcon color='primary' titleAccess={'inscritos'} />
-            </Badge>
-          </Grid>
+          {props.workDone ? (
+            <Grid item xs={6} sm={3}>
+              <Grid container direction='column'>
+                <Grid item xs={12}>
+                  <Typography variant='body1' color='primary' align='left'>
+                    <strong>{room.attendees.length}</strong>
+                    <Typography variant='body2' color='textSecondary' display='inline'>
+                      {' '}
+                      / {room.enrolled.length}
+                    </Typography>
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='caption' color='textSecondary' align='left'>
+                    {Math.floor((room.attendees.length / room.enrolled.length) * 100)}%
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          ) : undefined}
         </Grid>
       </AccordionSummary>
 
+      {/*summary details 🤯🤯*/}
       <AccordionDetails>
         <Grid container spacing={2} alignItems='center' justify='space-between'>
           <Grid item xs={6}>
