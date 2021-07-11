@@ -624,6 +624,7 @@ export const wierdFemaleNames: string[] = [
   'Mariel',
   'Mariele',
   'Marilen',
+  'Marilin',
   'Marilu',
   'Marilú',
   'Mariluz',
