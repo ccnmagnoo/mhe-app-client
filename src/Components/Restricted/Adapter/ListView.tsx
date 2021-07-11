@@ -7,7 +7,7 @@ import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'id', width: 30 },
+  { field: 'id', headerName: 'id', width: 40 },
   { field: 'name', headerName: 'nombre', width: 130 },
   { field: 'surname', headerName: 'apellido', width: 130 },
   { field: 'rut', headerName: 'rut', width: 100 },
@@ -40,8 +40,14 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
 
   return (
     <>
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} pageSize={20} density='compact' />
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          density='compact'
+          checkboxSelection
+        />
       </div>
       <CSVLink
         data={csv}
