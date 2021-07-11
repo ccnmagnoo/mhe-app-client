@@ -2,6 +2,7 @@ import { Alert } from '@material-ui/lab';
 import React from 'react';
 import { IClassroom } from '../../Models/Classroom.interface';
 import { LandType } from '../../Functions/GetTerritoryList';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Button from '@material-ui/core/Button';
 
 //external files to upload
@@ -41,6 +42,7 @@ export const Help = () => {
   const roomDatabase = roomsToAdd.rooms; /*rooms ddbb*/
   const cvn: ConsolidatedJson[][] = [cvnToAdd.cvn];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function uploadRooms() {
     console.log('upload click');
     console.log(
@@ -49,7 +51,6 @@ export const Help = () => {
       'size of consolidated list',
       cvn.length
     );
-
     const roomsToFirestore = async () => {
       for (let i = 0; i < roomDatabase.length; i++) {
         console.count('data room to upload');
@@ -102,6 +103,7 @@ export const Help = () => {
     console.countReset('data room to upload');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function uploadPeople() {
     const physicalSign = `<svg
   width="396.5"
