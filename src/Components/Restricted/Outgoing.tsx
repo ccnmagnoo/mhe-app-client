@@ -12,6 +12,7 @@ import { RoomAccordion } from './Adapter/RoomAccordion';
 
 const Outgoing = (props: any) => {
   //router dom
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let { path, url } = useRouteMatch();
 
   //content data
