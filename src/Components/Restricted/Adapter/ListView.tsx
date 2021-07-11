@@ -5,6 +5,9 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 import React from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
+//pdf
+import { Report } from '../Report/Report';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -38,6 +41,11 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
     };
   });
 
+  //gen Certificate
+  const [certificates, setCertificates] = React.useState<undefined | JSX.Element>(
+    undefined
+  );
+
   return (
     <>
       <div style={{ height: 400, width: '100%' }}>
@@ -60,6 +68,22 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
           .CSV
         </Button>
       </CSVLink>
+
+      <PDFDownloadLink
+        document={<Report room={props.room} people={props.people} />}
+        fileName='movielist.pdf'
+        style={{
+          textDecoration: 'none',
+          padding: '10px',
+          color: '#4a4a4a',
+          backgroundColor: '#f2f2f2',
+          border: '1px solid #4a4a4a',
+        }}
+      >
+        {({ blob, url, loading, error }) =>
+          loading ? 'Loading document...' : 'Download Pdf'
+        }
+      </PDFDownloadLink>
     </>
   );
 };
