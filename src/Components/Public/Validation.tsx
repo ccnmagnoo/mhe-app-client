@@ -5,8 +5,6 @@ import {
   Button,
   TextField,
   Typography,
-  Chip,
-  Avatar,
   Grow,
   ButtonGroup,
   makeStyles,
@@ -29,7 +27,6 @@ import ReplayIcon from '@material-ui/icons/Replay';
 
 //canvas
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
-import { isUrl } from '../../Functions/IsURL';
 import React from 'react';
 import { UrlChip } from './UrlChip';
 
