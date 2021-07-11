@@ -13,24 +13,24 @@ import {
 import moment from 'moment';
 import React from 'react';
 import { IClassroom } from '../../../Models/Classroom.interface';
-import { CSVLink } from 'react-csv';
 
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import GroupIcon from '@material-ui/icons/Group';
 
 import { UrlChip } from '../../Public/UrlChip';
 import { refUuid } from '../../../Config/credential';
 import { dbKey } from '../../../Models/databaseKeys';
 import { db } from '../../../Config/firebase';
-import { IPerson, iPersonConverter } from '../../../Models/Person.Interface';
-import { TableOfPeople } from './TableOfPeople';
-import { convertToMine, Mine } from '../../../Functions/convertToMine';
+import { ListView } from './ListView';
+import {
+  IBeneficiary,
+  iBeneficiaryConverter,
+} from '../../../Models/Beneficiary.interface';
 
 const RoomAccordion = (props: {
-  workDone: boolean;
+  workDone: boolean /*if true, so activity to fetch is consolidated in past*/;
   room: IClassroom;
   expanded: string | boolean;
   handleAccordionChange: (
@@ -44,8 +44,7 @@ const RoomAccordion = (props: {
 
   //states 🅿⛽ list with details
 
-  const [persons, setPersons] = React.useState<IPerson[]>([]);
-  const [csv, setCsv] = React.useState<Mine[]>([]);
+  const [people, setPeople] = React.useState<IBeneficiary[]>([]);
 
   //call beneficiaries/suscribed
   const onSubmitPeople = async () => {
@@ -55,7 +54,7 @@ const RoomAccordion = (props: {
       const routeDb = props.workDone
         ? `${dbKey.act}/${refUuid}/${dbKey.cvn}` /*consolidated route*/
         : `${dbKey.act}/${refUuid}/${dbKey.sus}`; /*suscrubed route*/
-      const ref = db.collection(routeDb).withConverter(iPersonConverter);
+      const ref = db.collection(routeDb).withConverter(iBeneficiaryConverter);
       const promises = room.enrolled.map((uuid) => {
         return ref.doc(uuid).get();
       });
@@ -64,16 +63,16 @@ const RoomAccordion = (props: {
       console.log('snapshots', snapshot.length, 'first', snapshot[0].data());
 
       //create list of persons without undef
-      const listOfPerson: IPerson[] = [];
+      const peopleList: IBeneficiary[] = [];
       for (let snap of snapshot) {
         const it = snap.data();
         if (it !== undefined) {
           console.log('push beneficiary', it.rut);
-          listOfPerson.push(it);
+          peopleList.push(it);
         }
       }
 
-      setPersons(listOfPerson);
+      setPeople(peopleList);
 
       //
     } catch (error) {
@@ -81,28 +80,22 @@ const RoomAccordion = (props: {
     }
   };
 
-  const getList = () => {
+  const getListView = () => {
     console.log(
       'loading list',
-      persons.map((it) => it.rut)
+      people.map((it) => it.rut)
     );
 
-    if (persons.length > 0) {
+    if (people.length > 0) {
       return (
         <Grid item xs={12}>
-          <TableOfPeople people={persons} />
+          <ListView people={people} room={room} />
         </Grid>
       );
     } else {
       return undefined;
     }
   };
-
-  React.useEffect(() => {
-    console.log('download csv suscribed');
-    const data = persons.map((it, i) => convertToMine(it, i));
-    setCsv(data);
-  }, [persons]);
 
   return (
     <Accordion
@@ -147,7 +140,7 @@ const RoomAccordion = (props: {
 
           <Grid item xs={6} sm={3}>
             <Badge badgeContent={room.enrolled.length} color='secondary'>
-              <GroupAddIcon color='primary' titleAccess={'inscritos'} />
+              <GroupIcon color='primary' titleAccess={'inscritos'} />
             </Badge>
           </Grid>
         </Grid>
@@ -171,22 +164,11 @@ const RoomAccordion = (props: {
               </Button>
               <Button>editar</Button>
               <Button>borrar</Button>
-              {persons.length > 0 ? (
-                <CSVLink
-                  data={csv}
-                  separator={';'}
-                  filename={`${room.cityOnOp} ${
-                    room.idCal
-                  } ${room.dateInstance.toLocaleDateString()}.csv`}
-                >
-                  <GetAppIcon />
-                </CSVLink>
-              ) : undefined}
             </ButtonGroup>
           </Grid>
 
           {/*List of people 😀😁😂🤣🤣🤣*/}
-          {getList()}
+          {getListView()}
         </Grid>
       </AccordionDetails>
     </Accordion>
