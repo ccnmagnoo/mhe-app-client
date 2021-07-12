@@ -28,7 +28,7 @@ export const Welcome = () => {
               <Typography variant='caption' color='initial'>
                 {' '}
                 Popipo
-                <img className='button' src={popipo} alt='logo taller' width={25} />
+                <img className='button' src={popipo} alt='logo taller' width={20} />
                 Soft &trade;
               </Typography>
             </Grid>

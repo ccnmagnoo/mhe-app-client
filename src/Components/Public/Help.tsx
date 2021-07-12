@@ -105,39 +105,7 @@ export const Help = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function uploadPeople() {
-    const physicalSign = `<svg
-  width="396.5"
-  height="200"
-  version="1.1"
-  id="svg6"
-  sodipodi:docname="signsvg.svg"
-  inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-  id="defs10" />
-  <sodipodi:namedview
-  id="namedview8"
-  pagecolor="#ffffff"
-  bordercolor="#666666"
-  borderopacity="1.0"
-  inkscape:pageshadow="2"
-  inkscape:pageopacity="0.0"
-  inkscape:pagecheckerboard="0"
-  showgrid="false"
-  inkscape:snap-text-baseline="true"
-  inkscape:zoom="1.7994956"
-  inkscape:cx="80.855992"
-  inkscape:cy="143.09566"
-  inkscape:window-width="1920"
-  inkscape:window-height="986"
-  inkscape:window-x="-11"
-  inkscape:window-y="-11"
-  inkscape:window-maximized="1"
-  inkscape:current-layer="svg6" />
-  <text
+    const physicalSign = `<svg width="396.5" height="200" version="1.1"  id="svg6  xmlns:svg="http://www.w3.org/2000/svg"> <text
   xml:space="preserve"
   style="font-size:14.6667px;line-height:1.25;font-family:'Arial Rounded MT Bold';-inkscape-font-specification:'Arial Rounded MT Bold, ';fill:#b4b4d3;stroke:none;stroke-opacity:1;fill-opacity:1"
   x="179.42964"

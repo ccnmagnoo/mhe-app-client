@@ -5,7 +5,7 @@ export function convertToMine(p: IPerson, index?: number) {
     id: index ?? 0,
     nombres: p.name.firstName,
     paterno: p.name.fatherName,
-    materno: p.name.fatherName,
+    materno: p.name.motherName,
     rut: p.rut,
     dir: p.address?.dir ?? 'no-data',
     comuna: p.address?.city ?? 'no-data',

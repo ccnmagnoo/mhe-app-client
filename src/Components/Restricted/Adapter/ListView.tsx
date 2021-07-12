@@ -58,7 +58,6 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
         />
       </div>
       <br />
-
       {/*datos csv 🎲🎲*/}
       <Button variant='contained' color='primary' size='small'>
         <CSVLink
@@ -71,7 +70,6 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
           <TableChartIcon color='action' />
         </CSVLink>
       </Button>
-
       {/*PDF 📃📃📃*/}
       <Button variant='contained' color='secondary' size='small'>
         <PDFDownloadLink
@@ -83,6 +81,7 @@ export const ListView = (props: { people: IBeneficiary[]; room: IClassroom }) =>
           }
         </PDFDownloadLink>
       </Button>
+      {/*<img src={`data:image/svg+xml;utf8,${sign}`} alt='no' />*/}
     </>
   );
 };

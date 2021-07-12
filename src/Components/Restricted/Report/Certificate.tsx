@@ -1,6 +1,6 @@
 import React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Page, Text, View, StyleSheet, Svg, Font, Image } from '@react-pdf/renderer';
-
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IClassroom } from '../../../Models/Classroom.interface';
 
@@ -12,11 +12,11 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: '#E4E4E4',
+    //backgroundColor: '#E4E4E4',
   },
   section: {
-    margin: 10,
-    padding: 10,
+    margin: 5,
+    padding: 5,
     flexGrow: 1,
   },
   title: {
@@ -30,39 +30,40 @@ const styles = StyleSheet.create({
   },
   text1: {
     margin: 10,
-    fontSize: 12,
+    fontSize: 11,
     textAlign: 'justify',
   },
   text2: {
     margin: 10,
-    fontSize: 10,
+    fontSize: 11,
     textAlign: 'justify',
     color: 'grey',
+  },
+  caption: {
+    margin: 10,
+    fontSize: 8,
+    textAlign: 'justify',
+    color: 'black',
   },
 });
 
 export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) => {
   //sign
-  let parser = new DOMParser();
-  const signature = () => {
-    if (props.person.sign !== undefined) {
-      const sign = parser.parseFromString(props.person.sign, 'image/svg+xml');
-      return sign;
-    } else {
-      return undefined;
-    }
-  };
+  const signature = <img src={`data:image/svg+xml;utf8,${props.person.sign}`} alt='no' />;
+  const parse = new DOMParser();
+  const sign = parse.parseFromString(props.person.sign ?? '', 'image/svg+xml');
+  console.log('parse sign', sign);
 
   return (
     <Page size='A5' style={styles.page}>
       <View style={styles.section}>
         <Text style={styles.title}> Identificación Conforme de Beneficio</Text>
         <Text style={styles.subtitle}>
-          <strong>Con Buena Energía</strong> en {props.room?.land.name}
+          <strong>Con Buena Energía</strong> {props.room?.colaborator}
         </Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.text1}>idCal: {props.room?.idCal} version:rev.rjs.9.0</Text>
+        <Text style={styles.caption}>idCal: {props.room?.idCal} version:rev.rjs.9.0</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.text2}>
