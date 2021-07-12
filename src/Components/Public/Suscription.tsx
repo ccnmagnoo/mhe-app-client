@@ -474,6 +474,7 @@ export const Suscription = () => {
 
     if (isUploaded) {
       setDisableC(true);
+      setDisableS(true);
       setDialogOpen(true);
     }
   };
