@@ -4,7 +4,7 @@ import { Page, Text, View, StyleSheet, Svg, Font, Image } from '@react-pdf/rende
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IClassroom } from '../../../Models/Classroom.interface';
 
-/*example: https://codesandbox.io/s/react-pdf-demo-i1ted?from-embed=&file=/src/index.js*/
+/* example: https://codesandbox.io/s/react-pdf-demo-i1ted?from-embed=&file=/src/index.js */
 
 // Register font
 
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
 
 export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) => {
   //sign
-  const signature = <img src={`data:image/svg+xml;utf8,${props.person.sign}`} alt='no' />;
   const parse = new DOMParser();
-  const sign = parse.parseFromString(props.person.sign ?? '', 'image/svg+xml');
+
+  const sign = parse.parseFromString(props.person.sign ?? '<svg></svg>', 'image/svg+xml');
   console.log('parse sign', sign);
 
   return (
