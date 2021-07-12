@@ -40,7 +40,25 @@ type ConsolidatedJson = {
 export const Help = () => {
   //room database
   const roomDatabase = roomsToAdd.rooms; /*rooms ddbb*/
-  const cvn: ConsolidatedJson[][] = [cvnToAdd.cvn];
+  const cvn: ConsolidatedJson[][] = [
+    cvnToAdd.cvn,
+    //cvn00000,
+    //cvn02000,
+    //cvn04000,
+    //cvn06000,
+    //cvn08000,
+    //cvn10000,
+    //cvn12000,
+    //cvn14000,
+    //cvn16000,
+    //cvn18000,
+    //cvn20000,
+    //cvn22000,
+    //cvn24000,
+    //cvn26000,
+    //cvn28000,
+    //cvn29000,
+  ];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function uploadRooms() {
@@ -105,31 +123,7 @@ export const Help = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function uploadPeople() {
-    const physicalSign = `<svg width="396.5" height="200" version="1.1"  id="svg6  xmlns:svg="http://www.w3.org/2000/svg"> <text
-  xml:space="preserve"
-  style="font-size:14.6667px;line-height:1.25;font-family:'Arial Rounded MT Bold';-inkscape-font-specification:'Arial Rounded MT Bold, ';fill:#b4b4d3;stroke:none;stroke-opacity:1;fill-opacity:1"
-  x="179.42964"
-  y="96.082672"
-  id="text3151"><tspan
-  sodipodi:role="line"
-  id="tspan3149"
-  x="179.42964"
-  y="96.082672"
-  style="font-size:14.6667px;fill:#b4b4d3;stroke:none;stroke-opacity:1;fill-opacity:1">firma</tspan><tspan
-  sodipodi:role="line"
-  x="179.42964"
-  y="114.41605"
-  id="tspan3153"
-  style="font-size:14.6667px;fill:#b4b4d3;stroke:none;stroke-opacity:1;fill-opacity:1">fisica</tspan></text>
-  <rect
-  style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#d1d2e4;stroke-width:7.29406;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-  id="rect13367"
-  width="77.156387"
-  height="63.819317"
-  x="159.67181"
-  y="68.09034" />
-  </svg>
-  `;
+    const physicalSign = 'on-paper';
     console.log('upload people click');
     console.log('size of consolidated people list', cvn.length);
 
@@ -167,7 +161,8 @@ export const Help = () => {
             const ref = db
               .collection(`Activity/${refUuid}/Consolidated`)
               .doc(beneficiary.uuid);
-            ref.set(beneficiary);
+
+            ref.set({ sign: physicalSign }, { merge: true });
             console.count('success on person');
           });
         });
