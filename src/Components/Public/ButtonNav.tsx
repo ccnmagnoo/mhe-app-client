@@ -19,9 +19,9 @@ export const ButtonNav = () => {
         <Button component={NavLink} to='/validation'>
           Valida
         </Button>
-        <Button component={NavLink} to='/help'>
+        {/*<Button component={NavLink} to='/help'>
           Consultas
-        </Button>
+        </Button>*/}
         <Button component={NavLink} to='/login'>
           Admin
         </Button>
