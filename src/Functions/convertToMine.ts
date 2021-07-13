@@ -15,6 +15,7 @@ export function convertToMine(p: IPerson, index?: number) {
     rsh: '',
     mesa: 'mesa OL',
     genero: p.gender,
+    uuid: p.uuid,
   };
 
   return mine;
@@ -34,4 +35,5 @@ export type Mine = {
   rsh?: string;
   mesa?: string;
   genero: string;
+  uuid: string;
 };
