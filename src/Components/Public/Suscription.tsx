@@ -92,7 +92,7 @@ export const Suscription = () => {
   };
 
   //Return stactic content
-  const titleMessage = (
+  const header = (
     <React.Fragment>
       <Typography variant='h6' color='primary'>
         Inscripción a capacitaciones
@@ -773,7 +773,7 @@ export const Suscription = () => {
   //SUSCRIPTION APP
   return (
     <React.Fragment>
-      {titleMessage}
+      {header}
       <br />
       {formA}
       {visibleB ? formB : undefined}
