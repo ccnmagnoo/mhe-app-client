@@ -237,12 +237,15 @@ export const Validation = () => {
 
         //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
-        const act = room?.placeActivity.date.toDate(); /*day of class 📆*/
-        const timeGap = lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
-        timeGap.setDate(timeGap.getDate() + 3);
+        const act: Date = room?.placeActivity.date.toDate(); /*day of class 📆*/
+        //some browser shows UTC wrong hours
+        act.setHours(act.getHours() - 6);
+        const timeGap: Date =
+          lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
+        timeGap.setDate(timeGap.getDate() + 4);
 
-        console.log('date of class', act);
-        console.log('time gap', timeGap);
+        console.log('time of class', act);
+        console.log('time to sign', timeGap);
 
         switch (true) {
           case now > act && now < timeGap: {
