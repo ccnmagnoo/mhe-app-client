@@ -62,9 +62,7 @@ export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) =
     console.log('signature on server', signUrl);
     switch (signUrl) {
       case 'on-paper': {
-        return (
-          <Text style={{ ...styles.subtitle, color: 'blue' }}>firma en archivo</Text>
-        );
+        return <Text style={{ ...styles.subtitle, color: '#99b3ff' }}>en archivo</Text>;
       }
       case undefined: {
         return (
