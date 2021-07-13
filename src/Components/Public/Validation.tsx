@@ -415,8 +415,10 @@ export const Validation = () => {
 
       //new beneficiary with sign SVG code✍✍✍✒
       if (person !== undefined) {
-        //upload signature and get string
-        const uploadSignature = await getSvgToBase64(signSvg, person.uuid);
+        //upload signature and get string 📷🌄🚞🚵‍♂️
+        const uploadSignature = await setSvgToStorage(signSvg, person.uuid);
+
+        //building beneficiary 💏
         const beneficiary: IBeneficiary = {
           ...person,
           sign: uploadSignature,
@@ -448,7 +450,13 @@ export const Validation = () => {
           }
 
           //set errors false
-          setErrorB({ value: false, message: 'beneficiario validado 😀' });
+          setErrorB({
+            value: false,
+            message: `ya se encuentra validado 😀, no olvide retirar su kit 
+            📌 ${classroom?.placeDispatch?.dir} desde el ${moment(
+              classroom?.placeDispatch?.date
+            ).format('dddd DD [de] MMMM')}`,
+          });
           return true;
         } else {
           //if it's exist, human can not sign ⛔
@@ -470,7 +478,13 @@ export const Validation = () => {
     }
   }
 
-  async function getSvgToBase64(svgString: string | null, uuid: string) {
+  async function setSvgToStorage(svgString: string | null, uuid: string) {
+    /**
+     * this @function setSvgToStorage takes svg
+     * String XLM to a blob/PGN to upload to Firebase Storage as *.png
+     * or return undefined
+     */
+
     if (svgString === null) {
       return undefined;
     }
