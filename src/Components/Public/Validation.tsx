@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
+import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
 import { db, storage } from '../../Config/firebase';
@@ -257,9 +258,7 @@ export const Validation = () => {
             // this bunny is running to fast, too early 🐇
             setErrorA({
               value: true,
-              message: `estás en el registro, pero no nos adelantemos,el taller es ${moment(
-                act
-              )
+              message: `estás en el registro,el taller es ${moment(act)
                 .endOf('days')
                 .fromNow()} 🤗`,
             });

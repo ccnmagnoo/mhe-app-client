@@ -11,6 +11,7 @@ import {
   ButtonGroup,
 } from '@material-ui/core';
 import moment from 'moment';
+import 'moment/locale/es'; // Pasar a español
 import React from 'react';
 import { IClassroom } from '../../../Models/Classroom.interface';
 
@@ -120,8 +121,10 @@ const RoomView = (props: {
             <Grid item xs={12}>
               <Typography variant='caption' color='initial'>
                 {props.workDone
-                  ? moment(room.placeActivity.date).format('DD [de] MMMM')
-                  : moment(room.placeActivity.date).format('DD [de] MMM h:mm a')}
+                  ? moment(room.placeActivity.date).locale('es').format('DD [de] MMMM')
+                  : moment(room.placeActivity.date)
+                      .locale('es')
+                      .format('DD [de] MMM h:mm a')}
               </Typography>
             </Grid>
             <Grid item xs={12}>

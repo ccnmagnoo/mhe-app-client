@@ -4,6 +4,7 @@ import { Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IClassroom } from '../../../Models/Classroom.interface';
 import moment from 'moment';
+import 'moment/locale/es'; // Pasar a español
 
 /* example: https://codesandbox.io/s/react-pdf-demo-i1ted?from-embed=&file=/src/index.js */
 
