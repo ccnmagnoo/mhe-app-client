@@ -62,10 +62,16 @@ export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) =
     console.log('signature on server', signUrl);
     switch (signUrl) {
       case 'on-paper': {
-        return <Text style={styles.subtitle}>firma en papel</Text>;
+        return (
+          <Text style={{ ...styles.subtitle, color: 'blue' }}>firma en archivo</Text>
+        );
       }
       case undefined: {
-        return <Text style={styles.text2}>firmar</Text>;
+        return (
+          <Text style={{ ...styles.caption, textAlign: 'center', color: 'lightgray' }}>
+            firmar
+          </Text>
+        );
       }
       default: {
         return <Image style={styles.image} src={signUrl} />;
