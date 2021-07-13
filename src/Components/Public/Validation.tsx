@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Paper,
@@ -13,12 +14,13 @@ import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
+import { db, storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
+import { UrlChip } from './UrlChip';
 
 //icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -27,8 +29,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 
 //canvas
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
-import React from 'react';
-import { UrlChip } from './UrlChip';
+import Canvg from 'canvg';
 
 //sign paper style
 const useStyles = makeStyles((theme) => ({
@@ -73,9 +74,9 @@ export const Validation = () => {
     return <div style={{ width: '100%', height: 200 }} ref={renderRef} />;
   };
 
-  const titleMessage = (
+  const header = (
     <React.Fragment>
-      <Typography variant='h5' color='primary'>
+      <Typography variant='h6' color='primary'>
         Valide su participación ✍
       </Typography>
       <Typography variant='body1' color='textSecondary'>
@@ -400,23 +401,27 @@ export const Validation = () => {
 
     //upload IBeneficiary to Consolidated 🔥🔥🔥
     const result = await postBeneficiary();
-
     //setState
     setDisableB(result); /*on success*/
     setDisableCtrl(result);
   };
 
   async function postBeneficiary() {
+    //firebase init
     try {
-      //format svg
+      //format svg: getting svg in string
       const now = new Date();
-      const signSvg = draw
-        .getSvgXML()
-        ?.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+      const signSvg = draw.getSvgXML();
 
       //new beneficiary with sign SVG code✍✍✍✒
       if (person !== undefined) {
-        const beneficiary: IBeneficiary = { ...person, sign: signSvg, dateSign: now };
+        //upload signature and get string
+        const uploadSignature = await getSvgToBase64(signSvg, person.uuid);
+        const beneficiary: IBeneficiary = {
+          ...person,
+          sign: uploadSignature,
+          dateSign: now,
+        };
 
         //push sign database ⏫⏫⏫
         const refDoc = db
@@ -462,6 +467,39 @@ export const Validation = () => {
       console.log('error on post beneficiary', error);
       setErrorB({ value: true, message: 'no se pudo cargar beneficiario 🙉' });
       return false;
+    }
+  }
+
+  async function getSvgToBase64(svgString: string | null, uuid: string) {
+    if (svgString === null) {
+      return undefined;
+    }
+    try {
+      const canvas = new OffscreenCanvas(300, 200);
+      const context = canvas?.getContext('2d');
+      if (context !== null && context !== undefined) {
+        //render image
+        const v = Canvg.fromString(context, svgString);
+        await v.render();
+        const blob = await canvas.convertToBlob();
+
+        //Firebase storage 💾🔥🔥🔥
+        const thisYear = new Date().getFullYear();
+        const storageRef = storage.ref();
+        const signRef = storageRef.child(
+          `mheServices/signStorage/${thisYear}/${uuid}.png`
+        );
+        const snapshot = await signRef.put(blob);
+        const done: string = await snapshot.ref.getDownloadURL();
+        console.log('signature upload', done);
+
+        return done;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.log('signature upload', error);
+      return undefined;
     }
   }
 
@@ -568,7 +606,7 @@ export const Validation = () => {
 
   return (
     <React.Fragment>
-      {titleMessage}
+      {header}
       <br />
       {validationA}
       <br />
