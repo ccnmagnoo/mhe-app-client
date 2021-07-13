@@ -140,7 +140,7 @@ const RoomView = (props: {
           </Grid>
           {!props.workDone ? (
             <Grid item xs={6} sm={3}>
-              <Badge badgeContent={room.enrolled.length} color='secondary'>
+              <Badge badgeContent={room.enrolled.length} max={999} color='secondary'>
                 <GroupIcon color='primary' titleAccess={'inscritos'} />
               </Badge>
             </Grid>

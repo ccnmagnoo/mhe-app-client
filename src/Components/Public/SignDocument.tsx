@@ -22,7 +22,7 @@ export const SignDocument = (props: PropsDS) => {
     },
   ];
 
-  const signSection = () => {
+  const signaturePad = () => {
     if (pers?.sign !== undefined) {
       return (
         <React.Fragment>
@@ -141,7 +141,7 @@ export const SignDocument = (props: PropsDS) => {
             </Grid>
             <Grid item xs={12}></Grid>
 
-            {signSection()}
+            {signaturePad()}
           </Grid>
         </Box>
       </Paper>
