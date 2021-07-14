@@ -24,7 +24,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
-
 import { ListView } from './ListView';
 
 const RoomView = (props: {
