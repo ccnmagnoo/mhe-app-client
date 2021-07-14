@@ -627,6 +627,9 @@ export const Validation = () => {
       {validationA}
       <br />
       {visibleB ? validationB : undefined}
+      <Alert variant='filled' color='warning'>
+        validación no compatible con 📵iPhone&trade;
+      </Alert>
     </React.Fragment>
   );
 };
