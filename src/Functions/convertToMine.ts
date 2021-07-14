@@ -1,6 +1,10 @@
+import { IClassroom } from '../Models/Classroom.interface';
 import { IPerson } from '../Models/Person.Interface';
 
-export function convertToMine(p: IPerson, index?: number) {
+export function convertToMine(p: IPerson, r: IClassroom, index?: number) {
+  const iAttendee = r.attendees.indexOf(p.uuid);
+  const validation = iAttendee === -1 ? 'no' : 'si';
+
   const mine: Mine = {
     id: index ?? 0,
     nombres: p.name.firstName,
@@ -15,6 +19,7 @@ export function convertToMine(p: IPerson, index?: number) {
     rsh: '',
     mesa: 'mesa OL',
     genero: p.gender,
+    valida: validation,
     uuid: p.uuid,
   };
 
@@ -35,5 +40,6 @@ export type Mine = {
   rsh?: string;
   mesa?: string;
   genero: string;
+  valida: 'si' | 'no';
   uuid: string;
 };

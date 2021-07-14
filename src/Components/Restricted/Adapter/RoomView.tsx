@@ -19,6 +19,9 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GroupIcon from '@material-ui/icons/Group';
 import TocIcon from '@material-ui/icons/Toc';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
 import { refUuid } from '../../../Config/credential';
@@ -46,55 +49,28 @@ const RoomView = (props: {
   //states 🅿⛽ list with details
 
   const [people, setPeople] = React.useState<IBeneficiary[]>([]);
-
-  //call beneficiaries/suscribed
-  const onSubmitPeople = async () => {
-    //call firebase suscribed 🔥🔥🔥🔥
-    try {
-      //change colection router
-      const routeDb = props.workDone
-        ? `${dbKey.act}/${refUuid}/${dbKey.cvn}` /*consolidated route*/
-        : `${dbKey.act}/${refUuid}/${dbKey.sus}`; /*suscrubed route*/
-      const ref = db.collection(routeDb).withConverter(iBeneficiaryConverter);
-      const promises = room.enrolled.map((uuid) => {
-        return ref.doc(uuid).get();
-      });
-      //Promise all
-      const snapshot = await Promise.all(promises);
-      console.log('snapshots', snapshot.length, 'first', snapshot[0].data());
-
-      //create list of persons without undef
-      const peopleList: IBeneficiary[] = [];
-      for (let snap of snapshot) {
-        const it = snap.data();
-        if (it !== undefined) {
-          console.log('push beneficiary', it.rut);
-          peopleList.push(it);
-        }
-      }
-
-      setPeople(peopleList);
-
-      //
-    } catch (error) {
-      console.log('error fetching suscribed', error);
-    }
-  };
+  const [typeListView, setTypeListView] = React.useState<
+    null | 'suscribed' | 'validated'
+  >(null);
 
   const getListView = () => {
-    console.log(
-      'loading list',
-      people.map((it) => it.rut)
-    );
-
-    if (people.length > 0) {
-      return (
-        <Grid item xs={12}>
-          <ListView people={people} room={room} />
-        </Grid>
-      );
-    } else {
-      return undefined;
+    switch (typeListView) {
+      case 'suscribed': {
+        return (
+          <Grid item xs={12}>
+            <ListView room={room} workDone={false} />
+          </Grid>
+        );
+      }
+      case 'validated': {
+        return (
+          <Grid item xs={12}>
+            <ListView room={room} workDone={true} />
+          </Grid>
+        );
+      }
+      default:
+        return undefined;
     }
   };
 
@@ -189,11 +165,27 @@ const RoomView = (props: {
               aria-label='actividades-view'
               size='small'
             >
-              <Button onClick={onSubmitPeople}>
+              <Button
+                onClick={() => {
+                  setTypeListView('suscribed');
+                }}
+              >
                 <TocIcon />
               </Button>
-              <Button>editar</Button>
-              <Button>borrar</Button>
+              <Button
+                disabled={!props.workDone}
+                onClick={() => {
+                  setTypeListView('validated');
+                }}
+              >
+                <PlaylistAddCheckIcon />
+              </Button>
+              <Button>
+                <EditIcon />
+              </Button>
+              <Button>
+                <DeleteIcon />
+              </Button>
             </ButtonGroup>
           </Grid>
 
