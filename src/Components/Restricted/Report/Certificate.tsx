@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     flexGrow: 0,
   },
   image: {
-    marginVertical: 5,
+    height: 100,
+    marginVertical: 0,
     marginHorizontal: 100,
   },
   title: {
