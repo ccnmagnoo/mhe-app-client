@@ -13,12 +13,13 @@ import { firebase } from '../../Config/firebase';
 import Typography from '@material-ui/core/Typography';
 
 //icons
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import Outgoing from './Outgoing';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -71,8 +72,11 @@ const Dashboard = (props: any) => {
           <Button component={Link} to={`${url}/outgoing`}>
             <EventAvailableIcon />
           </Button>
+          <Button component={Link} to={`${url}/addperson`}>
+            <PersonAddIcon />
+          </Button>
           <Button component={Link} to={`${url}/create`}>
-            <AddCircleOutlineIcon />
+            <PostAddIcon />
           </Button>
           <Button onClick={closeAdmin}>
             <ExitToAppIcon />
@@ -91,6 +95,10 @@ const Dashboard = (props: any) => {
           </Route>
           <Route path={`${path}/outgoing`}>
             <Outgoing />
+          </Route>
+          <Route path={`${path}/addperson`}>
+            {/*create new unsuscribed person after period gap*/}
+            add person
           </Route>
           <Route path={`${path}/create`}>
             {/*create new classroom*/}
