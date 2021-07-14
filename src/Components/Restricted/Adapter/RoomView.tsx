@@ -24,14 +24,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
-import { refUuid } from '../../../Config/credential';
-import { dbKey } from '../../../Models/databaseKeys';
-import { db } from '../../../Config/firebase';
+
 import { ListView } from './ListView';
-import {
-  IBeneficiary,
-  iBeneficiaryConverter,
-} from '../../../Models/Beneficiary.interface';
 
 const RoomView = (props: {
   workDone: boolean /*if true, so activity to fetch is consolidated in past*/;
@@ -48,7 +42,6 @@ const RoomView = (props: {
 
   //states 🅿⛽ list with details
 
-  const [people, setPeople] = React.useState<IBeneficiary[]>([]);
   const [typeListView, setTypeListView] = React.useState<
     null | 'suscribed' | 'validated'
   >(null);
