@@ -146,14 +146,14 @@ const RoomView = (props: {
       {/*summary details 🤯🤯*/}
       <AccordionDetails>
         <Grid container spacing={2} alignItems='center' justify='space-evenly'>
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={3}>
             <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6} sm={5}>
             <UrlChip url={room.placeDispatch?.dir} isDisable={!props.workDone} />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4} alignContent='stretch'>
             <ButtonGroup
               variant='text'
               color='primary'
