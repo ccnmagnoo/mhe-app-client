@@ -20,6 +20,7 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import Outgoing from './Outgoing';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { Oversuscription } from './Oversuscription';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -98,7 +99,7 @@ const Dashboard = (props: any) => {
           </Route>
           <Route path={`${path}/addperson`}>
             {/*create new unsuscribed person after period gap*/}
-            add person
+            <Oversuscription />
           </Route>
           <Route path={`${path}/create`}>
             {/*create new classroom*/}
