@@ -1,7 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { Card, CardContent, Grid, Avatar, CardHeader } from '@material-ui/core';
+import { Card, CardContent, Grid, Avatar, CardHeader, Chip } from '@material-ui/core';
 import popipo from '../../Assets/popiposoft.svg';
+import EmailIcon from '@material-ui/icons/Email';
+
 export const Welcome = () => {
   return (
     <React.Fragment>
@@ -23,7 +25,14 @@ export const Welcome = () => {
               <Typography variant='caption' color='initial' paragraph>
                 {' '}
                 Si tienes dudas escribenos a{' '}
-                <a href='mailto:ccamposn@minenergia.cl'>ccamposn@minenergia.cl</a>{' '}
+                <Chip
+                  avatar={<EmailIcon />}
+                  label='@EnergíaValpo'
+                  component='a'
+                  href='mailto:ccamposn@minenergia.cl'
+                  color='primary'
+                  clickable
+                />
               </Typography>
               <Typography variant='caption' color='initial'>
                 {' '}
