@@ -4,11 +4,12 @@ import { capitalWord } from './capitalWord';
 
 export function getGender(name: string) {
   const firstName = name.toLocaleLowerCase();
-  const splitName = firstName.split(' ')[0].split('').pop() ?? '0';
+  const firstWord = firstName.split(' ')[0];
+  const lastChar = firstWord.split('').pop() ?? '0';
 
-  if (splitName === 'a') {
+  if (lastChar === 'a') {
     return Gender.female;
-  } else if (wierdFemaleNames.indexOf(capitalWord(splitName)) !== -1) {
+  } else if (wierdFemaleNames.indexOf(capitalWord(firstWord)) !== -1) {
     return Gender.female;
   } else {
     return Gender.male;
