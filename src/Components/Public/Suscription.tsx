@@ -28,7 +28,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
-import { IConsolidated } from '../../Models/Consolidated.interface';
 import { dateLimit } from '../../Config/credential';
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
@@ -45,6 +44,7 @@ import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
+import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 
 export const Suscription = () => {
   //hooks
@@ -138,29 +138,20 @@ export const Suscription = () => {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
-      const req = db.collection(`Activity/${refUuid}/Consolidated`);
+      const req = db
+        .collection(`Activity/${refUuid}/Consolidated`)
+        .where('rut', '==', data.rut)
+        .withConverter(iBeneficiaryConverter);
       console.log('firestore fetch rut', data.rut);
-      const queryDocs = await req.where('rut', '==', data.rut).get();
+      const queryDocs = await req.get();
 
-      const listDocs: IConsolidated[] = queryDocs.docs.map((doc) => {
-        const it = doc.data();
-        const result: IConsolidated = {
-          uuid: doc.id,
-          classroom: {
-            idCal: it.classroom.idCal,
-            uuid: it.classroom.uuid,
-            dateInstance: it.classroom.dateInstance.toDate(),
-          },
-          dateBenefit: it.dateBenefit.toDate(),
-          rut: it.rut,
-          sign: it.sign,
-        };
-        return result;
+      const listOfPeople: IBeneficiary[] = queryDocs.docs.map((doc) => {
+        return doc.data();
       });
 
       //filter all benefits after date limit (now 31-01-2017)
-      const filterDocs = listDocs.filter((cvn) => {
-        return cvn.dateBenefit > dateLimit;
+      const filterDocs = listOfPeople.filter((cvn) => {
+        return cvn.dateSign! > dateLimit;
       });
       console.log('benefits after date limit', filterDocs.length);
 

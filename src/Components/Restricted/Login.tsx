@@ -31,8 +31,8 @@ const Login = (props: any) => {
     setInput(data);
     setError(null);
     e?.target.reset();
-    reset();
     setIsLogin(true);
+    reset();
   };
 
   const login = React.useCallback(async () => {
