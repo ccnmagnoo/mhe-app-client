@@ -5,6 +5,12 @@ import popipo from '../../Assets/popiposoft.svg';
 import EmailIcon from '@material-ui/icons/Email';
 
 export const Welcome = () => {
+  const mailTo =
+    'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo y rut'.replace(
+      ' ',
+      '%20'
+    );
+
   return (
     <React.Fragment>
       <Card>
@@ -29,7 +35,7 @@ export const Welcome = () => {
                   avatar={<EmailIcon />}
                   label='@EnergíaValpo'
                   component='a'
-                  href='mailto:ccamposn@minenergia.cl'
+                  href={mailTo}
                   color='primary'
                   clickable
                 />
