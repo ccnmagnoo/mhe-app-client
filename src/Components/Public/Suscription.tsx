@@ -530,18 +530,19 @@ export const Suscription = () => {
         console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
-        //set new enrolled 🔥🔥🔥
-        const refRoom = db
-          .collection(`Activity/${refUuid}/Classroom`)
-          .doc(selectedRoom?.uuid);
+        //set new enrolled 🔥🔥🔥 (moved to cloud functions)
+        //const refRoom = db
+        //.collection(`Activity/${refUuid}/Classroom`)
+        //.doc(selectedRoom?.uuid);
+        //
+        //const enrolled = selectedRoom?.enrolled;
+        //if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
+        ////update classroom enrolled list is dosent exist, avoid duplication
+        //enrolled?.push(person.uuid);
+        //refRoom.set({ enrolled: enrolled }, { merge: true });
+        //console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
+        //}
 
-        const enrolled = selectedRoom?.enrolled;
-        if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
-          //update classroom enrolled list is dosent exist, avoid duplication
-          enrolled?.push(person.uuid);
-          refRoom.set({ enrolled: enrolled }, { merge: true });
-          console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
-        }
         return true;
       } else {
         console.log('on previous existance on this room', selectedRoom?.idCal);

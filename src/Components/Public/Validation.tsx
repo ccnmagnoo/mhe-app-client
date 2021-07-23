@@ -31,6 +31,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 //canvas
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import Canvg from 'canvg';
+import { dbKey } from '../../Models/databaseKeys';
 
 //sign paper style
 const useStyles = makeStyles((theme) => ({
@@ -203,7 +204,7 @@ export const Validation = () => {
         //ON success continue
         //fetch date of classroom from document 🔥🔥🔥
         const queryClassroom = await db
-          .collection(`Activity/${refUuid}/Classroom`)
+          .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
           .doc(lastSus.classroom.uuid)
           .get();
         const room = queryClassroom.data();
@@ -439,17 +440,17 @@ export const Validation = () => {
           await refDoc.set(beneficiary);
           console.log('posted beneficiary', beneficiary.uuid);
 
-          //set attendees on classroom list : already validated
-          const refRoom = db
-            .collection(`Activity/${refUuid}/Classroom`)
-            .doc(classroom?.uuid);
-          const attendees = classroom?.attendees;
-
-          if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
-            attendees?.push(person.uuid);
-            refRoom.set({ attendees: attendees }, { merge: true });
-            console.log('updated classroom attendees', beneficiary?.uuid);
-          }
+          //set attendees on classroom list 🔥🔥🔥 (moved to cloud functions)
+          //const refRoom = db
+          //.collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
+          //.doc(classroom?.uuid);
+          //const attendees = classroom?.attendees;
+          //
+          //if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
+          //attendees?.push(person.uuid);
+          //refRoom.set({ attendees: attendees }, { merge: true });
+          //console.log('updated classroom attendees', beneficiary?.uuid);
+          //}
 
           //set errors false
           setErrorB({
