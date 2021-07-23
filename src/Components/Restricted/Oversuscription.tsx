@@ -502,6 +502,7 @@ export const Oversuscription = () => {
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const refRoom = db
           .collection(`Activity/${refUuid}/Classroom`)
           .doc(selectedRoom?.uuid);
@@ -509,8 +510,8 @@ export const Oversuscription = () => {
         const enrolled = selectedRoom?.enrolled;
         if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
           //update classroom enrolled list is dosent exist, avoid duplication
-          enrolled?.push(person.uuid);
-          refRoom.set({ enrolled: enrolled }, { merge: true });
+          //enrolled?.push(person.uuid);
+          //refRoom.set({ enrolled: enrolled }, { merge: true });
           console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
         }
         return true;
