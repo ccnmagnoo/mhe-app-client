@@ -421,16 +421,16 @@ export const Validation = () => {
           console.log('posted beneficiary', beneficiary.uuid);
 
           //set attendees on classroom list 🔥🔥🔥 (moved to cloud functions)
-          //const refRoom = db
-          //.collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
-          //.doc(classroom?.uuid);
-          //const attendees = classroom?.attendees;
-          //
-          //if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
-          //attendees?.push(person.uuid);
-          //refRoom.set({ attendees: attendees }, { merge: true });
-          //console.log('updated classroom attendees', beneficiary?.uuid);
-          //}
+          const refRoom = db
+            .collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
+            .doc(classroom?.uuid);
+          const attendees = classroom?.attendees;
+
+          if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
+            attendees?.push(person.uuid);
+            refRoom.set({ attendees: attendees }, { merge: true });
+            console.log('updated classroom attendees', beneficiary?.uuid);
+          }
 
           //set errors false
           setErrorB({
