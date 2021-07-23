@@ -18,7 +18,7 @@ import { refUuid } from '../../Config/credential';
 import { db, storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
 import { UrlChip } from './UrlChip';
@@ -205,40 +205,20 @@ export const Validation = () => {
         //fetch date of classroom from document 🔥🔥🔥
         const queryClassroom = await db
           .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
+          .withConverter(iClassroomConverter)
           .doc(lastSus.classroom.uuid)
           .get();
         const room = queryClassroom.data();
 
         //set state of current classroom
         if (room !== undefined) {
-          const classroom: IClassroom = {
-            uuid: room.uuid,
-            idCal: room.idCal,
-            dateInstance: room?.dateInstance.toDate(),
-            enrolled: room.enrolled,
-            attendees: room.attendees,
-            placeActivity: {
-              name: room.placeActivity.name,
-              date: room.placeActivity.date.toDate(),
-              dir: room.placeActivity.dir,
-            },
-            placeDispatch: {
-              name: room.placeDispatch?.name,
-              date: room.placeDispatch?.date.toDate(),
-              dir: room.placeDispatch?.dir,
-            },
-            allowedCities: room.allowedCities,
-            cityOnOp: room.cityOnOp,
-            colaborator: room.colaborator,
-            land: { type: room.land.type, name: room.land.name },
-          };
-          console.log('set classroom state', classroom.uuid);
-          setClassroom(classroom);
+          console.log('set classroom state', room.uuid);
+          setClassroom(room);
         }
 
         //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
-        const act: Date = room?.placeActivity.date.toDate(); /*day of class 📆*/
+        const act: Date = room?.placeActivity.date ?? new Date(); /*day of class 📆*/
         //some browser shows UTC wrong hours
         act.setHours(act.getHours() - 6);
         const timeGap: Date =
