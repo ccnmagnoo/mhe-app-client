@@ -6,7 +6,7 @@ import EmailIcon from '@material-ui/icons/Email';
 
 export const Welcome = () => {
   const mailTo =
-    'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut, comuna y motivo de la consulta'.replace(
+    'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut, su comuna y motivo de la consulta'.replace(
       ' ',
       '%20'
     );
