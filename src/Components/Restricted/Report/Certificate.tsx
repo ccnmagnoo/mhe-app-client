@@ -57,7 +57,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) => {
+export const Certificate = (props: {
+  person: IBeneficiary;
+  room: IClassroom;
+  index: number;
+}) => {
   //sign
 
   function signature(signUrl?: string) {
@@ -138,7 +142,7 @@ export const Certificate = (props: { person: IBeneficiary; room: IClassroom }) =
           {moment(props.person.dateSign).format('dddd DD [de] MMMM [de] YYYY')}
         </Text>
         <Text style={{ ...styles.text2, textAlign: 'center' }}>
-          uuid firma:{props.person.uuid}
+          🆔uuid:{props.person.uuid} 🅿index:{props.index}
         </Text>
       </View>
     </Page>

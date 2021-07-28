@@ -101,9 +101,9 @@ export const SignDocument = (props: PropsDS) => {
                 align='justify'
                 paragraph
               >
-                💠 Declara que reconoce el derecho a un solo kit de eficiencia energética
-                y que es de su exclusiva responsabilidad el retiro de este material desde
-                el punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
+                💠 Declara que reconoce la recepción de un kit de eficiencia energética y
+                que es de su exclusiva responsabilidad el retiro de este material desde el
+                punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
                 {room?.placeDispatch?.dir} y además que ha asistido a una capacitación en
                 eficiencia energética.
               </Typography>
