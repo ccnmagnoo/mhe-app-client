@@ -80,7 +80,6 @@ export const Suscription = () => {
 
   type Input = {
     rut: string;
-    documentNumber: string;
     name: string;
     fatherName: string;
     motherName: string;
@@ -327,25 +326,7 @@ export const Suscription = () => {
                     Paso 2
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    required
-                    disabled={disableB}
-                    fullWidth
-                    id='document-number'
-                    label='número de documento o serie'
-                    type='text'
-                    variant='outlined'
-                    {...register('documentNumber', {
-                      pattern: {
-                        value: /\w*\d{3}[.]?\d{3}[.]?\d{3,4}/,
-                        message: 'esto parace un error',
-                      },
-                    })}
-                    error={errors.documentNumber && true}
-                    helperText={errors.documentNumber?.message}
-                  />
-                </Grid>
+                <Grid item xs={8}></Grid>
                 <Grid item xs={12} sm={4}>
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
@@ -426,7 +407,7 @@ export const Suscription = () => {
                       <TextField
                         {...params}
                         required
-                        label='ciudad'
+                        label='comuna'
                         variant='outlined'
                         type='text'
                         {...register('city', {})}
