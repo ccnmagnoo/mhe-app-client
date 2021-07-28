@@ -41,26 +41,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Validation = () => {
+  //type input form values
+
   const signPaper = useStyles();
   //State hook with information
   const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
   const [classroom, setClassroom] = React.useState<IClassroom | undefined>(undefined);
 
   //State Hooks diable buttons
-  const [disableA, setDisableA] = React.useState(false);
+  const [disableEU, setDisableEU] = React.useState(false);
+  const [disableA, setDisableA] = React.useState(true);
   const [disableB, setDisableB] = React.useState(true);
   const [disableCtrl, setDisableCtrl] = React.useState(false);
 
   //State hooks visibility
+  const [visibleA, setVisibleA] = React.useState(false);
   const [visibleB, setVisibleB] = React.useState(false);
 
   //React hook form
   const {
     register,
     handleSubmit,
-    //reset,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    reset,
     formState: { errors },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    watch,
   } = useForm<Input>();
+
+  type Input = {
+    eUser: string;
+    ePass: string;
+    rut: string;
+  };
 
   //canvas hookconst 👩‍🎨👨‍🎨🎨
   const [renderRef, draw] = useSvgDrawing({
@@ -71,6 +84,7 @@ export const Validation = () => {
     delay: 50, // Set how many ms to draw points every.
     fill: 'none', // Set fill attribute for path. default is `none`
   });
+
   const Drawing = () => {
     // Drawing area will be resized to fit the rendering area
     return <div style={{ width: '100%', height: 200 }} ref={renderRef} />;
@@ -82,14 +96,165 @@ export const Validation = () => {
         Valide su participación ✍
       </Typography>
       <Typography variant='body1' color='textSecondary'>
-        en esta sección solicitaremos su firma digital
+        en esta sección solicitaremos su firma digital, solo para servicios
       </Typography>
     </React.Fragment>
   );
 
-  type Input = {
-    rut: string;
+  //form External user account  ✅✅
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [errorEU, setErrorEU] = React.useState<null | {
+    value: boolean;
+    message: string;
+  }>(null);
+
+  const snackbarEU = () => {
+    //check public account
+    if (errorEU !== null) {
+      if (errorEU.value) {
+        //if error true 😡❌📛
+        return (
+          <Grid item xs={12}>
+            <Alert severity='error'>{errorEU.message}</Alert>
+          </Grid>
+        );
+      } else {
+        //if validation is success ✅
+        return (
+          <Grid item xs={12}>
+            <Alert severity='success'>{errorEU.message}</Alert>
+          </Grid>
+        );
+      }
+    } else {
+      return undefined;
+    }
   };
+
+  const onSubmitCredentials: SubmitHandler<Input> = async (data, e) => {
+    //init on submit
+    console.log('form External User', true, data.eUser);
+
+    //fetch account credentials on firebase🔥🔥🔥
+    const checkAccount = await checkExternalUser(data);
+    if (checkAccount === true) {
+      //disableA
+      console.log('suscribed result', checkAccount);
+      setDisableEU(true);
+      setDisableA(false);
+      setVisibleA(true);
+      console.log('active user', true);
+    } else {
+      console.log('check external account on suspense', checkAccount);
+    }
+  };
+
+  const checkExternalUser = async (data: Input) => {
+    console.log('checking external user:', data.eUser);
+    try {
+      //firestore🔥🔥🔥 fetching al RUT benefits ins register
+      const ref = db
+        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.ext}`)
+        .where('username', '==', data.eUser);
+      const snapshots = await ref.get();
+      const accounts = snapshots.docs.map((snapshot) => {
+        const data = snapshot.data();
+        return { user: data.username as string, pass: data.password as string };
+      });
+      console.log('accounts detected', accounts.length);
+      if (accounts.length > 0) {
+        const account = accounts[0];
+        if (data.ePass === account.pass) {
+          //great success very nice 👍
+          setErrorEU({ value: false, message: 'cuenta del servicio verificada 😀' });
+          return true;
+        } else {
+          setErrorEU({ value: true, message: 'password incorrecto 🔐' });
+          return false;
+        }
+      } else {
+        //i cant find any account with this username
+        setErrorEU({ value: true, message: 'no hay cuentas activas 👮‍♂️' });
+        return false;
+      }
+    } catch (error) {
+      //im having some problems with conection
+      console.log('checking external user', error);
+      setErrorEU({ value: true, message: 'error de conexión 🧠' });
+      return false;
+    }
+  };
+
+  const validationExternalUser = (
+    <React.Fragment>
+      <Grow in={true}>
+        <form onSubmit={handleSubmit(onSubmitCredentials)}>
+          <Paper elevation={2}>
+            <Box p={1}>
+              <Grid
+                container
+                spacing={2}
+                alignItems='center'
+                justify='space-between'
+                direction='row'
+              >
+                <Grid item sm={2} xs={12}>
+                  <Typography variant='subtitle2' color='primary'>
+                    Cuenta
+                  </Typography>
+                </Grid>
+
+                <Grid item sm={4} xs={6}>
+                  <TextField
+                    disabled={disableEU}
+                    required
+                    id='input-user'
+                    label='usuario servicio'
+                    type='text'
+                    variant='outlined'
+                    {...register('eUser', {
+                      minLength: { value: 6, message: 'muy corto' },
+                      maxLength: { value: 30, message: 'muy largo' },
+                    })}
+                    error={errors.eUser && true}
+                    helperText={errors.eUser?.message}
+                  />
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                  <TextField
+                    disabled={disableEU}
+                    required
+                    id='input-password'
+                    label='password'
+                    type='password'
+                    variant='outlined'
+                    {...register('ePass', {
+                      minLength: { value: 6, message: 'muy corto' },
+                      maxLength: { value: 30, message: 'muy largo' },
+                    })}
+                    error={errors.ePass && true}
+                    helperText={errors.ePass?.message}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={2}>
+                  <Button
+                    type='submit'
+                    variant='outlined'
+                    color='primary'
+                    disabled={disableEU}
+                  >
+                    {disableEU ? '✅' : 'In'}
+                  </Button>
+                </Grid>
+                {snackbarEU()}
+              </Grid>
+            </Box>
+          </Paper>
+        </form>
+      </Grow>
+    </React.Fragment>
+  );
 
   //form A ✅✅
   const [errorA, setErrorA] = React.useState<null | {
@@ -125,7 +290,7 @@ export const Validation = () => {
   };
 
   const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
-    console.log('form A validation', true, data.rut);
+    console.log('form A: rut validation', true, data.rut);
 
     //fetch suscriptions
     const checkSuscribed = await checkSuscription(data);
@@ -223,7 +388,7 @@ export const Validation = () => {
         act.setHours(act.getHours() - 6);
         const timeGap: Date =
           lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
-        timeGap.setDate(timeGap.getDate() + 4);
+        timeGap.setDate(timeGap.getDate() + 60);
 
         console.log('time of class', act);
         console.log('time to sign', timeGap);
@@ -295,7 +460,7 @@ export const Validation = () => {
 
   const validationA = (
     <React.Fragment>
-      <Grow in={true}>
+      <Grow in={visibleA}>
         <form onSubmit={handleSubmit(onSubmitA)}>
           <Paper elevation={2}>
             <Box p={1}>
@@ -317,19 +482,27 @@ export const Validation = () => {
                     disabled={disableA}
                     required
                     id='check-rut'
-                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
+                    label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
                     type='text'
                     variant='outlined'
                     {...register('rut', {
-                      pattern: {
-                        value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                        message:
-                          'rut inválido 🙅‍♂️: debe tener guión "-" y estár sin puntos "." 👌',
+                      //pattern: {
+                      //value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
+                      //message:
+                      //'rut inválido 🙅‍♂️: debe tener guión "-" y estár sin puntos "." 👌',
+                      //},
+                      validate: {
+                        isTrue: (v) => {
+                          if (disableA === false) {
+                            return rolChecker(v) === true;
+                          } else {
+                            return true;
+                          }
+                        },
                       },
-                      validate: { isTrue: (v) => rolChecker(v) === true },
                     })}
                     error={errors.rut && true}
-                    helperText={errors.rut?.message}
+                    helperText={errors.rut !== undefined ? 'rut inválido' : undefined}
                   />
                 </Grid>
 
@@ -349,6 +522,7 @@ export const Validation = () => {
           </Paper>
         </form>
       </Grow>
+      <br />
     </React.Fragment>
   );
 
@@ -599,6 +773,7 @@ export const Validation = () => {
           </Paper>
         </form>
       </Grow>
+      <br />
     </React.Fragment>
   );
 
@@ -606,8 +781,9 @@ export const Validation = () => {
     <React.Fragment>
       {header}
       <br />
-      {validationA}
+      {validationExternalUser}
       <br />
+      {visibleA ? validationA : undefined}
       {visibleB ? validationB : undefined}
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;

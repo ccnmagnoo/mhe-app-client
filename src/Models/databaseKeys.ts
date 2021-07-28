@@ -4,4 +4,5 @@ export enum dbKey {
   act = 'Activity',
   sus = 'Suscribed',
   uid = 'fa37Q3WqWOUoXCLXyAm0kRwmQaJ2',
+  ext = 'ExternalUser',
 }
