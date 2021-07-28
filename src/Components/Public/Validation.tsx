@@ -209,7 +209,7 @@ export const Validation = () => {
                     disabled={disableEU}
                     required
                     id='input-user'
-                    label='usuario servicio'
+                    label='usuario'
                     type='text'
                     variant='outlined'
                     {...register('eUser', {
