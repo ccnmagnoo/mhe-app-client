@@ -74,7 +74,6 @@ export const Suscription = () => {
   const {
     register,
     handleSubmit,
-
     reset,
     formState: { errors },
   } = useForm<Input>();
@@ -105,6 +104,7 @@ export const Suscription = () => {
 
   //FORM A 💖💖💗
   const onSubmitA: SubmitHandler<Input> = async (data) => {
+    //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
 
@@ -156,7 +156,6 @@ export const Suscription = () => {
       console.log('benefits after date limit', filterDocs.length);
 
       //true: failure, had benefits,  false:go go go, this person is ok
-
       return filterDocs.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
