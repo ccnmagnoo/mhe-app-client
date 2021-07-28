@@ -11,8 +11,8 @@ import { Certificate } from './Certificate';
 export const Report = (props: { room: IClassroom; people: IBeneficiary[] }) => {
   return (
     <Document>
-      {props.people.map((p) => {
-        return <Certificate person={p} room={props.room} />;
+      {props.people.map((p, index) => {
+        return <Certificate person={p} room={props.room} index={index} />;
       })}
     </Document>
   );
