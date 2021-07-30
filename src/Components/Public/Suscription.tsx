@@ -5,7 +5,12 @@ import {
   Card,
   CardActions,
   CardContent,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   TextFieldProps,
 } from '@material-ui/core';
 import {
@@ -75,6 +80,8 @@ export const Suscription = () => {
     register,
     handleSubmit,
     reset,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    watch,
     formState: { errors },
   } = useForm<Input>();
 
@@ -88,7 +95,9 @@ export const Suscription = () => {
     email: string;
     phone: string;
     electricBill: number;
-    gasoilBill: number;
+    electricity: number;
+    gasBill: number;
+    gasDuration: number;
   };
 
   //Return stactic content
@@ -382,6 +391,7 @@ export const Suscription = () => {
                     helperText={errors.motherName?.message}
                   />
                 </Grid>
+
                 <Grid item xs={6}>
                   {/*dirección: 🌐🗺🚗*/}
                   <TextField
@@ -419,6 +429,101 @@ export const Suscription = () => {
                     )}
                   />
                 </Grid>
+
+                {/*Energy Poll ⚡⚡🔌*/}
+
+                <Grid item xs={12}>
+                  <br />
+                  <Typography variant='body2' color='primary'>
+                    Encuesta de sus consumos energéticos ⚡ <br /> (es opcional)
+                  </Typography>
+                  <br />
+                </Grid>
+
+                <Grid item xs={5} sm={5}>
+                  <TextField
+                    disabled={disableB}
+                    fullWidth
+                    id='name-field'
+                    label='electricidad mes'
+                    InputProps={{
+                      startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                    }}
+                    type='number'
+                    variant='standard'
+                    {...register('electricBill', {
+                      min: { value: 0, message: 'no seamos negativos' },
+                      max: { value: 1_000_000, message: 'demasiado grande' },
+                    })}
+                    error={errors.electricBill && true}
+                    helperText={errors.electricBill?.message}
+                  />
+                </Grid>
+                <Grid item xs={7} sm={7}>
+                  <TextField
+                    disabled={disableB}
+                    fullWidth
+                    id='name-field'
+                    label='kiloWatt-horas'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>kWh</InputAdornment>
+                      ),
+                    }}
+                    type='number'
+                    variant='standard'
+                    {...register('electricity', {
+                      min: { value: 0, message: 'no seamos negativos' },
+                      max: { value: 5_000, message: 'demasiado grande' },
+                    })}
+                    error={errors.electricity && true}
+                    helperText={errors.electricity?.message}
+                  />
+                </Grid>
+                <Grid item xs={5} sm={5}>
+                  <TextField
+                    disabled={disableB}
+                    fullWidth
+                    id='gas-expense'
+                    label='gasto en Gas'
+                    InputProps={{
+                      startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                    }}
+                    type='number'
+                    variant='standard'
+                    {...register('gasBill', {
+                      min: { value: 0, message: 'no seamos negativos' },
+                      max: { value: 100_000, message: 'demasiado grande' },
+                    })}
+                    error={errors.gasBill && true}
+                    helperText={errors.gasBill?.message}
+                  />
+                </Grid>
+
+                <Grid item xs={7} sm={7}>
+                  <FormControl style={{ minWidth: 180 }}>
+                    <InputLabel id='select-gas-duration' style={{ marginLeft: 0 }}>
+                      Duración Gas
+                    </InputLabel>
+                    <Select
+                      labelId='id-select-gas-duration'
+                      id='select-gas-duration'
+                      variant='standard'
+                      disabled={disableB}
+                      {...register('gasDuration', {})}
+                    >
+                      <MenuItem value={undefined}>
+                        <em>sin respuesta</em>
+                      </MenuItem>
+                      <MenuItem value={7}>una semana o menos</MenuItem>
+                      <MenuItem value={15}>dos semanas</MenuItem>
+                      <MenuItem value={30}>un mes</MenuItem>
+                      <MenuItem value={45}>mes y medio</MenuItem>
+                      <MenuItem value={60}>dos meses o más</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={3} sm={'auto'}>
                   <Button
                     disabled={disableB}
@@ -504,6 +609,12 @@ export const Suscription = () => {
           email: data.email.toLocaleLowerCase(),
           phone: data.phone ?? '0',
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
+          energy: {
+            electricity: data.electricity,
+            electricBill: data.electricBill,
+            gasDuration: data.gasDuration,
+            gasBill: data.gasBill,
+          },
         };
 
         //set new suscription 🔥🔥🔥

@@ -1,4 +1,5 @@
 import { firebase } from '../Config/firebase';
+import { IEnergyPoll } from './EnergyPoll.interface';
 
 export interface IPerson {
   uuid: string;
@@ -10,6 +11,7 @@ export interface IPerson {
   email: string;
   phone?: string;
   address?: Dir;
+  energy?: IEnergyPoll;
 }
 
 export type Name = {
@@ -48,6 +50,7 @@ export const iPersonConverter = {
       email: it.email,
       phone: it.phone,
       address: it.address,
+      energy: it.energy,
     };
   },
 };

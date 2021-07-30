@@ -28,6 +28,7 @@ export const iBeneficiaryConverter = {
       email: it.email,
       phone: it.phone,
       address: it.address,
+      energy: it.energy,
       sign: it?.sign,
       dateSign: it.dateSign?.toDate(),
     };

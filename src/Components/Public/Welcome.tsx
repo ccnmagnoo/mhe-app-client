@@ -29,8 +29,7 @@ export const Welcome = () => {
                 <strong>on-line</strong>.
               </Typography>
               <Typography variant='caption' color='initial' paragraph>
-                {' '}
-                Si tienes dudas escribenos a{' '}
+                Si tienes dudas escribenos a
                 <Chip
                   avatar={<EmailIcon />}
                   label='@EnergíaValpo'
