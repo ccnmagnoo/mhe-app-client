@@ -12,7 +12,7 @@ export const Report = (props: { room: IClassroom; people: IBeneficiary[] }) => {
   return (
     <Document>
       {props.people.map((p, index) => {
-        return <Certificate person={p} room={props.room} index={index} />;
+        return <Certificate person={p} room={props.room} index={index} key={index} />;
       })}
     </Document>
   );
