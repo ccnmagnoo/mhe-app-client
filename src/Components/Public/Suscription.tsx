@@ -442,7 +442,7 @@ export const Suscription = () => {
                       <Grid container spacing={1}>
                         <Grid item xs={12}>
                           <Typography variant='body2' color='primary'>
-                            Encuesta de sus consumos energéticos ⚡
+                            ⚡ Encuesta de sus consumos energéticos
                             <Typography
                               variant='caption'
                               color='textSecondary'
@@ -451,7 +451,7 @@ export const Suscription = () => {
                             >
                               esto es opcional, puedes contestar todo, parcialmente o
                               nada, es sólo para conocerle mejor y mejorar nuestras
-                              charlas, el conocimiento es oro.
+                              charlas, porque el conocimiento es oro✨.
                             </Typography>
                           </Typography>
                         </Grid>
@@ -526,7 +526,7 @@ export const Suscription = () => {
                               id='select-gas-duration'
                               style={{ marginLeft: 0 }}
                             >
-                              Duración Gas
+                              Duración Balón 15kg
                             </InputLabel>
                             <Select
                               labelId='id-select-gas-duration'
@@ -538,11 +538,13 @@ export const Suscription = () => {
                               <MenuItem value={undefined}>
                                 <em>sin respuesta</em>
                               </MenuItem>
-                              <MenuItem value={7}>una semana o menos</MenuItem>
-                              <MenuItem value={15}>dos semanas</MenuItem>
-                              <MenuItem value={30}>un mes</MenuItem>
-                              <MenuItem value={45}>mes y medio</MenuItem>
-                              <MenuItem value={60}>dos meses o más</MenuItem>
+                              <MenuItem value={7}>1 semana o ➖</MenuItem>
+                              <MenuItem value={15}>2 semanas</MenuItem>
+                              <MenuItem value={30}>1 mes</MenuItem>
+                              <MenuItem value={45}>1 mes y medio</MenuItem>
+                              <MenuItem value={60}>2 meses o ➕</MenuItem>
+                              <MenuItem value={30}>uso balón chico</MenuItem>
+                              <MenuItem value={30}>uso gas de red ⛽</MenuItem>
                             </Select>
                           </FormControl>
                         </Grid>
@@ -800,6 +802,7 @@ export const Suscription = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
+                    disabled={disableC}
                     fullWidth
                     id='email-text-field'
                     label='email'
@@ -818,6 +821,7 @@ export const Suscription = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
+                    disabled={disableC}
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
