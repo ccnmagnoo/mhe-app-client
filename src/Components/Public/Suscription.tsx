@@ -95,10 +95,10 @@ export const Suscription = () => {
     city: string;
     email: string;
     phone: string;
-    electricBill: number;
-    electricity: number;
-    gasBill: number;
-    gasDuration: number;
+    electricBill?: number;
+    electricity?: number;
+    gasBill?: number;
+    gasDuration?: number;
   };
 
   //Return stactic content
@@ -442,9 +442,18 @@ export const Suscription = () => {
                       <Grid container spacing={1}>
                         <Grid item xs={12}>
                           <Typography variant='body2' color='primary'>
-                            Encuesta de sus consumos energéticos ⚡(opcional)
+                            Encuesta de sus consumos energéticos ⚡
+                            <Typography
+                              variant='caption'
+                              color='textSecondary'
+                              paragraph
+                              align='justify'
+                            >
+                              esto es opcional, puedes contestar todo, parcialmente o
+                              nada, es sólo para conocerle mejor y mejorar nuestras
+                              charlas, el conocimiento es oro.
+                            </Typography>
                           </Typography>
-                          <br />
                         </Grid>
 
                         <Grid item xs={5} sm={5}>
@@ -628,10 +637,10 @@ export const Suscription = () => {
           phone: data.phone ?? '0',
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
           energy: {
-            electricity: data.electricity,
-            electricBill: data.electricBill,
-            gasDuration: data.gasDuration,
-            gasBill: data.gasBill,
+            electricity: data.electricity ?? null,
+            electricBill: data.electricBill ?? null,
+            gasDuration: data.gasDuration ?? null,
+            gasBill: data.gasBill ?? null,
           },
         };
 
@@ -812,6 +821,11 @@ export const Suscription = () => {
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>+56</InputAdornment>
+                      ),
+                    }}
                     variant='outlined'
                     {...register('phone', {})}
                     error={errors.phone && true}
