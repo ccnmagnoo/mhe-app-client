@@ -1,7 +1,7 @@
 import { IClassroom } from '../Models/Classroom.interface';
 import { IPerson } from '../Models/Person.Interface';
 
-export function convertToMine(p: IPerson, r: IClassroom, index?: number) {
+export function convertToCsv(p: IPerson, r: IClassroom, index?: number) {
   const iAttendee = r.attendees.indexOf(p.uuid);
   const validation = iAttendee === -1 ? 'no' : 'si';
 
@@ -16,7 +16,7 @@ export function convertToMine(p: IPerson, r: IClassroom, index?: number) {
     fecha: p.classroom.dateInstance.toLocaleDateString(),
     idcal: +p.classroom.idCal.slice(1),
     contact: p.email,
-    rsh: '',
+    phone: p.phone,
     mesa: 'mesa OL',
     genero: p.gender,
     valida: validation,
@@ -37,7 +37,7 @@ export type Mine = {
   fecha: string;
   idcal: number;
   contact?: string;
-  rsh?: string;
+  phone?: string;
   mesa?: string;
   genero: string;
   valida: 'si' | 'no';
