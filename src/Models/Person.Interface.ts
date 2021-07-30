@@ -9,7 +9,7 @@ export interface IPerson {
   gender: Gender;
   dateUpdate: Date;
   email: string;
-  phone?: string;
+  phone?: string | null;
   address?: Dir;
   energy?: IEnergyPoll;
 }
