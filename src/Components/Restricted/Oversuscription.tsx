@@ -5,7 +5,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  InputAdornment,
   Paper,
   TextFieldProps,
 } from '@material-ui/core';
@@ -494,7 +493,7 @@ export const Oversuscription = () => {
           },
           dateUpdate: new Date(),
           email: data.email.toLocaleLowerCase(),
-          phone: data.phone !== undefined ? `+56${data.phone}` : null,
+          phone: data.phone ?? null,
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
         };
 
@@ -672,14 +671,13 @@ export const Oversuscription = () => {
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>+56</InputAdornment>
-                      ),
-                    }}
                     variant='outlined'
                     {...register('phone', {
-                      pattern: { value: /^\d{9}/, message: 'fono inválido' },
+                      pattern: {
+                        value: /\+56\d{9}/,
+                        message: 'inválido, incluya +56',
+                      },
+                      maxLength: { value: 12, message: 'muy largo' },
                     })}
                     error={errors.phone && true}
                     helperText={errors.phone?.message}
