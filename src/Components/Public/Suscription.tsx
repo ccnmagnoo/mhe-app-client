@@ -87,6 +87,8 @@ export const Suscription = () => {
     city: string;
     email: string;
     phone: string;
+    electricBill: number;
+    gasoilBill: number;
   };
 
   //Return stactic content

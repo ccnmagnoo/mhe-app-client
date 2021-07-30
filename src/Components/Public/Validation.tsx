@@ -136,7 +136,7 @@ export const Validation = () => {
     console.log('form External User', true, data.eUser);
 
     //fetch account credentials on firebase🔥🔥🔥
-    const checkAccount = await checkExternalUser(data);
+    const checkAccount = await checkInputCode(data);
     if (checkAccount === true) {
       //disableA
       console.log('suscribed result', checkAccount);
@@ -149,32 +149,37 @@ export const Validation = () => {
     }
   };
 
-  const checkExternalUser = async (data: Input) => {
+  const checkInputCode = async (data: Input) => {
     console.log('checking external user:', data.eUser);
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
       const ref = db
         .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.ext}`)
-        .where('username', '==', data.eUser);
+        .where('password', '==', data.ePass);
       const snapshots = await ref.get();
       const accounts = snapshots.docs.map((snapshot) => {
-        const data = snapshot.data();
-        return { user: data.username as string, pass: data.password as string };
+        const it = snapshot.data();
+        return {
+          user: it.username as string,
+          pass: it.password as string,
+          expiration: it.expiration.toDate() as Date,
+        };
       });
       console.log('accounts detected', accounts.length);
       if (accounts.length > 0) {
         const account = accounts[0];
-        if (data.ePass === account.pass) {
+        const rightNow = new Date();
+        if (rightNow <= account.expiration) {
           //great success very nice 👍
-          setErrorEU({ value: false, message: 'cuenta del servicio verificada 😀' });
+          setErrorEU({ value: false, message: 'código verificado 😀' });
           return true;
         } else {
-          setErrorEU({ value: true, message: 'password incorrecto 🔐' });
+          setErrorEU({ value: true, message: 'código expirado ⏳' });
           return false;
         }
       } else {
         //i cant find any account with this username
-        setErrorEU({ value: true, message: 'no hay cuentas activas 👮‍♂️' });
+        setErrorEU({ value: true, message: 'no hay cuentas activas 🛑' });
         return false;
       }
     } catch (error) {
@@ -198,34 +203,18 @@ export const Validation = () => {
                 justify='space-between'
                 direction='row'
               >
-                <Grid item sm={2} xs={12}>
+                <Grid item sm={3} xs={3}>
                   <Typography variant='subtitle2' color='primary'>
-                    Cuenta
+                    Código
                   </Typography>
                 </Grid>
 
-                <Grid item sm={4} xs={6}>
-                  <TextField
-                    disabled={disableEU}
-                    required
-                    id='input-user'
-                    label='usuario'
-                    type='text'
-                    variant='outlined'
-                    {...register('eUser', {
-                      minLength: { value: 6, message: 'muy corto' },
-                      maxLength: { value: 30, message: 'muy largo' },
-                    })}
-                    error={errors.eUser && true}
-                    helperText={errors.eUser?.message}
-                  />
-                </Grid>
-                <Grid item sm={4} xs={6}>
+                <Grid item sm={6} xs={6}>
                   <TextField
                     disabled={disableEU}
                     required
                     id='input-password'
-                    label='password'
+                    label='código'
                     type='password'
                     variant='outlined'
                     {...register('ePass', {
@@ -237,14 +226,14 @@ export const Validation = () => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={3} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
                     color='primary'
                     disabled={disableEU}
                   >
-                    {disableEU ? '✅' : 'In'}
+                    {disableEU ? '✅' : 'Check'}
                   </Button>
                 </Grid>
                 {snackbarEU()}
