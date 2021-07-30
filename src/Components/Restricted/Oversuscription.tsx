@@ -276,18 +276,19 @@ export const Oversuscription = () => {
         .filter((classroom) => {
           //filtering near classes🔎🔍📟
           return classroom.allowedCities.indexOf(data.city) !== -1;
-        })
-        .filter((classroom) => {
-          //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫P
-          const vacancies: number = classroom.vacancies ?? 150;
-          console.log(
-            'analizing vacancies, enrolled',
-            classroom.enrolled.length,
-            'vacancies: ',
-            vacancies
-          );
-          return classroom.enrolled.length < vacancies;
         });
+      //override vacancies limitations 📛WARNING: use with modetarion
+      //.filter((classroom) => {
+      ////filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫P
+      //const vacancies: number = classroom.vacancies ?? 150;
+      //console.log(
+      //'analizing vacancies, enrolled',
+      //classroom.enrolled.length,
+      //'vacancies: ',
+      //vacancies
+      //);
+      //return classroom.enrolled.length < vacancies;
+      //});
 
       console.log(
         'list of avaliable classrooms on city',
