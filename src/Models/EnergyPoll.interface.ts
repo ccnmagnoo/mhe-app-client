@@ -1,6 +1,6 @@
 export interface IEnergyPoll {
-  electricity?: number;
-  electricBill?: number;
-  gasDuration?: number;
-  gasBill?: number;
+  electricity?: number | null;
+  electricBill?: number | null;
+  gasDuration?: number | null;
+  gasBill?: number | null;
 }
