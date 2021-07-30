@@ -400,7 +400,7 @@ export const Oversuscription = () => {
                       <TextField
                         {...params}
                         required
-                        label='ciudad'
+                        label='comuna'
                         variant='outlined'
                         type='text'
                         {...register('city', {})}
