@@ -142,7 +142,7 @@ export const Certificate = (props: {
           {moment(props.person.dateSign).format('dddd DD [de] MMMM [de] YYYY')}
         </Text>
         <Text style={{ ...styles.text2, textAlign: 'center' }}>
-          🆔uuid:{props.person.uuid} 🅿index:{props.index}
+          uuid:{props.person.uuid} index:{props.index + 1}
         </Text>
       </View>
     </Page>
