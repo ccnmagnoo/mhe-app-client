@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
-import { convertToCsv, Mine } from '../../../Functions/convertToMine';
+import { convertToCsv, Mine } from '../../../Functions/convertToCsv';
 import {
   IBeneficiary,
   iBeneficiaryConverter,
