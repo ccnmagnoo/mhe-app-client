@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
-import { convertToMine, Mine } from '../../../Functions/convertToMine';
+import { convertToCsv, Mine } from '../../../Functions/convertToMine';
 import {
   IBeneficiary,
   iBeneficiaryConverter,
@@ -80,7 +80,7 @@ export const ListView = (props: { room: IClassroom; workDone: boolean }) => {
   const [csv, setCsv] = React.useState<Mine[]>([]);
   React.useEffect(() => {
     console.log('download csv suscribed');
-    const data = people.map((it, i) => convertToMine(it, props.room, i + 1));
+    const data = people.map((it, i) => convertToCsv(it, props.room, i + 1));
     setCsv(data);
   }, [people, props.room]);
 
