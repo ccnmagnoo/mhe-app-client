@@ -95,6 +95,7 @@ export const Suscription = () => {
     city: string;
     email: string;
     phone?: string;
+    //energy poll ⚡
     electricBill?: number;
     electricity?: number;
     gasBill?: number;
@@ -639,10 +640,10 @@ export const Suscription = () => {
           phone: data.phone ?? null,
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
           energy: {
-            electricity: data.electricity ?? null,
-            electricBill: data.electricBill ?? null,
-            gasDuration: data.gasDuration ?? null,
-            gasBill: data.gasBill ?? null,
+            electricity: data.electricity === undefined ? null : +data.electricity,
+            electricBill: data.electricBill === undefined ? null : +data.electricBill,
+            gasDuration: data.gasDuration === undefined ? null : +data.gasDuration,
+            gasBill: data.gasBill === undefined ? null : +data.gasBill,
           },
         };
 
