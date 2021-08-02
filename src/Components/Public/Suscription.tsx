@@ -8,6 +8,7 @@ import {
   FormControl,
   InputAdornment,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Paper,
   Select,
@@ -75,6 +76,7 @@ export const Suscription = () => {
   //hooks or form is visible
   const [visibleB, setVisibleB] = React.useState(false);
   const [visibleC, setVisibleC] = React.useState(false);
+  const [isUploading, setIsUploading] = React.useState(false);
 
   //React hook form
   const {
@@ -575,15 +577,20 @@ export const Suscription = () => {
   //FORM C 💖💖💗
   const onSubmitC: SubmitHandler<Input> = async (data) => {
     console.log('form C', data);
+    //init, disable "inscription button"
+    setDisableC(true);
+    setDisableS(true);
+    setIsUploading(true);
 
     //load to firebase Suscribed 🔥🔥🔥
     const isUploaded = await createSuscription(data);
     console.log('is uploaded?', isUploaded);
 
     if (isUploaded) {
-      setDisableC(true);
-      setDisableS(true);
       setDialogOpen(true);
+      setIsUploading(false);
+    } else {
+      setIsUploading(false);
     }
   };
 
@@ -689,13 +696,19 @@ export const Suscription = () => {
       return undefined;
     } else if (errorC.value === true) {
       //if condition true means this person already has valid benefits active
-      return <Alert severity='error'>{errorC.message}</Alert>;
+      return (
+        <Grid item xs={12}>
+          <Alert severity='error'>{errorC.message}</Alert>
+        </Grid>
+      );
     } else {
       return (
-        <Alert severity='success'>
-          Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, es{' '}
-          {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos.
-        </Alert>
+        <Grid item xs={12}>
+          <Alert severity='success'>
+            Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, es{' '}
+            {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos.
+          </Alert>
+        </Grid>
       );
     }
   };
@@ -849,10 +862,15 @@ export const Suscription = () => {
                     {disableC && disableS ? '✅' : 'Incripción'}
                   </Button>
                 </Grid>
-                <Grid item xs={12}>
-                  {/*response alert*/}
-                  {snackbarC()}
-                </Grid>
+                {/*linear progress bar*/}
+                {isUploading ? (
+                  <Grid item xs={12}>
+                    <LinearProgress color='primary' />
+                  </Grid>
+                ) : undefined}
+
+                {/*response alert*/}
+                {snackbarC()}
               </Grid>
             </form>
           </Box>
