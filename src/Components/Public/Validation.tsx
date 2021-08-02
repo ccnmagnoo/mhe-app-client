@@ -32,6 +32,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import Canvg from 'canvg';
 import { dbKey } from '../../Models/databaseKeys';
+import { LinearProgress } from '@material-ui/core';
 
 //sign paper style
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +53,8 @@ export const Validation = () => {
   const [disableEU, setDisableEU] = React.useState(false);
   const [disableA, setDisableA] = React.useState(true);
   const [disableB, setDisableB] = React.useState(true);
-  const [disableCtrl, setDisableCtrl] = React.useState(false);
+  const [disableSignPad, setDisableSignPad] = React.useState(false);
+  const [isUploading, setIsUploading] = React.useState(false);
 
   //State hooks visibility
   const [visibleA, setVisibleA] = React.useState(false);
@@ -543,13 +545,17 @@ export const Validation = () => {
 
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
     console.log('init valudation B', data);
-    //upload sign SVG to storage 🔥🔥💾
+    //init states
+    setIsUploading(true); /*loading progress*/
+    setDisableB(true); /*on click*/
+
+    //upload sign )SVG to storage 🔥🔥💾
 
     //upload IBeneficiary to Consolidated 🔥🔥🔥
     const result = await postBeneficiary();
     //setState
-    setDisableB(result); /*on success*/
-    setDisableCtrl(result);
+    setIsUploading(false); /*loading progress*/
+    setDisableSignPad(result);
   };
 
   async function postBeneficiary() {
@@ -693,9 +699,10 @@ export const Validation = () => {
                       variant='contained'
                       color='inherit'
                       aria-label='control-firma'
+                      size='large'
                     >
                       <Button
-                        disabled={disableCtrl}
+                        disabled={disableSignPad}
                         color='primary'
                         aria-label='done'
                         onClick={() => {
@@ -707,7 +714,7 @@ export const Validation = () => {
                       </Button>
 
                       <Button
-                        disabled={disableCtrl}
+                        disabled={disableSignPad}
                         color='primary'
                         aria-label='atrás'
                         onClick={() => {
@@ -719,7 +726,7 @@ export const Validation = () => {
                         <ReplayIcon />
                       </Button>
                       <Button
-                        disabled={disableCtrl}
+                        disabled={disableSignPad}
                         color='secondary'
                         aria-label='borrar'
                         onClick={() => {
@@ -747,6 +754,7 @@ export const Validation = () => {
                     <Button
                       variant='contained'
                       type='submit'
+                      size='large'
                       color='secondary'
                       disabled={disableB}
                       startIcon={<CheckCircleOutlineIcon />}
@@ -754,6 +762,11 @@ export const Validation = () => {
                       firmar y validar
                     </Button>
                   </Grid>
+                  {isUploading ? (
+                    <Grid item xs={12}>
+                      <LinearProgress color='primary' />
+                    </Grid>
+                  ) : undefined}
 
                   {snackbarC()}
                 </Grid>
