@@ -13,7 +13,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react-dom": "^17.0.0",
     "canvg": "^3.0.7",
@@ -54,8 +53,11 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/react": "^17.0.11",
     "@types/react-csv": "^1.1.2",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4"
   }
 }
