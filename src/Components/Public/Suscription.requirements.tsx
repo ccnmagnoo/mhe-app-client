@@ -21,23 +21,23 @@ export const Requirements = () => {
     },
     {
       main: 'haberse inscrito en esta mini app',
-      sub: 'on-line sin salir de casa 🏡, antes del taller',
+      sub: 'pre-inscripción online sin salir de casa 🏡',
     },
     {
       main: 'pertenecer al registro social de hogares',
       sub: 'y tener menos del 70% RSH',
     },
     {
-      main: 'beneficiado único en el grupo familiar',
-      sub: 'solo se permite un Kit por hogar',
+      main: 'ser beneficiado único en el grupo familiar',
+      sub: 'solo un Kit por hogar',
     },
     {
-      main: `no haya recibido Kit después de esta fecha`,
+      main: `no haber sido beneficiario del Kit después de la fecha límite`,
       sub: moment(dateLimit).format('DD [de] MMMM [de año] YYYY'),
     },
     {
       main: `participar y validar su asistencia al taller inscrito`,
-      sub: 'para validar use botón "VALIDA" ingresando su firma',
+      sub: 'debe anunciar su asistencia en cada taller con nombre y rut',
     },
   ];
 
