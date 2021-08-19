@@ -279,13 +279,21 @@ export const Suscription = () => {
      */
     try {
       //firestore🔥🔥🔥: fetch incoming classes
-      const rightNow = new Date();
+      /**
+       * @param backwardDays is how many days back is a classroom
+       *  will keep open to suscribe in,  on cases for late suscriptions
+       * if value= 0 so suscription will close at start room date.
+       *
+       */
+      const backwardDays = 14;
+      const restrictionTime = new Date();
+      restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       const fetch = db
         .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '>', rightNow)
+        .where('dateInstance', '>', restrictionTime)
         .withConverter(iClassroomConverter);
 
-      console.log('requested city', data.city);
+      console.log('requested city', data.city, '');
 
       const querySnapshot = await fetch.get();
       console.log('incoming classrooms', querySnapshot.docs);
