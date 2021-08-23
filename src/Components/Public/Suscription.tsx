@@ -104,6 +104,9 @@ export const Suscription = () => {
     gasDuration?: number;
   };
 
+  //function move to bottom of the page⏬
+  //TODO:search function
+
   //Return stactic content
   const header = (
     <React.Fragment>
@@ -598,6 +601,8 @@ export const Suscription = () => {
       setDialogOpen(true);
       setIsUploading(false);
     } else {
+      setDisableC(false);
+
       setIsUploading(false);
     }
   };
@@ -764,13 +769,20 @@ export const Suscription = () => {
       return avaliableClassrooms.map((item, index) => {
         return (
           <Grid item xs={12} sm={6} key={index}>
+            {/*mini card with room adapter room select 👆*/}
             {miniCardClassroom(item)}
           </Grid>
         );
       });
     } else {
+      const mailTo =
+        'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut y su comuna. motivo: no he encontrado un taller disponible'.replace(
+          ' ',
+          '%20'
+        );
       return (
         <Grid item xs={12}>
+          {/*mini card with no room avaliable 🙅‍♂️⛔*/}
           <Card>
             <CardHeader
               avatar={<Avatar aria-label='idcal'>?</Avatar>}
@@ -792,7 +804,7 @@ export const Suscription = () => {
                 <strong> institución municipal o servicio público</strong>, puede
                 acercarse a sus oficinas sociales para solicitar un taller o escribanos a{' '}
                 <strong>
-                  <a href='mailto:ccamposn@minenergia.cl'>este email </a>
+                  <a href={mailTo}>este email </a>
                 </strong>
               </Typography>
             </CardContent>
@@ -817,6 +829,7 @@ export const Suscription = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={1}>
+                    {/*room mini card slection*/}
                     {classRoomsAvaliableDisplay()}
                   </Grid>
                 </Grid>
