@@ -43,6 +43,21 @@ const useStyles = makeStyles((theme) => ({
 
 export const Validation = () => {
   //type input form values
+  //local storage o code💾
+  const [validationKey, setValidationKey] = React.useState<null | string>(null);
+
+  React.useEffect(() => {
+    //fech local storage suscription code key 💾
+    try {
+      const validationCode: string | null = localStorage.getItem('validationCode');
+      console.log('local validation code found', validationCode);
+      if (validationCode !== null) {
+        setValidationKey(validationCode);
+      }
+    } catch (error) {
+      console.log('local validation code not found', error);
+    }
+  }, []);
 
   const signPaper = useStyles();
   //State hook with information
@@ -146,6 +161,10 @@ export const Validation = () => {
       setDisableA(false);
       setVisibleA(true);
       console.log('active user', true);
+      //set local storage validationKey if null 💾
+      if (validationKey === null) {
+        localStorage.setItem('validationCode', data.ePass);
+      }
     } else {
       console.log('check external account on suspense', checkAccount);
     }
@@ -154,10 +173,12 @@ export const Validation = () => {
   const checkInputCode = async (data: Input) => {
     console.log('checking external user:', data.eUser);
     try {
+      //use local storage
+      const validationCode = validationKey !== null ? validationKey : data.ePass;
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
       const ref = db
         .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.ext}`)
-        .where('password', '==', data.ePass);
+        .where('password', '==', validationCode);
       const snapshots = await ref.get();
       const accounts = snapshots.docs.map((snapshot) => {
         const it = snapshot.data();
@@ -217,6 +238,11 @@ export const Validation = () => {
                     required
                     id='input-password'
                     label='código'
+                    value={
+                      localStorage.getItem('validationCode') !== null
+                        ? validationKey
+                        : undefined
+                    }
                     type='password'
                     variant='outlined'
                     {...register('ePass', {
