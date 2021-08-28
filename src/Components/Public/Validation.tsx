@@ -33,6 +33,7 @@ import { useSvgDrawing } from 'react-hooks-svgdrawing';
 import Canvg from 'canvg';
 import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 //sign paper style
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 //
 
-export const Validation = () => {
+const Validation = (props: any) => {
   //type input form values
   //local storage o code💾
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -779,16 +780,29 @@ export const Validation = () => {
                   </Grid>
 
                   <Grid item xs={'auto'} sm={'auto'} justify='center'>
-                    <Button
-                      variant='contained'
-                      type='submit'
-                      size='large'
-                      color='secondary'
-                      disabled={disableB}
-                      startIcon={<CheckCircleOutlineIcon />}
-                    >
-                      validar compromiso
-                    </Button>
+                    <ButtonGroup variant='outlined' color='secondary' aria-label=''>
+                      <Button
+                        variant='contained'
+                        type='submit'
+                        size='large'
+                        color='secondary'
+                        disabled={disableB}
+                        startIcon={<CheckCircleOutlineIcon />}
+                      >
+                        validar compromiso
+                      </Button>
+                      {/*summon new button to reload current page 🔃*/}
+                      {disableSignPad && disableB ? (
+                        <Button
+                          onClick={() => {
+                            //props.history.push('/suscription');
+                            window.location.reload();
+                          }}
+                        >
+                          otra firma
+                        </Button>
+                      ) : undefined}
+                    </ButtonGroup>
                   </Grid>
                   {isUploading ? (
                     <Grid item xs={12}>
@@ -821,3 +835,5 @@ export const Validation = () => {
     </React.Fragment>
   );
 };
+
+export default withRouter(Validation);
