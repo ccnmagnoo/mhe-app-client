@@ -52,8 +52,9 @@ import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import indigo from '@material-ui/core/colors/indigo';
+import { withRouter } from 'react-router-dom';
 
-export const Suscription = () => {
+const Suscription = (props: any) => {
   //hooks
   const [isRol, setIsRol] = React.useState<boolean | null>(null);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
@@ -928,7 +929,7 @@ export const Suscription = () => {
           color='primary'
           variant='outlined'
         >
-          Gracias nos vemos 👋
+          gracias nos vemos
         </Button>
       </DialogActions>
     </Dialog>
@@ -948,3 +949,5 @@ export const Suscription = () => {
     </React.Fragment>
   );
 };
+
+export default withRouter(Suscription);

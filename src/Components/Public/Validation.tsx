@@ -725,43 +725,46 @@ export const Validation = () => {
                       variant='contained'
                       color='inherit'
                       aria-label='control-firma'
-                      size='large'
+                      size='medium'
                     >
                       <Button
                         disabled={disableSignPad}
                         color='primary'
                         aria-label='done'
+                        startIcon={<CheckCircleOutlineIcon />}
                         onClick={() => {
                           setDisableB(false);
                         }}
                       >
                         {/*🔽*/}
-                        <CheckCircleOutlineIcon />
+                        listo
                       </Button>
 
                       <Button
                         disabled={disableSignPad}
                         color='primary'
-                        aria-label='atrás'
+                        aria-label='back-signpad'
+                        startIcon={<ReplayIcon />}
                         onClick={() => {
                           setDisableB(true);
                           draw.undo();
                         }}
                       >
                         {/*🔽*/}
-                        <ReplayIcon />
+                        atrás
                       </Button>
                       <Button
                         disabled={disableSignPad}
                         color='secondary'
-                        aria-label='borrar'
+                        aria-label='erase-signpad'
+                        startIcon={<HighlightOffIcon />}
                         onClick={() => {
                           setDisableB(true);
                           draw.clear();
                         }}
                       >
                         {/*🔽*/}
-                        <HighlightOffIcon />
+                        borrar
                       </Button>
                     </ButtonGroup>
                   </Grid>
