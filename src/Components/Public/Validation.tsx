@@ -40,24 +40,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#e8eaf6',
   },
 }));
+//
 
 export const Validation = () => {
   //type input form values
   //local storage o code💾
-  const [validationKey, setValidationKey] = React.useState<null | string>(null);
-
-  React.useEffect(() => {
-    //fech local storage suscription code key 💾
-    try {
-      const validationCode: string | null = localStorage.getItem('validationCode');
-      console.log('local validation code found', validationCode);
-      if (validationCode !== null) {
-        setValidationKey(validationCode);
-      }
-    } catch (error) {
-      console.log('local validation code not found', error);
-    }
-  }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [validationKey, setValidationKey] = React.useState<null | string>(
+    sessionStorage.getItem('validationCode')
+  );
 
   const signPaper = useStyles();
   //State hook with information
@@ -161,10 +152,6 @@ export const Validation = () => {
       setDisableA(false);
       setVisibleA(true);
       console.log('active user', true);
-      //set local storage validationKey if null 💾
-      if (validationKey === null) {
-        localStorage.setItem('validationCode', data.ePass);
-      }
     } else {
       console.log('check external account on suspense', checkAccount);
     }
@@ -174,11 +161,23 @@ export const Validation = () => {
     console.log('checking external user:', data.eUser);
     try {
       //use local storage
-      const validationCode = validationKey !== null ? validationKey : data.ePass;
+      const validationCode = (
+        inputCode: string | undefined,
+        storedCode: string | null | undefined
+      ) => {
+        if (inputCode !== undefined) {
+          return inputCode;
+        } else if (storedCode != null) {
+          return storedCode;
+        } else {
+          return null;
+        }
+      };
+
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
       const ref = db
         .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.ext}`)
-        .where('password', '==', validationCode);
+        .where('password', '==', validationCode(data.ePass, validationKey));
       const snapshots = await ref.get();
       const accounts = snapshots.docs.map((snapshot) => {
         const it = snapshot.data();
@@ -195,6 +194,10 @@ export const Validation = () => {
         if (rightNow <= account.expiration) {
           //great success very nice 👍
           setErrorEU({ value: false, message: 'código verificado 😀' });
+          //set local storage validationKey if null 💾
+          if (data.ePass !== undefined) {
+            sessionStorage.setItem('validationCode', data.ePass);
+          }
           return true;
         } else {
           setErrorEU({ value: true, message: 'código expirado ⏳' });
@@ -238,11 +241,7 @@ export const Validation = () => {
                     required
                     id='input-password'
                     label='código'
-                    value={
-                      localStorage.getItem('validationCode') !== null
-                        ? validationKey
-                        : undefined
-                    }
+                    defaultValue={validationKey}
                     type='password'
                     variant='outlined'
                     {...register('ePass', {
@@ -737,7 +736,7 @@ export const Validation = () => {
                         }}
                       >
                         {/*🔽*/}
-                        listo
+                        seguir
                       </Button>
 
                       <Button
@@ -788,7 +787,7 @@ export const Validation = () => {
                       disabled={disableB}
                       startIcon={<CheckCircleOutlineIcon />}
                     >
-                      firmar y validar
+                      validar compromiso
                     </Button>
                   </Grid>
                   {isUploading ? (
