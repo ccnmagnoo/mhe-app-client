@@ -7,14 +7,14 @@ export const Admin = (props: { history: string[] }) => {
   React.useEffect(() => {
     if (auth.currentUser) {
       //🟩
-      console.log('authentication', true);
+      console.log('authentication', true, user?.uid);
       setUser(auth.currentUser);
     } else {
       //🟥
       console.log('authentication', false);
       props.history.push('/admin');
     }
-  }, [props.history]);
+  }, [props.history, user]);
 
   return <React.Fragment></React.Fragment>;
 };
