@@ -670,6 +670,7 @@ const Validation = (props: any) => {
       return undefined;
     }
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const canvas = new OffscreenCanvas(300, 200);
       const context = canvas?.getContext('2d');
       if (context !== null && context !== undefined) {
