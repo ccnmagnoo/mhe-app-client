@@ -22,6 +22,7 @@ import Outgoing from './Outgoing';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Oversuscription } from './Oversuscription';
 import UpdateBeneficiary from './UpdateBeneficiary';
+import UpdateClassroom from './UpdateClassroom';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -88,9 +89,14 @@ const Dashboard = (props: any) => {
         <Switch>
           <Route exact path={path}>
             <Typography variant='body2' color='primary'>
-              Bienvenido {admin?.email} <br />
+              Bienvenido {admin?.email}
+              <br />
               <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
                 Editar usuario
+              </Button>
+              <br />
+              <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
+                Editar taller
               </Button>
             </Typography>
           </Route>
@@ -112,7 +118,8 @@ const Dashboard = (props: any) => {
             <Edition />
           </Route>
 
-          <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />}></Route>
+          <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />} />
+          <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
         </Switch>
       </Grid>
     </Grid>
