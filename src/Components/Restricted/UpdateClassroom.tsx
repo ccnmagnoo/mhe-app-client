@@ -1,10 +1,18 @@
 import { Paper, Grid } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { useParams, withRouter } from 'react-router-dom';
 
 const UpdateClassroom = (props: any) => {
   let { uuid } = useParams<{ uuid: string }>();
+
+  const notFoundBanner = (
+    <>
+      <Alert severity='error'>elemento no encontrado!</Alert>
+    </>
+  );
+
   return (
-    <div>
+    <>
       <Paper
         elevation={2}
         style={{
@@ -17,10 +25,11 @@ const UpdateClassroom = (props: any) => {
       >
         <Grid container spacing={2}>
           Update classroom <br />
-          {uuid}
+          {uuid} <br />
+          {notFoundBanner}
         </Grid>
       </Paper>
-    </div>
+    </>
   );
 };
 
