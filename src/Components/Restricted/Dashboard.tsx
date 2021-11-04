@@ -92,11 +92,11 @@ const Dashboard = (props: any) => {
               Bienvenido {admin?.email}
               <br />
               <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
-                Editar usuario
+                Editar usuario (desarrollo)
               </Button>
               <br />
               <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
-                Editar taller
+                Editar taller (desarrollo)
               </Button>
             </Typography>
           </Route>
