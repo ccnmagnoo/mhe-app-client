@@ -258,7 +258,7 @@ export const Oversuscription = () => {
         .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
         .where('dateInstance', '<=', rightNow)
         .orderBy('dateInstance', 'desc')
-        .limit(10)
+        .limit(50)
         .withConverter(iClassroomConverter);
 
       console.log('requested city', data.city);
