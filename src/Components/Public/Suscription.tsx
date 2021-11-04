@@ -53,6 +53,7 @@ import { dbKey } from '../../Models/databaseKeys';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
+import isEmail from '../../Functions/isEmail';
 
 const Suscription = (props: any) => {
   //hooks
@@ -841,7 +842,9 @@ const Suscription = (props: any) => {
                     disabled={disableC}
                     fullWidth
                     id='email-text-field'
-                    label='email'
+                    label={
+                      errors?.email && true ? 'use email conocido ej:gmail' : 'email'
+                    }
                     type='email'
                     variant='outlined'
                     {...register('email', {
@@ -849,6 +852,7 @@ const Suscription = (props: any) => {
                         value: /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/,
                         message: 'email inválido',
                       },
+                      validate: { isTrue: (v) => isEmail(v) },
                     })}
                     error={errors.email && true}
                     helperText={errors.email?.message}

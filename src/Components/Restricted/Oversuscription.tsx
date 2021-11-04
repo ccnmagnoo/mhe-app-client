@@ -39,6 +39,7 @@ import { IPerson } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
+import isEmail from '../../Functions/isEmail';
 
 export const Oversuscription = () => {
   //hooks
@@ -652,7 +653,9 @@ export const Oversuscription = () => {
                     required
                     fullWidth
                     id='email-text-field'
-                    label='email'
+                    label={
+                      errors?.email && true ? 'use email conocido ej:gmail' : 'email'
+                    }
                     type='email'
                     variant='outlined'
                     {...register('email', {
@@ -660,6 +663,7 @@ export const Oversuscription = () => {
                         value: /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/,
                         message: 'email inválido',
                       },
+                      validate: { isTrue: (v) => isEmail(v) },
                     })}
                     error={errors.email && true}
                     helperText={errors.email?.message}
