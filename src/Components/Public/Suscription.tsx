@@ -217,7 +217,7 @@ const Suscription = (props: any) => {
                 justify='space-between'
                 alignItems='center'
               >
-                <Grid item xs={3}>
+                <Grid item xs={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
                     Paso 1
                   </Typography>
@@ -244,14 +244,14 @@ const Suscription = (props: any) => {
                   {isRol}
                 </Grid>
 
-                <Grid item xs={3} sm={'auto'}>
+                <Grid item xs={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
                     color='primary'
                     disabled={disableA}
                   >
-                    {disableA ? '✅' : 'Check'}
+                    {disableA ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
 
@@ -576,7 +576,7 @@ const Suscription = (props: any) => {
                     variant='outlined'
                     color='primary'
                   >
-                    {disableB ? '✅' : 'Check'}{' '}
+                    {disableB ? '✅' : 'seguir'}{' '}
                   </Button>
                 </Grid>
               </Grid>

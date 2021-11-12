@@ -230,7 +230,7 @@ const Validation = (props: any) => {
                 justify='space-between'
                 direction='row'
               >
-                <Grid item sm={3} xs={3}>
+                <Grid item sm={'auto'} xs={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
                     Código
                   </Typography>
@@ -261,7 +261,7 @@ const Validation = (props: any) => {
                     color='primary'
                     disabled={disableEU}
                   >
-                    {disableEU ? '✅' : 'Check'}
+                    {disableEU ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
                 {snackbarEU()}
@@ -490,7 +490,7 @@ const Validation = (props: any) => {
                 justify='space-between'
                 direction='row'
               >
-                <Grid item xs={3}>
+                <Grid item xs={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
                     Verificador
                   </Typography>
@@ -525,14 +525,14 @@ const Validation = (props: any) => {
                   />
                 </Grid>
 
-                <Grid item xs={3} sm={'auto'}>
+                <Grid item xs={'auto'} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
                     color='primary'
                     disabled={disableA}
                   >
-                    {disableA ? '✅' : 'Check'}
+                    {disableA ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
                 {snackbarA()}
