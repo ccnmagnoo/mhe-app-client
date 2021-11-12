@@ -2,7 +2,11 @@ import { Chip, Avatar } from '@material-ui/core';
 import React from 'react';
 import { isUrl } from '../../Functions/IsURL';
 
-export const UrlChip = (props: { url?: string; isDisable?: boolean }) => {
+export const UrlChip = (props: {
+  url?: string;
+  isDisable?: boolean;
+  textContent?: string;
+}) => {
   const disable = props.isDisable ?? false;
   const converToChip = (chain?: string) => {
     //check definition
@@ -26,7 +30,7 @@ export const UrlChip = (props: { url?: string; isDisable?: boolean }) => {
       return (
         <Chip
           avatar={<Avatar>D</Avatar>}
-          label='dirección'
+          label={props.textContent === undefined ? 'mapa' : props.textContent}
           href={`${gmaps}${chain.replace(' ', '+')}`}
           target='_blank'
           clickable
