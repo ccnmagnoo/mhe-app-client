@@ -98,8 +98,8 @@ const RoomView = (props: {
             <Grid item xs={12}>
               <Typography variant='caption' color='primary'>
                 {props.workDone
-                  ? moment(room.placeActivity.date).startOf('day').fromNow()
-                  : moment(room.placeActivity.date).endOf('day').fromNow()}
+                  ? moment(room.placeActivity.date).startOf('hours').fromNow()
+                  : moment(room.placeActivity.date).endOf('hours').fromNow()}
               </Typography>
             </Grid>
           </Grid>
@@ -150,7 +150,13 @@ const RoomView = (props: {
             <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
           </Grid>
           <Grid item xs={6} sm={5}>
-            <UrlChip url={room.placeDispatch?.dir} isDisable={!props.workDone} />
+            <UrlChip
+              url={room.placeDispatch?.dir}
+              isDisable={!props.workDone}
+              textContent={`entrega el ${room.placeDispatch?.date.toLocaleDateString(
+                'es-ES'
+              )}`}
+            />
           </Grid>
 
           <Grid item xs={12} sm={4} alignContent='stretch'>
