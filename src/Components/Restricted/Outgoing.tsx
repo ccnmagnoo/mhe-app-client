@@ -82,7 +82,9 @@ const Outgoing = (props: any) => {
   React.useEffect(() => {
     if (outgoing.length !== 0) {
       const result = {
-        quantity: outgoing.length,
+        quantity: outgoing.filter((it) => {
+          return it.enrolled.length > 0;
+        }).length,
         enrolled: outgoing.map((it) => it.enrolled.length).reduce((a, b) => a + b),
         attendees: outgoing.map((it) => it.attendees.length).reduce((a, b) => a + b),
       };
