@@ -23,6 +23,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Oversuscription } from './Oversuscription';
 import UpdateBeneficiary from './UpdateBeneficiary';
 import UpdateClassroom from './UpdateClassroom';
+import { YearSelector } from './Dashboard.yearSelector';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -84,6 +85,9 @@ const Dashboard = (props: any) => {
             <ExitToAppIcon />
           </Button>
         </ButtonGroup>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <YearSelector />
       </Grid>
       <Grid item xs={12}>
         <Switch>
