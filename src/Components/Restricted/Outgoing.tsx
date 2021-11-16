@@ -3,11 +3,8 @@ import { Divider } from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
-import { dbKey } from '../../Models/databaseKeys';
 import { RoomAccordion } from './Adapter/RoomView';
+import { Context } from './Context/context';
 
 //icons
 
@@ -16,49 +13,11 @@ const Outgoing = (props: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let { path, url } = useRouteMatch();
 
-  //content data
-  const [outgoing, setOutgoing] = React.useState<IClassroom[]>([]); /*rext activities*/
-
-  //fetch next incoming classrooms with basic info 🔥🔥🔥
-  React.useEffect(() => {
-    //firebase fetch roomsWithVacancies
-    fetchRooms();
-  }, []);
-
-  //firebase 🔥🔥🔥
-  const fetchRooms = async () => {
-    try {
-      //fetch
-      const rightNow = new Date();
-      //get init date of this year
-      const initYear = new Date(`${rightNow.getFullYear()}/1/1`);
-      const ref = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '>=', initYear)
-        .where('dateInstance', '<=', rightNow)
-        .orderBy('dateInstance', 'desc')
-        //.limit(10)
-        .withConverter(iClassroomConverter);
-
-      const snapshot = await ref.get();
-
-      const rooms = snapshot.docs
-        .map((query) => {
-          return query.data();
-        })
-        .sort((a, b) => (a.placeActivity.date > b.placeActivity.date ? -1 : 1));
-
-      console.log(
-        'amount next rooms idcal',
-        rooms.map((it) => it.idCal)
-      );
-
-      //set state
-      setOutgoing(rooms);
-    } catch (error) {
-      console.log('amount next rooms idcal', error);
-    }
-  };
+  //context provider data
+  const context = React.useContext(Context);
+  const outgoingRooms = context.rooms.filter((room) => {
+    return room.placeActivity.date <= new Date();
+  });
 
   //acoordion section
   ////accordion behavior 🎠
@@ -80,18 +39,19 @@ const Outgoing = (props: any) => {
   });
 
   React.useEffect(() => {
-    if (outgoing.length !== 0) {
+    if (outgoingRooms.length !== 0) {
       const result = {
-        quantity: outgoing.filter((it) => {
+        quantity: outgoingRooms.filter((it) => {
           return it.enrolled.length > 0;
         }).length,
-        enrolled: outgoing.map((it) => it.enrolled.length).reduce((a, b) => a + b),
-        attendees: outgoing.map((it) => it.attendees.length).reduce((a, b) => a + b),
+        enrolled: outgoingRooms.map((it) => it.enrolled.length).reduce((a, b) => a + b),
+        attendees: outgoingRooms.map((it) => it.attendees.length).reduce((a, b) => a + b),
       };
 
       setStatisctis(result);
     }
-  }, [outgoing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.rooms]);
 
   const header = (
     <React.Fragment>
@@ -112,7 +72,7 @@ const Outgoing = (props: any) => {
         <Box p={1}>
           {header}
           <Grid container spacing={1}>
-            {outgoing.map((room, index) => {
+            {outgoingRooms.map((room, index) => {
               return (
                 <Grid item key={index} sm={12} xs={12}>
                   {/*roomSingleAccordion(room)*/}
