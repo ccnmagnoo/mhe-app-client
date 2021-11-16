@@ -2,6 +2,7 @@ import React from 'react';
 import { Slider, Grid, Typography } from '@material-ui/core';
 import { Context } from './Context/context';
 import { Action, ActionType } from './Context/reducer';
+import { useFetchRooms } from './Hooks/useFetchRooms';
 
 export const PeriodSelector = () => {
   //useContext provider
@@ -12,12 +13,15 @@ export const PeriodSelector = () => {
   function handleChange(e: React.ChangeEvent<{}>, value: number | number[]): void {
     //local state
     setThisYear(value as number);
-    //reducer state
+    //reducer state period selected
     let handleAction: Action = { type: ActionType.setPeriod, payload: value as number };
     context.changeState(handleAction);
-
     console.log('year selection: ', thisYear);
+
+    //fetch firebase data 🔥🔥🔥
   }
+  useFetchRooms();
+
   return (
     <>
       <Grid container spacing={2} justify='flex-end'>
