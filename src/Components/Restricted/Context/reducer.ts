@@ -2,59 +2,57 @@ import { IClassroom } from '../../../Models/Classroom.interface';
 
 //config storage
 export interface State {
+  periodStart: number;
   period: number;
   rooms: IClassroom[];
-  setNewPeriod: () => void;
-  setRooms: () => void;
-  updateRoom: () => void;
+  changeState: (value: Action) => void;
 }
 
 //start states
 export const initialState: State = {
+  periodStart: 2016,
   period: new Date().getFullYear(),
   rooms: [],
-  setNewPeriod: () => {},
-  setRooms: () => {},
-  updateRoom: () => {},
+  changeState: () => {},
 };
 
 //type actions
-enum ActionType {
+export enum ActionType {
   setPeriod = 'SET_PERIOD',
   setRooms = 'SET_ROOMS',
   updateRoom = 'UPDATE_ROOM',
 }
 
 //action type
-export type Actions = {
+export type Action = {
   type: ActionType;
   payload: IClassroom | IClassroom[] | number;
 };
 
 //actions functions
-export let setPeriod = {
-  type: ActionType.setPeriod,
-  payload: 2016,
-};
 
 //reducer
-export const mheReducer: React.Reducer<State, Actions> = (
+export const mheReducer: React.Reducer<State, Action> = (
   state: State,
-  action: Actions
+  action: Action
 ) => {
   //deconstruct action
   const { type, payload } = action;
 
   //state on return depending of type Action
   switch (type) {
+    //set current year to operate app ⏱️
     case ActionType.setPeriod: {
       //set period to fetch
       const load = payload as number;
       return { ...state, period: load };
     }
+
+    //set rooms of current year 👨‍🏫
     case ActionType.setRooms: {
       //decrease fruits from last one
-      return { ...state, rooms: state.rooms };
+      const load = payload as IClassroom[];
+      return { ...state, rooms: load };
     }
     default:
       return state;

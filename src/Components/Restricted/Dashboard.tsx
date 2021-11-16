@@ -23,7 +23,8 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Oversuscription } from './Oversuscription';
 import UpdateBeneficiary from './UpdateBeneficiary';
 import UpdateClassroom from './UpdateClassroom';
-import { YearSelector } from './Dashboard.yearSelector';
+import { PeriodSelector } from './Dashboard.PeriodSelector';
+import Provider from './Context/context';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -51,82 +52,85 @@ const Dashboard = (props: any) => {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-      direction='row'
-      justify='center'
-      alignItems='center'
-      alignContent='center'
-    >
-      <Grid item xs={12}>
-        <ButtonGroup
-          variant='outlined'
-          color='primary'
-          aria-label='dashboad commands'
-          fullWidth
-        >
-          <Button component={Link} to={url}>
-            <HomeIcon />
-          </Button>
-          <Button component={Link} to={`${url}/incoming`}>
-            <DateRangeIcon />
-          </Button>
-          <Button component={Link} to={`${url}/outgoing`}>
-            <EventAvailableIcon />
-          </Button>
-          <Button component={Link} to={`${url}/addperson`}>
-            <PersonAddIcon />
-          </Button>
-          <Button component={Link} to={`${url}/create`}>
-            <PostAddIcon />
-          </Button>
-          <Button onClick={closeAdmin}>
-            <ExitToAppIcon />
-          </Button>
-        </ButtonGroup>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <YearSelector />
-      </Grid>
-      <Grid item xs={12}>
-        <Switch>
-          <Route exact path={path}>
-            <Typography variant='body2' color='primary'>
-              Bienvenido {admin?.email}
-              <br />
-              <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
-                Editar usuario (desarrollo)
-              </Button>
-              <br />
-              <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
-                Editar taller (desarrollo)
-              </Button>
-            </Typography>
-          </Route>
-          <Route path={`${path}/incoming`}>
-            <Incoming />
-          </Route>
-          <Route path={`${path}/outgoing`}>
-            <Outgoing />
-          </Route>
-          <Route path={`${path}/addperson`}>
-            {/*create new unsuscribed person after period gap*/}
-            <Oversuscription />
-          </Route>
-          <Route path={`${path}/create`}>
-            {/*create new classroom*/}
-            <Create />
-          </Route>
-          <Route path={`${path}/edition`}>
-            <Edition />
-          </Route>
+    <Provider>
+      {/*useContextProvider*/}
+      <Grid
+        container
+        spacing={1}
+        direction='row'
+        justify='center'
+        alignItems='center'
+        alignContent='center'
+      >
+        <Grid item xs={12}>
+          <ButtonGroup
+            variant='outlined'
+            color='primary'
+            aria-label='dashboad commands'
+            fullWidth
+          >
+            <Button component={Link} to={url}>
+              <HomeIcon />
+            </Button>
+            <Button component={Link} to={`${url}/incoming`}>
+              <DateRangeIcon />
+            </Button>
+            <Button component={Link} to={`${url}/outgoing`}>
+              <EventAvailableIcon />
+            </Button>
+            <Button component={Link} to={`${url}/addperson`}>
+              <PersonAddIcon />
+            </Button>
+            <Button component={Link} to={`${url}/create`}>
+              <PostAddIcon />
+            </Button>
+            <Button onClick={closeAdmin}>
+              <ExitToAppIcon />
+            </Button>
+          </ButtonGroup>
+        </Grid>
+        <Grid item xs={12} sm={9}>
+          <PeriodSelector />
+        </Grid>
+        <Grid item xs={12}>
+          <Switch>
+            <Route exact path={path}>
+              <Typography variant='body2' color='primary'>
+                Bienvenido {admin?.email}
+                <br />
+                <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
+                  Editar usuario (desarrollo)
+                </Button>
+                <br />
+                <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
+                  Editar taller (desarrollo)
+                </Button>
+              </Typography>
+            </Route>
+            <Route path={`${path}/incoming`}>
+              <Incoming />
+            </Route>
+            <Route path={`${path}/outgoing`}>
+              <Outgoing />
+            </Route>
+            <Route path={`${path}/addperson`}>
+              {/*create new unsuscribed person after period gap*/}
+              <Oversuscription />
+            </Route>
+            <Route path={`${path}/create`}>
+              {/*create new classroom*/}
+              <Create />
+            </Route>
+            <Route path={`${path}/edition`}>
+              <Edition />
+            </Route>
 
-          <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />} />
-          <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
-        </Switch>
+            <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />} />
+            <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
+          </Switch>
+        </Grid>
       </Grid>
-    </Grid>
+    </Provider>
   );
 };
 

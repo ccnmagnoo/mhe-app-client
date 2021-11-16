@@ -1,5 +1,5 @@
 import React from 'react';
-import { initialState, mheReducer, setPeriod, State } from './reducer';
+import { Action, initialState, mheReducer, State } from './reducer';
 
 //context
 export const Context = React.createContext(initialState);
@@ -9,12 +9,12 @@ const Provider: React.FC = (props) => {
   //importing useReducer
   const [state, dispatch] = React.useReducer(mheReducer, initialState);
 
-  const initial: State = {
+  const init: State = {
     ...state,
-    setNewPeriod: () => dispatch(setPeriod),
+    changeState: (action: Action) => dispatch(action),
   };
 
-  return <Context.Provider value={initialState}>{props.children}</Context.Provider>;
+  return <Context.Provider value={init}>{props.children}</Context.Provider>;
 };
 
 export default Provider;
