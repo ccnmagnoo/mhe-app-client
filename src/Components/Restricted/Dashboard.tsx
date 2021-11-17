@@ -4,13 +4,21 @@ import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Create from './Create';
-import Incoming from './Incoming';
 
 import { Edit as Edition } from './Edition';
 import { auth } from '../../Config/firebase';
 import { firebase } from '../../Config/firebase';
-import Typography from '@material-ui/core/Typography';
+
+//componentes
+import { PeriodSelector } from './Dashboard.PeriodSelector';
+import Home from './Home';
+import { Oversuscription } from './Oversuscription';
+import Create from './Create';
+import Incoming from './Incoming';
+import Outgoing from './Outgoing';
+import Provider from './Context/context';
+import UpdateBeneficiary from './UpdateBeneficiary';
+import UpdateClassroom from './UpdateClassroom';
 
 //icons
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -18,13 +26,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
-import Outgoing from './Outgoing';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { Oversuscription } from './Oversuscription';
-import UpdateBeneficiary from './UpdateBeneficiary';
-import UpdateClassroom from './UpdateClassroom';
-import { PeriodSelector } from './Dashboard.PeriodSelector';
-import Provider from './Context/context';
+import Typography from '@material-ui/core/Typography';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -95,17 +98,10 @@ const Dashboard = (props: any) => {
         <Grid item xs={12}>
           <Switch>
             <Route exact path={path}>
-              <Typography variant='body2' color='primary'>
+              <Typography variant='caption' color='initial'>
                 Bienvenido {admin?.email}
-                <br />
-                <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
-                  Editar usuario (desarrollo)
-                </Button>
-                <br />
-                <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
-                  Editar taller (desarrollo)
-                </Button>
               </Typography>
+              <Home />
             </Route>
             <Route path={`${path}/incoming`}>
               <Incoming />
