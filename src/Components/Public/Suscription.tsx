@@ -742,7 +742,7 @@ const Suscription = (props: any) => {
               </IconButton>
             }
             title={`${item.idCal} ${item.colaborator}`}
-            subheader={moment(item.dateInstance).format(
+            subheader={moment(item.placeActivity.date).format(
               'dddd DD MMMM YYYY [a las] h:mm a'
             )}
           />
