@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   FormControl,
   InputAdornment,
@@ -54,6 +53,7 @@ import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.in
 import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
+import ClassroomCard from './Suscription.ClassroomCard';
 
 const Suscription = (props: any) => {
   //hooks
@@ -727,44 +727,6 @@ const Suscription = (props: any) => {
       );
     }
   };
-  //card adapter to show classrooms avaliable
-  const miniCardClassroom = (item: IClassroom) => {
-    return (
-      <React.Fragment>
-        <Card>
-          <CardHeader
-            avatar={<Avatar aria-label='idcal'>{item.idCal.replace('R', '')}</Avatar>}
-            action={
-              <IconButton aria-label='seleccionar'>
-                <CheckCircleIcon
-                  color={selectedRoom?.uuid === item.uuid ? 'primary' : 'action'}
-                />
-              </IconButton>
-            }
-            title={`${item.idCal} ${item.colaborator}`}
-            subheader={moment(item.placeActivity.date).format(
-              'dddd DD MMMM YYYY [a las] h:mm a'
-            )}
-          />
-          <CardActions>
-            <Button
-              size='small'
-              disabled={disableC}
-              color={selectedRoom?.uuid === item.uuid ? 'primary' : 'default'}
-              variant={selectedRoom?.uuid === item.uuid ? 'contained' : 'outlined'}
-              onClick={() => {
-                console.log('selected class', item.idCal);
-                setSelectedRoom(item);
-                setDisableS(false);
-              }}
-            >
-              selecionar
-            </Button>
-          </CardActions>
-        </Card>
-      </React.Fragment>
-    );
-  };
   // cards of avaliables classrooms or not
   const classRoomsAvaliableDisplay = () => {
     if (avaliableClassrooms.length > 0) {
@@ -772,7 +734,14 @@ const Suscription = (props: any) => {
         return (
           <Grid item xs={12} sm={6} key={index}>
             {/*mini card with room adapter room select 👆*/}
-            {miniCardClassroom(item)}
+
+            <ClassroomCard
+              item={item}
+              selectedRoom={selectedRoom}
+              setSelectedRoom={setSelectedRoom}
+              disableC={disableC}
+              setDisableS={setDisableS}
+            ></ClassroomCard>
           </Grid>
         );
       });
