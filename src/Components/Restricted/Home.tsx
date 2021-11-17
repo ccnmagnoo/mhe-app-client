@@ -3,16 +3,18 @@ import { Button, Typography, Grid } from '@material-ui/core';
 import { Link, Route, Switch, withRouter, useRouteMatch } from 'react-router-dom';
 import React from 'react';
 import Calendar from './Calendar';
+import { Context } from './Context/context';
 
 const Home = (props: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let { path, url } = useRouteMatch();
+  const context = React.useContext(Context);
 
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Calendar />
+          <Calendar rooms={context.rooms} />
         </Grid>
       </Grid>
 
