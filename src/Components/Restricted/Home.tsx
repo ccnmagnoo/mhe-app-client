@@ -12,11 +12,6 @@ const Home = (props: any) => {
     <div>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant='subtitle2' color='primary'>
-            Plan 4 semanas
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
           <Calendar />
         </Grid>
       </Grid>
