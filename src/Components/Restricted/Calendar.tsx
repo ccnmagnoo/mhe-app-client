@@ -41,7 +41,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   console.log('calendar', eventList.length);
   //day headers
   const dayHeader = ['L', 'M', 'M', 'J', 'V'].map((d, i) => (
-    <li key={i} className='header'>
+    <li key={i} className='myCalendar header'>
       {d}
     </li>
   ));
@@ -67,14 +67,16 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
 
   return (
     <div className='myCalendar'>
-      <h4>Plan próximas semanas</h4>
-      <p>{weekStart.toDateString()}</p>
-      <ol>
-        {/*days header 😀*/}
-        {dayHeader}
-        {/* day sequence 🅰️*/}
-        {listDays}
-      </ol>
+      <div className='myCalendar container'>
+        <h4 className='myCalendar'>Plan próximas semanas</h4>
+        <p className='myCalendar'>{weekStart.toDateString()}</p>
+        <ol className='myCalendar'>
+          {/*days header 😀*/}
+          {dayHeader}
+          {/* day sequence 🅰️*/}
+          {listDays}
+        </ol>
+      </div>
     </div>
   );
 };
@@ -86,8 +88,8 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
     <li
       className={
         dateSet.toLocaleDateString() === new Date().toLocaleDateString()
-          ? 'today'
-          : 'sequence'
+          ? 'myCalendar today'
+          : 'myCalendar sequence'
       }
       key={dateSet.getTime()}
     >
@@ -96,7 +98,12 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
         {events?.map((event) => {
           return (
             <div className='eventWidget'>
-              {event.idCal} {event.variant === 'delivery' ? '📦' : '🎦'}
+              {event.idCal}
+              {event.variant === 'delivery' ? (
+                <span className='myCalendar delivery'>kits</span>
+              ) : (
+                <span className='myCalendar activity'>taller</span>
+              )}
             </div>
           );
         })}
