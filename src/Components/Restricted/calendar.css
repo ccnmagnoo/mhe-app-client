@@ -2,7 +2,9 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.8rem;
   display: block;
-  margin: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  padding: 0px 60px 10px 20px;
 }
 
 .myCalendar h3,
@@ -13,10 +15,11 @@ h4 {
   color: gray;
 }
 
-ol {
+ol,
+ul {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 li {
@@ -37,6 +40,25 @@ li.header {
 }
 
 li.sequence {
-  color: rgb(177, 181, 206);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.37);
+  color: rgb(186, 189, 206);
+}
+li.sequence:hover {
+  background-color: rgb(253, 253, 253);
+}
+
+li.today {
+  color: rgb(114, 123, 161);
+  font-weight: bold;
+  background-color: rgb(198, 203, 252);
+}
+
+.eventWidget {
+  text-align: center;
+  color: whitesmoke;
+  font-weight: 400;
+  font-size: 0.7 rem;
+  margin: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  background-image: linear-gradient(to top left, rgb(88, 88, 146), rgb(98, 111, 163));
 }

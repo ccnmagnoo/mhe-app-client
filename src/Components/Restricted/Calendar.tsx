@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core';
+import moment from 'moment';
 
 import { IClassroom } from '../../Models/Classroom.interface';
 import { IPlace } from '../../Models/Place.interface';
@@ -8,6 +8,7 @@ interface Event {
   idCal: string | undefined;
   info: IPlace | undefined;
   variant: 'activity' | 'delivery';
+  colaborator: string;
 }
 
 const Calendar = (props: { rooms?: IClassroom[] }) => {
@@ -26,18 +27,20 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
         idCal: it.idCal,
         info: it.placeActivity,
         variant: 'activity',
+        colaborator: it.colaborator,
       };
       const delivery: Event = {
         idCal: it.idCal,
         info: it.placeDispatch,
         variant: 'delivery',
+        colaborator: it.colaborator,
       };
       eventList.push(...[activity, delivery]);
-      console.log('calendar', eventList.length);
     });
 
+  console.log('calendar', eventList.length);
   //day headers
-  const dayNames = ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
+  const dayHeader = ['L', 'M', 'M', 'J', 'V'].map((d, i) => (
     <li key={i} className='header'>
       {d}
     </li>
@@ -45,45 +48,60 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
 
   //days sequence
   const listDays: JSX.Element[] = [];
-  for (let index = 0; index < 28; index++) {
+  for (let index = 0; index < 21; index++) {
     //set day container
     const dayOfMonth = new Date();
     dayOfMonth.setDate(weekStart.getDate() + index);
+
+    //if Sun or Sat
+    if (dayOfMonth.getDay() === 0 || dayOfMonth.getDay() === 6) continue;
+
     //filter events for @dayOfMonth
-    const eventListDay = eventList.filter((it) => {
+    const eventListByDay = eventList.filter((it) => {
       return dayOfMonth.toLocaleDateString() === it.info?.date.toLocaleDateString();
     });
 
     //array of day containers
-    listDays.push(
-      <li className='sequence' key={dayOfMonth.getTime()}>
-        <EventContainer dateSet={dayOfMonth} events={eventListDay} />
-      </li>
-    );
+    listDays.push(<EventContainer dateSet={dayOfMonth} events={eventListByDay} />);
   }
 
   return (
-    <Paper variant='outlined'>
-      <div className='myCalendar'>
-        <h4>Plan próximas semanas</h4>
-        <p>{weekStart.toDateString()}</p>
-        <ol>
-          {/*days header 😀*/}
-          {dayNames}
-          {/* day sequence 🅰️*/}
-          {listDays}
-        </ol>
-      </div>
-    </Paper>
+    <div className='myCalendar'>
+      <h4>Plan próximas semanas</h4>
+      <p>{weekStart.toDateString()}</p>
+      <ol>
+        {/*days header 😀*/}
+        {dayHeader}
+        {/* day sequence 🅰️*/}
+        {listDays}
+      </ol>
+    </div>
   );
 };
 
 const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
+  const { dateSet, events } = props;
+
   return (
-    <>
-      {props.dateSet.getDate()} <br />
-      {props.events?.length === 0 ? '' : '⭐' + props.events?.length}
-    </>
+    <li
+      className={
+        dateSet.toLocaleDateString() === new Date().toLocaleDateString()
+          ? 'today'
+          : 'sequence'
+      }
+      key={dateSet.getTime()}
+    >
+      <div>{moment(dateSet).format('DD MMM')}</div>
+      <div>
+        {events?.map((event) => {
+          return (
+            <div className='eventWidget'>
+              {event.idCal} {event.variant === 'delivery' ? '📦' : '🎦'}
+            </div>
+          );
+        })}
+      </div>
+    </li>
   );
 };
 
