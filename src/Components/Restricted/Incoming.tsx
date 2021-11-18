@@ -2,62 +2,33 @@ import { Divider, Grid } from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
-import { dbKey } from '../../Models/databaseKeys';
 import { RoomAccordion } from './Adapter/RoomView';
 
 //icons
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import { Context } from './Context/context';
 
 const Incoming = (props: any) => {
   //router dom
   let { path, url } = useRouteMatch();
   console.log('router', path, url);
 
-  //content data
-  const [incoming, setIncoming] = React.useState<IClassroom[]>([]); /*rext activities*/
+  //context provider data
+  const context = React.useContext(Context);
+  const incomingRooms = context.rooms.filter((room) => {
+    return room.placeActivity.date > new Date();
+  });
 
   //fetch next incoming classrooms with basic info 🔥🔥🔥
   React.useEffect(() => {
     //firebase fetch roomsWithVacancies
-    fetchRooms();
+    //fetchRooms();
   }, []);
-
-  const fetchRooms = async () => {
-    try {
-      //fetch
-      const rightNow = new Date();
-      const ref = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '>=', rightNow)
-        .withConverter(iClassroomConverter);
-
-      const snapshot = await ref.get();
-
-      const rooms = snapshot.docs
-        .map((query) => {
-          return query.data();
-        })
-        .sort((a, b) => (a.placeActivity.date > b.placeActivity.date ? 1 : -1));
-
-      console.log(
-        'amount next rooms idcal',
-        rooms.map((it) => it.idCal)
-      );
-
-      //set state
-      setIncoming(rooms);
-    } catch (error) {
-      console.log('amount next rooms idcal', error);
-    }
-  };
 
   const header = (
     <React.Fragment>
       <Typography variant='subtitle1' color='primary'>
-        Próximas actividades <DateRangeIcon fontSize='small' /> {incoming.length}
+        Próximas actividades <DateRangeIcon fontSize='small' /> {incomingRooms.length}
       </Typography>
       <Divider />
       <br />
@@ -78,7 +49,7 @@ const Incoming = (props: any) => {
         <Box p={1}>
           {header}
           <Grid container spacing={1}>
-            {incoming.map((room, index) => {
+            {incomingRooms.map((room, index) => {
               return (
                 <Grid item key={index} sm={12} xs={12}>
                   {/*roomSingleAccordion(room)*/}
