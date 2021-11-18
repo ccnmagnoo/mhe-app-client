@@ -19,6 +19,7 @@ export const initialState: State = {
 //type actions
 export enum ActionType {
   setPeriod = 'SET_PERIOD',
+  setRoom = 'SET_ROOM',
   setRooms = 'SET_ROOMS',
   updateRoom = 'UPDATE_ROOM',
 }
@@ -54,6 +55,14 @@ export const mheReducer: React.Reducer<State, Action> = (
       const load = payload as IClassroom[];
       return { ...state, rooms: load };
     }
+    //add 1 room each time
+    case ActionType.setRoom: {
+      //decrease fruits from last one
+      const load = payload as IClassroom;
+      const newRooms = [...state.rooms, load];
+      return { ...state, rooms: newRooms };
+    }
+
     //on update data of some room
     case ActionType.updateRoom: {
       const load = payload as IClassroom;
