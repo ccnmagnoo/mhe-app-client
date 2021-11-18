@@ -28,6 +28,7 @@ export enum ActionType {
 export type Action = {
   type: ActionType;
   payload: IClassroom | IClassroom[] | number;
+  index?: number;
 };
 
 //actions functions
@@ -38,7 +39,7 @@ export const mheReducer: React.Reducer<State, Action> = (
   action: Action
 ) => {
   //deconstruct action
-  const { type, payload } = action;
+  const { type, payload, index } = action;
 
   //state on return depending of type Action
   switch (type) {
@@ -59,7 +60,8 @@ export const mheReducer: React.Reducer<State, Action> = (
     case ActionType.setRoom: {
       //decrease fruits from last one
       const load = payload as IClassroom;
-      const newRooms = [...state.rooms, load];
+      const newRooms = state.rooms;
+      newRooms.splice(index!, 1, load);
       return { ...state, rooms: newRooms };
     }
 

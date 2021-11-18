@@ -43,7 +43,12 @@ export const useFetchRooms = () => {
 
           case 'modified': {
             const data = change.doc.data();
-            return listOfRooms.splice(index, 1, data);
+            //return listOfRooms.splice(index, 1, data);
+            return context.changeState({
+              type: ActionType.setRoom,
+              payload: data,
+              index: index,
+            });
           }
           case 'removed': {
             return listOfRooms.splice(index, 1);
