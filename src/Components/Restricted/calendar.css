@@ -29,16 +29,16 @@ ol.myCalendar {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
-
+/*body days square*/
 li.myCalendar {
   font-size: 0.7rem;
   min-height: 60px;
   border: 1.5px white solid;
   border-radius: 7px;
-  background-color: rgb(238, 240, 252);
   padding: 4px;
 }
 
+/*headers L M M J V days */
 li.myCalendar.header {
   font-size: 0.8rem;
   min-height: 10px;
@@ -48,10 +48,13 @@ li.myCalendar.header {
 }
 
 li.myCalendar.sequence {
+  background-color: rgb(238, 240, 252);
   color: rgb(186, 189, 206);
 }
 li.myCalendar.sequence:hover {
-  background-color: rgb(253, 253, 253);
+  transition: all 0.6s ease-in-out;
+  color: white;
+  background-color: rgba(173, 183, 236, 0.829);
 }
 
 li.myCalendar.today {
@@ -66,11 +69,16 @@ li.myCalendar.today {
   text-align: center;
   color: whitesmoke;
   font-weight: 400;
-  font-size: 0.7 rem;
+  font-size: 0.7rem;
   margin: 2px;
-  padding: 2px;
+  padding: 4px 2px 4px 4px;
   border-radius: 4px;
-  background-image: linear-gradient(to top left, rgb(88, 88, 146), rgb(98, 111, 163));
+  background: rgb(88, 88, 146);
+}
+
+.eventWidget:hover {
+  transition: all 0.6s ease-in-out;
+  background: rgb(18, 18, 116);
 }
 
 span.myCalendar {
@@ -81,8 +89,26 @@ span.myCalendar {
 }
 
 span.myCalendar.activity {
-  background-color: rgba(255, 255, 255, 0.473);
+  background-color: rgba(255, 255, 255, 0.315);
 }
 span.myCalendar.delivery {
   background-color: rgba(92, 146, 172, 0.568);
+}
+
+span.myCalendar.popUp {
+  visibility: hidden;
+  position: absolute;
+  display: flex;
+  max-width: 90px;
+  padding: 5px;
+  background-color: black;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+  bottom: 50%;
+  left: 50%;
+}
+
+span.myCalendar.popUp:hover {
+  visibility: visible;
 }

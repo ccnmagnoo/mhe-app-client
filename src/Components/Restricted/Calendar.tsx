@@ -69,7 +69,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
     <div className='myCalendar'>
       <div className='myCalendar container'>
         <h4 className='myCalendar'>Plan próximas semanas</h4>
-        <p className='myCalendar'>{weekStart.toDateString()}</p>
+        <p className='myCalendar'>{moment(weekStart).format(' dddd DD MMM YYYY')}</p>
         <ol className='myCalendar'>
           {/*days header 😀*/}
           {dayHeader}
@@ -93,17 +93,20 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
       }
       key={dateSet.getTime()}
     >
+      {/*header*/}
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
         {events?.map((event) => {
           return (
             <div className='eventWidget'>
+              {/*widget🔳*/}
               {event.idCal}
-              {event.variant === 'delivery' ? (
-                <span className='myCalendar delivery'>entrega</span>
-              ) : (
-                <span className='myCalendar activity'>taller</span>
-              )}
+              <span className={`myCalendar ${event.variant}`}>
+                {event.variant === 'delivery' ? 'entrega' : 'taller'}
+              </span>
+              {/*popUp📲*/}
+
+              <span className='myCalendar popUp'>{event.colaborator}</span>
             </div>
           );
         })}
