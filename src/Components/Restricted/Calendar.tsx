@@ -100,7 +100,7 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
             <div className='eventWidget'>
               {event.idCal}
               {event.variant === 'delivery' ? (
-                <span className='myCalendar delivery'>kits</span>
+                <span className='myCalendar delivery'>entrega</span>
               ) : (
                 <span className='myCalendar activity'>taller</span>
               )}

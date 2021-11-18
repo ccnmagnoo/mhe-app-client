@@ -76,13 +76,13 @@ li.myCalendar.today {
 span.myCalendar {
   font-size: x-small;
   border-radius: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-span.myCalendar.delivery {
-  background-color: rgba(165, 42, 42, 0.568);
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 span.myCalendar.activity {
-  background-color: rgba(128, 0, 128, 0.342);
+  background-color: rgba(255, 255, 255, 0.473);
+}
+span.myCalendar.delivery {
+  background-color: rgba(92, 146, 172, 0.568);
 }
