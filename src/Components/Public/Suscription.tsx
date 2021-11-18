@@ -159,7 +159,7 @@ const Suscription = (props: any) => {
 
       const req = db
         .collection(`Activity/${refUuid}/Consolidated`)
-        .where('rut', '==', data.rut)
+        .where('rut', '==', data.rut.toLocaleLowerCase())
         .withConverter(iBeneficiaryConverter);
       console.log('firestore fetch rut', data.rut);
       const queryDocs = await req.get();
