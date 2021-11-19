@@ -485,7 +485,7 @@ export const Oversuscription = () => {
             fatherName: capitalWord(data.fatherName),
             motherName: capitalWord(data.motherName),
           },
-          rut: data.rut,
+          rut: data.rut.toUpperCase(),
           gender: getGender(data.name),
           classroom: {
             idCal: selectedRoom?.idCal ?? 'R000',

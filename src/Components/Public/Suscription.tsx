@@ -159,7 +159,7 @@ const Suscription = (props: any) => {
 
       const req = db
         .collection(`Activity/${refUuid}/Consolidated`)
-        .where('rut', '==', data.rut.toLocaleLowerCase())
+        .where('rut', '==', data.rut.toUpperCase())
         .withConverter(iBeneficiaryConverter);
       console.log('firestore fetch rut', data.rut);
       const queryDocs = await req.get();
@@ -650,7 +650,7 @@ const Suscription = (props: any) => {
             fatherName: capitalWord(data.fatherName),
             motherName: capitalWord(data.motherName),
           },
-          rut: data.rut.toLocaleLowerCase(),
+          rut: data.rut.toUpperCase(),
           gender: getGender(data.name),
           classroom: {
             idCal: selectedRoom?.idCal ?? 'R000',
@@ -658,7 +658,7 @@ const Suscription = (props: any) => {
             dateInstance: selectedRoom?.dateInstance ?? new Date(),
           },
           dateUpdate: new Date(),
-          email: data.email.toLocaleLowerCase(),
+          email: data.email.toLowerCase(),
           phone: data.phone ?? null,
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
           energy: {

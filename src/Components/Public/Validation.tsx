@@ -329,7 +329,7 @@ const Validation = (props: any) => {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
       const queryDocs = await db
         .collection(`Activity/${refUuid}/Suscribed`)
-        .where('rut', '==', data.rut.toLowerCase())
+        .where('rut', '==', data.rut.toUpperCase())
         .get();
 
       //map [{..}] of this RUT suscriptions
