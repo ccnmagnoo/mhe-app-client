@@ -19,7 +19,7 @@ import { db, storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
-import { IPerson } from '../../Models/Person.Interface';
+import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
 import { UrlChip } from './UrlChip';
 
@@ -328,33 +328,15 @@ const Validation = (props: any) => {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
       const queryDocs = await db
-        .collection(`Activity/${refUuid}/Suscribed`)
+        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.sus}`)
         .where('rut', '==', data.rut.toUpperCase())
+        .withConverter(iPersonConverter)
         .get();
 
       //map [{..}] of this RUT suscriptions
       const suscriptions = queryDocs.docs.map((doc) => {
         const it = doc.data();
-        const person: IPerson = {
-          uuid: it.uuid,
-          name: {
-            firstName: it.name.firstName,
-            fatherName: it.name.fatherName,
-            motherName: it.name.motherName,
-          },
-          rut: it.rut,
-          classroom: {
-            idCal: it.classroom.idCal,
-            uuid: it.classroom.uuid,
-            dateInstance: it.classroom.dateInstance.toDate(),
-          },
-          gender: it.gender,
-          dateUpdate: it.dateUpdate.toDate(),
-          email: it.email,
-          phone: it.phone,
-          address: { dir: it.address.dir, city: it.address.city },
-        };
-        return person;
+        return it;
       });
 
       //there's suscriptions?
