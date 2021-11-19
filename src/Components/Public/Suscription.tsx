@@ -158,7 +158,7 @@ const Suscription = (props: any) => {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
       const req = db
-        .collection(`Activity/${refUuid}/Consolidated`)
+        .collection(`${dbKey.act}/${refUuid}/Consolidated`)
         .where('rut', '==', data.rut.toUpperCase())
         .withConverter(iBeneficiaryConverter);
       console.log('firestore fetch rut', data.rut);
@@ -627,7 +627,7 @@ const Suscription = (props: any) => {
       }
 
       //check the selected ROOM has already this RUT 🔎👤
-      const susRef = db.collection(`Activity/${refUuid}/Suscribed`);
+      const susRef = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.sus}`);
       const susQuery = await susRef.where('rut', '==', data.rut).get();
       const susDocs = susQuery.docs.map((sus) => {
         const it = sus.data() as IPerson;
@@ -641,7 +641,7 @@ const Suscription = (props: any) => {
         //prepare to upload new suscription
         console.log('prepare to upload suscription', data.email);
         //create reference of new doc Suscribed
-        const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
+        const ref = db.collection(`${dbKey.act}/${refUuid}/${dbKey.sus}`).doc();
 
         const person: IPerson = {
           uuid: ref.id,
@@ -679,7 +679,7 @@ const Suscription = (props: any) => {
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const refRoom = db
-          .collection(`Activity/${refUuid}/Classroom`)
+          .collection(`${dbKey.act}/${refUuid}/Classroom`)
           .doc(selectedRoom?.uuid);
 
         const enrolled = selectedRoom?.enrolled;
