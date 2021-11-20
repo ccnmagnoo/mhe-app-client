@@ -10,20 +10,26 @@ import { Context } from './Context/context';
 
 const Incoming = (props: any) => {
   //router dom
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let { path, url } = useRouteMatch();
-  console.log('router', path, url);
 
   //context provider data
   const context = React.useContext(Context);
-  const incomingRooms = context.rooms.filter((room) => {
-    return room.placeActivity.date > new Date();
-  });
+
+  const incomingRooms = context.rooms
+    .filter((room) => {
+      return room.placeActivity.date > new Date();
+    })
+    .reverse();
 
   //fetch next incoming classrooms with basic info 🔥🔥🔥
   React.useEffect(() => {
     //firebase fetch roomsWithVacancies
-    //fetchRooms();
-  }, []);
+    console.log(
+      'incoming rooms : ',
+      incomingRooms.map((it) => it.idCal)
+    );
+  }, [incomingRooms]);
 
   const header = (
     <React.Fragment>
