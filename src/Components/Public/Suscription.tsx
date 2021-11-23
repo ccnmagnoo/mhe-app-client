@@ -486,7 +486,7 @@ const Suscription = (props: any) => {
                             type='number'
                             variant='standard'
                             {...register('electricBill', {
-                              min: { value: 0, message: 'no seamos negativos' },
+                              min: { value: 1_000, message: 'mínimo $1.000' },
                               max: { value: 1_000_000, message: 'demasiado grande' },
                             })}
                             error={errors.electricBill && true}
@@ -507,7 +507,7 @@ const Suscription = (props: any) => {
                             type='number'
                             variant='standard'
                             {...register('electricity', {
-                              min: { value: 0, message: 'no seamos negativos' },
+                              min: { value: 10, message: 'mínimo 10 kWh' },
                               max: { value: 5_000, message: 'demasiado grande' },
                             })}
                             error={errors.electricity && true}
