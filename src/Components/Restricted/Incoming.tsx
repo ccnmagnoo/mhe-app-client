@@ -15,26 +15,17 @@ const Incoming = (props: any) => {
 
   //context provider data
   const context = React.useContext(Context);
-
-  const incomingRooms = context.rooms
+  const incoming = context.rooms
     .filter((room) => {
-      return room.placeActivity.date > new Date();
+      return room.placeActivity.date >= new Date();
     })
     .reverse();
-
-  //fetch next incoming classrooms with basic info 🔥🔥🔥
-  React.useEffect(() => {
-    //firebase fetch roomsWithVacancies
-    console.log(
-      'incoming rooms : ',
-      incomingRooms.map((it) => it.idCal)
-    );
-  }, [incomingRooms]);
 
   const header = (
     <React.Fragment>
       <Typography variant='subtitle1' color='primary'>
-        Próximas actividades <DateRangeIcon fontSize='small' /> {incomingRooms.length}
+        Próximos talleres temporada {context.period} <DateRangeIcon fontSize='small' />{' '}
+        {incoming.length}
       </Typography>
       <Divider />
       <br />
@@ -55,7 +46,7 @@ const Incoming = (props: any) => {
         <Box p={1}>
           {header}
           <Grid container spacing={1}>
-            {incomingRooms.map((room, index) => {
+            {incoming.map((room, index) => {
               return (
                 <Grid item key={index} sm={12} xs={12}>
                   {/*roomSingleAccordion(room)*/}
