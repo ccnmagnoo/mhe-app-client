@@ -41,6 +41,7 @@ export const mheReducer: React.Reducer<State, Action> = (
   action: Action
 ) => {
   //deconstruct action
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { type, payload, index } = action;
 
   //state on return depending of type Action
@@ -56,8 +57,8 @@ export const mheReducer: React.Reducer<State, Action> = (
     case ActionType.setRoom: {
       //decrease fruits from last one
       const load = payload as IClassroom;
-      const newRooms = state.rooms;
-      newRooms.splice(index!, 1, load);
+      const newRooms = [...state.rooms];
+      newRooms.push(load);
       return { ...state, rooms: newRooms };
     }
 
