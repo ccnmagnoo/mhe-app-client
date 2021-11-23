@@ -1,7 +1,7 @@
 import React from 'react';
 import { refUuid } from '../../../Config/credential';
 import { db } from '../../../Config/firebase';
-import { IClassroom, iClassroomConverter } from '../../../Models/Classroom.interface';
+import { iClassroomConverter } from '../../../Models/Classroom.interface';
 import { dbKey } from '../../../Models/databaseKeys';
 import { Context } from '../Context/context';
 import { ActionType } from '../Context/reducer';
@@ -32,9 +32,6 @@ export const useFetchRooms = () => {
       .orderBy('placeActivity.date', 'desc')
       .withConverter(iClassroomConverter);
 
-    //const snapshot = await ref.get();
-    const listOfRooms: IClassroom[] = [];
-
     ref.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change, index, list) => {
         switch (change.type) {
@@ -62,7 +59,11 @@ export const useFetchRooms = () => {
             });
           }
           case 'removed': {
-            return listOfRooms.splice(index, 1);
+            return context.changeState({
+              type: ActionType.delRoom,
+              payload: change.doc.data(),
+              index: index,
+            });
           }
 
           default:
