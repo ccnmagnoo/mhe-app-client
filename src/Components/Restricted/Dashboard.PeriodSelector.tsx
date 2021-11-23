@@ -1,7 +1,7 @@
 import React from 'react';
 import { Slider, Grid, Typography } from '@material-ui/core';
 import { Context } from './Context/context';
-import { Action, ActionType } from './Context/reducer';
+import { ActionType } from './Context/reducer';
 import { useFetchRooms } from './Hooks/useFetchRooms';
 
 export const PeriodSelector = () => {
@@ -10,13 +10,16 @@ export const PeriodSelector = () => {
   //remove and use contaxt
   const currentYear = new Date().getFullYear();
   const [thisYear, setThisYear] = React.useState<number>(currentYear);
+
+  //on period change
   function handleChange(e: React.ChangeEvent<{}>, value: number | number[]): void {
     //local state
+    console.log('year selection: ', thisYear);
     setThisYear(value as number);
     //reducer state period selected
-    let handleAction: Action = { type: ActionType.setPeriod, payload: value as number };
-    context.changeState(handleAction);
-    console.log('year selection: ', thisYear);
+    context.changeState({ type: ActionType.setPeriod, payload: value as number });
+    //clear room state
+    context.changeState({ type: ActionType.delAllRooms, payload: value as number });
 
     //fetch firebase data 🔥🔥🔥
   }
