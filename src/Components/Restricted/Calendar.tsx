@@ -16,6 +16,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   const today = new Date();
   const weekStart = new Date();
   weekStart.setDate(today.getDate() - today.getDay() + 1);
+  weekStart.setHours(0, 0, 0, 0);
 
   //events list
   const eventList: Event[] = [];
