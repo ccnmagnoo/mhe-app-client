@@ -105,7 +105,7 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
               <span className={`myCalendar ${event.variant}`}>
                 {event.variant === 'delivery' ? 'entrega' : 'taller'}
               </span>
-              {/*popUp📲*/}
+              {/*popUp📲: must be visible on click*/}
 
               <span className='myCalendar popUp'>{event.colaborator}</span>
             </div>

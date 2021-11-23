@@ -65,7 +65,7 @@ li.myCalendar.today {
 
 .eventWidget {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   text-align: center;
   color: whitesmoke;
   font-weight: 400;
@@ -76,6 +76,12 @@ li.myCalendar.today {
   background: rgb(88, 88, 146);
 }
 
+@media (max-width: 600px) {
+  .eventWidget {
+    justify-content: center;
+  }
+}
+
 .eventWidget:hover {
   transition: all 0.6s ease-in-out;
   background: rgb(18, 18, 116);
@@ -83,11 +89,17 @@ li.myCalendar.today {
 
 span.myCalendar {
   font-size: x-small;
+  box-sizing: border-box;
   border-radius: 8px;
   padding-left: 3px;
   padding-right: 3px;
 }
 
+@media (max-width: 500px) {
+  span.myCalendar {
+    display: none;
+  }
+}
 span.myCalendar.activity {
   background-color: rgba(255, 255, 255, 0.315);
 }
