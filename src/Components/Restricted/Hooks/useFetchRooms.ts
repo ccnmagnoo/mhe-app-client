@@ -12,6 +12,8 @@ export const useFetchRooms = () => {
   React.useEffect(() => {
     console.log('period change detected');
     fetchRooms(context.period);
+    console.log('fetch rooms all period ', context.rooms.length);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.period]);
 
@@ -38,11 +40,20 @@ export const useFetchRooms = () => {
         switch (change.type) {
           case 'added': {
             const data = change.doc.data();
-            return (listOfRooms[index] = data);
+            console.log('fetch Room add:', data.idCal, 'at index', change.newIndex);
+
+            return context.changeState({
+              type: ActionType.setRoom,
+              payload: data,
+              index: change.newIndex,
+            });
+            //return (listOfRooms[index] = data);
           }
 
           case 'modified': {
             const data = change.doc.data();
+            console.log('fetch Room update:', data.idCal, 'at index', change.newIndex);
+
             //return listOfRooms.splice(index, 1, data);
             return context.changeState({
               type: ActionType.setRoom,
@@ -60,7 +71,7 @@ export const useFetchRooms = () => {
       });
 
       //call Reducer
-      context.changeState({ type: ActionType.setRooms, payload: listOfRooms });
+      //context.changeState({ type: ActionType.setRooms, payload: listOfRooms });
     });
   }
 
