@@ -6,8 +6,14 @@
 
 .myCalendar.container {
   border: 1px solid lightgrey;
+  box-shadow: 4px 4px 8px lightgrey;
   border-radius: 8px;
   padding: 10px 60px 10px 10px;
+  background-image: linear-gradient(
+    to bottom right,
+    white 50%,
+    rgba(119, 136, 153, 0.144) 100%
+  );
 }
 
 h3.myCalendar,
