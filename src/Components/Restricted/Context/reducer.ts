@@ -21,6 +21,8 @@ export enum ActionType {
   setPeriod = 'SET_PERIOD',
   setRoom = 'SET_ROOM',
   setRooms = 'SET_ROOMS',
+  delAllRooms = 'DEL_ALL_ROOMS',
+  delRoom = 'DEL_ROOM',
   updateRoom = 'UPDATE_ROOM',
 }
 
@@ -50,13 +52,7 @@ export const mheReducer: React.Reducer<State, Action> = (
       return { ...state, period: load };
     }
 
-    //set rooms of current year 👨‍🏫
-    case ActionType.setRooms: {
-      //decrease fruits from last one
-      const load = payload as IClassroom[];
-      return { ...state, rooms: load };
-    }
-    //add 1 room each time
+    //add 1 room each time ➕
     case ActionType.setRoom: {
       //decrease fruits from last one
       const load = payload as IClassroom;
@@ -65,14 +61,35 @@ export const mheReducer: React.Reducer<State, Action> = (
       return { ...state, rooms: newRooms };
     }
 
+    //set rooms of current year ➕➕
+    case ActionType.setRooms: {
+      //decrease fruits from last one
+      const load = payload as IClassroom[];
+      return { ...state, rooms: load };
+    }
+
+    //delete all rooms 🧺
+    case ActionType.delAllRooms: {
+      return { ...state, rooms: [] };
+    }
+
+    case ActionType.delRoom: {
+      const load = payload as IClassroom;
+      const index = state.rooms.findIndex((room) => room.uuid === load.uuid);
+      const rooms = [...state.rooms];
+      rooms.splice(index, 1);
+      return { ...state, rooms: rooms };
+    }
+
     //on update data of some room
     case ActionType.updateRoom: {
       const load = payload as IClassroom;
       const index = state.rooms.findIndex((room) => room.uuid === load.uuid);
       //find wich room to update
-      state.rooms.splice(index, 1, load);
+      const rooms = [...state.rooms];
+      rooms.splice(index, 1, load);
 
-      return { ...state, rooms: state.rooms };
+      return { ...state, rooms: rooms };
     }
     default:
       return state;
