@@ -12,7 +12,7 @@ export const UrlChip = (props: {
     //check definition
     if (chain === undefined) return undefined;
     //check if dir is url or physical
-    const gmaps = 'https://www.google.com/maps?q=';
+    const gmapsSufix = 'https://www.google.com/maps?q=';
     if (isUrl(chain)) {
       return (
         <Chip
@@ -31,7 +31,7 @@ export const UrlChip = (props: {
         <Chip
           avatar={<Avatar>D</Avatar>}
           label={props.textContent === undefined ? 'mapa' : props.textContent}
-          href={`${gmaps}${chain.replace(' ', '+')}`}
+          href={`${gmapsSufix}${chain.replace(' ', '+')}`}
           target='_blank'
           clickable
           color={disable ? 'default' : 'primary'}

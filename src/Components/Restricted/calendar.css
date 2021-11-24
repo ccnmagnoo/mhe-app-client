@@ -71,13 +71,15 @@ li.myCalendar.today {
 
 .eventWidget {
   display: flex;
-  justify-content: space-evenly;
-  text-align: center;
+  justify-content: space-between;
+  text-align: left;
   color: whitesmoke;
+  cursor: pointer;
+
   font-weight: 400;
   font-size: 0.7rem;
-  margin: 2px;
-  padding: 4px 2px 4px 4px;
+  margin: 4px 2px 2px 2px;
+  padding: 4px;
   border-radius: 4px;
   background: rgb(88, 88, 146);
 }
@@ -96,9 +98,10 @@ li.myCalendar.today {
 span.myCalendar {
   font-size: x-small;
   box-sizing: border-box;
+  justify-content: baseline;
   border-radius: 8px;
-  padding-left: 3px;
-  padding-right: 3px;
+  vertical-align: center;
+  padding: 2px;
 }
 
 @media (max-width: 500px) {
@@ -106,10 +109,17 @@ span.myCalendar {
     display: none;
   }
 }
-span.myCalendar.activity {
+
+span.myCalendar.tag {
+  max-height: 20px;
+  align-items: center;
+  padding: 4px;
+}
+
+span.myCalendar.tag.activity {
   background-color: rgba(255, 255, 255, 0.315);
 }
-span.myCalendar.delivery {
+span.myCalendar.tag.delivery {
   background-color: rgba(92, 146, 172, 0.568);
 }
 
@@ -117,16 +127,40 @@ span.myCalendar.popUp {
   visibility: hidden;
   position: absolute;
   display: flex;
-  max-width: 90px;
-  padding: 5px;
-  background-color: black;
+  justify-content: space-between;
+  align-content: space-between;
+  font-size: 1rem;
+  min-width: 210px;
+  min-height: 100px;
+  padding: 10px;
+  background-color: rgb(18, 18, 116);
   cursor: pointer;
   user-select: none;
   z-index: 1;
-  bottom: 50%;
-  left: 50%;
+  top: 50%;
+  left: 0%;
 }
 
-span.myCalendar.popUp:hover {
+span.myCalendar.popUp.show {
   visibility: visible;
+  -webkit-animation: fadeIn 0.8s;
+  animation: fadeIn 0.8s;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

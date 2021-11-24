@@ -1,14 +1,15 @@
 import moment from 'moment';
-
 import { IClassroom } from '../../Models/Classroom.interface';
 import { IPlace } from '../../Models/Place.interface';
 import './calendar.css';
+import CalendarPopUp from './Calendar.Popup';
 
-interface Event {
+export interface IEvent {
   idCal: string | undefined;
   info: IPlace | undefined;
   variant: 'activity' | 'delivery';
   colaborator: string;
+  suscribed?: number;
 }
 
 const Calendar = (props: { rooms?: IClassroom[] }) => {
@@ -19,27 +20,28 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   weekStart.setHours(0, 0, 0, 0);
 
   //events list
-  const eventList: Event[] = [];
+  const eventList: IEvent[] = [];
   //data loading
   props.rooms
     ?.filter((it) => it.dateInstance >= weekStart)
     .forEach((it) => {
-      const activity: Event = {
+      const activity: IEvent = {
         idCal: it.idCal,
         info: it.placeActivity,
         variant: 'activity',
         colaborator: it.colaborator,
+        suscribed: it.enrolled.length,
       };
-      const delivery: Event = {
+      const delivery: IEvent = {
         idCal: it.idCal,
         info: it.placeDispatch,
         variant: 'delivery',
         colaborator: it.colaborator,
+        suscribed: it.enrolled.length,
       };
       eventList.push(...[activity, delivery]);
     });
 
-  console.log('calendar', eventList.length);
   //day headers
   const dayHeader = ['L', 'M', 'M', 'J', 'V'].map((d, i) => (
     <li key={i} className='myCalendar header'>
@@ -82,7 +84,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   );
 };
 
-const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
+const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
   const { dateSet, events } = props;
 
   return (
@@ -97,19 +99,8 @@ const EventContainer = (props: { dateSet: Date; events?: Event[] }) => {
       {/*header*/}
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
-        {events?.map((event) => {
-          return (
-            <div className='eventWidget'>
-              {/*widget🔳*/}
-              {event.idCal}
-              <span className={`myCalendar ${event.variant}`}>
-                {event.variant === 'delivery' ? 'entrega' : 'taller'}
-              </span>
-              {/*popUp📲: must be visible on click*/}
-
-              <span className='myCalendar popUp'>{event.colaborator}</span>
-            </div>
-          );
+        {events?.map((event, index) => {
+          return <CalendarPopUp event={event} index={index} />;
         })}
       </div>
     </li>
