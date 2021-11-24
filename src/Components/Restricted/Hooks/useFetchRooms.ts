@@ -33,12 +33,13 @@ export const useFetchRooms = () => {
       .withConverter(iClassroomConverter);
 
     ref.onSnapshot((snapshot) => {
+      console.clear();
+
       snapshot.docChanges().forEach((change, index, list) => {
         switch (change.type) {
           case 'added': {
             const data = change.doc.data();
             console.log('fetch Room add:', data.idCal, 'at index', change.newIndex);
-
             return context.changeState({
               type: ActionType.setRoom,
               payload: data,
@@ -48,12 +49,12 @@ export const useFetchRooms = () => {
           }
 
           case 'modified': {
+            //FIXME: on updates class as index 0 and 1 and 0, several times
             const data = change.doc.data();
-            console.log('fetch Room update:', data.idCal, 'at index', change.newIndex);
-
+            console.log('fetch Room update:', data.idCal, 'at index', index);
             //return listOfRooms.splice(index, 1, data);
             return context.changeState({
-              type: ActionType.setRoom,
+              type: ActionType.updateRoom,
               payload: data,
               index: index,
             });
