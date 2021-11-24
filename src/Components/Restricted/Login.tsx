@@ -45,13 +45,14 @@ const Login = (props: any) => {
       //set Dashboard
       props.history.push('/dashboard');
     } catch (error) {
-      if (error.code === 'auth/user-not-found') {
+      const e = error as any;
+      if (e.code === 'auth/user-not-found') {
         setError('Usuario no existe 😣');
       }
-      if (error.code === 'auth/wrong-password') {
+      if (e.code === 'auth/wrong-password') {
         setError('Contraseña incorrecta 😐');
       }
-      console.log('authentication', false, error.code, error.message);
+      console.log('authentication', false, e.code, e.message);
     }
   }, [input.email, input.password, props.history]);
 
