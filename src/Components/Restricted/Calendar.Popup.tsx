@@ -27,29 +27,37 @@ const CalendarPopUp = (props: {
       {event.variant === 'delivery' ? 'entrega' : 'taller'}
     </span>
   );
+
+  const widgetContent = (
+    <span className={popUpClass()}>
+      <section style={{ display: 'flex' }}>
+        <div style={{ padding: '5px', alignContent: 'middle' }}>
+          {tag}
+          {event.colaborator}
+          <br />
+          <div style={{ padding: '15px 0px 0px 0px' }}>
+            <UrlChip url={event.info?.dir} textContent='dirección' />{' '}
+            {moment(event.info?.date).format('DD/MMM H:mm')}
+          </div>
+        </div>
+        <div> ipson lorem</div>
+      </section>
+    </span>
+  );
   return (
     <>
-      <div key={index} className='eventWidget ' onClick={handleOnClick}>
+      <div
+        key={index}
+        className='eventWidget'
+        id={`eventWidget-${event.idCal}`}
+        onClick={handleOnClick}
+      >
         {/*widget🔳*/}
         {event.idCal}
         {/*tag variant*/}
         {tag}
         {/*popUp📲: must be visible on click*/}
-
-        <span className={popUpClass()}>
-          <div>
-            <div>
-              {tag}
-              {event.colaborator}
-            </div>
-            {props.children}
-            <br />
-            <div>
-              <UrlChip url={event.info?.dir} textContent='dirección' />{' '}
-              {moment(event.info?.date).format('DD/MMM H:mm')}
-            </div>
-          </div>
-        </span>
+        {widgetContent}
       </div>
     </>
   );
