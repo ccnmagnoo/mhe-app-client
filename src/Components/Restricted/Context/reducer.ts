@@ -86,6 +86,7 @@ export const mheReducer: React.Reducer<State, Action> = (
     case ActionType.updateRoom: {
       const load = payload as IClassroom;
       const index = state.rooms.findIndex((room) => room.uuid === load.uuid);
+      console.log('room state update index:', index);
       //find wich room to update
       const rooms = [...state.rooms];
       rooms.splice(index, 1, load);
