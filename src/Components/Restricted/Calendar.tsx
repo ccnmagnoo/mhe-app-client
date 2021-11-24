@@ -15,15 +15,21 @@ export interface IEvent {
 const Calendar = (props: { rooms?: IClassroom[] }) => {
   //calendar init params
   const today = new Date();
+  //since when is shown the weeks
   const weekStart = new Date();
   weekStart.setDate(today.getDate() - today.getDay() + 1);
   weekStart.setHours(0, 0, 0, 0);
+
+  //since when event data collecting is fetched
+  const weekCollecting = new Date();
+  weekCollecting.setDate(today.getDate() - 28);
+  weekCollecting.setHours(0, 0, 0, 0);
 
   //events list
   const eventList: IEvent[] = [];
   //data loading
   props.rooms
-    ?.filter((it) => it.dateInstance >= weekStart)
+    ?.filter((it) => it.dateInstance >= weekCollecting)
     .forEach((it) => {
       const activity: IEvent = {
         idCal: it.idCal,
