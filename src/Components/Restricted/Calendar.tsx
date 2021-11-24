@@ -100,7 +100,7 @@ const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
         {events?.map((event, index) => {
-          return <CalendarPopUp event={event} index={index} />;
+          return <CalendarPopUp event={event} index={index}></CalendarPopUp>;
         })}
       </div>
     </li>
