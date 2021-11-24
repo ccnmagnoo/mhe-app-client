@@ -14,6 +14,7 @@ export const PeriodSelector = () => {
   //on period change
   function handleChange(e: React.ChangeEvent<{}>, value: number | number[]): void {
     //local state
+    console.clear();
     console.log('year selection: ', thisYear);
     setThisYear(value as number);
     //reducer state period selected
