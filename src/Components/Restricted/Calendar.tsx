@@ -38,6 +38,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
         variant: 'activity',
         colaborator: it.colaborator,
         suscribed: it.enrolled.length,
+        benefited: it.attendees.length,
       };
       const delivery: IEvent = {
         idCal: it.idCal,
@@ -45,6 +46,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
         variant: 'delivery',
         colaborator: it.colaborator,
         suscribed: it.enrolled.length,
+        benefited: it.attendees.length,
       };
       eventList.push(...[activity, delivery]);
     });
@@ -58,7 +60,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
 
   //days sequence
   const listDays: JSX.Element[] = [];
-  for (let index = 0; index < 21; index++) {
+  for (let index = 0; index < 28; index++) {
     //set day container
     const dayOfMonth = new Date();
     dayOfMonth.setDate(weekStart.getDate() + index);

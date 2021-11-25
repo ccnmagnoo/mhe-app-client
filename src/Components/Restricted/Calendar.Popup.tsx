@@ -24,7 +24,7 @@ const CalendarPopUp = (props: {
   //sub element tag
   const tag = (
     <span className={`myCalendar tag ${event.variant}`}>
-      {event.variant === 'delivery' ? 'entrega' : 'taller'}
+      {event.variant === 'delivery' ? 'kits' : 'taller'}
     </span>
   );
 
@@ -37,12 +37,25 @@ const CalendarPopUp = (props: {
             <p>{event.colaborator}</p>
 
             <div style={{ padding: '0px 0px 0px 0px' }}>
-              <h3>{moment(event.info?.date).format('DD/MMM H:mm')}</h3>
-              <UrlChip url={event.info?.dir} textContent={event.info?.dir} />{' '}
+              <h3>{moment(event.info?.date).format('dd DD/MMM H:mm')}</h3>
+              <p style={{ fontSize: '0.8rem' }}>{event.info?.dir}</p>
+              <UrlChip url={event.info?.dir} textContent={'dirección'} />{' '}
             </div>
           </div>
 
-          <article></article>
+          <article
+            style={{
+              textAlign: 'right',
+              marginLeft: 'auto',
+              marginRight: '20px',
+              alignContent: 'right',
+            }}
+          >
+            <p>incritos</p>
+            <h2>{event.suscribed}</h2>
+            <p>kits</p>
+            <h3>{event.benefited ?? 0}</h3>
+          </article>
         </section>
       </span>
     </div>

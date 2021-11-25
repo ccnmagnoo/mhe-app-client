@@ -107,7 +107,10 @@ span.myCalendar {
 span.myCalendar.tag {
   max-height: 20px;
   align-items: center;
+  text-align: center;
   padding: 4px;
+  max-width: 300px;
+  min-width: 2rem;
 }
 
 @media (max-width: 500px) {
@@ -124,7 +127,7 @@ span.myCalendar.tag.delivery {
 
 span.myCalendar.popUp {
   --width: 50%;
-  --height: 150px;
+  --height: 100px;
   justify-content: center;
   align-content: center;
   font-size: 1rem;
@@ -132,7 +135,7 @@ span.myCalendar.popUp {
   max-width: 600px;
   min-height: var(--height);
   padding: 10px;
-  background-color: Navy;
+  background-color: rgba(61, 65, 126, 0.973);
   cursor: pointer;
   user-select: none;
   z-index: 1;
