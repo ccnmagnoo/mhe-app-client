@@ -80,7 +80,6 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   return (
     <div className='myCalendar'>
       <div className='myCalendar container'>
-        <h4 className='myCalendar'>Plan próximas semanas</h4>
         <p className='myCalendar'>{moment(weekStart).format(' dddd DD MMM YYYY')}</p>
         <ol className='myCalendar'>
           {/*days header 😀*/}
