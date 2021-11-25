@@ -90,9 +90,7 @@ const RoomView = (props: {
               <Typography variant='caption' color='initial'>
                 {props.workDone
                   ? moment(room.placeActivity.date).locale('es').format('DD MMM')
-                  : moment(room.placeActivity.date)
-                      .locale('es')
-                      .format('dd, DD/MMM H:mm')}
+                  : moment(room.placeActivity.date).locale('es').format('dd DD MMM H:mm')}
               </Typography>
             </Grid>
             <Grid item xs={12}>
