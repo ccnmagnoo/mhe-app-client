@@ -89,10 +89,10 @@ const RoomView = (props: {
             <Grid item xs={12}>
               <Typography variant='caption' color='initial'>
                 {props.workDone
-                  ? moment(room.placeActivity.date).locale('es').format('DD [de] MMMM')
+                  ? moment(room.placeActivity.date).locale('es').format('DD MMM')
                   : moment(room.placeActivity.date)
                       .locale('es')
-                      .format('DD [de] MMM h:mm a')}
+                      .format('dd, DD/MMM H:mm')}
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -111,7 +111,12 @@ const RoomView = (props: {
           </Grid>
           {!props.workDone ? (
             <Grid item xs={6} sm={3}>
-              <Badge badgeContent={room.enrolled.length} max={999} color='secondary'>
+              <Badge
+                variant='standard'
+                badgeContent={room.enrolled.length}
+                max={999}
+                color='secondary'
+              >
                 <GroupIcon color='primary' titleAccess={'inscritos'} />
               </Badge>
             </Grid>
