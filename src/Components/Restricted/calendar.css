@@ -54,6 +54,7 @@ li.myCalendar.header {
   color: gray;
 }
 
+/* Each day square in calendar */
 li.myCalendar.sequence {
   background-color: rgb(238, 240, 252);
   color: rgb(186, 189, 206);
@@ -63,13 +64,14 @@ li.myCalendar.sequence:hover {
   color: white;
   background-color: rgba(173, 183, 236, 0.829);
 }
-
+/* Today  square in calendar with diferent properties*/
 li.myCalendar.today {
   color: rgb(114, 123, 161);
   font-weight: bold;
   background-color: rgb(198, 203, 252);
 }
 
+/*Content of calendar days */
 .eventWidget {
   display: flex;
   justify-content: space-between;
@@ -84,7 +86,7 @@ li.myCalendar.today {
   border-radius: 4px;
   background: rgb(88, 88, 146);
 }
-
+/*Content of calendar days */
 @media (max-width: 600px) {
   .eventWidget {
     justify-content: center;
@@ -96,6 +98,7 @@ li.myCalendar.today {
   background: rgb(18, 18, 116);
 }
 
+/* Tag with type of event */
 span.myCalendar {
   font-size: x-small;
   box-sizing: border-box;
@@ -126,6 +129,7 @@ span.myCalendar.tag.delivery {
   background-color: rgba(92, 146, 172, 0.568);
 }
 
+/* popUp with details of each classrooms */
 span.myCalendar.popUp {
   --width: 50%;
   --height: 100px;
@@ -151,6 +155,7 @@ span.myCalendar.popUp.show {
   animation: fadeIn 0.8s;
 }
 
+/* transparent background of popUp dialog */
 .backgroundPopup {
   visibility: hidden;
   position: fixed;
