@@ -13,7 +13,7 @@ const CalendarPopUp = (props: {
 
   /**@function popUpClass show popUp*/
   function popUpClass() {
-    return isActive ? 'myCalendar popUp show' : 'myCalendar popUp';
+    return isActive ? 'backgroundPopup show' : 'backgroundPopup';
   }
   /**@function onClick*/
   function handleOnClick() {
@@ -28,21 +28,24 @@ const CalendarPopUp = (props: {
     </span>
   );
 
-  const widgetContent = (
-    <span className={popUpClass()}>
-      <section style={{ display: 'flex' }}>
-        <div style={{ padding: '5px', alignContent: 'middle' }}>
-          {tag}
-          {event.colaborator}
-          <br />
-          <div style={{ padding: '15px 0px 0px 0px' }}>
-            <UrlChip url={event.info?.dir} textContent='dirección' />{' '}
-            {moment(event.info?.date).format('DD/MMM H:mm')}
+  const popUpDialog = (
+    <div className={popUpClass()}>
+      <span className='myCalendar popUp'>
+        <section style={{ display: 'flex' }}>
+          <div style={{ padding: '5px', alignContent: 'middle', maxWidth: '300px' }}>
+            {tag}
+            <p>{event.colaborator}</p>
+
+            <div style={{ padding: '0px 0px 0px 0px' }}>
+              <h3>{moment(event.info?.date).format('DD/MMM H:mm')}</h3>
+              <UrlChip url={event.info?.dir} textContent={event.info?.dir} />{' '}
+            </div>
           </div>
-        </div>
-        <div> ipson lorem</div>
-      </section>
-    </span>
+
+          <article></article>
+        </section>
+      </span>
+    </div>
   );
   return (
     <>
@@ -57,7 +60,7 @@ const CalendarPopUp = (props: {
         {/*tag variant*/}
         {tag}
         {/*popUp📲: must be visible on click*/}
-        {widgetContent}
+        {popUpDialog}
       </div>
     </>
   );

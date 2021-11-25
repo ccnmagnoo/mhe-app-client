@@ -123,15 +123,13 @@ span.myCalendar.tag.delivery {
 }
 
 span.myCalendar.popUp {
-  --width: 40%;
+  --width: 50%;
   --height: 150px;
-  visibility: hidden;
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  align-content: space-between;
+  justify-content: center;
+  align-content: center;
   font-size: 1rem;
-  min-width: var(--width);
+  width: var(--width);
+  max-width: 600px;
   min-height: var(--height);
   padding: 10px;
   background-color: Navy;
@@ -139,11 +137,27 @@ span.myCalendar.popUp {
   user-select: none;
   z-index: 1;
   box-shadow: 4px 4px 6px gray;
-  bottom: calc(40% - var(--height) * 0.5);
-  left: calc(50% - var(--width) * 0.5);
+  margin-top: calc(50vh - var(--height) / 2);
+  margin-left: calc(50vw - var(--width) / 2);
 }
 
 span.myCalendar.popUp.show {
+  visibility: visible;
+  -webkit-animation: fadeIn 0.8s;
+  animation: fadeIn 0.8s;
+}
+
+.backgroundPopup {
+  visibility: hidden;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.219);
+  top: 0%;
+  left: 0%;
+}
+
+.backgroundPopup.show {
   visibility: visible;
   -webkit-animation: fadeIn 0.8s;
   animation: fadeIn 0.8s;

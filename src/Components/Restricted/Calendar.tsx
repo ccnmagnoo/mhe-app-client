@@ -10,6 +10,7 @@ export interface IEvent {
   variant: 'activity' | 'delivery';
   colaborator: string;
   suscribed?: number;
+  benefited?: number;
 }
 
 const Calendar = (props: { rooms?: IClassroom[] }) => {
