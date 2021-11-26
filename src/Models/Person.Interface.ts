@@ -11,7 +11,7 @@ export interface IPerson {
   email: string;
   phone?: string | null;
   address?: Dir;
-  energy?: IEnergyPoll;
+  energy?: IEnergyPoll | null;
 }
 
 export type Name = {
