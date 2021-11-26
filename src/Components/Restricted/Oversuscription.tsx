@@ -255,11 +255,14 @@ export const Oversuscription = () => {
     try {
       //firestore🔥🔥🔥: fetch las 3 passed classes
       const rightNow = new Date();
+      const startPeriod = new Date(rightNow.getFullYear(), 1, 1, 0);
+
       const fetch = db
         .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
         .where('dateInstance', '<=', rightNow)
+        .where('dateInstance', '>', startPeriod)
         .orderBy('dateInstance', 'desc')
-        .limit(50)
+        //.limit(50)
         .withConverter(iClassroomConverter);
 
       console.log('requested city', data.city);
@@ -496,6 +499,12 @@ export const Oversuscription = () => {
           email: data.email.toLocaleLowerCase(),
           phone: data.phone ?? null,
           address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
+          energy: {
+            electricity: null,
+            electricBill: null,
+            gasDuration: null,
+            gasBill: null,
+          },
         };
 
         //set new suscription 🔥🔥🔥
