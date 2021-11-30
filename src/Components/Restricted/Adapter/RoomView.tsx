@@ -201,4 +201,4 @@ const RoomView = (props: {
   );
 };
 
-export { RoomView as RoomAccordion };
+export default React.memo(RoomView);

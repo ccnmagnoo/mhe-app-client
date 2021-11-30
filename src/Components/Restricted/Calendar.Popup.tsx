@@ -79,4 +79,4 @@ const CalendarPopUp = (props: {
   );
 };
 
-export default CalendarPopUp;
+export default React.memo(CalendarPopUp);

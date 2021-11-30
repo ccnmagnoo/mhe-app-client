@@ -3,7 +3,7 @@ import { Divider } from '@material-ui/core';
 import { Paper, Box, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch, withRouter } from 'react-router-dom';
-import { RoomAccordion } from './Adapter/RoomView';
+import RoomView from './Adapter/RoomView';
 import { Context } from './Context/context';
 
 //icons
@@ -76,7 +76,7 @@ const Outgoing = (props: any) => {
               return (
                 <Grid item key={index} sm={12} xs={12}>
                   {/*roomSingleAccordion(room)*/}
-                  <RoomAccordion
+                  <RoomView
                     workDone={true}
                     room={room}
                     expanded={expanded}
