@@ -214,16 +214,17 @@ const Suscription = (props: any) => {
                 container
                 direction='row'
                 spacing={2}
-                justify='space-between'
+                justify='space-evenly'
                 alignItems='center'
+                alignContent='flex-start'
               >
-                <Grid item xs={'auto'}>
+                <Grid item xs={12} sm={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
                     Paso 1
                   </Typography>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     disabled={disableA}
@@ -244,7 +245,7 @@ const Suscription = (props: any) => {
                   {isRol}
                 </Grid>
 
-                <Grid item xs={'auto'}>
+                <Grid item xs={12} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
