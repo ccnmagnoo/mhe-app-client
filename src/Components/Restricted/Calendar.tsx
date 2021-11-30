@@ -107,9 +107,11 @@ const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
       {/*header*/}
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
-        {events?.map((event, index) => {
-          return <CalendarPopUp event={event} index={index}></CalendarPopUp>;
-        })}
+        {events
+          ?.sort((a, b) => (a.info?.date! > b.info?.date! ? 1 : -1))
+          .map((event, index) => {
+            return <CalendarPopUp event={event} index={index}></CalendarPopUp>;
+          })}
       </div>
     </li>
   );
