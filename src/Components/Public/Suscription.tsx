@@ -79,6 +79,9 @@ const Suscription = (props: any) => {
   const [visibleB, setVisibleB] = React.useState(false);
   const [visibleC, setVisibleC] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
+  //progressing bar state
+  const [progressA, setProgressA] = React.useState(false);
+  const [progressB, setProgressB] = React.useState(false);
 
   //React hook form
   const {
@@ -126,6 +129,7 @@ const Suscription = (props: any) => {
     //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
+    setProgressA(true); //progress bar ON
 
     //checking rut 👁‍🗨👁‍🗨
     setIsRol(rolChecker(data.rut));
@@ -140,6 +144,7 @@ const Suscription = (props: any) => {
   //on result of onSubmitStepA
   React.useEffect(() => {
     //is everything ok the must be done🆗👌
+    setProgressA(false); //progress bar OFF
     if (gotBenefit === false) {
       //on success 👌 disable RUT input
       setDisableA(true);
@@ -205,7 +210,7 @@ const Suscription = (props: any) => {
   };
 
   const formA = (
-    <React.Fragment>
+    <>
       <Grow in={true}>
         <form onSubmit={handleSubmit(onSubmitA)}>
           <Paper elevation={2}>
@@ -263,19 +268,22 @@ const Suscription = (props: any) => {
           </Paper>
         </form>
       </Grow>
-    </React.Fragment>
+    </>
   );
 
   //FROM B 💖💖💗
   const onSubmitB: SubmitHandler<Input> = async (data) => {
     console.log('form B', data);
     setDisableB(true);
+    setProgressB(true); //progress bar ON
 
     //fetch Classrooms form firebase 🔥🔥🔥
     const getClassrooms = await fetchClassrooms(data);
     console.log('getClassrooms result', getClassrooms);
     //open form C
+    setVisibleB(false); //hide step2
     setVisibleC(true);
+    setProgressB(false); //progress bar OFF
   };
 
   async function fetchClassrooms(data: Input) {
@@ -343,19 +351,18 @@ const Suscription = (props: any) => {
   }
 
   const formB = (
-    <React.Fragment>
+    <>
       <br />
       <Grow in={visibleB}>
         <Paper elevation={2}>
           <Box p={1}>
             <form onSubmit={handleSubmit(onSubmitB)}>
               <Grid container spacing={1} justify='flex-end'>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                   <Typography variant='subtitle2' color='primary'>
-                    Paso 2
+                    Ingrese sus datos
                   </Typography>
                 </Grid>
-                <Grid item xs={8}></Grid>
                 <Grid item xs={12} sm={4}>
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
@@ -585,7 +592,7 @@ const Suscription = (props: any) => {
           </Box>
         </Paper>
       </Grow>
-    </React.Fragment>
+    </>
   );
 
   //FORM C 💖💖💗
@@ -787,7 +794,7 @@ const Suscription = (props: any) => {
   };
 
   const formC = (
-    <React.Fragment>
+    <>
       <br />
       <Grow in={visibleC}>
         <Paper>
@@ -795,8 +802,8 @@ const Suscription = (props: any) => {
             <form onSubmit={handleSubmit(onSubmitC)}>
               <Grid container spacing={2} justify='flex-end'>
                 <Grid item xs={12}>
-                  <Typography variant='subtitle2' color='primary'>
-                    Paso final: selecciona tu taller
+                  <Typography variant='subtitle1' color='primary'>
+                    Seleccione su taller <strong>{watch().name}</strong>
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -872,7 +879,7 @@ const Suscription = (props: any) => {
           </Box>
         </Paper>
       </Grow>
-    </React.Fragment>
+    </>
   );
 
   //Dialog on success suscription
@@ -903,7 +910,7 @@ const Suscription = (props: any) => {
           color='primary'
           variant='outlined'
         >
-          gracias nos vemos
+          Gracias nos vemos
         </Button>
       </DialogActions>
     </Dialog>
@@ -915,7 +922,9 @@ const Suscription = (props: any) => {
       {header}
       <br />
       {formA}
+      {progressA ? <LinearProgress color='primary' /> : undefined}
       {visibleB ? formB : undefined}
+      {progressB ? <LinearProgress color='primary' /> : undefined}
       {visibleC ? formC : undefined}
       <br />
       {disableA ? undefined : <Requirements />}
