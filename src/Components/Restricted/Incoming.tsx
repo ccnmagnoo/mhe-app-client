@@ -41,7 +41,7 @@ const Incoming = (props: any) => {
     };
 
   return (
-    <React.Fragment>
+    <>
       <Paper>
         <Box p={1}>
           {header}
@@ -62,7 +62,7 @@ const Incoming = (props: any) => {
           </Grid>
         </Box>
       </Paper>
-    </React.Fragment>
+    </>
   );
 };
 
