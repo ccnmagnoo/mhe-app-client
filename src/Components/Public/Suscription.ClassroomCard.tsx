@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import { IClassroom } from '../../Models/Classroom.interface';
 //icons
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 type TClassroomCard = {
@@ -22,28 +23,30 @@ type TClassroomCard = {
 
 const ClassroomCard = (props: TClassroomCard) => {
   const { item, selectedRoom, setSelectedRoom, disableC, setDisableS } = props;
+  const isSelected = selectedRoom?.uuid === item.uuid;
+  const backgroundColor = () => {
+    return isSelected ? 'AliceBlue' : 'transparent';
+  };
 
   return (
     <>
-      <Card>
+      <Card style={{ backgroundColor: backgroundColor() }}>
         <CardHeader
           avatar={<Avatar aria-label='idcal'>{item.idCal.replace('R', '')}</Avatar>}
           action={
             <IconButton aria-label='seleccionar'>
-              <CheckCircleIcon
-                color={selectedRoom?.uuid === item.uuid ? 'primary' : 'action'}
-              />
+              <CheckCircleIcon color={isSelected ? 'primary' : 'inherit'} />
             </IconButton>
           }
           title={`${item.idCal} ${item.colaborator}`}
-          subheader={moment(item.dateInstance).format('dddd DD MMMM YYYY [a las] h:mm a')}
+          subheader={moment(item.dateInstance).format('dddd DD MMM h:mm a')}
         />
         <CardActions>
           <Button
             size='small'
             disabled={disableC}
-            color={selectedRoom?.uuid === item.uuid ? 'primary' : 'default'}
-            variant={selectedRoom?.uuid === item.uuid ? 'contained' : 'outlined'}
+            color={isSelected ? 'primary' : 'default'}
+            variant={isSelected ? 'contained' : 'outlined'}
             onClick={() => {
               console.log('selected class', item.idCal);
               setSelectedRoom(item);
