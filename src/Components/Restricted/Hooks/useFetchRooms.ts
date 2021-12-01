@@ -49,7 +49,7 @@ export const useFetchRooms = () => {
           }
 
           case 'modified': {
-            //FIXME: on updates class as index 0 and 1 and 0, several times
+            //updates class as index 0 and 1 and 0, several times
             const data = change.doc.data();
             console.log('fetch Room update:', data.idCal, 'at index', index);
             //return listOfRooms.splice(index, 1, data);
