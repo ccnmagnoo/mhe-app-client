@@ -22,15 +22,15 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   weekStart.setHours(0, 0, 0, 0);
 
   //since when event data collecting is fetched
-  const weekCollecting = new Date();
-  weekCollecting.setDate(today.getDate() - 28);
-  weekCollecting.setHours(0, 0, 0, 0);
+  const startDateCollecting = new Date();
+  startDateCollecting.setDate(today.getDate() - 28); /*data colected 28 ago*/
+  startDateCollecting.setHours(0, 0, 0, 0);
 
   //events list
   const eventList: IEvent[] = [];
   //data loading
   props.rooms
-    ?.filter((it) => it.dateInstance >= weekCollecting)
+    ?.filter((it) => it.dateInstance >= startDateCollecting)
     .forEach((it) => {
       const activity: IEvent = {
         idCal: it.idCal,
@@ -62,8 +62,8 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   const listDays: JSX.Element[] = [];
   for (let index = 0; index < 28; index++) {
     //set day container
-    const dayOfMonth = new Date();
-    dayOfMonth.setDate(weekStart.getDate() + index);
+    const dayOfMonth = new Date(weekStart);
+    dayOfMonth.setDate(dayOfMonth.getDate() + index);
 
     //if Sun or Sat
     if (dayOfMonth.getDay() === 0 || dayOfMonth.getDay() === 6) continue;
