@@ -122,22 +122,36 @@ span.myCalendar.tag {
     display: none;
   }
 }
-span.myCalendar.tag.activity {
+
+span.myCalendar.tag.permanent {
+  display: flex;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-variant: unset;
+  font-size: 1rem;
+  justify-content: center;
+  max-height: 40px;
+  max-width: 400px;
+}
+
+.activity {
   background-color: rgba(255, 255, 255, 0.315);
 }
-span.myCalendar.tag.delivery {
+.delivery {
   background-color: rgba(92, 146, 172, 0.568);
 }
 
 /* popUp with details of each classrooms */
 span.myCalendar.popUp {
-  --width: 50%;
-  --height: 100px;
-  justify-content: center;
-  align-content: center;
+  --width: 400px;
+  --height: 80px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-around;
   font-size: 1rem;
-  width: var(--width);
-  max-width: 600px;
+  max-width: var(--width);
   min-height: var(--height);
   padding: 10px;
   background-color: rgba(61, 65, 126, 0.973);
@@ -146,13 +160,45 @@ span.myCalendar.popUp {
   z-index: 1;
   box-shadow: 4px 4px 6px gray;
   margin-top: calc(50vh - var(--height) / 2);
-  margin-left: calc(50vw - var(--width) / 2);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 500px) {
+  span.myCalendar.popUp {
+    flex-direction: column;
+  }
 }
 
 span.myCalendar.popUp.show {
   visibility: visible;
   -webkit-animation: fadeIn 0.8s;
   animation: fadeIn 0.8s;
+}
+
+.appFlex {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.appFlex.right {
+  justify-content: space-around;
+  text-align: right;
+  padding: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.438);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.137);
+  margin: 5px 5px;
+  padding: 5px 10px;
+}
+
+@media (max-width: 500px) {
+  .appFlex.right {
+    align-items: baseline;
+
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 /* transparent background of popUp dialog */

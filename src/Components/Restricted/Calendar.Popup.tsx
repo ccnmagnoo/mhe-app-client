@@ -22,41 +22,35 @@ const CalendarPopUp = (props: {
   }
 
   //sub element tag
-  const tag = (
-    <span className={`myCalendar tag ${event.variant}`}>
-      {event.variant === 'delivery' ? 'kits' : 'taller'}
-    </span>
-  );
+  const tag = (isReactive?: boolean) => {
+    /**
+     * @param isReactive boolean true: hide on small screens, false: not hide
+     */
+    const permanent = isReactive ? 'permanent' : undefined;
+    return (
+      <span className={`myCalendar tag ${permanent} ${event.variant}`}>
+        {event.variant === 'delivery' ? 'kits' : 'taller'}
+      </span>
+    );
+  };
 
   const popUpDialog = (
     <div className={popUpClass()}>
       <span className='myCalendar popUp'>
-        <section style={{ display: 'flex' }}>
-          <div style={{ padding: '5px', alignContent: 'middle', maxWidth: '300px' }}>
-            {tag}
-            <p>{event.colaborator}</p>
+        <article className='appFlex'>
+          {tag(true)}
+          <p>{event.colaborator}</p>
+          <h3>{moment(event.info?.date).format('dd DD/MMM H:mm')}</h3>
+          <p style={{ fontSize: '0.8rem' }}>{event.info?.dir}</p>
+          <UrlChip url={event.info?.dir} textContent={'dirección'} />{' '}
+        </article>
 
-            <div style={{ padding: '0px 0px 0px 0px' }}>
-              <h3>{moment(event.info?.date).format('dd DD/MMM H:mm')}</h3>
-              <p style={{ fontSize: '0.8rem' }}>{event.info?.dir}</p>
-              <UrlChip url={event.info?.dir} textContent={'dirección'} />{' '}
-            </div>
-          </div>
-
-          <article
-            style={{
-              textAlign: 'right',
-              marginLeft: 'auto',
-              marginRight: '20px',
-              alignContent: 'right',
-            }}
-          >
-            <p>incritos</p>
-            <h2>{event.suscribed}</h2>
-            <p>kits</p>
-            <h3>{event.benefited ?? 0}</h3>
-          </article>
-        </section>
+        <article className='appFlex right'>
+          <div>Inscritos</div>
+          <p>{event.suscribed}</p>
+          <div>Inscritos</div>
+          <p>{event.benefited ?? 0}</p>
+        </article>
       </span>
     </div>
   );
@@ -71,7 +65,7 @@ const CalendarPopUp = (props: {
         {/*widget🔳*/}
         {event.idCal}
         {/*tag variant*/}
-        {tag}
+        {tag(false)}
         {/*popUp📲: must be visible on click*/}
         {popUpDialog}
       </div>
