@@ -29,7 +29,7 @@ export const PeriodSelector = () => {
   return (
     <>
       <Grid container spacing={2} justify='flex-end'>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <Slider
             defaultValue={currentYear}
             onChangeCommitted={handleChange}
@@ -46,15 +46,19 @@ export const PeriodSelector = () => {
             valueLabelDisplay='auto'
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <Typography
             variant='body2'
             color='primary'
             style={{
-              color: 'SteelBlue',
+              color: 'White',
               fontStyle: 'bold',
+              fontSize: '0.8rem',
+              backgroundColor: 'RoyalBlue	',
+              border: '1px solid CornflowerBlue',
+              borderRadius: '5px',
               padding: '5px',
-              textAlign: 'left',
+              textAlign: 'center',
             }}
           >
             {context.period}

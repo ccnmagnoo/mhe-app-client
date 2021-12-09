@@ -38,7 +38,7 @@ const Create = (props: any) => {
   const [error, setError] = React.useState<string | null>(null);
 
   //set form inputs init state
-  const initInput: Input = {
+  const initInput: TInputForm = {
     idCal: 0,
     colaborator: '',
     placeName: '',
@@ -51,7 +51,7 @@ const Create = (props: any) => {
     landName: 'Valparaíso',
     vacancies: 150,
   };
-  const [inputData, setInputData] = React.useState<Input>(initInput);
+  const [inputData, setInputData] = React.useState<TInputForm>(initInput);
 
   //on Input OnChange🔃
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -124,7 +124,7 @@ const Create = (props: any) => {
           .doc();
 
         //build object function
-        const buildObject = (data: Input, uuid: string) => {
+        const buildObject = (data: TInputForm, uuid: string) => {
           const listOfCities = getCityList(data.landName, data.landType as LandType);
           const datePlaceSetting = new Date(data.placeDate);
           const datePostSetting = new Date(data.postDate);
@@ -170,7 +170,7 @@ const Create = (props: any) => {
     }
   };
 
-  type Input = {
+  type TInputForm = {
     idCal: number;
     colaborator: string;
     //place class 📌

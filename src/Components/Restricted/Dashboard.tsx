@@ -92,7 +92,7 @@ const Dashboard = (props: any) => {
             </Button>
           </ButtonGroup>
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12}>
           <PeriodSelector />
         </Grid>
         <Grid item xs={12}>
@@ -122,6 +122,7 @@ const Dashboard = (props: any) => {
             </Route>
 
             <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />} />
+
             <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
           </Switch>
         </Grid>
