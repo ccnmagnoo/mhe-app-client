@@ -143,7 +143,7 @@ span.myCalendar.tag.permanent {
 /* popUp with details of each classrooms */
 span.myCalendar.popUp {
   --width: 400px;
-  --height: 80px;
+  --height: 200px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -160,6 +160,7 @@ span.myCalendar.popUp {
   z-index: 1;
   box-shadow: 4px 4px 6px gray;
   margin-top: calc(50vh - var(--height) / 2);
+  vertical-align: middle;
   margin-left: auto;
   margin-right: auto;
 }
@@ -183,13 +184,12 @@ span.myCalendar.popUp.show {
 }
 .appFlex.right {
   justify-content: space-around;
-  text-align: right;
+  text-align: center;
   padding: 1px;
   border: 1px solid rgba(0, 0, 0, 0.438);
   border-radius: 5px;
   background: rgba(0, 0, 0, 0.137);
-  margin: 5px 5px;
-  padding: 5px 10px;
+  padding: 15px 15px;
 }
 
 @media (max-width: 500px) {
@@ -207,6 +207,7 @@ span.myCalendar.popUp.show {
   position: fixed;
   width: 100vw;
   height: 100vh;
+  backdrop-filter: blur(2px) sepia(40%) !important;
   background-color: rgba(0, 0, 0, 0.219);
   top: 0%;
   left: 0%;

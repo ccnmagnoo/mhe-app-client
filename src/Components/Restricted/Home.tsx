@@ -6,8 +6,7 @@ import Calendar from './Calendar';
 import { Context } from './Context/context';
 
 const Home = (props: any) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
   const context = React.useContext(Context);
 
   return (

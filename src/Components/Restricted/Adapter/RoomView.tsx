@@ -25,19 +25,34 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
 import { ListView } from './ListView';
+import { Link, useRouteMatch, withRouter } from 'react-router-dom';
 
-const RoomView = (props: {
+/**
+ * @function RoomView panel for individual params of each room
+ * @param workDone boolean related if its an incoming or outgoing activity
+ */
+type RoomViewProps = {
   workDone: boolean /*if true, so activity to fetch is consolidated in past*/;
   room: IClassroom;
   expanded: string | boolean;
   handleAccordionChange: (
     panel: string
   ) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => void;
-}) => {
+};
+
+const RoomView = (props: RoomViewProps) => {
   //input props 🍗🎱🐣
   const room = props.room;
   const expanded = props.expanded;
   const handleAccordionChange = props.handleAccordionChange;
+  //router dom
+  /**
+   * removing child url and going to parent url
+   */
+  let { url } = useRouteMatch();
+  const splited = url.split('/');
+  splited.splice(2, 1);
+  const jointed = splited.join('/');
 
   //states 🅿⛽ list with details
 
@@ -184,7 +199,7 @@ const RoomView = (props: {
               >
                 <PlaylistAddCheckIcon />
               </Button>
-              <Button>
+              <Button component={Link} to={`${jointed}/editroom/${room.uuid}`}>
                 <EditIcon />
               </Button>
               <Button>
@@ -201,4 +216,4 @@ const RoomView = (props: {
   );
 };
 
-export default React.memo(RoomView);
+export default React.memo(withRouter<any, any>(RoomView));
