@@ -388,7 +388,7 @@ const Validation = (props: any) => {
         const timeGap: Date =
           lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
-          timeGap.getDate() + 120
+          timeGap.getDate() + 30
         ); /*@timegap defines how much time got for validation */
 
         console.log('time of class', act);
