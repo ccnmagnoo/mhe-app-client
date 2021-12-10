@@ -54,7 +54,7 @@ export const PeriodSelector = () => {
               color: 'White',
               fontStyle: 'bold',
               fontSize: '0.8rem',
-              backgroundColor: 'RoyalBlue	',
+              backgroundColor: '#303f9f',
               border: '1px solid CornflowerBlue',
               borderRadius: '5px',
               padding: '5px',

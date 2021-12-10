@@ -1,14 +1,16 @@
 import moment from 'moment';
+import { LandType } from '../../Functions/GetTerritoryList';
 import { IClassroom } from '../../Models/Classroom.interface';
 import { IPlace } from '../../Models/Place.interface';
 import './calendar.css';
-import CalendarPopUp from './Calendar.Popup';
+import EventWidget from './Calendar.EventWidget';
 
 export interface IEvent {
   idCal: string | undefined;
   info: IPlace | undefined;
   variant: 'activity' | 'delivery';
   colaborator: string;
+  land?: { type: LandType; name: string };
   suscribed?: number;
   benefited?: number;
 }
@@ -37,6 +39,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
         info: it.placeActivity,
         variant: 'activity',
         colaborator: it.colaborator,
+        land: it.land,
         suscribed: it.enrolled.length,
         benefited: it.attendees.length,
       };
@@ -45,6 +48,7 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
         info: it.placeDispatch,
         variant: 'delivery',
         colaborator: it.colaborator,
+        land: it.land,
         suscribed: it.enrolled.length,
         benefited: it.attendees.length,
       };
@@ -92,6 +96,12 @@ const Calendar = (props: { rooms?: IClassroom[] }) => {
   );
 };
 
+/**
+ * @funtion EventContainer component|
+ * @param dateSet: date of calendar apointment,
+ * @param events: activity or dispatch from Classroom object
+ * @returns React component calendar little Widget
+ */
 const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
   const { dateSet, events } = props;
 
@@ -104,15 +114,13 @@ const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
       }
       key={dateSet.getTime()}
     >
-      {/*header*/}
+      {/*day header*/}
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
         {events
           ?.sort((a, b) => (a.info?.date! > b.info?.date! ? 1 : -1))
           .map((event, index) => {
-            return (
-              <CalendarPopUp event={event} index={index} key={index}></CalendarPopUp>
-            );
+            return <EventWidget event={event} index={index} key={index}></EventWidget>;
           })}
       </div>
     </li>

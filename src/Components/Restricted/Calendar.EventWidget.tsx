@@ -3,7 +3,7 @@ import React from 'react';
 import { UrlChip } from '../Public/UrlChip';
 import { IEvent } from './Calendar';
 
-const CalendarPopUp = (props: {
+const EventWidget = (props: {
   event: IEvent;
   index: number;
   children?: React.ReactNode;
@@ -21,7 +21,7 @@ const CalendarPopUp = (props: {
     setIsActive(!isActive);
   }
 
-  //sub element tag
+  //sub variant event tag, class or delivery
   const tag = (isReactive?: boolean) => {
     /**
      * @param isReactive boolean true: hide on small screens, false: not hide
@@ -62,10 +62,14 @@ const CalendarPopUp = (props: {
         id={`eventWidget-${event.idCal}`}
         onClick={handleOnClick}
       >
-        {/*widget🔳*/}
-        {event.idCal}
+        <div className='upper'>
+          {event.idCal}
+          {tag(false)}
+        </div>
+        <div className='bottom'>{event.land?.name}</div>
+
         {/*tag variant*/}
-        {tag(false)}
+
         {/*popUp📲: must be visible on click*/}
         {popUpDialog}
       </div>
@@ -73,4 +77,4 @@ const CalendarPopUp = (props: {
   );
 };
 
-export default React.memo(CalendarPopUp);
+export default React.memo(EventWidget);
