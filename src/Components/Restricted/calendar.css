@@ -8,7 +8,7 @@
   border: 1px solid lightgrey;
   box-shadow: 4px 4px 8px lightgrey;
   border-radius: 8px;
-  padding: 10px 45px 10px 0px;
+  padding: 10px 0px;
   background-image: linear-gradient(
     to bottom right,
     white 50%,
@@ -16,28 +16,30 @@
   );
 }
 
-.myCalendar h3,
-.myCalendar h4 {
+h3.myCalendar,
+h4.myCalendar {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
   color: gray;
 }
-.myCalendar p {
+p.myCalendar {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
   color: gray;
 }
 
-.myCalendar ol {
+ol.myCalendar {
   list-style: none;
   display: grid;
-  margin-top: -15px;
+  margin: 0;
+  padding: 10px;
+  gap: 2px;
   grid-template-columns: repeat(5, 1fr);
 }
 /*body days square*/
-.myCalendar li {
+li.myCalendar {
   font-size: 0.7rem;
   min-height: 60px;
   border: 1.5px white solid;
@@ -46,7 +48,7 @@
 }
 
 /*headers L M M J V days */
-.myCalendar.header li {
+li.myCalendar.header {
   font-size: 0.8rem;
   min-height: 10px;
   background-color: rgb(255, 255, 255);
@@ -55,17 +57,17 @@
 }
 
 /* Each day square in calendar */
-.myCalendar.sequence li {
+li.myCalendar.sequence {
   background-color: rgb(238, 240, 252);
   color: rgb(186, 189, 206);
 }
-.myCalendar.sequence:hover li {
+li.myCalendar.sequence:hover {
   transition: all 0.6s ease-in-out;
   color: white;
   background-color: rgba(173, 183, 236, 0.829);
 }
 /* Today  square in calendar with diferent properties*/
-.myCalendar.today li {
+li.myCalendar.today {
   color: rgb(114, 123, 161);
   font-weight: bold;
   background-color: rgb(198, 203, 252);
@@ -108,7 +110,7 @@
   padding: 2px;
 }
 
-.myCalendar.tag span {
+span.myCalendar.tag {
   max-height: 20px;
   align-items: center;
   text-align: center;
@@ -118,12 +120,12 @@
 }
 
 @media (max-width: 500px) {
-  .myCalendar.tag span{
+  span.myCalendar.tag {
     display: none;
   }
 }
 
-.myCalendar.tag.permanent span {
+span.myCalendar.tag.permanent {
   display: flex;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-variant: unset;
@@ -141,7 +143,7 @@
 }
 
 /* popUp with details of each classrooms */
-.myCalendar.popUp span {
+span.myCalendar.popUp {
   --width: 400px;
   --height: 200px;
   display: -webkit-box;
@@ -171,7 +173,7 @@
   }
 }
 
-.myCalendar.popUp.show span {
+span.myCalendar.popUp.show {
   visibility: visible;
   -webkit-animation: fadeIn 0.8s;
   animation: fadeIn 0.8s;
