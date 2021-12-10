@@ -16,28 +16,28 @@
   );
 }
 
-h3.myCalendar,
-h4.myCalendar {
+.myCalendar h3,
+.myCalendar h4 {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
   color: gray;
 }
-p.myCalendar {
+.myCalendar p {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
   color: gray;
 }
 
-ol.myCalendar {
+.myCalendar ol {
   list-style: none;
   display: grid;
   margin-top: -15px;
   grid-template-columns: repeat(5, 1fr);
 }
 /*body days square*/
-li.myCalendar {
+.myCalendar li {
   font-size: 0.7rem;
   min-height: 60px;
   border: 1.5px white solid;
@@ -46,7 +46,7 @@ li.myCalendar {
 }
 
 /*headers L M M J V days */
-li.myCalendar.header {
+.myCalendar.header li {
   font-size: 0.8rem;
   min-height: 10px;
   background-color: rgb(255, 255, 255);
@@ -55,17 +55,17 @@ li.myCalendar.header {
 }
 
 /* Each day square in calendar */
-li.myCalendar.sequence {
+.myCalendar.sequence li {
   background-color: rgb(238, 240, 252);
   color: rgb(186, 189, 206);
 }
-li.myCalendar.sequence:hover {
+.myCalendar.sequence:hover li {
   transition: all 0.6s ease-in-out;
   color: white;
   background-color: rgba(173, 183, 236, 0.829);
 }
 /* Today  square in calendar with diferent properties*/
-li.myCalendar.today {
+.myCalendar.today li {
   color: rgb(114, 123, 161);
   font-weight: bold;
   background-color: rgb(198, 203, 252);
@@ -99,7 +99,7 @@ li.myCalendar.today {
 }
 
 /* Tag with type of event */
-span.myCalendar {
+.myCalendar span {
   font-size: x-small;
   box-sizing: border-box;
   justify-content: baseline;
@@ -108,7 +108,7 @@ span.myCalendar {
   padding: 2px;
 }
 
-span.myCalendar.tag {
+.myCalendar.tag span {
   max-height: 20px;
   align-items: center;
   text-align: center;
@@ -118,12 +118,12 @@ span.myCalendar.tag {
 }
 
 @media (max-width: 500px) {
-  span.myCalendar.tag {
+  .myCalendar.tag span{
     display: none;
   }
 }
 
-span.myCalendar.tag.permanent {
+.myCalendar.tag.permanent span {
   display: flex;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-variant: unset;
@@ -141,7 +141,7 @@ span.myCalendar.tag.permanent {
 }
 
 /* popUp with details of each classrooms */
-span.myCalendar.popUp {
+.myCalendar.popUp span {
   --width: 400px;
   --height: 200px;
   display: -webkit-box;
@@ -166,12 +166,12 @@ span.myCalendar.popUp {
 }
 
 @media (max-width: 500px) {
-  span.myCalendar.popUp {
+  .myCalendar.popUp span {
     flex-direction: column;
   }
 }
 
-span.myCalendar.popUp.show {
+.myCalendar.popUp.show span {
   visibility: visible;
   -webkit-animation: fadeIn 0.8s;
   animation: fadeIn 0.8s;
