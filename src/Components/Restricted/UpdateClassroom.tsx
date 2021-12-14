@@ -74,116 +74,144 @@ const UpdateClassroom = (props: any) => {
               {room?.idCal ?? 'R000'}
             </Grid>
 
-            <Grid item xs={12} sm={4}>
-              {/*lugar / zoom actividad🔰📌*/}
-              <TextField
-                required
-                id='activity-place-name'
-                type='text'
-                label='establecimiento'
-                defaultValue={room.placeActivity.name}
+            <Grid item xs={12} sm={6}>
+              <Paper
                 variant='outlined'
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                fullWidth
-                {...register('placeName', {})}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              {/*dirección o url*/}
-              <TextField
-                required
-                id='activity-place-dir'
-                type='text'
-                label='dirección'
-                variant='outlined'
-                defaultValue={room.placeActivity.dir}
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                fullWidth
-                {...register('placeDir', {})}
-                onChange={handleInputChange}
-              />
+                style={{ padding: '10px 5px', backgroundColor: 'whitesmoke' }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <Typography variant='caption' color='primary'>
+                      Charla
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*lugar / zoom actividad🔰📌*/}
+                    <TextField
+                      required
+                      id='activity-place-name'
+                      type='text'
+                      label='establecimiento'
+                      defaultValue={room.placeActivity.name}
+                      variant='outlined'
+                      inputProps={{ style: { textTransform: 'capitalize' } }}
+                      fullWidth
+                      {...register('placeName', {})}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*dirección o url*/}
+                    <TextField
+                      required
+                      id='activity-place-dir'
+                      type='text'
+                      label='dirección'
+                      variant='outlined'
+                      defaultValue={room.placeActivity.dir}
+                      inputProps={{ style: { textTransform: 'capitalize' } }}
+                      fullWidth
+                      {...register('placeDir', {})}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*date picker 📆📅📆*/}
+                    <TextField
+                      id='activity-date-picker'
+                      type='datetime-local'
+                      label='fecha/hora taller'
+                      variant='outlined'
+                      color='primary'
+                      value={inputData.placeDate}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      fullWidth
+                      {...register('placeDate')}
+                      error={errors.placeDate && true}
+                      helperText={errors.placeDate && true ? 'en el pasado?' : undefined}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
             </Grid>
 
-            <Grid item xs={12} sm={4}>
-              {/*date picker 📆📅📆*/}
-              <TextField
-                id='activity-date-picker'
-                type='datetime-local'
-                label='fecha/hora taller'
+            <Grid item xs={12} sm={6}>
+              <Paper
                 variant='outlined'
-                color='primary'
-                value={inputData.placeDate}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                {...register('placeDate')}
-                error={errors.placeDate && true}
-                helperText={errors.placeDate && true ? 'en el pasado?' : undefined}
-                onChange={handleInputChange}
-              />
-            </Grid>
-
-            {/**
-             * Dispatch place
-             */}
-
-            <Grid item xs={12} sm={4}>
-              {/*lugar🔰📌*/}
-              <TextField
-                required
-                id='dispatch-place-name'
-                type='text'
-                label='lugar entrega'
-                variant='outlined'
-                fullWidth
-                defaultValue={room.placeDispatch?.name}
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                {...register('postName', {})}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              {/*address 🗺🦝🗾*/}
-              <TextField
-                required
-                id='dispatch-place-dir'
-                type='text'
-                label={'dir. despacho'}
-                variant='outlined'
-                fullWidth
-                defaultValue={room.placeDispatch?.dir}
-                inputProps={{ style: { textTransform: 'capitalize' } }}
-                {...register('postDir', {})}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              {/*date delivery Picker 📆📅*/}
-              <TextField
-                id='dispatch-place-date'
-                type='datetime-local'
-                label='fecha/hora despacho'
-                variant='outlined'
-                color='primary'
-                value={inputData.postDate}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                {...register('postDate', {
-                  validate: { lessThan: (v: Date) => v >= inputData.placeDate! },
-                })}
-                onChange={handleInputChange}
-                error={errors.postDate && true}
-                helperText={errors.postDate && true ? 'entrega temprana' : undefined}
-              />
+                style={{ padding: '10px 5px', backgroundColor: 'SeaShell' }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant='caption' color='primary'>
+                      Despacho
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*lugar🔰📌*/}
+                    <TextField
+                      required
+                      id='dispatch-place-name'
+                      type='text'
+                      label='lugar entrega'
+                      variant='outlined'
+                      fullWidth
+                      defaultValue={room.placeDispatch?.name}
+                      inputProps={{ style: { textTransform: 'capitalize' } }}
+                      {...register('postName', {})}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*address 🗺🦝🗾*/}
+                    <TextField
+                      required
+                      id='dispatch-place-dir'
+                      type='text'
+                      label={'dir. despacho'}
+                      variant='outlined'
+                      fullWidth
+                      defaultValue={room.placeDispatch?.dir}
+                      inputProps={{ style: { textTransform: 'capitalize' } }}
+                      {...register('postDir', {})}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {/*date delivery Picker 📆📅*/}
+                    <TextField
+                      id='dispatch-place-date'
+                      type='datetime-local'
+                      label='fecha/hora despacho'
+                      variant='outlined'
+                      color='primary'
+                      value={inputData.postDate}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      fullWidth
+                      {...register('postDate', {
+                        validate: { lessThan: (v: Date) => v >= inputData.placeDate! },
+                      })}
+                      onChange={handleInputChange}
+                      error={errors.postDate && true}
+                      helperText={
+                        errors.postDate && true ? 'entrega temprana' : undefined
+                      }
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+              {/**
+               * Dispatch place
+               */}
             </Grid>
 
             <Grid item xs={12}>
               <Button variant='contained' color='primary' type='submit'>
-                actualiza
+                actualizar
               </Button>
             </Grid>
           </Grid>
