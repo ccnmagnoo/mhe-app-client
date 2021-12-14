@@ -336,6 +336,7 @@ const Validation = (props: any) => {
       //map [{..}] of this RUT suscriptions
       const suscriptions = queryDocs.docs.map((doc) => {
         const it = doc.data();
+
         return it;
       });
 
@@ -382,11 +383,15 @@ const Validation = (props: any) => {
 
         //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
-        const act: Date = room?.placeActivity.date ?? new Date(); /*day of class 📆*/
+        const act: Date =
+          room?.placeActivity.date !== undefined
+            ? new Date(room?.placeActivity.date.getTime())
+            : new Date(); /*day of class 📆*/
         //some browser shows UTC wrong hours
         act.setHours(act.getHours() - 6);
-        const timeGap: Date =
-          lastSus.classroom.dateInstance; /*last moment to VALIDATE 👮‍♀️⌛*/
+        const timeGap: Date = new Date(
+          lastSus.classroom.dateInstance.getTime()
+        ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
           timeGap.getDate() + 30
         ); /*@timegap defines how much time got for validation */
@@ -448,7 +453,7 @@ const Validation = (props: any) => {
      * if this is not (undefined) will return FALSE , which means is ok👌🆗:
      */
     const queryCvn = await db
-      .collection(`Activity/${refUuid}/Consolidated`)
+      .collection(`${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`)
       .doc(suscription)
       .get();
     const result = queryCvn.data();
