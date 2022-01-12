@@ -25,6 +25,10 @@ const Home = (props: any) => {
         <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
           Editar taller (desarrollo)
         </Button>
+        <br />
+        <Button component={Link} to={`${url}/operations`}>
+          op
+        </Button>
       </Typography>
     </div>
   );

@@ -28,6 +28,7 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
+import { Operations } from './Operations';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -101,6 +102,7 @@ const Dashboard = (props: any) => {
               <Typography variant='caption' color='initial'>
                 Bienvenido {admin?.email}
               </Typography>
+              {/*main*/}
               <Home />
             </Route>
             <Route path={`${path}/incoming`}>
@@ -124,6 +126,8 @@ const Dashboard = (props: any) => {
             <Route path={`${path}/edituser/:uuid`} children={<UpdateBeneficiary />} />
 
             <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
+
+            <Route path={`${path}/operations`} children={<Operations />} />
           </Switch>
         </Grid>
       </Grid>
