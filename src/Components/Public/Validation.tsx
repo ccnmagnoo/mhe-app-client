@@ -387,8 +387,8 @@ const Validation = (props: any) => {
           room?.placeActivity.date !== undefined
             ? new Date(room?.placeActivity.date.getTime())
             : new Date(); /*day of class 📆*/
-        //some browser shows UTC wrong hours
-        act.setHours(act.getHours() - 6);
+        // FIXME: some browser shows UTC wrong hours
+        //act.setHours(act.getHours() - 6);
         const timeGap: Date = new Date(
           lastSus.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
