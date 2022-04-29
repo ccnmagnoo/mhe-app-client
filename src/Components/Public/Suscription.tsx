@@ -668,7 +668,11 @@ const Suscription = (props: any) => {
           dateUpdate: new Date(),
           email: data.email.toLowerCase(),
           phone: data.phone ?? null,
-          address: { dir: capitalWord(data.dir.toLowerCase()), city: data.city },
+          address: {
+            dir:
+              data.dir !== undefined ? capitalWord(data.dir.toLowerCase()) : 'no-informa',
+            city: data.city,
+          },
           energy: {
             electricity: data.electricity === undefined ? null : +data.electricity,
             electricBill: data.electricBill === undefined ? null : +data.electricBill,
