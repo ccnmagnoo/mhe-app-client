@@ -14,7 +14,6 @@ import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { refUuid } from '../../Config/credential';
 import { db, storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
@@ -34,7 +33,16 @@ import Canvg from 'canvg';
 import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
+import { ref, uploadBytes } from 'firebase/storage';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -176,10 +184,11 @@ const Validation = (props: any) => {
       };
 
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
-      const ref = db
-        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.ext}`)
-        .where('password', '==', validationCode(data.ePass, validationKey));
-      const snapshots = await ref.get();
+      const ref = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.ext}`),
+        where('password', '==', validationCode(data.ePass, validationKey))
+      );
+      const snapshots = await getDocs(ref);
       const accounts = snapshots.docs.map((snapshot) => {
         const it = snapshot.data();
         return {
@@ -327,18 +336,15 @@ const Validation = (props: any) => {
   async function checkSuscription(data: Input) {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
-      const queryDocs = await db
-        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.sus}`)
-        .where('rut', '==', data.rut.toUpperCase())
-        .withConverter(iPersonConverter)
-        .get();
-
+      const q = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`).withConverter(
+          iPersonConverter
+        ),
+        where('rut', '==', data.rut.toUpperCase())
+      );
+      const snap = await getDocs(q);
       //map [{..}] of this RUT suscriptions
-      const suscriptions = queryDocs.docs.map((doc) => {
-        const it = doc.data();
-
-        return it;
-      });
+      const suscriptions = snap.docs.map((doc) => doc.data());
 
       //there's suscriptions?
       if (suscriptions.length > 0) {
@@ -368,17 +374,27 @@ const Validation = (props: any) => {
 
         //ON success continue
         //fetch date of classroom from document 🔥🔥🔥
-        const queryClassroom = await db
-          .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-          .withConverter(iClassroomConverter)
-          .doc(lastSus.classroom.uuid)
-          .get();
-        const room = queryClassroom.data();
+
+        //FIXME: some explorers has firebase's permissions problems:
+        // const queryClassroom = await db
+        //   .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
+        //   .withConverter(iClassroomConverter)
+        //   .doc(lastSus.classroom.uuid)
+        //   .get();
+
+        const queryClassroom = doc(
+          db,
+          `${dbKey.act}/${dbKey.uid}/${dbKey.room}`
+        ).withConverter(iClassroomConverter);
+
+        const room = (await getDoc(queryClassroom)).data();
 
         //set state of current classroom
         if (room !== undefined) {
           console.log('set classroom state', room.uuid);
           setClassroom(room);
+        } else {
+          console.log('i wasn"t able to fetch classroom object');
         }
 
         //checking if this person is on schechule ⌛🏁🏁to sign
@@ -393,7 +409,7 @@ const Validation = (props: any) => {
           lastSus.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
-          timeGap.getDate() + 30
+          timeGap.getDate() + 120
         ); /*@timegap defines how much time got for validation */
 
         console.log('time of class', act);
@@ -442,7 +458,6 @@ const Validation = (props: any) => {
     } catch (error) {
       console.log('error in validation', error);
       setErrorA({ value: true, message: 'no pude obtener los datos 🙈' });
-      console.log(errorA);
     }
   }
 
@@ -452,11 +467,16 @@ const Validation = (props: any) => {
      * was already signed and validate, fetching sus ID inside Consolidated,
      * if this is not (undefined) will return FALSE , which means is ok👌🆗:
      */
-    const queryCvn = await db
-      .collection(`${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`)
-      .doc(suscription)
-      .get();
-    const result = queryCvn.data();
+    // query consolitated
+    // const queryCvn = await db
+    //   .collection(`${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`)
+    //   .doc(suscription)
+    //   .get();
+
+    const queryCvn = doc(db, `${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`, suscription);
+    const snap = await getDoc(queryCvn);
+
+    const result = snap.data();
     if (result === undefined) {
       return false; /*not consolidated*/
     } else {
@@ -593,29 +613,27 @@ const Validation = (props: any) => {
         };
 
         //push sign database ⏫⏫⏫
-        const refDoc = db
-          .collection(`Activity/${refUuid}/Consolidated`)
-          .doc(person?.uuid);
+        const refDoc = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`, person?.uuid);
+        const snap = await getDoc(refDoc);
 
         //check is this benefit was already signed
-        const req = await refDoc.get();
-        if (req.data() === undefined) {
+        if (snap.data() === undefined) {
           //if it dosent exist, human can sign ✅
-          await refDoc.set(beneficiary);
+          await setDoc(refDoc, beneficiary);
           console.log('posted beneficiary', beneficiary.uuid);
 
           //set attendees on classroom list 🔥🔥🔥 (moved to cloud functions)
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const refRoom = db
-            .collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
-            .doc(classroom?.uuid);
-          const attendees = classroom?.attendees;
+          // const refRoom = db
+          //   .collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
+          //   .doc(classroom?.uuid);
+          // const attendees = classroom?.attendees;
 
-          if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
-            //attendees?.push(person.uuid);
-            //refRoom.set({ attendees: attendees }, { merge: true });
-            console.log('updated classroom attendees', beneficiary?.uuid);
-          }
+          // if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
+          //   //attendees?.push(person.uuid);
+          //   //refRoom.set({ attendees: attendees }, { merge: true });
+          //   console.log('updated classroom attendees', beneficiary?.uuid);
+          // }
 
           //set errors false
           setErrorB({
@@ -668,12 +686,13 @@ const Validation = (props: any) => {
 
         //Firebase storage 💾🔥🔥🔥
         const thisYear = new Date().getFullYear();
-        const storageRef = storage.ref();
-        const signRef = storageRef.child(
+        const storageRef = ref(
+          storage,
           `mheServices/signStorage/${thisYear}/${uuid}.png`
         );
-        const snapshot = await signRef.put(blob);
-        const done: string = await snapshot.ref.getDownloadURL();
+
+        const upload = await uploadBytes(storageRef, blob);
+        const done = upload.ref.fullPath;
         console.log('signature upload', done);
 
         return done;

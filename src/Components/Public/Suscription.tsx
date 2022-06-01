@@ -171,9 +171,7 @@ const Suscription = (props: any) => {
       console.log('firestore fetch rut', data.rut);
       const queryDocs = await getDocs(q);
 
-      const listOfPeople: IBeneficiary[] = queryDocs.docs.map((doc) => {
-        return doc.data();
-      });
+      const listOfPeople: IBeneficiary[] = queryDocs.docs.map((doc) => doc.data());
 
       //filter all benefits after date limit (now 31-01-2017)
       const filterDocs = listOfPeople.filter((cvn) => {
@@ -314,15 +312,11 @@ const Suscription = (props: any) => {
 
       console.log('requested city', data.city, '');
 
-      const querySnapshot = await getDocs(q);
-      console.log('incoming classrooms', querySnapshot.docs);
+      const snap = await getDocs(q);
+      console.log('incoming classrooms', snap.docs);
 
-      const roomsWithVacancies: IClassroom[] = querySnapshot.docs
-        .map((doc) => {
-          //get list of classrooms
-          const it = doc.data();
-          return it;
-        })
+      const roomsWithVacancies: IClassroom[] = snap.docs
+        .map((doc) => doc.data())
         .filter((classroom) => {
           //filtering near classes🔎🔍📟
           return classroom.allowedCities.indexOf(data.city) !== -1;

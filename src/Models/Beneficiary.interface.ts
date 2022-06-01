@@ -1,5 +1,5 @@
+import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { Gender, IPerson } from './Person.Interface';
-import { firebase } from '../Config/firebase';
 
 export interface IBeneficiary extends IPerson {
   sign?: string;
@@ -10,9 +10,7 @@ export const iBeneficiaryConverter = {
   toFirestore: function (person: IBeneficiary) {
     return person;
   },
-  fromFirestore: function (
-    snapshot: firebase.firestore.QueryDocumentSnapshot
-  ): IBeneficiary {
+  fromFirestore: function (snapshot: QueryDocumentSnapshot): IBeneficiary {
     const it = snapshot.data();
     return {
       uuid: it.uuid,

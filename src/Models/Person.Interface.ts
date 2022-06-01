@@ -1,4 +1,4 @@
-import { firebase } from '../Config/firebase';
+import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { IEnergyPoll } from './EnergyPoll.interface';
 
 export interface IPerson {
@@ -34,7 +34,7 @@ export const iPersonConverter = {
   toFirestore: function (person: IPerson) {
     return person;
   },
-  fromFirestore: function (snapshot: firebase.firestore.QueryDocumentSnapshot): IPerson {
+  fromFirestore: function (snapshot: QueryDocumentSnapshot): IPerson {
     const it = snapshot.data();
     return {
       uuid: it.uuid,
