@@ -1,3 +1,4 @@
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import React from 'react';
 import { benefToUpdate, roomsToFix } from '../../Assets/update';
 import { db } from '../../Config/firebase';
@@ -18,21 +19,27 @@ export const Operations = () => {
     const year = 2019;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
-    const ref = db
-      .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`)
-      .where('dateUpdate', '>=', iniSearch)
-      .where('dateUpdate', '<=', endSearch)
-      .withConverter(iBeneficiaryConverter);
+    // const ref = db
+    //   .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`)
+    //   .where('dateUpdate', '>=', iniSearch)
+    //   .where('dateUpdate', '<=', endSearch)
+    //   .withConverter(iBeneficiaryConverter);
+    const ref = query(
+      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
+        iBeneficiaryConverter
+      ),
+      where('dateUpdate', '>=', iniSearch),
+      where('dateUpdate', '<=', endSearch)
+    );
 
-    const queries = await ref.get();
-    const list: IBeneficiary[] = queries.docs.map((doc) => doc.data());
+    const snap = await getDocs(ref);
+    const list: IBeneficiary[] = snap.docs.map((doc) => doc.data());
     console.log('number of benefits: ', list.length);
     return list;
   };
 
   //firebase:push room date🔥🔥🔥
   const pushRoomDates = async () => {
-    const ref = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`);
     //const roomToFixCut = [roomsToFix[0], roomsToFix[1]];
 
     roomsToFix.forEach(async (roomOld) => {
@@ -73,7 +80,10 @@ export const Operations = () => {
         },
         dateInstance: dateToFix,
       };
-      await ref.doc(roomOld.uuid).set(dataUpdate, { merge: true });
+
+      // const ref = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`);
+      const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, roomOld.uuid);
+      await setDoc(ref, dataUpdate, { merge: true });
       console.log('room date update', roomOld.uuid);
     });
   };
@@ -137,10 +147,11 @@ export const Operations = () => {
       const attendees = beneficiaries.map((item) => item.uuid as string);
 
       //ref firebase
-      const refRoom = db
-        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-        .doc(roomUuid);
-      const refBene = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`);
+      // const refRoom = db
+      //   .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
+      //   .doc(roomUuid);
+      // const refBene = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`);
+      const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, roomUuid);
 
       //push beneficiaries ☝️;
       beneficiaries.forEach(async (bnf) => {
