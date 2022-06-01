@@ -54,6 +54,7 @@ import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Suscription.ClassroomCard';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 const Suscription = (props: any) => {
   //hooks
@@ -162,12 +163,13 @@ const Suscription = (props: any) => {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
-      const req = db
-        .collection(`${dbKey.act}/${refUuid}/Consolidated`)
-        .where('rut', '==', data.rut.toUpperCase())
-        .withConverter(iBeneficiaryConverter);
+      const ref = collection(db, `${dbKey.act}/${refUuid}/Consolidated`).withConverter(
+        iBeneficiaryConverter
+      );
+      //.where('rut', '==', data.rut.toUpperCase())
+      const q = query(ref, where('rut', '==', data.rut.toUpperCase()));
       console.log('firestore fetch rut', data.rut);
-      const queryDocs = await req.get();
+      const queryDocs = await getDocs(q);
 
       const listOfPeople: IBeneficiary[] = queryDocs.docs.map((doc) => {
         return doc.data();
@@ -302,14 +304,17 @@ const Suscription = (props: any) => {
       const backwardDays = 14;
       const restrictionTime = new Date();
       restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
-      const fetch = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '>', restrictionTime)
-        .withConverter(iClassroomConverter);
+      const q = query(
+        collection(db, `${dbKey.act}/${refUuid}/${dbKey.room}`).withConverter(
+          iClassroomConverter
+        ),
+        where('dateInstance', '>', restrictionTime)
+      );
+      //.where('dateInstance', '>', restrictionTime)
 
       console.log('requested city', data.city, '');
 
-      const querySnapshot = await fetch.get();
+      const querySnapshot = await getDocs(q);
       console.log('incoming classrooms', querySnapshot.docs);
 
       const roomsWithVacancies: IClassroom[] = querySnapshot.docs
@@ -635,24 +640,28 @@ const Suscription = (props: any) => {
       }
 
       //check the selected ROOM has already this RUT 🔎👤
-      const susRef = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.sus}`);
-      const susQuery = await susRef.where('rut', '==', data.rut).get();
-      const susDocs = susQuery.docs.map((sus) => {
+      const ref = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`),
+        where('rut', '==', data.rut)
+      );
+      const q = await getDocs(ref);
+      const clientSuscriptions = q.docs.map((sus) => {
         const it = sus.data() as IPerson;
         //create array maps of Rooms ID this RUT had suscribed
         return it.classroom.uuid;
       });
 
       //if indexOf is -1: this person isnt suscribed to seleced room
-      const isNotSuscribed = susDocs.indexOf(selectedRoom?.uuid ?? '') === -1;
+      const isNotSuscribed = clientSuscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
       if (isNotSuscribed) {
         //prepare to upload new suscription
         console.log('prepare to upload suscription', data.email);
+
         //create reference of new doc Suscribed
-        const ref = db.collection(`${dbKey.act}/${refUuid}/${dbKey.sus}`).doc();
+        const newRef = doc(db, `${dbKey.act}/${refUuid}/${dbKey.sus}`);
 
         const person: IPerson = {
-          uuid: ref.id,
+          uuid: newRef.id,
           name: {
             firstName: capitalWord(data.name),
             fatherName: capitalWord(data.fatherName),
@@ -682,17 +691,12 @@ const Suscription = (props: any) => {
         };
 
         //set new suscription 🔥🔥🔥
-        await ref.set(person);
+        await setDoc(newRef, person);
         setSuscribedPerson(person);
         console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥 (moved to cloud functions)
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const refRoom = db
-          .collection(`${dbKey.act}/${refUuid}/Classroom`)
-          .doc(selectedRoom?.uuid);
 
         const enrolled = selectedRoom?.enrolled;
         if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
