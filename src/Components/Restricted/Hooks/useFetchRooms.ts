@@ -1,3 +1,4 @@
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import React from 'react';
 import { refUuid } from '../../../Config/credential';
 import { db } from '../../../Config/firebase';
@@ -25,14 +26,24 @@ export const useFetchRooms = () => {
       now: new Date(),
     };
     //firebase 🔥🔥🔥
-    const ref = db
-      .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-      .where('placeActivity.date', '>=', timeGap.ini)
-      .where('placeActivity.date', '<=', timeGap.end)
-      .orderBy('placeActivity.date', 'desc')
-      .withConverter(iClassroomConverter);
+    // const ref = db
+    //   .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
+    //   .where('placeActivity.date', '>=', timeGap.ini)
+    //   .where('placeActivity.date', '<=', timeGap.end)
+    //   .orderBy('placeActivity.date', 'desc')
+    //   .withConverter(iClassroomConverter);
 
-    ref.onSnapshot((snapshot) => {
+    const q = query(
+      collection(db, `${dbKey.act}/${refUuid}/${dbKey.room}`).withConverter(
+        iClassroomConverter
+      ),
+      where('placeActivity.date', '>=', timeGap.ini),
+      where('placeActivity.date', '<=', timeGap.end),
+      orderBy('placeActivity.date', 'desc')
+    );
+
+    onSnapshot(q, (snapshot) => {
+      //change observer
       console.clear();
 
       snapshot.docChanges().forEach((change, index, list) => {
@@ -71,9 +82,6 @@ export const useFetchRooms = () => {
             return undefined;
         }
       });
-
-      //call Reducer
-      //context.changeState({ type: ActionType.setRooms, payload: listOfRooms });
     });
   }
 

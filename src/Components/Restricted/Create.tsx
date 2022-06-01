@@ -13,11 +13,11 @@ import {
   Slider,
 } from '@material-ui/core';
 import { Alert, Autocomplete } from '@material-ui/lab';
-import firebase from 'firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { withRouter } from 'react-router-dom';
-import { auth } from '../../Config/firebase';
+import { auth, db } from '../../Config/firebase';
 import { capitalWord } from '../../Functions/capitalWord';
 import {
   getCityList,
@@ -26,6 +26,7 @@ import {
 } from '../../Functions/GetTerritoryList';
 import { pad } from '../../Functions/paddingNumber';
 import { IClassroom } from '../../Models/Classroom.interface';
+import { dbKey } from '../../Models/databaseKeys';
 
 const Create = (props: any) => {
   //router
@@ -116,12 +117,13 @@ const Create = (props: any) => {
     try {
       if (inputData !== null) {
         //firestore🔥🔥🔥
-        const db = firebase.firestore();
-        const req = db
-          .collection('Activity')
-          .doc(auth.currentUser?.uid)
-          .collection('Classroom')
-          .doc();
+        // const req = db
+        //   .collection('Activity')
+        //   .doc(auth.currentUser?.uid)
+        //   .collection('Classroom')
+        //   .doc();
+
+        const ref = doc(db, `${dbKey.act}/${auth.currentUser?.uid}/${dbKey.room}`);
 
         //build object function
         const buildObject = (data: TInputForm, uuid: string) => {
@@ -157,8 +159,8 @@ const Create = (props: any) => {
         };
 
         //Return classoom with UUID
-        const newClassroom = buildObject(inputData, req.id);
-        await req.set(newClassroom);
+        const newClassroom = buildObject(inputData, ref.id);
+        await setDoc(ref, newClassroom);
 
         reset();
         setError(null);
