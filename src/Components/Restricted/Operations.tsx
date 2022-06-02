@@ -83,22 +83,16 @@ export const Operations = () => {
     const year = 2019;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
-    // const ref = db
-    //   .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-    //   .where('dateInstance', '>=', iniSearch)
-    //   .where('dateInstance', '<=', endSearch)
-    //   .withConverter(iClassroomConverter);
-    //const roomToFixCut = [roomsToFix[0], roomsToFix[1]];
 
     //get Classrooms form a periord year
-    const ref = query(
+    const refRoom = query(
       collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
         iClassroomConverter
       ),
       where('dateInstance', '>=', iniSearch),
       where('dateInstance', '<=', endSearch)
     );
-    const queries = await getDocs(ref);
+    const queries = await getDocs(refRoom);
     const list = queries.docs.map((data) => data.data());
 
     list.forEach(async (room) => {
@@ -140,7 +134,7 @@ export const Operations = () => {
       idCal: string;
       roomUuid: string;
     };
-    const roomList = ['R240'];
+    const roomList = ['R240']; //tom;
     roomList.forEach(async (idCal) => {
       const beneficiaries: Source[] = benefToUpdate.filter(
         (item) => item.idCal === idCal
@@ -178,7 +172,7 @@ export const Operations = () => {
         console.log('uploaded', beneficiary.rut, beneficiary.classroom.idCal);
       });
       //update room attendees
-      await refRoom.set({ attendees: attendees }, { merge: true });
+      await setDoc(ref, { attendees: attendees }, { merge: true });
       console.log('updated room', idCal, 'beneficiaries', attendees.length);
     });
   };

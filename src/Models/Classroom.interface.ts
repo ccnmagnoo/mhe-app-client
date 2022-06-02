@@ -1,6 +1,6 @@
+import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { LandType } from '../Functions/GetTerritoryList';
 import { IPlace } from './Place.interface';
-import { firebase } from '../Config/firebase';
 
 export interface IClassroom {
   uuid: string;
@@ -21,9 +21,7 @@ export const iClassroomConverter = {
   toFirestore: function (classroom: IClassroom) {
     return classroom;
   },
-  fromFirestore: function (
-    snapshot: firebase.firestore.QueryDocumentSnapshot
-  ): IClassroom {
+  fromFirestore: function (snapshot: QueryDocumentSnapshot): IClassroom {
     const it = snapshot.data();
 
     return {
