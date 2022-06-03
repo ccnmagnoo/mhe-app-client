@@ -22,8 +22,6 @@ import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { db } from '../../Config/firebase';
-import { dateLimit } from '../../Config/credential';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
@@ -40,7 +38,8 @@ import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import isEmail from '../../Functions/isEmail';
 import { doc, orderBy, where } from 'firebase/firestore';
-import fb from '../../Database/driver';
+import driver from '../../Database/driver';
+import { db } from '../../Config/firebase';
 
 export const Oversuscription = () => {
   //hooks
@@ -131,7 +130,7 @@ export const Oversuscription = () => {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
       console.log('fetch rut old benefits', data.rut);
-      const currentBenefits = (await fb.get<IBeneficiary>(
+      const currentBenefits = (await driver.get<IBeneficiary>(
         undefined,
         'collection',
         dbKey.cvn,
@@ -257,7 +256,7 @@ export const Oversuscription = () => {
       const startPeriod = new Date(rightNow.getFullYear(), 1, 1, 0);
       console.log('requested city', data.city);
 
-      const rooms = (await fb.get<IClassroom>(
+      const rooms = (await driver.get<IClassroom>(
         undefined,
         'collection',
         dbKey.room,
@@ -439,7 +438,7 @@ export const Oversuscription = () => {
       }
 
       //get all ROOMS which this RUT is suscribed 🔎👤
-      const getSuscriptions: IPerson[] = (await fb.get<IPerson>(
+      const getSuscriptions: IPerson[] = (await driver.get(
         undefined,
         'collection',
         dbKey.sus,
@@ -458,7 +457,8 @@ export const Oversuscription = () => {
         //prepare to upload new suscription
         console.log('prepare to upload suscription', data.email);
         //create reference of new doc Suscribed
-        const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`);
+
+        const ref = doc(db, '');
 
         const person: IPerson = {
           uuid: ref.id,
@@ -486,15 +486,9 @@ export const Oversuscription = () => {
           },
         };
         //upload firebasedriver
-        const uploadResult = fb.set<IPerson>(
-          undefined,
-          dbKey.sus,
-          person,
-          iPersonConverter,
-          {
-            merge: true,
-          }
-        );
+        const uploadResult = driver.set(undefined, dbKey.sus, person, iPersonConverter, {
+          merge: true,
+        });
 
         //set new suscription 🔥🔥🔥
 
@@ -721,3 +715,10 @@ export const Oversuscription = () => {
     </React.Fragment>
   );
 };
+function dateLimit(
+  arg0: string,
+  arg1: string,
+  dateLimit: any
+): import('@firebase/firestore').QueryConstraint {
+  throw new Error('Function not implemented.');
+}

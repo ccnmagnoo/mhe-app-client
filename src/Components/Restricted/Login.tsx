@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { auth } from '../../Config/firebase';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../Config/firebase';
 
 const Login = (props: any) => {
   const [input, setInput] = React.useState<Input>({ email: '', password: '' }); //inputs of login
