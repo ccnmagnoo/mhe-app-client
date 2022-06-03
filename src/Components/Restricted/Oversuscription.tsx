@@ -22,7 +22,6 @@ import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { dateLimit } from '../../Config/credential';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
@@ -40,7 +39,7 @@ import { getGender } from '../../Functions/getGender';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import isEmail from '../../Functions/isEmail';
-import { collection, doc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { doc, orderBy, where } from 'firebase/firestore';
 import fb from '../../Database/driver';
 
 export const Oversuscription = () => {
@@ -131,13 +130,6 @@ export const Oversuscription = () => {
 
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
-      const ref = query(
-        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
-          iBeneficiaryConverter
-        ),
-        where('rut', '==', data.rut)
-      );
-
       console.log('fetch rut old benefits', data.rut);
       const currentBenefits = (await fb.get<IBeneficiary>(
         undefined,
@@ -495,15 +487,21 @@ export const Oversuscription = () => {
           },
         };
         //upload firebasedriver
-        const upload = fb.set<IPerson>(undefined, dbKey.sus, person, iPersonConverter, {
-          merge: true,
-        });
+        const uploadResult = fb.set<IPerson>(
+          undefined,
+          dbKey.sus,
+          person,
+          iPersonConverter,
+          {
+            merge: true,
+          }
+        );
 
         //set new suscription 🔥🔥🔥
 
         console.log(
           'suscription upload status:',
-          upload,
+          uploadResult,
           ' data: ',
           person.rut,
           '➡',

@@ -19,6 +19,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import { dbKey } from '../../../Models/databaseKeys';
 import { refUuid } from '../../../Config/credential';
 import { db } from '../../../Config/firebase';
+import { collection, doc, getDoc } from 'firebase/firestore';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -42,9 +43,13 @@ export const ListView = (props: { room: IClassroom; workDone: boolean }) => {
           ? `${dbKey.act}/${refUuid}/${dbKey.cvn}` /*consolidated route*/
           : `${dbKey.act}/${refUuid}/${dbKey.sus}`; /*suscribed route*/
 
-        const ref = db.collection(routeDb).withConverter(iBeneficiaryConverter);
+        //const ref = db.collection(routeDb).withConverter(iBeneficiaryConverter);
+
+        const ref = collection(db, routeDb).withConverter(iBeneficiaryConverter);
         const promises = props.room.enrolled.map((uuid) => {
-          return ref.doc(uuid).get();
+          const d = doc(ref, uuid);
+
+          return getDoc(d); //ref.doc(uuid).get();
         });
         //Promise all
         const snapshot = await Promise.all(promises);

@@ -7,16 +7,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';
 import { auth } from './Config/firebase';
-import firebase from 'firebase/app';
 import Suscription from './Components/Public/Suscription';
 import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
+import { User } from 'firebase/auth';
 
 function App() {
   //auth user firebase
-  const [firebaseUser, setFirebaseUser] = React.useState<firebase.User | null | boolean>(
-    null
-  );
+  const [firebaseUser, setFirebaseUser] = React.useState<User | null | boolean>(null);
 
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {
