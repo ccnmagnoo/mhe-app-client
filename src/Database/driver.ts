@@ -18,19 +18,16 @@ const driver = {
   get: async <T>(
     uid: string | undefined,
     request: 'collection' | 'doc',
-    docType: dbKey.room | dbKey.cvn | dbKey.sus,
+    docType: dbKey.room | dbKey.cvn | dbKey.sus | dbKey.ext,
     converter: Converter<T>,
-    filter?: QueryConstraint[]
+    ...filter: QueryConstraint[]
   ) => {
     const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
 
     switch (request) {
       case 'collection': {
         try {
-          const ref = query(
-            collection(db, path).withConverter(converter),
-            ...(filter ?? [])
-          );
+          const ref = query(collection(db, path).withConverter(converter), ...filter);
           const snap = await getDocs(ref);
           return snap.docs.map((doc) => doc.data());
         } catch (error) {
