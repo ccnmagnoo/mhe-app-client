@@ -14,7 +14,6 @@ import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
@@ -37,6 +36,7 @@ import { orderBy, where } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
+import { storage } from '../../Config/firebase';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
