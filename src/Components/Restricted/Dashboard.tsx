@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { Edit as Edition } from './Edition';
-import { auth } from '../../Config/firebase';
 
 //componentes
 import { PeriodSelector } from './Dashboard.PeriodSelector';
@@ -29,6 +28,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { Operations } from './Operations';
 import { User } from 'firebase/auth';
+import { auth } from '../../Config/firebase';
 
 const Dashboard = (props: any) => {
   //nested routing
