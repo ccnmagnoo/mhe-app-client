@@ -43,6 +43,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
+import driver from '../../Database/driver';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -336,15 +337,14 @@ const Validation = (props: any) => {
   async function checkSuscription(data: Input) {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
-      const q = query(
-        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`).withConverter(
-          iPersonConverter
-        ),
-        where('rut', '==', data.rut.toUpperCase())
-      );
-      const snap = await getDocs(q);
-      //map [{..}] of this RUT suscriptions
-      const suscriptions = snap.docs.map((doc) => doc.data());
+
+      const suscriptions = (await driver.get<IPerson>(
+        undefined,
+        'collection',
+        dbKey.sus,
+        iPersonConverter,
+        [where('rut', '==', data.rut.toUpperCase())]
+      )) as IPerson[];
 
       //there's suscriptions?
       if (suscriptions.length > 0) {
@@ -371,16 +371,6 @@ const Validation = (props: any) => {
           setErrorA({ value: true, message: 'usted ya se validó previamente 🤔' });
           return undefined;
         }
-
-        //ON success continue
-        //fetch date of classroom from document 🔥🔥🔥
-
-        //FIXME: some explorers has firebase's permissions problems:
-        // const queryClassroom = await db
-        //   .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-        //   .withConverter(iClassroomConverter)
-        //   .doc(lastSus.classroom.uuid)
-        //   .get();
 
         const queryClassroom = doc(
           db,
