@@ -1,5 +1,6 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { LandType } from '../Functions/GetTerritoryList';
+import Converter from './Converter.interface';
 import { IPlace } from './Place.interface';
 
 export interface IClassroom {
@@ -17,7 +18,7 @@ export interface IClassroom {
   vacancies?: number;
 }
 
-export const iClassroomConverter = {
+export const iClassroomConverter: Converter<IClassroom> = {
   toFirestore: function (classroom: IClassroom) {
     return classroom;
   },

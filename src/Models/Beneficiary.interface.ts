@@ -1,4 +1,5 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
+import Converter from './Converter.interface';
 import { Gender, IPerson } from './Person.Interface';
 
 export interface IBeneficiary extends IPerson {
@@ -6,7 +7,7 @@ export interface IBeneficiary extends IPerson {
   dateSign?: Date;
 }
 
-export const iBeneficiaryConverter = {
+export const iBeneficiaryConverter: Converter<IBeneficiary> = {
   toFirestore: function (person: IBeneficiary) {
     return person;
   },
