@@ -136,7 +136,8 @@ export const Oversuscription = () => {
         'collection',
         dbKey.cvn,
         iBeneficiaryConverter,
-        [where('rut', '==', data.rut), where('dateSign', '>=', dateLimit)]
+        where('rut', '==', data.rut),
+        where('dateSign', '>=', dateLimit)
       )) as IBeneficiary[];
 
       console.log('benefits after date limit', currentBenefits.length);
@@ -261,12 +262,10 @@ export const Oversuscription = () => {
         'collection',
         dbKey.room,
         iClassroomConverter,
-        [
-          where('dateInstance', '<=', rightNow),
-          where('dateInstance', '>', startPeriod),
-          where('allowedCities', 'array-contains', data.city),
-          orderBy('dateInstance', 'desc'),
-        ]
+        where('dateInstance', '<=', rightNow),
+        where('dateInstance', '>', startPeriod),
+        where('allowedCities', 'array-contains', data.city),
+        orderBy('dateInstance', 'desc')
       )) as IClassroom[];
 
       console.log(
@@ -445,7 +444,7 @@ export const Oversuscription = () => {
         'collection',
         dbKey.sus,
         iPersonConverter,
-        [where('rut', '==', data.rut)]
+        where('rut', '==', data.rut)
       )) as IPerson[];
 
       //if indexOf is -1: this person isnt suscribed to seleced room

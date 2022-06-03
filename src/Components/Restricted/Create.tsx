@@ -159,7 +159,7 @@ const Create = (props: any) => {
           dbKey.room,
           buildObject(inputData, ref.id),
           iClassroomConverter,
-          {}
+          { merge: true }
         );
         console.log('room create status', pushRoom);
 

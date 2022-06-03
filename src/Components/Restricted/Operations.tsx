@@ -1,6 +1,7 @@
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { benefToUpdate, roomsToFix } from '../../Assets/update';
 import { db } from '../../Config/firebase';
+import driver from '../../Database/driver';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { iClassroomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
@@ -17,18 +18,17 @@ export const Operations = () => {
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
 
-    const ref = query(
-      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
-        iBeneficiaryConverter
-      ),
+    const consolidated = (await driver.get<IBeneficiary>(
+      undefined,
+      'collection',
+      dbKey.cvn,
+      iBeneficiaryConverter,
       where('dateUpdate', '>=', iniSearch),
       where('dateUpdate', '<=', endSearch)
-    );
+    )) as IBeneficiary[];
 
-    const snap = await getDocs(ref);
-    const list: IBeneficiary[] = snap.docs.map((doc) => doc.data());
-    console.log('number of benefits: ', list.length);
-    return list;
+    console.log('number of benefits: ', consolidated.length);
+    return consolidated;
   };
 
   //firebase:push room date🔥🔥🔥

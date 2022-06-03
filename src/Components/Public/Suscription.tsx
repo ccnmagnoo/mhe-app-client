@@ -55,6 +55,7 @@ import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Suscription.ClassroomCard';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import driver from '../../Database/driver';
 
 const Suscription = (props: any) => {
   //hooks
@@ -299,39 +300,34 @@ const Suscription = (props: any) => {
        * if value= 0 so suscription will close at start room date.
        *
        */
+      //time restriction
+      console.log('requested city', data.city, '');
       const backwardDays = 14;
       const restrictionTime = new Date();
       restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
-      const q = query(
-        collection(db, `${dbKey.act}/${refUuid}/${dbKey.room}`).withConverter(
-          iClassroomConverter
-        ),
-        where('dateInstance', '>', restrictionTime)
-      );
-      //.where('dateInstance', '>', restrictionTime)
+      //firebase
+      const rooms = (await driver.get<IClassroom>(
+        undefined,
+        'collection',
+        dbKey.room,
+        iClassroomConverter,
+        where('dateInstance', '>', restrictionTime),
+        where('allowedCities', 'array-contains', data.city)
+      )) as IClassroom[];
 
-      console.log('requested city', data.city, '');
+      console.log('incoming classrooms', rooms);
 
-      const snap = await getDocs(q);
-      console.log('incoming classrooms', snap.docs);
-
-      const roomsWithVacancies: IClassroom[] = snap.docs
-        .map((doc) => doc.data())
-        .filter((classroom) => {
-          //filtering near classes🔎🔍📟
-          return classroom.allowedCities.indexOf(data.city) !== -1;
-        })
-        .filter((classroom) => {
-          //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
-          const vacancies: number = classroom.vacancies ?? 180;
-          console.log(
-            'analizing vancacies, enrolled',
-            classroom.enrolled.length,
-            'vacancies: ',
-            vacancies
-          );
-          return classroom.enrolled.length < vacancies;
-        });
+      const roomsWithVacancies: IClassroom[] = rooms.filter((classroom) => {
+        //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
+        const vacancies: number = classroom.vacancies ?? 180;
+        console.log(
+          'analizing vancacies, enrolled',
+          classroom.enrolled.length,
+          'vacancies: ',
+          vacancies
+        );
+        return classroom.enrolled.length < vacancies;
+      });
 
       console.log(
         'list of avaliable classrooms on city',

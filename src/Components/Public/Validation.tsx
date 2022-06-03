@@ -14,9 +14,9 @@ import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { db, storage } from '../../Config/firebase';
+import { storage } from '../../Config/firebase';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { IBeneficiary } from '../../Models/Beneficiary.interface';
+import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
@@ -33,17 +33,10 @@ import Canvg from 'canvg';
 import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { orderBy, where } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
+import IExternal, { IExternalConverter } from '../../Models/External.interface';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -185,22 +178,19 @@ const Validation = (props: any) => {
       };
 
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
-      const ref = query(
-        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.ext}`),
-        where('password', '==', validationCode(data.ePass, validationKey))
-      );
-      const snapshots = await getDocs(ref);
-      const accounts = snapshots.docs.map((snapshot) => {
-        const it = snapshot.data();
-        return {
-          user: it.username as string,
-          pass: it.password as string,
-          expiration: it.expiration.toDate() as Date,
-        };
-      });
-      console.log('accounts detected', accounts.length);
-      if (accounts.length > 0) {
-        const account = accounts[0];
+      const storedCode = validationCode(data.ePass, validationKey);
+
+      const key = (await driver.get<IExternal>(
+        undefined,
+        'collection',
+        dbKey.ext,
+        IExternalConverter,
+        where('password', '==', storedCode)
+      )) as IExternal[];
+
+      console.log('accounts detected', key.length);
+      if (key.length > 0) {
+        const account = key[0];
         const rightNow = new Date();
         if (rightNow <= account.expiration) {
           //great success very nice 👍
@@ -337,47 +327,40 @@ const Validation = (props: any) => {
   async function checkSuscription(data: Input) {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
-
       const suscriptions = (await driver.get<IPerson>(
         undefined,
         'collection',
         dbKey.sus,
         iPersonConverter,
-        [where('rut', '==', data.rut.toUpperCase())]
+        where('rut', '==', data.rut.toUpperCase()),
+        orderBy('dateUpdate', 'desc')
       )) as IPerson[];
 
       //there's suscriptions?
       if (suscriptions.length > 0) {
         //if this human  has a valid suscription
         console.log('detected suscriptions', suscriptions.length);
-
         //getting last suscription in time...🚩🕜
-        const lastSus = suscriptions.reduce((prev, next) => {
-          /**
-           * this @param lastSus(last suscription) will only takes
-           * the LAST SUSCRIPTION 🧲 in time,
-           * if this person already has a second suscription, which is not,
-           * this logic will avoid other suscriptions in existance. */
 
-          return prev.dateUpdate > next.dateUpdate ? prev : next;
-        });
-        console.log('last suscription was', lastSus.dateUpdate);
+        const lastSuscription = suscriptions[0];
+        console.log('last suscription was', lastSuscription.dateUpdate);
 
         //check if this person already if validate&signed this suscription🔥🔥🔥
-        const isConsolidated = await checkConsolidated(lastSus.uuid);
+        const isConsolidated = await checkConsolidated(lastSuscription.uuid);
+
         if (isConsolidated) {
           //on consolidation ID existance; return undefined and error
-          console.log(' benefit is already signed', lastSus.uuid);
+          console.log(' benefit is already signed', lastSuscription.uuid);
           setErrorA({ value: true, message: 'usted ya se validó previamente 🤔' });
           return undefined;
         }
 
-        const queryClassroom = doc(
-          db,
-          `${dbKey.act}/${dbKey.uid}/${dbKey.room}`
-        ).withConverter(iClassroomConverter);
-
-        const room = (await getDoc(queryClassroom)).data();
+        const room = (await driver.get<IClassroom>(
+          lastSuscription.classroom.uuid,
+          'doc',
+          dbKey.room,
+          iClassroomConverter
+        )) as IClassroom | undefined;
 
         //set state of current classroom
         if (room !== undefined) {
@@ -393,10 +376,11 @@ const Validation = (props: any) => {
           room?.placeActivity.date !== undefined
             ? new Date(room?.placeActivity.date.getTime())
             : new Date(); /*day of class 📆*/
+
         // FIXME: some browser shows UTC wrong hours
         //act.setHours(act.getHours() - 6);
         const timeGap: Date = new Date(
-          lastSus.classroom.dateInstance.getTime()
+          lastSuscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
           timeGap.getDate() + 120
@@ -413,7 +397,7 @@ const Validation = (props: any) => {
               message: 'continue para validarse 🤗',
             });
             console.log(errorA);
-            return lastSus;
+            return lastSuscription;
           }
           case now < act: {
             // this bunny is running to fast, too early 🐇
@@ -457,17 +441,15 @@ const Validation = (props: any) => {
      * was already signed and validate, fetching sus ID inside Consolidated,
      * if this is not (undefined) will return FALSE , which means is ok👌🆗:
      */
-    // query consolitated
-    // const queryCvn = await db
-    //   .collection(`${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`)
-    //   .doc(suscription)
-    //   .get();
+    console.log('search for consolidated', suscription);
 
-    const queryCvn = doc(db, `${dbKey.act}}/${dbKey.uid}/${dbKey.cvn}`, suscription);
-    const snap = await getDoc(queryCvn);
-
-    const result = snap.data();
-    if (result === undefined) {
+    const consolidation = (await driver.get(
+      suscription,
+      'doc',
+      dbKey.cvn,
+      iBeneficiaryConverter
+    )) as IBeneficiary;
+    if (consolidation === undefined) {
       return false; /*not consolidated*/
     } else {
       return true; /* already consolidated*/
@@ -603,29 +585,22 @@ const Validation = (props: any) => {
         };
 
         //push sign database ⏫⏫⏫
-        const refDoc = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`, person?.uuid);
-        const snap = await getDoc(refDoc);
+        /*checking previous benefits*/
+        const consolidation = (await driver.get(
+          person?.uuid,
+          'doc',
+          dbKey.cvn,
+          iBeneficiaryConverter
+        )) as IBeneficiary | undefined;
 
         //check is this benefit was already signed
-        if (snap.data() === undefined) {
+        if (consolidation === undefined) {
           //if it dosent exist, human can sign ✅
-          await setDoc(refDoc, beneficiary);
+          driver.set(undefined, dbKey.cvn, beneficiary, iBeneficiaryConverter, {
+            merge: true,
+          });
           console.log('posted beneficiary', beneficiary.uuid);
 
-          //set attendees on classroom list 🔥🔥🔥 (moved to cloud functions)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          // const refRoom = db
-          //   .collection(`${dbKey.act}/${dbKey.uid}/Classroom`)
-          //   .doc(classroom?.uuid);
-          // const attendees = classroom?.attendees;
-
-          // if (attendees !== undefined && attendees.indexOf(beneficiary?.uuid) === -1) {
-          //   //attendees?.push(person.uuid);
-          //   //refRoom.set({ attendees: attendees }, { merge: true });
-          //   console.log('updated classroom attendees', beneficiary?.uuid);
-          // }
-
-          //set errors false
           setErrorB({
             value: false,
             message: `ya se encuentra validado 😀, no olvide retirar su kit 
