@@ -12,16 +12,16 @@ import {
   TextFieldProps,
   Slider,
 } from '@material-ui/core';
-import { Alert, Autocomplete } from '@material-ui/lab';
-import { doc } from 'firebase/firestore';
 import React from 'react';
+import { Alert, Autocomplete } from '@material-ui/lab';
 import { useForm } from 'react-hook-form';
 import { withRouter } from 'react-router-dom';
-import { db } from '../../Config/firebase';
+import { auth } from '../../Config/firebase';
 import driver from '../../Database/driver';
 import { capitalWord } from '../../Functions/capitalWord';
 import {
   getCityList,
+  getTerritoryId,
   getTerritoryNames,
   LandType,
 } from '../../Functions/GetTerritoryList';
@@ -30,9 +30,6 @@ import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 
 const Create = (props: any) => {
-  //router
-  //let { path, url } = useRouteMatch();
-
   //Land type and land list
   const [landList, setLandList] = React.useState<string[]>([]);
   const [placeDate, setPlaceDate] = React.useState<Date>(new Date());
@@ -52,7 +49,7 @@ const Create = (props: any) => {
     landType: LandType.city,
     landName: 'Valparaíso',
     vacancies: 150,
-    op: '',
+    op: auth.currentUser?.uid,
   };
   const [inputData, setInputData] = React.useState<TInputForm>(initInput);
 
@@ -119,17 +116,16 @@ const Create = (props: any) => {
     try {
       if (inputData !== null) {
         //firestore🔥🔥🔥
-        const ref = doc(db, '');
 
         //build object function
-        const buildObject = (data: TInputForm, uuid: string) => {
+        const buildObject = (data: TInputForm) => {
           const listOfCities = getCityList(data.landName, data.landType as LandType);
           const datePlaceSetting = new Date(data.placeDate);
           const datePostSetting = new Date(data.postDate);
 
           //Add input: vancancies allowed
           const classRoom: IRoom = {
-            uuid: uuid,
+            uuid: '',
             idCal: `R${pad(data.idCal, 3)}`,
             colaborator: capitalWord(data.colaborator),
             enrolled: [],
@@ -150,17 +146,19 @@ const Create = (props: any) => {
             allowedCities: listOfCities,
             cityOnOp: listOfCities[0],
             land: { type: data.landType as LandType, name: data.landName },
+            op: {
+              uuid: auth.currentUser?.uid,
+              cur: getTerritoryId(data.landName, data.landType as LandType),
+            },
           };
           return classRoom;
         };
 
         //Return classoom with UUID
         const pushRoom = await driver.set<IRoom>(
-          [ref.id],
           dbKey.room,
-          buildObject(inputData, ref.id),
-          iRoomConverter,
-          { merge: true }
+          buildObject(inputData), //builder
+          iRoomConverter
         );
         console.log('room create status', pushRoom);
 
@@ -190,7 +188,7 @@ const Create = (props: any) => {
     postDate: Date;
     vacancies: number;
     //national operator: current user uuid
-    op: string;
+    op?: string;
   };
 
   return (
