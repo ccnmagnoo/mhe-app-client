@@ -1,6 +1,9 @@
 import {
+  addDoc,
   collection,
+  CollectionReference,
   doc,
+  DocumentReference,
   getDoc,
   getDocs,
   PartialWithFieldValue,
@@ -52,18 +55,18 @@ const driver = {
   set: async <T>(
     uid: string[] | undefined,
     docType: dbKey.room | dbKey.cvn | dbKey.sus,
-    document: PartialWithFieldValue<T>,
+    document: T,
     converter: Converter<T>,
     setOptions: SetOptions
   ) => {
     const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
-    const ref = doc(db, path, ...(uid ?? [])).withConverter(converter);
 
-    try {
-      await setDoc(ref, document, setOptions);
-      return true;
-    } catch (error) {
-      return false;
+    if (uid) {
+      const ref = doc(db, path, ...uid).withConverter(converter);
+      await setDoc(ref, document as PartialWithFieldValue<T>, setOptions);
+    } else {
+      const ref = collection(db, path).withConverter(converter);
+      await addDoc(ref, document);
     }
   },
 };
