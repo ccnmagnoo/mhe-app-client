@@ -55,7 +55,7 @@ const Validation = (props: any) => {
 
   const signPaper = useStyles();
   //State hook with information
-  const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
+  const [candidate, setCandidate] = React.useState<IPerson | undefined>(undefined);
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
@@ -316,7 +316,7 @@ const Validation = (props: any) => {
       console.log('suscribed result', checkSuscribed);
       setDisableA(true);
       setVisibleB(true);
-      setPerson(checkSuscribed);
+      setCandidate(checkSuscribed);
       console.log('active B', true);
     } else {
       console.log('validation A on suspense', checkSuscribed);
@@ -573,13 +573,13 @@ const Validation = (props: any) => {
       const signSvg = draw.getSvgXML();
 
       //new beneficiary with sign SVG code✍✍✍✒
-      if (person !== undefined) {
+      if (candidate !== undefined) {
         //upload signature and get string 📷🌄🚞🚵‍♂️
-        const uploadSignature = await setSvgToStorage(signSvg, person.uuid);
+        const uploadSignature = await setSvgToStorage(signSvg, candidate.uuid);
 
         //building beneficiary 💏
         const beneficiary: IBeneficiary = {
-          ...person,
+          ...candidate,
           sign: uploadSignature,
           dateSign: now,
         };
@@ -587,7 +587,7 @@ const Validation = (props: any) => {
         //push sign database ⏫⏫⏫
         /*checking previous benefits*/
         const consolidation = (await driver.get(
-          person?.uuid,
+          candidate?.uuid,
           'doc',
           dbKey.cvn,
           iBeneficiaryConverter
@@ -595,8 +595,8 @@ const Validation = (props: any) => {
 
         //check is this benefit was already signed
         if (consolidation === undefined) {
-          //if it dosent exist, human can sign ✅
-          driver.set(undefined, dbKey.cvn, beneficiary, iBeneficiaryConverter, {
+          //if it dosent exist, human can sign ✅ create UUID defined consolidation
+          driver.set(dbKey.cvn, beneficiary, iBeneficiaryConverter, candidate.uuid, {
             merge: true,
           });
           console.log('posted beneficiary', beneficiary.uuid);
@@ -677,7 +677,7 @@ const Validation = (props: any) => {
           <Paper elevation={0}>
             <Box p={1}>
               {/*the DOCUMENT 🚩📖📚*/}
-              <SignDocument person={person as IBeneficiary} classroom={classroom} />
+              <SignDocument person={candidate as IBeneficiary} classroom={classroom} />
               <Paper variant='outlined' elevation={1}>
                 <Grid
                   container
