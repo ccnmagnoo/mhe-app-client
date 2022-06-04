@@ -55,6 +55,7 @@ import ClassroomCard from './Suscription.ClassroomCard';
 import { doc, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
 import { db } from '../../Config/firebase';
+import { dateLimit } from '../../Config/credential';
 
 const Suscription = (props: any) => {
   //hooks
@@ -925,10 +926,3 @@ const Suscription = (props: any) => {
 };
 
 export default withRouter(Suscription);
-function dateLimit(
-  arg0: string,
-  arg1: string,
-  dateLimit: any
-): import('@firebase/firestore').QueryConstraint {
-  throw new Error('Function not implemented.');
-}
