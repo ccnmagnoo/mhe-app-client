@@ -52,6 +52,7 @@ const Create = (props: any) => {
     landType: LandType.city,
     landName: 'Valparaíso',
     vacancies: 150,
+    op: '',
   };
   const [inputData, setInputData] = React.useState<TInputForm>(initInput);
 
@@ -188,6 +189,8 @@ const Create = (props: any) => {
     postDir: string;
     postDate: Date;
     vacancies: number;
+    //national operator: current user uuid
+    op: string;
   };
 
   return (
@@ -349,7 +352,7 @@ const Create = (props: any) => {
                 aria-labelledby='discrete-slider'
                 step={25}
                 min={25}
-                max={250}
+                max={280}
                 marks={[
                   { value: 25, label: '25' },
                   { value: 150, label: '150 cupos' },

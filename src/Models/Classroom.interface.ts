@@ -16,6 +16,7 @@ export interface IRoom {
   colaborator: string;
   land: { type: LandType; name: string };
   vacancies?: number;
+  op?: { uuid: string; cur: number };
 }
 
 export const iRoomConverter: Converter<IRoom> = {
@@ -46,6 +47,7 @@ export const iRoomConverter: Converter<IRoom> = {
       colaborator: it.colaborator,
       land: { type: it.land.type as LandType, name: it.land.name },
       vacancies: it.vacancies ?? 150,
+      op: { uuid: it.op?.uuid, cur: it.op?.cur },
     };
   },
 };
