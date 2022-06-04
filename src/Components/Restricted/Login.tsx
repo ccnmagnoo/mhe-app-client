@@ -10,8 +10,9 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { auth } from '../../Config/firebase';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../Config/firebase';
 
 const Login = (props: any) => {
   const [input, setInput] = React.useState<Input>({ email: '', password: '' }); //inputs of login
@@ -38,7 +39,7 @@ const Login = (props: any) => {
   const login = React.useCallback(async () => {
     setIsLogin(false);
     try {
-      const res = await auth.signInWithEmailAndPassword(input.email, input.password);
+      const res = await signInWithEmailAndPassword(auth, input.email, input.password);
       console.log('authentication', true, res.user);
       //clean 🧹💨
       setInput({ email: '', password: '' });

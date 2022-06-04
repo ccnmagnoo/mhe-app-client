@@ -1,14 +1,13 @@
-import React from 'react';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { benefToUpdate, roomsToFix } from '../../Assets/update';
 import { db } from '../../Config/firebase';
+import driver from '../../Database/driver';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { iClassroomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 import { Gender } from '../../Models/Person.Interface';
 
 export const Operations = () => {
-  //const [benef, setBenef] = React.useState<IBeneficiary[]>([]);
-
   const onClickFixBenef = async () => {
     await fetchBenefToFix();
   };
@@ -18,23 +17,22 @@ export const Operations = () => {
     const year = 2019;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
-    const ref = db
-      .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`)
-      .where('dateUpdate', '>=', iniSearch)
-      .where('dateUpdate', '<=', endSearch)
-      .withConverter(iBeneficiaryConverter);
 
-    const queries = await ref.get();
-    const list: IBeneficiary[] = queries.docs.map((doc) => doc.data());
-    console.log('number of benefits: ', list.length);
-    return list;
+    const consolidated = (await driver.get<IBeneficiary>(
+      undefined,
+      'collection',
+      dbKey.cvn,
+      iBeneficiaryConverter,
+      where('dateUpdate', '>=', iniSearch),
+      where('dateUpdate', '<=', endSearch)
+    )) as IBeneficiary[];
+
+    console.log('number of benefits: ', consolidated.length);
+    return consolidated;
   };
 
   //firebase:push room date🔥🔥🔥
   const pushRoomDates = async () => {
-    const ref = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`);
-    //const roomToFixCut = [roomsToFix[0], roomsToFix[1]];
-
     roomsToFix.forEach(async (roomOld) => {
       //data format
       const dateToFix = new Date(roomOld.dataInstance);
@@ -73,7 +71,10 @@ export const Operations = () => {
         },
         dateInstance: dateToFix,
       };
-      await ref.doc(roomOld.uuid).set(dataUpdate, { merge: true });
+
+      // const ref = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`);
+      const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, roomOld.uuid);
+      await setDoc(ref, dataUpdate, { merge: true });
       console.log('room date update', roomOld.uuid);
     });
   };
@@ -82,22 +83,27 @@ export const Operations = () => {
     const year = 2019;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
-    const ref = db
-      .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-      .where('dateInstance', '>=', iniSearch)
-      .where('dateInstance', '<=', endSearch)
-      .withConverter(iClassroomConverter);
-    //const roomToFixCut = [roomsToFix[0], roomsToFix[1]];
-    const queries = await ref.get();
+
+    //get Classrooms form a periord year
+    const refRoom = query(
+      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
+        iClassroomConverter
+      ),
+      where('dateInstance', '>=', iniSearch),
+      where('dateInstance', '<=', endSearch)
+    );
+    const queries = await getDocs(refRoom);
     const list = queries.docs.map((data) => data.data());
 
-    const rif = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`);
-
     list.forEach(async (room) => {
+      //erase attendess duplicated
       const attendees = room.attendees;
       const unique = new Set(attendees);
       const list: string[] = Array.from(unique);
-      await rif.doc(room.uuid).set({ attendees: list, enrolled: list }, { merge: true });
+      // ref
+      const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
+
+      await setDoc(docRef, { attendees: list }, { merge: true });
       console.log(
         'duplicate erased in',
         room.idCal,
@@ -128,7 +134,7 @@ export const Operations = () => {
       idCal: string;
       roomUuid: string;
     };
-    const roomList = ['R240'];
+    const roomList = ['R240']; //tom;
     roomList.forEach(async (idCal) => {
       const beneficiaries: Source[] = benefToUpdate.filter(
         (item) => item.idCal === idCal
@@ -136,18 +142,14 @@ export const Operations = () => {
       const roomUuid = beneficiaries[0].roomUuid;
       const attendees = beneficiaries.map((item) => item.uuid as string);
 
-      //ref firebase
-      const refRoom = db
-        .collection(`${dbKey.act}/${dbKey.uid}/${dbKey.room}`)
-        .doc(roomUuid);
-      const refBene = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`);
+      const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, roomUuid);
 
       //push beneficiaries ☝️;
       beneficiaries.forEach(async (bnf) => {
         const dateInstance = new Date(bnf.dateBenefit);
 
         //build IBeneficiary
-        const bnfI: IBeneficiary = {
+        const beneficiary: IBeneficiary = {
           address: { city: bnf.city, dir: bnf.dir },
           classroom: { dateInstance: dateInstance, idCal: bnf.idCal, uuid: bnf.roomUuid },
           dateSign: dateInstance,
@@ -166,11 +168,11 @@ export const Operations = () => {
           uuid: bnf.uuid,
         };
 
-        await refBene.doc(bnfI.uuid).set(bnfI);
-        console.log('uploaded', bnfI.rut, bnfI.classroom.idCal);
+        await setDoc(ref, beneficiary);
+        console.log('uploaded', beneficiary.rut, beneficiary.classroom.idCal);
       });
       //update room attendees
-      await refRoom.set({ attendees: attendees, enrolled: attendees }, { merge: true });
+      await setDoc(ref, { attendees: attendees }, { merge: true });
       console.log('updated room', idCal, 'beneficiaries', attendees.length);
     });
   };

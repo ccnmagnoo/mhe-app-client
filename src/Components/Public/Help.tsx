@@ -9,10 +9,11 @@ import Button from '@material-ui/core/Button';
 import roomsToAdd from '../../Config/mhe-data-rooms-toAdd.json';
 import cvnToAdd from '../../Config/mhe-data-benefit-toAdd.json';
 
-import { refUuid } from '../../Config/credential';
 import { db } from '../../Config/firebase';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { Gender } from '../../Models/Person.Interface';
+import { dbKey } from '../../Models/databaseKeys';
+import { doc, setDoc } from 'firebase/firestore';
 
 type RoomJson = {
   city: string;
@@ -107,10 +108,8 @@ export const Help = () => {
           classroom.attendees.length
         );
         try {
-          await db
-            .collection(`Activity/${refUuid}/Classroom`)
-            .doc(classroom.uuid)
-            .set(classroom);
+          const ref = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, classroom.uuid);
+          await setDoc(ref, classroom);
           console.log('load success', classroom.idCal);
         } catch (error) {
           console.log('load fail', classroom.idCal);
@@ -127,11 +126,11 @@ export const Help = () => {
     console.log('upload people click');
     console.log('size of consolidated people list', cvn.length);
 
-    const uploadPeopleToFirebase = async () => {
+    const uploadPeopleToFirebase = () => {
       try {
         //for each item on json file repository
         cvn.forEach((list) => {
-          list.forEach((person) => {
+          list.forEach(async (person) => {
             //build <IBeneficiary>
             console.log('preparin to upload: ', person.rut);
             const itDate = new Date(person.dateBenefit);
@@ -158,11 +157,14 @@ export const Help = () => {
               dateSign: itDate,
             };
             //upload to firebase
-            const ref = db
-              .collection(`Activity/${refUuid}/Consolidated`)
-              .doc(beneficiary.uuid);
 
-            ref.set({ sign: physicalSign }, { merge: true });
+            const ref = doc(
+              db,
+              `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`,
+              beneficiary.uuid
+            );
+            await setDoc(ref, { sign: physicalSign }, { merge: true });
+
             console.count('success on person');
           });
         });

@@ -22,9 +22,6 @@ import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { dateLimit } from '../../Config/credential';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
@@ -35,16 +32,21 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 //transitions
 import Grow from '@material-ui/core/Grow';
-import { IPerson } from '../../Models/Person.Interface';
+import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import isEmail from '../../Functions/isEmail';
+import { doc, orderBy, where } from 'firebase/firestore';
+import driver from '../../Database/driver';
+import { db } from '../../Config/firebase';
 
 export const Oversuscription = () => {
   //hooks
   const [isRol, setIsRol] = React.useState<boolean | null>(null);
-  const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
+  const [gotBenefit, setGotBenefit] = React.useState<
+    'with benefits' | 'no valid benefits' | undefined
+  >(undefined);
 
   //objects states
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
@@ -110,7 +112,7 @@ export const Oversuscription = () => {
   //on result of onSubmitStepA
   React.useEffect(() => {
     //is everything ok the must be done🆗👌
-    if (gotBenefit === false) {
+    if (gotBenefit === 'no valid benefits') {
       //on success 👌 disable RUT input
       setDisableA(true);
       //set visible second form 👁‍🗨
@@ -124,31 +126,27 @@ export const Oversuscription = () => {
     /**
      * @function checkFirebase got is she got old active benefits
      */
+
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
-      const req = db
-        .collection(`Activity/${refUuid}/Consolidated`)
-        .where('rut', '==', data.rut)
-        .withConverter(iBeneficiaryConverter);
+      console.log('fetch rut old benefits', data.rut);
+      const currentBenefits = (await driver.get<IBeneficiary>(
+        undefined,
+        'collection',
+        dbKey.cvn,
+        iBeneficiaryConverter,
+        where('rut', '==', data.rut),
+        where('dateSign', '>=', dateLimit)
+      )) as IBeneficiary[];
 
-      console.log('firestore fetch rut', data.rut);
-      const snapshot = await req.get();
-
-      const listOfPeople: IBeneficiary[] = snapshot.docs.map((query) => {
-        return query.data();
-      });
-      //filter all benefits after date limit (now 31-01-2017)
-      const filterDocs = listOfPeople.filter((cvn) => {
-        return cvn.dateSign! > dateLimit;
-      });
-      console.log('benefits after date limit', filterDocs.length);
+      console.log('benefits after date limit', currentBenefits.length);
 
       //true: failure, had benefits,  false:go go go, this person is ok
 
-      return filterDocs.length > 0 ? true : false;
+      return currentBenefits.length > 0 ? 'with benefits' : 'no valid benefits';
     } catch (error) {
       console.log('fetch checker rut', error);
-      return true;
+      return 'with benefits';
     }
   }
 
@@ -156,7 +154,7 @@ export const Oversuscription = () => {
   const snackbarA = () => {
     if (gotBenefit === undefined) {
       return undefined;
-    } else if (gotBenefit === true) {
+    } else if (gotBenefit === 'with benefits') {
       //active benefits, alert cant continue ❌❌
       return (
         <Grid item xs={12}>
@@ -256,55 +254,30 @@ export const Oversuscription = () => {
       //firestore🔥🔥🔥: fetch las 3 passed classes
       const rightNow = new Date();
       const startPeriod = new Date(rightNow.getFullYear(), 1, 1, 0);
-
-      const fetch = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '<=', rightNow)
-        .where('dateInstance', '>', startPeriod)
-        .orderBy('dateInstance', 'desc')
-        //.limit(50)
-        .withConverter(iClassroomConverter);
-
       console.log('requested city', data.city);
 
-      const querySnapshot = await fetch.get();
-      console.log('last classrooms', querySnapshot.docs);
-
-      const roomsWithVacancies: IClassroom[] = querySnapshot.docs
-        .map((snapshot) => {
-          //get list of classrooms
-          const it = snapshot.data();
-          console.log('room on db', it.idCal);
-          return it;
-        })
-        .filter((classroom) => {
-          //filtering near classes🔎🔍📟
-          return classroom.allowedCities.indexOf(data.city) !== -1;
-        });
-      //override vacancies limitations 📛WARNING: use with modetarion
-      //.filter((classroom) => {
-      ////filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫P
-      //const vacancies: number = classroom.vacancies ?? 150;
-      //console.log(
-      //'analizing vacancies, enrolled',
-      //classroom.enrolled.length,
-      //'vacancies: ',
-      //vacancies
-      //);
-      //return classroom.enrolled.length < vacancies;
-      //});
+      const rooms = (await driver.get<IClassroom>(
+        undefined,
+        'collection',
+        dbKey.room,
+        iClassroomConverter,
+        where('dateInstance', '<=', rightNow),
+        where('dateInstance', '>', startPeriod),
+        where('allowedCities', 'array-contains', data.city),
+        orderBy('dateInstance', 'desc')
+      )) as IClassroom[];
 
       console.log(
         'list of avaliable classrooms on city',
         data.city,
-        roomsWithVacancies.length,
-        roomsWithVacancies.map((it) => it.idCal)
+        rooms.length,
+        rooms.map((it) => it.idCal)
       );
 
       //set near classrooms avaliable state  🎣
-      setAvaliableClassrooms(roomsWithVacancies);
+      setAvaliableClassrooms(rooms);
 
-      return roomsWithVacancies.length > 0 ? true : false;
+      return rooms.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch classrooms', error);
     }
@@ -464,22 +437,28 @@ export const Oversuscription = () => {
         return false;
       }
 
-      //check the selected ROOM has already this RUT 🔎👤
-      const susRef = db.collection(`Activity/${refUuid}/Suscribed`);
-      const susQuery = await susRef.where('rut', '==', data.rut).get();
-      const susDocs = susQuery.docs.map((sus) => {
-        const it = sus.data() as IPerson;
-        //create array maps of Rooms ID this RUT had suscribed
-        return it.classroom.uuid;
-      });
+      //get all ROOMS which this RUT is suscribed 🔎👤
+      const getSuscriptions: IPerson[] = (await driver.get(
+        undefined,
+        'collection',
+        dbKey.sus,
+        iPersonConverter,
+        where('rut', '==', data.rut)
+      )) as IPerson[];
 
       //if indexOf is -1: this person isnt suscribed to seleced room
-      const isNotSuscribed = susDocs.indexOf(selectedRoom?.uuid ?? '') === -1;
+      const isNotSuscribed =
+        getSuscriptions
+          .map((it) => it.classroom.uuid)
+          .indexOf(selectedRoom?.uuid ?? '') === -1;
+
+      //if is not suscribed proceed to upload new suscription
       if (isNotSuscribed) {
         //prepare to upload new suscription
         console.log('prepare to upload suscription', data.email);
         //create reference of new doc Suscribed
-        const ref = db.collection(`Activity/${refUuid}/Suscribed`).doc();
+
+        const ref = doc(db, '');
 
         const person: IPerson = {
           uuid: ref.id,
@@ -506,23 +485,28 @@ export const Oversuscription = () => {
             gasBill: null,
           },
         };
+        //upload firebasedriver
+        const uploadResult = driver.set(undefined, dbKey.sus, person, iPersonConverter, {
+          merge: true,
+        });
 
         //set new suscription 🔥🔥🔥
-        await ref.set(person);
-        console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
+
+        console.log(
+          'suscription upload status:',
+          uploadResult,
+          ' data: ',
+          person.rut,
+          '➡',
+          selectedRoom?.idCal
+        );
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const refRoom = db
-          .collection(`Activity/${refUuid}/Classroom`)
-          .doc(selectedRoom?.uuid);
 
         const enrolled = selectedRoom?.enrolled;
         if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
-          //update classroom enrolled list is dosent exist, avoid duplication
-          //enrolled?.push(person.uuid);
-          //refRoom.set({ enrolled: enrolled }, { merge: true });
           console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
         }
         return true;
@@ -731,3 +715,10 @@ export const Oversuscription = () => {
     </React.Fragment>
   );
 };
+function dateLimit(
+  arg0: string,
+  arg1: string,
+  dateLimit: any
+): import('@firebase/firestore').QueryConstraint {
+  throw new Error('Function not implemented.');
+}

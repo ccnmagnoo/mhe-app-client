@@ -31,9 +31,7 @@ import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
-import { refUuid } from '../../Config/credential';
-import { db } from '../../Config/firebase';
-import { dateLimit } from '../../Config/credential';
+
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
@@ -44,7 +42,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 //transitions
 import Grow from '@material-ui/core/Grow';
-import { IPerson } from '../../Models/Person.Interface';
+import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
 import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
@@ -54,6 +52,9 @@ import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Suscription.ClassroomCard';
+import { doc, where } from 'firebase/firestore';
+import driver from '../../Database/driver';
+import { db } from '../../Config/firebase';
 
 const Suscription = (props: any) => {
   //hooks
@@ -65,9 +66,7 @@ const Suscription = (props: any) => {
   const [selectedRoom, setSelectedRoom] = React.useState<IClassroom | undefined>(
     undefined
   );
-  const [suscribedPerson, setSuscribedPerson] = React.useState<IPerson | undefined>(
-    undefined
-  );
+  const [suscribedPerson] = React.useState<IPerson | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //form is disabled
@@ -162,25 +161,21 @@ const Suscription = (props: any) => {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
-      const req = db
-        .collection(`${dbKey.act}/${refUuid}/Consolidated`)
-        .where('rut', '==', data.rut.toUpperCase())
-        .withConverter(iBeneficiaryConverter);
-      console.log('firestore fetch rut', data.rut);
-      const queryDocs = await req.get();
-
-      const listOfPeople: IBeneficiary[] = queryDocs.docs.map((doc) => {
-        return doc.data();
-      });
+      const benefits = (await driver.get<IBeneficiary>(
+        undefined,
+        'collection',
+        dbKey.cvn,
+        iBeneficiaryConverter,
+        where('rut', '==', data.rut.toUpperCase()),
+        where('dateSign', '>=', dateLimit)
+      )) as IBeneficiary[];
 
       //filter all benefits after date limit (now 31-01-2017)
-      const filterDocs = listOfPeople.filter((cvn) => {
-        return cvn.dateSign! > dateLimit;
-      });
-      console.log('benefits after date limit', filterDocs.length);
+
+      console.log('benefits after date limit', benefits.length);
 
       //true: failure, had benefits,  false:go go go, this person is ok
-      return filterDocs.length > 0 ? true : false;
+      return benefits.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch checker rut', error);
       return true;
@@ -299,40 +294,34 @@ const Suscription = (props: any) => {
        * if value= 0 so suscription will close at start room date.
        *
        */
+      //time restriction
+      console.log('requested city', data.city, '');
       const backwardDays = 14;
       const restrictionTime = new Date();
       restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
-      const fetch = db
-        .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-        .where('dateInstance', '>', restrictionTime)
-        .withConverter(iClassroomConverter);
+      //firebase
+      const rooms = (await driver.get<IClassroom>(
+        undefined,
+        'collection',
+        dbKey.room,
+        iClassroomConverter,
+        where('dateInstance', '>', restrictionTime),
+        where('allowedCities', 'array-contains', data.city)
+      )) as IClassroom[];
 
-      console.log('requested city', data.city, '');
+      console.log('incoming classrooms', rooms);
 
-      const querySnapshot = await fetch.get();
-      console.log('incoming classrooms', querySnapshot.docs);
-
-      const roomsWithVacancies: IClassroom[] = querySnapshot.docs
-        .map((doc) => {
-          //get list of classrooms
-          const it = doc.data();
-          return it;
-        })
-        .filter((classroom) => {
-          //filtering near classes🔎🔍📟
-          return classroom.allowedCities.indexOf(data.city) !== -1;
-        })
-        .filter((classroom) => {
-          //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
-          const vacancies: number = classroom.vacancies ?? 180;
-          console.log(
-            'analizing vancacies, enrolled',
-            classroom.enrolled.length,
-            'vacancies: ',
-            vacancies
-          );
-          return classroom.enrolled.length < vacancies;
-        });
+      const roomsWithVacancies: IClassroom[] = rooms.filter((classroom) => {
+        //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
+        const vacancies: number = classroom.vacancies ?? 180;
+        console.log(
+          'analizing vancacies, enrolled',
+          classroom.enrolled.length,
+          'vacancies: ',
+          vacancies
+        );
+        return classroom.enrolled.length < vacancies;
+      });
 
       console.log(
         'list of avaliable classrooms on city',
@@ -635,24 +624,27 @@ const Suscription = (props: any) => {
       }
 
       //check the selected ROOM has already this RUT 🔎👤
-      const susRef = db.collection(`${dbKey.act}/${dbKey.uid}/${dbKey.sus}`);
-      const susQuery = await susRef.where('rut', '==', data.rut).get();
-      const susDocs = susQuery.docs.map((sus) => {
-        const it = sus.data() as IPerson;
-        //create array maps of Rooms ID this RUT had suscribed
-        return it.classroom.uuid;
-      });
+
+      const suscriptions = (await driver.get(
+        undefined,
+        'collection',
+        dbKey.sus,
+        iPersonConverter,
+        where('rut', '==', data.rut)
+      )) as IPerson[];
+      const clientSuscriptions = suscriptions.map((it) => it.classroom.uuid);
 
       //if indexOf is -1: this person isnt suscribed to seleced room
-      const isNotSuscribed = susDocs.indexOf(selectedRoom?.uuid ?? '') === -1;
+      const isNotSuscribed = clientSuscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
       if (isNotSuscribed) {
         //prepare to upload new suscription
         console.log('prepare to upload suscription', data.email);
+
         //create reference of new doc Suscribed
-        const ref = db.collection(`${dbKey.act}/${refUuid}/${dbKey.sus}`).doc();
+        const newRef = doc(db, ``);
 
         const person: IPerson = {
-          uuid: ref.id,
+          uuid: newRef.id,
           name: {
             firstName: capitalWord(data.name),
             fatherName: capitalWord(data.fatherName),
@@ -682,17 +674,12 @@ const Suscription = (props: any) => {
         };
 
         //set new suscription 🔥🔥🔥
-        await ref.set(person);
-        setSuscribedPerson(person);
+        await driver.set([newRef.id], dbKey.sus, person, iPersonConverter, {});
+
         console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥 (moved to cloud functions)
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const refRoom = db
-          .collection(`${dbKey.act}/${refUuid}/Classroom`)
-          .doc(selectedRoom?.uuid);
 
         const enrolled = selectedRoom?.enrolled;
         if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
@@ -938,3 +925,10 @@ const Suscription = (props: any) => {
 };
 
 export default withRouter(Suscription);
+function dateLimit(
+  arg0: string,
+  arg1: string,
+  dateLimit: any
+): import('@firebase/firestore').QueryConstraint {
+  throw new Error('Function not implemented.');
+}

@@ -13,11 +13,12 @@ import {
   Slider,
 } from '@material-ui/core';
 import { Alert, Autocomplete } from '@material-ui/lab';
-import firebase from 'firebase';
+import { doc } from 'firebase/firestore';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { withRouter } from 'react-router-dom';
-import { auth } from '../../Config/firebase';
+import { db } from '../../Config/firebase';
+import driver from '../../Database/driver';
 import { capitalWord } from '../../Functions/capitalWord';
 import {
   getCityList,
@@ -25,7 +26,8 @@ import {
   LandType,
 } from '../../Functions/GetTerritoryList';
 import { pad } from '../../Functions/paddingNumber';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { dbKey } from '../../Models/databaseKeys';
 
 const Create = (props: any) => {
   //router
@@ -116,12 +118,7 @@ const Create = (props: any) => {
     try {
       if (inputData !== null) {
         //firestore🔥🔥🔥
-        const db = firebase.firestore();
-        const req = db
-          .collection('Activity')
-          .doc(auth.currentUser?.uid)
-          .collection('Classroom')
-          .doc();
+        const ref = doc(db, '');
 
         //build object function
         const buildObject = (data: TInputForm, uuid: string) => {
@@ -157,8 +154,14 @@ const Create = (props: any) => {
         };
 
         //Return classoom with UUID
-        const newClassroom = buildObject(inputData, req.id);
-        await req.set(newClassroom);
+        const pushRoom = await driver.set<IClassroom>(
+          [ref.id],
+          dbKey.room,
+          buildObject(inputData, ref.id),
+          iClassroomConverter,
+          { merge: true }
+        );
+        console.log('room create status', pushRoom);
 
         reset();
         setError(null);

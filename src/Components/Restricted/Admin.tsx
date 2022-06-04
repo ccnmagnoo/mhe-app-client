@@ -1,8 +1,9 @@
+import { User } from 'firebase/auth';
 import React from 'react';
-import { auth, firebase } from '../../Config/firebase';
+import { auth } from '../../Config/firebase';
 
 export const Admin = (props: { history: string[] }) => {
-  const [user, setUser] = React.useState<firebase.User | null>(null);
+  const [user, setUser] = React.useState<User | null>(null);
 
   React.useEffect(() => {
     if (auth.currentUser) {
