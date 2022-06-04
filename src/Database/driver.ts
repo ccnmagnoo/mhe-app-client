@@ -1,16 +1,12 @@
 import {
   addDoc,
   collection,
-  CollectionReference,
   doc,
-  DocumentReference,
   getDoc,
   getDocs,
-  PartialWithFieldValue,
   query,
   QueryConstraint,
   setDoc,
-  SetOptions,
 } from 'firebase/firestore';
 import { db } from '../Config/firebase';
 import Converter from '../Models/Converter.interface';
@@ -53,20 +49,18 @@ const driver = {
     }
   },
   set: async <T>(
-    uid: string[] | undefined,
     docType: dbKey.room | dbKey.cvn | dbKey.sus,
     document: T,
-    converter: Converter<T>,
-    setOptions: SetOptions
+    converter: Converter<T>
   ) => {
     const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
 
-    if (uid) {
-      const ref = doc(db, path, ...uid).withConverter(converter);
-      await setDoc(ref, document as PartialWithFieldValue<T>, setOptions);
-    } else {
+    try {
       const ref = collection(db, path).withConverter(converter);
-      await addDoc(ref, document);
+      const push = await addDoc(ref, document);
+      await setDoc(doc(db, path, push.id), { uuid: push.id }, { merge: true });
+    } catch (error) {
+      console.log(error);
     }
   },
 };
