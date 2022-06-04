@@ -1,4 +1,4 @@
-import { cities, City } from '../Assets/cities';
+import { cities } from '../Assets/cities';
 
 /**
  * @function getCityList function return all the cities in the territory requersted
