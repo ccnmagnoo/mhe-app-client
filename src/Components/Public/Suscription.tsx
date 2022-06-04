@@ -52,9 +52,8 @@ import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Suscription.ClassroomCard';
-import { doc, where } from 'firebase/firestore';
+import { where } from 'firebase/firestore';
 import driver from '../../Database/driver';
-import { db } from '../../Config/firebase';
 import { dateLimit } from '../../Config/credential';
 
 const Suscription = (props: any) => {
@@ -640,10 +639,8 @@ const Suscription = (props: any) => {
         console.log('prepare to upload suscription', data.email);
 
         //create reference of new doc Suscribed
-        const newRef = doc(db, ``);
-
         const person: IPerson = {
-          uuid: newRef.id,
+          uuid: '',
           name: {
             firstName: capitalWord(data.name),
             fatherName: capitalWord(data.fatherName),
@@ -673,7 +670,7 @@ const Suscription = (props: any) => {
         };
 
         //set new suscription 🔥🔥🔥
-        await driver.set([newRef.id], dbKey.sus, person, iPersonConverter, {});
+        await driver.set(dbKey.sus, person, iPersonConverter);
 
         console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });

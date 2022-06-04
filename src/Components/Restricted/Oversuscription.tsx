@@ -37,9 +37,8 @@ import { getGender } from '../../Functions/getGender';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import isEmail from '../../Functions/isEmail';
-import { doc, orderBy, where } from 'firebase/firestore';
+import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
-import { db } from '../../Config/firebase';
 
 export const Oversuscription = () => {
   //hooks
@@ -456,10 +455,8 @@ export const Oversuscription = () => {
         console.log('prepare to upload suscription', data.email);
         //create reference of new doc Suscribed
 
-        const ref = doc(db, '');
-
         const person: IPerson = {
-          uuid: ref.id,
+          uuid: '',
           name: {
             firstName: capitalWord(data.name),
             fatherName: capitalWord(data.fatherName),
@@ -484,9 +481,7 @@ export const Oversuscription = () => {
           },
         };
         //upload firebasedriver
-        const uploadResult = driver.set(undefined, dbKey.sus, person, iPersonConverter, {
-          merge: true,
-        });
+        const uploadResult = driver.set(dbKey.sus, person, iPersonConverter);
 
         //set new suscription 🔥🔥🔥
 
