@@ -1,5 +1,3 @@
-import React from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IClassroom } from '../../../Models/Classroom.interface';

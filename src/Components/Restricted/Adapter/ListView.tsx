@@ -17,9 +17,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import TableChartIcon from '@material-ui/icons/TableChart';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import { dbKey } from '../../../Models/databaseKeys';
-import { refUuid } from '../../../Config/credential';
-import { db } from '../../../Config/firebase';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { where } from 'firebase/firestore';
+import driver from '../../../Database/driver';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -39,34 +38,18 @@ export const ListView = (props: { room: IClassroom; workDone: boolean }) => {
       //call firebase suscribed 🔥🔥🔥🔥
       try {
         //change colection router
-        const routeDb = props.workDone
-          ? `${dbKey.act}/${refUuid}/${dbKey.cvn}` /*consolidated route*/
-          : `${dbKey.act}/${refUuid}/${dbKey.sus}`; /*suscribed route*/
+        const list = (await driver.get(
+          undefined,
+          'collection',
+          props.workDone ? dbKey.cvn : dbKey.sus,
+          iBeneficiaryConverter,
+          where('classroom.uuid', '==', props.room.uuid)
+        )) as IBeneficiary[];
 
-        //const ref = db.collection(routeDb).withConverter(iBeneficiaryConverter);
-
-        const ref = collection(db, routeDb).withConverter(iBeneficiaryConverter);
-        const promises = props.room.enrolled.map((uuid) => {
-          const d = doc(ref, uuid);
-
-          return getDoc(d); //ref.doc(uuid).get();
-        });
-        //Promise all
-        const snapshot = await Promise.all(promises);
-        console.log('snapshots', snapshot.length, 'first', snapshot[0].data());
-
-        //create list of persons without undef
-        const peopleList: IBeneficiary[] = [];
-        for (let snap of snapshot) {
-          const it = snap.data();
-          if (it !== undefined) {
-            console.log('push beneficiary', it.rut);
-            peopleList.push(it);
-          }
-        }
+        console.log('snapshots', list.length, 'first', list[0]);
 
         //sort list with surname
-        const peopleSort = peopleList.sort((a, b) =>
+        const peopleSort = list.sort((a, b) =>
           a.name.fatherName > b.name.fatherName ? 1 : -1
         );
 
@@ -79,7 +62,7 @@ export const ListView = (props: { room: IClassroom; workDone: boolean }) => {
     };
 
     onSubmitPeople();
-  }, [props.workDone, props.room.enrolled]);
+  }, [props]);
 
   //csv contents
   const [csv, setCsv] = React.useState<Mine[]>([]);

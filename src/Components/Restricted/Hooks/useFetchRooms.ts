@@ -1,6 +1,5 @@
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import React from 'react';
-import { refUuid } from '../../../Config/credential';
 import { db } from '../../../Config/firebase';
 import { iClassroomConverter } from '../../../Models/Classroom.interface';
 import { dbKey } from '../../../Models/databaseKeys';
@@ -34,7 +33,7 @@ export const useFetchRooms = () => {
     //   .withConverter(iClassroomConverter);
 
     const q = query(
-      collection(db, `${dbKey.act}/${refUuid}/${dbKey.room}`).withConverter(
+      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
         iClassroomConverter
       ),
       where('placeActivity.date', '>=', timeGap.ini),

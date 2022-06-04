@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document } from '@react-pdf/renderer';
 
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
