@@ -1,6 +1,6 @@
 import { Alert } from '@material-ui/lab';
 import React from 'react';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 import { LandType } from '../../Functions/GetTerritoryList';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Button from '@material-ui/core/Button';
@@ -76,7 +76,7 @@ export const Help = () => {
         //conver to IClassroom
         const rum: RoomJson = roomDatabase[i];
         const itDate = new Date(rum.dataInstance);
-        const classroom: IClassroom = {
+        const classroom: IRoom = {
           uuid: rum.uuid,
           idCal: rum.idcal,
           dateInstance: itDate,

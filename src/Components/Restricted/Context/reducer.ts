@@ -1,10 +1,10 @@
-import { IClassroom } from '../../../Models/Classroom.interface';
+import { IRoom } from '../../../Models/Classroom.interface';
 
 //config storage
 export interface State {
   periodStart: number;
   period: number;
-  rooms: IClassroom[];
+  rooms: IRoom[];
   changeState: (value: Action) => void;
 }
 
@@ -29,7 +29,7 @@ export enum ActionType {
 //action type
 export type Action = {
   type: ActionType;
-  payload: IClassroom | IClassroom[] | number;
+  payload: IRoom | IRoom[] | number;
   index?: number;
 };
 
@@ -56,7 +56,7 @@ export const mheReducer: React.Reducer<State, Action> = (
     //add 1 room each time ➕
     case ActionType.setRoom: {
       //decrease fruits from last one
-      const load = payload as IClassroom;
+      const load = payload as IRoom;
       const newRooms = [...state.rooms];
       newRooms.push(load);
       return { ...state, rooms: newRooms };
@@ -65,7 +65,7 @@ export const mheReducer: React.Reducer<State, Action> = (
     //set rooms of current year ➕➕
     case ActionType.setRooms: {
       //decrease fruits from last one
-      const load = payload as IClassroom[];
+      const load = payload as IRoom[];
       return { ...state, rooms: load };
     }
 
@@ -75,7 +75,7 @@ export const mheReducer: React.Reducer<State, Action> = (
     }
 
     case ActionType.delRoom: {
-      const load = payload as IClassroom;
+      const load = payload as IRoom;
       const index = state.rooms.findIndex((room) => room.uuid === load.uuid);
       const rooms = [...state.rooms];
       rooms.splice(index, 1);
@@ -84,7 +84,7 @@ export const mheReducer: React.Reducer<State, Action> = (
 
     //on update data of some room
     case ActionType.updateRoom: {
-      const load = payload as IClassroom;
+      const load = payload as IRoom;
       const index = state.rooms.findIndex((room) => room.uuid === load.uuid);
       console.log('room state update index:', index);
       //find wich room to update

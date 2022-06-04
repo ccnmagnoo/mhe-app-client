@@ -16,7 +16,7 @@ import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
 import { UrlChip } from './UrlChip';
@@ -56,7 +56,7 @@ const Validation = (props: any) => {
   const signPaper = useStyles();
   //State hook with information
   const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
-  const [classroom, setClassroom] = React.useState<IClassroom | undefined>(undefined);
+  const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
   const [disableEU, setDisableEU] = React.useState(false);
@@ -355,12 +355,12 @@ const Validation = (props: any) => {
           return undefined;
         }
 
-        const room = (await driver.get<IClassroom>(
+        const room = (await driver.get<IRoom>(
           lastSuscription.classroom.uuid,
           'doc',
           dbKey.room,
           iClassroomConverter
-        )) as IClassroom | undefined;
+        )) as IRoom | undefined;
 
         //set state of current classroom
         if (room !== undefined) {

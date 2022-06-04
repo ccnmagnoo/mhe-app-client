@@ -1,7 +1,7 @@
 import { Card, CardContent, Paper } from '@material-ui/core';
 import { Box, Grid, Typography, Avatar, CardHeader, IconButton } from '@material-ui/core';
 import React from 'react';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 import { IPerson } from '../../Models/Person.Interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
@@ -12,7 +12,7 @@ import { isUrl } from '../../Functions/IsURL';
 import { Alert } from '@material-ui/lab';
 
 type SuccessProps = {
-  classroom?: IClassroom;
+  classroom?: IRoom;
   person?: IPerson;
 };
 

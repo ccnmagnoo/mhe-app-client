@@ -35,7 +35,7 @@ import { isRol as rolChecker } from '../../Functions/isRol';
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -63,10 +63,8 @@ const Suscription = (props: any) => {
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
 
   //objects states
-  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
-  const [selectedRoom, setSelectedRoom] = React.useState<IClassroom | undefined>(
-    undefined
-  );
+  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IRoom[]>([]);
+  const [selectedRoom, setSelectedRoom] = React.useState<IRoom | undefined>(undefined);
   const [suscribedPerson] = React.useState<IPerson | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
@@ -301,18 +299,18 @@ const Suscription = (props: any) => {
       const restrictionTime = new Date();
       restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       //firebase
-      const rooms = (await driver.get<IClassroom>(
+      const rooms = (await driver.get<IRoom>(
         undefined,
         'collection',
         dbKey.room,
         iClassroomConverter,
         where('dateInstance', '>', restrictionTime),
         where('allowedCities', 'array-contains', data.city)
-      )) as IClassroom[];
+      )) as IRoom[];
 
       console.log('incoming classrooms', rooms);
 
-      const roomsWithVacancies: IClassroom[] = rooms.filter((classroom) => {
+      const roomsWithVacancies: IRoom[] = rooms.filter((classroom) => {
         //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
         const vacancies: number = classroom.vacancies ?? 180;
         console.log(

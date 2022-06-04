@@ -1,7 +1,7 @@
 import { Paper, Grid, Typography, TextField, Button } from '@material-ui/core';
 import React from 'react';
 import { useParams, withRouter } from 'react-router-dom';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 import { Context } from './Context/context';
 import { useForm } from 'react-hook-form';
 
@@ -10,7 +10,7 @@ const UpdateClassroom = (props: any) => {
   let { uuid } = useParams<{ uuid: string }>();
   //feching data from context
   const { rooms } = React.useContext(Context);
-  const room: IClassroom | undefined = rooms[rooms.findIndex((it) => it.uuid === uuid)];
+  const room: IRoom | undefined = rooms[rooms.findIndex((it) => it.uuid === uuid)];
   //useForm
   const {
     register,

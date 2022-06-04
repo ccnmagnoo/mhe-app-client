@@ -25,7 +25,7 @@ import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -49,10 +49,8 @@ export const Oversuscription = () => {
   >(undefined);
 
   //objects states
-  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IClassroom[]>([]);
-  const [selectedRoom, setSelectedRoom] = React.useState<IClassroom | undefined>(
-    undefined
-  );
+  const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IRoom[]>([]);
+  const [selectedRoom, setSelectedRoom] = React.useState<IRoom | undefined>(undefined);
 
   //form is disabled
   const [disableA, setDisableA] = React.useState(false);
@@ -256,7 +254,7 @@ export const Oversuscription = () => {
       const startPeriod = new Date(rightNow.getFullYear(), 1, 1, 0);
       console.log('requested city', data.city);
 
-      const rooms = (await driver.get<IClassroom>(
+      const rooms = (await driver.get<IRoom>(
         undefined,
         'collection',
         dbKey.room,
@@ -265,7 +263,7 @@ export const Oversuscription = () => {
         where('dateInstance', '>', startPeriod),
         where('allowedCities', 'array-contains', data.city),
         orderBy('dateInstance', 'desc')
-      )) as IClassroom[];
+      )) as IRoom[];
 
       console.log(
         'list of avaliable classrooms on city',
@@ -541,7 +539,7 @@ export const Oversuscription = () => {
     }
   };
   //card adapter to show classrooms avaliable
-  const miniCardClassroom = (item: IClassroom) => {
+  const miniCardClassroom = (item: IRoom) => {
     return (
       <React.Fragment>
         <Card>

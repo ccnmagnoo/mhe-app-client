@@ -4,7 +4,7 @@ import {
   IBeneficiary,
   iBeneficiaryConverter,
 } from '../../../Models/Beneficiary.interface';
-import { IClassroom } from '../../../Models/Classroom.interface';
+import { IRoom } from '../../../Models/Classroom.interface';
 import React from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
   { field: 'rut', headerName: 'rut', width: 100 },
 ];
 
-export const ListView = (props: { room: IClassroom; workDone: boolean }) => {
+export const ListView = (props: { room: IRoom; workDone: boolean }) => {
   //
   //states 🅿⛽ list with details
   const [people, setPeople] = React.useState<IBeneficiary[]>([]);

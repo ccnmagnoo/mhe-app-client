@@ -1,6 +1,6 @@
 import { Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
-import { IClassroom } from '../../../Models/Classroom.interface';
+import { IRoom } from '../../../Models/Classroom.interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 export const Certificate = (props: {
   person: IBeneficiary;
-  room: IClassroom;
+  room: IRoom;
   index: number;
 }) => {
   //sign

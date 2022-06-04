@@ -3,7 +3,7 @@ import { LandType } from '../Functions/GetTerritoryList';
 import Converter from './Converter.interface';
 import { IPlace } from './Place.interface';
 
-export interface IClassroom {
+export interface IRoom {
   uuid: string;
   idCal: string;
   dateInstance: Date;
@@ -18,11 +18,11 @@ export interface IClassroom {
   vacancies?: number;
 }
 
-export const iClassroomConverter: Converter<IClassroom> = {
-  toFirestore: function (classroom: IClassroom) {
+export const iClassroomConverter: Converter<IRoom> = {
+  toFirestore: function (classroom: IRoom) {
     return classroom;
   },
-  fromFirestore: function (snapshot: QueryDocumentSnapshot): IClassroom {
+  fromFirestore: function (snapshot: QueryDocumentSnapshot): IRoom {
     const it = snapshot.data();
 
     return {

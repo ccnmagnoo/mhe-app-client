@@ -1,7 +1,7 @@
 import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
 import React from 'react';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 
 export const SignDocument = (props: PropsDS) => {
   //little refs
@@ -151,5 +151,5 @@ export const SignDocument = (props: PropsDS) => {
 
 type PropsDS = {
   person?: IBeneficiary;
-  classroom?: IClassroom;
+  classroom?: IRoom;
 };

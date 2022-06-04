@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import React from 'react';
-import { IClassroom } from '../../../Models/Classroom.interface';
+import { IRoom } from '../../../Models/Classroom.interface';
 
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -33,7 +33,7 @@ import { Link, useRouteMatch, withRouter } from 'react-router-dom';
  */
 type RoomViewProps = {
   workDone: boolean /*if true, so activity to fetch is consolidated in past*/;
-  room: IClassroom;
+  room: IRoom;
   expanded: string | boolean;
   handleAccordionChange: (
     panel: string

@@ -8,15 +8,15 @@ import {
   Button,
 } from '@material-ui/core';
 import moment from 'moment';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 //icons
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 type TClassroomCard = {
-  item: IClassroom;
-  selectedRoom: IClassroom | undefined;
-  setSelectedRoom: React.Dispatch<React.SetStateAction<IClassroom | undefined>>;
+  item: IRoom;
+  selectedRoom: IRoom | undefined;
+  setSelectedRoom: React.Dispatch<React.SetStateAction<IRoom | undefined>>;
   disableC: boolean;
   setDisableS: React.Dispatch<React.SetStateAction<boolean>>;
 };

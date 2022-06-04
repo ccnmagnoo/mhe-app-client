@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { LandType } from '../../Functions/GetTerritoryList';
-import { IClassroom } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 import { IPlace } from '../../Models/Place.interface';
 import './calendar.css';
 import EventWidget from './Calendar.EventWidget';
@@ -15,7 +15,7 @@ export interface IEvent {
   benefited?: number;
 }
 
-const Calendar = (props: { rooms?: IClassroom[] }) => {
+const Calendar = (props: { rooms?: IRoom[] }) => {
   //calendar init params
   const today = new Date();
   //since when is shown the weeks

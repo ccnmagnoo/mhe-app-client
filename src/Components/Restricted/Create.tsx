@@ -26,7 +26,7 @@ import {
   LandType,
 } from '../../Functions/GetTerritoryList';
 import { pad } from '../../Functions/paddingNumber';
-import { IClassroom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 
 const Create = (props: any) => {
@@ -127,7 +127,7 @@ const Create = (props: any) => {
           const datePostSetting = new Date(data.postDate);
 
           //Add input: vancancies allowed
-          const classRoom: IClassroom = {
+          const classRoom: IRoom = {
             uuid: uuid,
             idCal: `R${pad(data.idCal, 3)}`,
             colaborator: capitalWord(data.colaborator),
@@ -154,7 +154,7 @@ const Create = (props: any) => {
         };
 
         //Return classoom with UUID
-        const pushRoom = await driver.set<IClassroom>(
+        const pushRoom = await driver.set<IRoom>(
           [ref.id],
           dbKey.room,
           buildObject(inputData, ref.id),

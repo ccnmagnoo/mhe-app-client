@@ -1,7 +1,7 @@
-import { IClassroom } from '../Models/Classroom.interface';
+import { IRoom } from '../Models/Classroom.interface';
 import { IPerson } from '../Models/Person.Interface';
 
-export function convertToCsv(p: IPerson, r: IClassroom, index?: number) {
+export function convertToCsv(p: IPerson, r: IRoom, index?: number) {
   const iAttendee = r.attendees.indexOf(p.uuid);
   const validation = iAttendee === -1 ? 'no' : 'si';
 
