@@ -3,7 +3,7 @@ import { benefToUpdate, roomsToFix } from '../../Assets/update';
 import { db } from '../../Config/firebase';
 import driver from '../../Database/driver';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
-import { iClassroomConverter } from '../../Models/Classroom.interface';
+import { iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 import { Gender } from '../../Models/Person.Interface';
 
@@ -87,7 +87,7 @@ export const Operations = () => {
     //get Classrooms form a periord year
     const refRoom = query(
       collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
-        iClassroomConverter
+        iRoomConverter
       ),
       where('dateInstance', '>=', iniSearch),
       where('dateInstance', '<=', endSearch)

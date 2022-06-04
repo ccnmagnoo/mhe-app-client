@@ -35,7 +35,7 @@ import { isRol as rolChecker } from '../../Functions/isRol';
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -303,7 +303,7 @@ const Suscription = (props: any) => {
         undefined,
         'collection',
         dbKey.room,
-        iClassroomConverter,
+        iRoomConverter,
         where('dateInstance', '>', restrictionTime),
         where('allowedCities', 'array-contains', data.city)
       )) as IRoom[];

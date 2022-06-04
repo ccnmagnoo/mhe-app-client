@@ -16,7 +16,7 @@ import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
-import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { SignDocument } from './SignDocument';
 import { UrlChip } from './UrlChip';
@@ -359,7 +359,7 @@ const Validation = (props: any) => {
           lastSuscription.classroom.uuid,
           'doc',
           dbKey.room,
-          iClassroomConverter
+          iRoomConverter
         )) as IRoom | undefined;
 
         //set state of current classroom

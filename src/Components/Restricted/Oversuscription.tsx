@@ -25,7 +25,7 @@ import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -258,7 +258,7 @@ export const Oversuscription = () => {
         undefined,
         'collection',
         dbKey.room,
-        iClassroomConverter,
+        iRoomConverter,
         where('dateInstance', '<=', rightNow),
         where('dateInstance', '>', startPeriod),
         where('allowedCities', 'array-contains', data.city),

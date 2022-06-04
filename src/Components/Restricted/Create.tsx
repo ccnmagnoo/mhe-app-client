@@ -26,7 +26,7 @@ import {
   LandType,
 } from '../../Functions/GetTerritoryList';
 import { pad } from '../../Functions/paddingNumber';
-import { IRoom, iClassroomConverter } from '../../Models/Classroom.interface';
+import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 
 const Create = (props: any) => {
@@ -158,7 +158,7 @@ const Create = (props: any) => {
           [ref.id],
           dbKey.room,
           buildObject(inputData, ref.id),
-          iClassroomConverter,
+          iRoomConverter,
           { merge: true }
         );
         console.log('room create status', pushRoom);

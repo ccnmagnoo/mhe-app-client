@@ -18,7 +18,7 @@ export interface IRoom {
   vacancies?: number;
 }
 
-export const iClassroomConverter: Converter<IRoom> = {
+export const iRoomConverter: Converter<IRoom> = {
   toFirestore: function (classroom: IRoom) {
     return classroom;
   },
