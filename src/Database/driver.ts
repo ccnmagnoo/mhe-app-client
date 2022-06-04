@@ -7,6 +7,7 @@ import {
   query,
   QueryConstraint,
   setDoc,
+  SetOptions,
 } from 'firebase/firestore';
 import { db } from '../Config/firebase';
 import Converter from '../Models/Converter.interface';
@@ -51,14 +52,23 @@ const driver = {
   set: async <T>(
     docType: dbKey.room | dbKey.cvn | dbKey.sus,
     document: T,
-    converter: Converter<T>
+    converter: Converter<T>,
+    uuid?: string,
+    options?: SetOptions
   ) => {
     const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
 
     try {
-      const ref = collection(db, path).withConverter(converter);
-      const push = await addDoc(ref, document);
-      await setDoc(doc(db, path, push.id), { uuid: push.id }, { merge: true });
+      if (uuid === undefined) {
+        //automatic id solding: !double writing :(
+        const ref = collection(db, path).withConverter(converter);
+        const push = await addDoc(ref, document);
+        await setDoc(doc(db, path, push.id), { uuid: push.id }, { merge: true });
+      } else {
+        //defined uuid
+        const ref = doc(db, path, uuid).withConverter(converter);
+        await setDoc(ref, document, options ?? {});
+      }
     } catch (error) {
       console.log(error);
     }
