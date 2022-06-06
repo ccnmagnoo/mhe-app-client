@@ -12,9 +12,12 @@ export const Operations = () => {
     await fetchBenefToFix();
   };
 
-  //firebase:fetch 🔥🔥🔥
+  /**
+   * for giving @param year collects all beneficiaries
+   * @returns and ifx  all Rooms attendaces list
+   */
   const fetchBenefToFix = async () => {
-    const year = 2019;
+    const year = 2022;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
 
@@ -79,8 +82,8 @@ export const Operations = () => {
     });
   };
 
-  const eraseDuplicatedUUID = async () => {
-    const year = 2019;
+  const fixRooms = async () => {
+    const year = 2022;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
 
@@ -103,15 +106,9 @@ export const Operations = () => {
       // ref
       const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
 
-      await setDoc(docRef, { attendees: list }, { merge: true });
-      console.log(
-        'duplicate erased in',
-        room.idCal,
-        '♻️',
-        room.attendees.length,
-        '->',
-        list.length
-      );
+      //await setDoc(docRef, { attendees: list }, { merge: true });
+      await setDoc(docRef, { op: { uuid: dbKey.uid, cur: 5 } }, { merge: true });
+      console.log('updated', room.idCal, '♻️', room.attendees.length, '->', list.length);
     });
   };
 
@@ -188,8 +185,8 @@ export const Operations = () => {
       <button type='submit' className='' onClick={() => pushRoomDates()} disabled>
         fix
       </button>
-      <p>borrar room con attendees duplicados </p>
-      <button type='submit' className='' onClick={() => eraseDuplicatedUUID()} disabled>
+      <p>arreglar Rooms </p>
+      <button type='submit' className='' onClick={() => fixRooms()}>
         fix
       </button>
       <p>subir consolidados faltantes 2019 </p>

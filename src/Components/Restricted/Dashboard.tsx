@@ -26,7 +26,6 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
-import { Operations } from './Operations';
 import { User } from 'firebase/auth';
 import { auth } from '../../Config/firebase';
 
@@ -127,7 +126,7 @@ const Dashboard = (props: any) => {
 
             <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
 
-            <Route path={`${path}/operations`} children={<Operations />} />
+            {/* <Route path={`${path}/operations`} children={<Operations />} /> */}
           </Switch>
         </Grid>
       </Grid>
