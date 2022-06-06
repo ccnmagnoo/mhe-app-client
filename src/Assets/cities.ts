@@ -2066,7 +2066,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13101',
@@ -2074,7 +2074,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13102',
@@ -2082,7 +2082,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13103',
@@ -2090,7 +2090,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13104',
@@ -2098,7 +2098,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13105',
@@ -2106,7 +2106,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13106',
@@ -2114,7 +2114,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13107',
@@ -2122,7 +2122,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13108',
@@ -2130,7 +2130,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13109',
@@ -2138,7 +2138,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13110',
@@ -2146,7 +2146,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13111',
@@ -2154,7 +2154,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13112',
@@ -2162,7 +2162,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13113',
@@ -2170,7 +2170,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13114',
@@ -2178,7 +2178,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13115',
@@ -2186,7 +2186,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13116',
@@ -2194,7 +2194,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13117',
@@ -2202,7 +2202,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13118',
@@ -2210,7 +2210,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13119',
@@ -2218,7 +2218,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13120',
@@ -2226,7 +2226,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13121',
@@ -2234,7 +2234,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13122',
@@ -2242,7 +2242,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13123',
@@ -2250,7 +2250,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13124',
@@ -2258,7 +2258,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13125',
@@ -2266,7 +2266,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13126',
@@ -2274,7 +2274,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13127',
@@ -2282,7 +2282,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13128',
@@ -2290,7 +2290,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13129',
@@ -2298,7 +2298,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13130',
@@ -2306,7 +2306,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13131',
@@ -2314,7 +2314,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '131',
     province: 'Santiago',
     cityId: '13132',
@@ -2322,7 +2322,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '132',
     province: 'Cordillera',
     cityId: '13201',
@@ -2330,7 +2330,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '132',
     province: 'Cordillera',
     cityId: '13202',
@@ -2338,7 +2338,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '132',
     province: 'Cordillera',
     cityId: '13203',
@@ -2346,7 +2346,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '133',
     province: 'Chacabuco',
     cityId: '13301',
@@ -2354,7 +2354,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '133',
     province: 'Chacabuco',
     cityId: '13302',
@@ -2362,7 +2362,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '133',
     province: 'Chacabuco',
     cityId: '13303',
@@ -2370,7 +2370,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '134',
     province: 'Maipo',
     cityId: '13401',
@@ -2378,7 +2378,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '134',
     province: 'Maipo',
     cityId: '13402',
@@ -2386,7 +2386,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '134',
     province: 'Maipo',
     cityId: '13403',
@@ -2394,7 +2394,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '134',
     province: 'Maipo',
     cityId: '13404',
@@ -2402,7 +2402,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '135',
     province: 'Melipilla',
     cityId: '13501',
@@ -2410,7 +2410,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '135',
     province: 'Melipilla',
     cityId: '13502',
@@ -2418,7 +2418,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '135',
     province: 'Melipilla',
     cityId: '13503',
@@ -2426,7 +2426,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '135',
     province: 'Melipilla',
     cityId: '13504',
@@ -2434,7 +2434,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '135',
     province: 'Melipilla',
     cityId: '13505',
@@ -2442,7 +2442,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '136',
     province: 'Talagante',
     cityId: '13601',
@@ -2450,7 +2450,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '136',
     province: 'Talagante',
     cityId: '13602',
@@ -2458,7 +2458,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '136',
     province: 'Talagante',
     cityId: '13603',
@@ -2466,7 +2466,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '136',
     province: 'Talagante',
     cityId: '13604',
@@ -2474,7 +2474,7 @@ export const cities: City[] = [
   },
   {
     regionId: '13',
-    region: 'Metropolitana de Santiago',
+    region: 'Metropolitana',
     provinceId: '136',
     province: 'Talagante',
     cityId: '13605',
