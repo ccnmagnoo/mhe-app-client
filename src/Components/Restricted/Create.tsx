@@ -122,11 +122,12 @@ const Create = (props: any) => {
           const listOfCities = getCityList(data.landName, data.landType as LandType);
           const datePlaceSetting = new Date(data.placeDate);
           const datePostSetting = new Date(data.postDate);
+          const territoryId = getTerritoryId(data.landName, data.landType as LandType);
 
           //Add input: vancancies allowed
           const classRoom: IRoom = {
             uuid: '',
-            idCal: `R${pad(data.idCal, 3)}`,
+            idCal: `R${pad(data.idCal, 3)}.${pad(territoryId ?? 0, 2)}`,
             colaborator: capitalWord(data.colaborator),
             enrolled: [],
             attendees: [],
@@ -148,7 +149,7 @@ const Create = (props: any) => {
             land: { type: data.landType as LandType, name: data.landName },
             op: {
               uuid: auth.currentUser?.uid,
-              cur: getTerritoryId(data.landName, data.landType as LandType),
+              cur: territoryId,
             },
           };
           return classRoom;
@@ -285,7 +286,7 @@ const Create = (props: any) => {
                 fullWidth
                 variant='outlined'
                 id='standard-required'
-                label='contraparte organizadora'
+                label='institución co-organizadora'
                 type='text'
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 {...register('colaborator', {})}

@@ -96,7 +96,7 @@ const RoomView = (props: RoomViewProps) => {
           <Grid item xs={6} sm={2}>
             <Chip
               avatar={<Avatar>R</Avatar>}
-              label={room.idCal.slice(1)}
+              label={room.idCal.slice(1, 4)}
               color={props.workDone ? 'primary' : 'secondary'}
             />
           </Grid>
