@@ -29,6 +29,7 @@ export type Dir = {
 export enum Gender {
   male = 'M',
   female = 'F',
+  nonbinary = 'N',
 }
 
 export const iPersonConverter: Converter<IPerson> = {
