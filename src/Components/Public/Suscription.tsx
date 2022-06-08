@@ -649,7 +649,7 @@ const Suscription = (props: any) => {
           rut: data.rut.toUpperCase(),
           gender: getGender(data.name),
           classroom: {
-            idCal: selectedRoom?.idCal ?? 'R000',
+            idCal: selectedRoom?.idCal ?? 'R000.00',
             uuid: selectedRoom?.uuid ?? 'no-data',
             dateInstance: selectedRoom?.dateInstance ?? new Date(),
           },
