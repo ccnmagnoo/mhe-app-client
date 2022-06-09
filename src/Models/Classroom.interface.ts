@@ -2,6 +2,7 @@ import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { LandType } from '../Functions/GetTerritoryList';
 import Converter from './Converter.interface';
 import { IPlace } from './Place.interface';
+import IStatistics from './Statistics.interface';
 
 export interface IRoom {
   uuid: string;
@@ -17,6 +18,7 @@ export interface IRoom {
   land: { type: LandType; name: string };
   vacancies?: number;
   op?: { uuid?: string; cur?: number };
+  statistics?: Partial<IStatistics>;
 }
 
 export const iRoomConverter: Converter<IRoom> = {
@@ -48,6 +50,7 @@ export const iRoomConverter: Converter<IRoom> = {
       land: { type: it.land.type as LandType, name: it.land.name },
       vacancies: it.vacancies ?? 150,
       op: { uuid: it.op?.uuid, cur: it.op?.cur },
+      statistics: it.statistics,
     };
   },
 };

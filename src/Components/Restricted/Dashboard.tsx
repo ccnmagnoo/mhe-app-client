@@ -28,6 +28,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/auth';
 import { auth } from '../../Config/firebase';
+import { Operations } from './Operations';
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -126,7 +127,7 @@ const Dashboard = (props: any) => {
 
             <Route path={`${path}/editroom/:uuid`} children={<UpdateClassroom />} />
 
-            {/* <Route path={`${path}/operations`} children={<Operations />} /> */}
+            <Route path={`${path}/operations`} children={<Operations />} />
           </Switch>
         </Grid>
       </Grid>
