@@ -103,7 +103,7 @@ export const Operations = () => {
     rooms.forEach(async (room) => {
       //erase attendess duplicated
       const refSus = query(
-        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`).withConverter(
           iPersonConverter
         ),
         where('classroom.uuid', '==', room.uuid)
@@ -115,8 +115,11 @@ export const Operations = () => {
 
       // ref
       const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
-
-      await setDoc(docRef, { attendees: uuidList }, { merge: true });
+      await setDoc(
+        docRef,
+        { enrolled: uuidList.length > 3 ? uuidList : room.attendees },
+        { merge: true }
+      );
 
       console.log('updated', room.idCal, '♻️');
     });
