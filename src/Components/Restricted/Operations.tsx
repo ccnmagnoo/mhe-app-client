@@ -6,7 +6,7 @@ import getAge from '../../Functions/getAge';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
-import { Gender } from '../../Models/Person.Interface';
+import { Gender, iPersonConverter } from '../../Models/Person.Interface';
 import IStatistics from '../../Models/Statistics.interface';
 
 export const Operations = () => {
@@ -84,7 +84,45 @@ export const Operations = () => {
     });
   };
 
-  const fixRooms = async () => {
+  const fixListsInRooms = async () => {
+    const year = 2021;
+    const iniSearch = new Date(`${year}/01/01`);
+    const endSearch = new Date(`${year}/12/31`);
+
+    //get Classrooms form a periord year
+    const refRoom = query(
+      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
+        iRoomConverter
+      ),
+      where('dateInstance', '>=', iniSearch),
+      where('dateInstance', '<=', endSearch)
+    );
+    const queries = await getDocs(refRoom);
+    const rooms = queries.docs.map((data) => data.data());
+
+    rooms.forEach(async (room) => {
+      //erase attendess duplicated
+      const refSus = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
+          iPersonConverter
+        ),
+        where('classroom.uuid', '==', room.uuid)
+      );
+      const data = await getDocs(refSus);
+      const uuidList = data.docs.map((doc) => {
+        return doc.id;
+      });
+
+      // ref
+      const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
+
+      await setDoc(docRef, { attendees: uuidList }, { merge: true });
+
+      console.log('updated', room.idCal, '♻️');
+    });
+  };
+
+  const implementStatistic = async () => {
     const year = 2016;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
@@ -101,18 +139,6 @@ export const Operations = () => {
     const list = queries.docs.map((data) => data.data());
 
     list.forEach(async (room) => {
-      ////erase attendess duplicated
-      // const attendees = room.attendees;
-      // const unique = new Set(attendees);
-      // const list: string[] = Array.from(unique);
-      // // ref
-      // const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
-
-      // //await setDoc(docRef, { attendees: list }, { merge: true });
-      // await setDoc(docRef, { op: { uuid: dbKey.uid, cur: 5 } }, { merge: true });
-
-      ////generate statistics object
-      //fecht attendees.
       const refBen = query(
         collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
           iBeneficiaryConverter
@@ -223,9 +249,13 @@ export const Operations = () => {
       <button type='submit' className='' onClick={() => pushRoomDates()} disabled>
         fix
       </button>
+      <p>Reparar Rooms Attendes y listados </p>
+      <button type='submit' className='' onClick={() => fixListsInRooms()} disabled>
+        fix
+      </button>
       <p>Actualizar Rooms Statistics </p>
-      <button type='submit' className='' onClick={() => fixRooms()} disabled>
-        fix 2020
+      <button type='submit' className='' onClick={() => implementStatistic()} disabled>
+        fix
       </button>
       <p>subir consolidados faltantes 2019 </p>
       <button type='submit' className='' onClick={() => updateBenef()} disabled>
