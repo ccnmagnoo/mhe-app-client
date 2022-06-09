@@ -9,8 +9,8 @@ function getAge(rut: string): { age: number; group: number } {
   const estimatedYearBorn = Math.floor(cipher / (100_000 * 3.46) + 1_932.3); //1982
   const estimatedAge: number = currentYear - estimatedYearBorn;
   const ageCompose = {
-    age: estimatedAge > 16 ? estimatedAge : 0,
-    group: estimatedAge > 16 ? Math.floor(estimatedAge / 10) * 10 : 0,
+    age: estimatedAge > 19 ? estimatedAge : 0,
+    group: estimatedAge > 19 ? Math.floor(estimatedAge / 10) * 10 : 0,
   };
 
   return ageCompose;

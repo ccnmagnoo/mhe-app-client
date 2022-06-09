@@ -224,7 +224,7 @@ export const Operations = () => {
         fix
       </button>
       <p>Actualizar Rooms Statistics </p>
-      <button type='submit' className='' onClick={() => fixRooms()}>
+      <button type='submit' className='' onClick={() => fixRooms()} disabled>
         fix 2020
       </button>
       <p>subir consolidados faltantes 2019 </p>
