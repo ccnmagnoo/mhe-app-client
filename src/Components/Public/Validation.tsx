@@ -575,7 +575,7 @@ const Validation = (props: any) => {
       //new beneficiary with sign SVG code✍✍✍✒
       if (candidate !== undefined) {
         //upload signature and get string 📷🌄🚞🚵‍♂️
-        const uploadSignature = await setSvgToStorage(signSvg, candidate.uuid);
+        const uploadSignature = await setSignToStorage(signSvg, candidate.uuid);
 
         //building beneficiary 💏
         const beneficiary: IBeneficiary = {
@@ -629,7 +629,7 @@ const Validation = (props: any) => {
     }
   }
 
-  async function setSvgToStorage(svgString: string | null, uuid: string) {
+  async function setSignToStorage(svgString: string | null, uuid: string) {
     /**
      * this @function setSvgToStorage takes svg
      * String XLM to a blob/PGN to upload to Firebase Storage as *.png
@@ -655,12 +655,15 @@ const Validation = (props: any) => {
           storage,
           `mheServices/signStorage/${thisYear}/${uuid}.png`
         );
-
-        const upload = await uploadBytes(storageRef, blob);
-        const done = upload.ref.fullPath;
-        console.log('signature upload', done);
-
-        return done;
+        try {
+          await uploadBytes(storageRef, blob);
+          const done = storageRef.fullPath;
+          console.log('signature upload', done);
+          return done;
+        } catch (error) {
+          console.log('signature upload', error);
+          return undefined;
+        }
       } else {
         return undefined;
       }
