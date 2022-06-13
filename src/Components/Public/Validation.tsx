@@ -33,7 +33,7 @@ import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { orderBy, where } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
 import { storage } from '../../Config/firebase';
@@ -656,8 +656,8 @@ const Validation = (props: any) => {
           `mheServices/signStorage/${thisYear}/${uuid}.png`
         );
         try {
-          await uploadBytes(storageRef, blob);
-          const done = storageRef.fullPath;
+          const data = await uploadBytes(storageRef, blob);
+          const done = getDownloadURL(data.ref);
           console.log('signature upload', done);
           return done;
         } catch (error) {
