@@ -234,6 +234,7 @@ const Suscription = (props: Props) => {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    fullWidth
                     required
                     disabled={disableA}
                     id='check-rut'
@@ -250,6 +251,7 @@ const Suscription = (props: Props) => {
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
+
                   {rolRequest?.check}
                 </Grid>
 
