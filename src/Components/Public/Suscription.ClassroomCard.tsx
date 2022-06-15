@@ -32,13 +32,17 @@ const ClassroomCard = (props: TClassroomCard) => {
     <>
       <Card style={{ backgroundColor: backgroundColor() }}>
         <CardHeader
-          avatar={<Avatar aria-label='idcal'>{item.idCal.replace('R', '')}</Avatar>}
+          avatar={
+            <Avatar aria-label='idcal'>
+              {item.idCal.substring(1, item.idCal.length - 3)}
+            </Avatar>
+          }
           action={
             <IconButton aria-label='seleccionar'>
               <CheckCircleIcon color={isSelected ? 'primary' : 'inherit'} />
             </IconButton>
           }
-          title={`${item.idCal} ${item.colaborator}`}
+          title={item.colaborator}
           subheader={moment(item.dateInstance).format('dddd DD MMM h:mm a')}
         />
         <CardActions>
