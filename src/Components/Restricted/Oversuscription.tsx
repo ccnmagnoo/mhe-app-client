@@ -42,7 +42,7 @@ import driver from '../../Database/driver';
 
 export const Oversuscription = () => {
   //hooks
-  const [rolRequest, setRolRequest] = React.useState<RolRequest | null>(null);
+  const [rolRequest, setRolRequest] = React.useState<RolRequest | undefined>(undefined);
   const [gotBenefit, setGotBenefit] = React.useState<
     'with benefits' | 'no valid benefits' | undefined
   >(undefined);
@@ -97,11 +97,12 @@ export const Oversuscription = () => {
     console.log('submit A', data);
 
     //checking rut 👁‍🗨👁‍🗨
-    setRolRequest(rolChecker(data.rut));
-    console.log('is rol valid?', rolRequest);
+    const rolValidated = rolChecker(data.rut);
+    setRolRequest(rolValidated);
+    console.log('is rol valid?', rolValidated);
 
     //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
-    const result = await checkBenefit(data);
+    const result = await checkBenefit(rolValidated);
     setGotBenefit(result); //state of having benefits active
     console.log('got benefits?', result);
   };
@@ -119,20 +120,21 @@ export const Oversuscription = () => {
     }
   }, [gotBenefit]);
 
-  async function checkBenefit(data: Input) {
+  async function checkBenefit(rolRequest: RolRequest | undefined) {
     /**
      * @function checkFirebase got is she got old active benefits
      */
 
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
-      console.log('fetch rut old benefits', data.rut);
+      if (rolRequest === undefined) return 'with benefits';
+      console.log('fetch rut old benefits', rolRequest?.rol);
       const currentBenefits = (await driver.get<IBeneficiary>(
         undefined,
         'collection',
         dbKey.cvn,
         iBeneficiaryConverter,
-        where('rut', '==', data.rut),
+        where('rut', '==', rolRequest?.rol),
         where('dateSign', '>=', dateLimit)
       )) as IBeneficiary[];
 
@@ -206,7 +208,7 @@ export const Oversuscription = () => {
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
-                  {rolRequest}
+                  {rolRequest?.check}
                 </Grid>
 
                 <Grid item xs={3} sm={'auto'}>
@@ -221,7 +223,14 @@ export const Oversuscription = () => {
                 </Grid>
 
                 {/*response alert*/}
-                {snackbarA()}
+                {snackbarA() ?? (
+                  // replace for K
+                  <Grid item xs={12}>
+                    <Alert severity='info' style={{ transform: 'scale(1)' }}>
+                      si termina en <b>K</b> reemplace por un <b>CERO:0</b>
+                    </Alert>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Paper>
@@ -434,13 +443,23 @@ export const Oversuscription = () => {
         return false;
       }
 
+      //check rolRequest null state
+      if (rolRequest?.rol === undefined) {
+        console.log('check rol is ', undefined);
+        setErrorC({
+          value: true,
+          message: 'rut mal definido 🙊 ',
+        });
+        return false;
+      }
+
       //get all ROOMS which this RUT is suscribed 🔎👤
       const getSuscriptions: IPerson[] = (await driver.get(
         undefined,
         'collection',
         dbKey.sus,
         iPersonConverter,
-        where('rut', '==', data.rut)
+        where('rut', '==', rolRequest.rol)
       )) as IPerson[];
 
       //if indexOf is -1: this person isnt suscribed to seleced room

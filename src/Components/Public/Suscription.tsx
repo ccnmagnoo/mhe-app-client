@@ -56,9 +56,9 @@ import { where } from 'firebase/firestore';
 import driver from '../../Database/driver';
 import { dateLimit } from '../../Config/credential';
 
-const Suscription = (props: any) => {
+const Suscription = () => {
   //hooks
-  const [rolRequest, setRolRequest] = React.useState<RolRequest | null>(null);
+  const [rolRequest, setRolRequest] = React.useState<RolRequest | undefined>(undefined);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
 
   //objects states
@@ -128,12 +128,14 @@ const Suscription = (props: any) => {
     console.log('submit A', data);
     setProgressA(true); //progress bar ON
 
-    //checking rut 👁‍🗨👁‍🗨
-    setRolRequest(rolChecker(data.rut));
-    console.log('is rol valid?', rolRequest);
+    //checking rut 👁‍🗨
+    const rolVerified = rolChecker(data.rut);
+    setRolRequest(rolVerified);
+
+    console.log('is rol valid?', rolVerified.rol);
 
     //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
-    const result = await checkBenefit(rolRequest);
+    const result = await checkBenefit(rolVerified);
     setGotBenefit(result); //state of having benefits active
     console.log('got benefits?', result);
   };
@@ -155,7 +157,7 @@ const Suscription = (props: any) => {
   /**
    * @function checkBenefit got is she got old active benefits
    */
-  async function checkBenefit(rolRequest: RolRequest | null) {
+  async function checkBenefit(rolRequest?: RolRequest) {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
@@ -227,20 +229,20 @@ const Suscription = (props: any) => {
                     required
                     disabled={disableA}
                     id='check-rut'
-                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
-                    type='text'
+                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese rut'}
+                    type='number'
                     variant='outlined'
                     {...register('rut', {
                       pattern: {
-                        value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                        message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                        value: /^\d{7,8}[-]*[Kk\d]{1}$/,
+                        message: 'rut inválido: 🙅‍♂️; puede reemplazar K por 0',
                       },
                       validate: { isTrue: (v) => rolChecker(v).check === true },
                     })}
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
-                  {rolRequest}
+                  {rolRequest?.check}
                 </Grid>
 
                 <Grid item xs={12} sm={'auto'}>
@@ -255,7 +257,14 @@ const Suscription = (props: any) => {
                 </Grid>
 
                 {/*response alert*/}
-                {snackbarA()}
+                {snackbarA() ?? (
+                  // replace for K
+                  <Grid item xs={12}>
+                    <Alert severity='info' style={{ transform: 'scale(1)' }}>
+                      si termina en <b>K</b> reemplace por un <b>CERO:0</b>
+                    </Alert>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Paper>

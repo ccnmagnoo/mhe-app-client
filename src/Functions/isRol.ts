@@ -17,7 +17,6 @@ export function isRol(rol: string): RolRequest {
     //check digit verificator
     const rolDigit = rol.charAt(rol.length - 1);
     const rolBody = rol.substring(0, rol.length - 1);
-    console.log('input', rol, 'rol components', rolDigit, rolBody);
 
     const calculatedDigit: string = calculateVerifyNumber(+rolBody);
 
