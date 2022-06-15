@@ -379,11 +379,14 @@ const Validation = (props: any) => {
 
         // FIXME: some browser shows UTC wrong hours
         //act.setHours(act.getHours() - 6);
+        const countGap = process.env.REACT_APP_VALIDATION_TIME_GAP
+          ? +process.env.REACT_APP_VALIDATION_TIME_GAP
+          : 30;
         const timeGap: Date = new Date(
           lastSuscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
-          timeGap.getDate() + 120
+          timeGap.getDate() + countGap
         ); /*@timegap defines how much time got for validation */
 
         console.log('time of class', act);
@@ -492,7 +495,7 @@ const Validation = (props: any) => {
                       validate: {
                         isTrue: (v) => {
                           if (disableA === false) {
-                            return rolChecker(v) === true;
+                            return rolChecker(v).check === true;
                           } else {
                             return true;
                           }

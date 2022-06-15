@@ -21,7 +21,7 @@ import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isRol as rolChecker } from '../../Functions/isRol';
+import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
@@ -42,7 +42,7 @@ import driver from '../../Database/driver';
 
 export const Oversuscription = () => {
   //hooks
-  const [isRol, setIsRol] = React.useState<boolean | null>(null);
+  const [rolRequest, setRolRequest] = React.useState<RolRequest | null>(null);
   const [gotBenefit, setGotBenefit] = React.useState<
     'with benefits' | 'no valid benefits' | undefined
   >(undefined);
@@ -97,8 +97,8 @@ export const Oversuscription = () => {
     console.log('submit A', data);
 
     //checking rut 👁‍🗨👁‍🗨
-    setIsRol(rolChecker(data.rut));
-    console.log('is rol valid?', isRol);
+    setRolRequest(rolChecker(data.rut));
+    console.log('is rol valid?', rolRequest);
 
     //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
     const result = await checkBenefit(data);
@@ -201,12 +201,12 @@ export const Oversuscription = () => {
                         value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
                         message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
                       },
-                      validate: { isTrue: (v) => rolChecker(v) === true },
+                      validate: { isTrue: (v) => rolChecker(v).check === true },
                     })}
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
-                  {isRol}
+                  {rolRequest}
                 </Grid>
 
                 <Grid item xs={3} sm={'auto'}>

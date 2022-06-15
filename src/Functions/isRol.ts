@@ -1,13 +1,18 @@
-export function isRol(rol: string): boolean {
+export interface RolRequest {
+  check: boolean;
+  rol?: string; //formated in 12345678-9
+}
+
+export function isRol(rol: string): RolRequest {
   //social number verification
-  const rolChecker = (rol?: string): boolean => {
+  const rolChecker = (rol?: string): RolRequest => {
     //undefinded solution
-    if (rol === undefined) return false;
+    if (rol === undefined) return { check: false, rol: undefined };
 
     //check regular expression
     rol = rol?.replace(/\W+/g, '').toUpperCase();
     const re: RegExp = /[0-9]+[0-9kK]{1}/;
-    if (!re.test(rol)) return false;
+    if (!re.test(rol)) return { check: false, rol: undefined };
 
     //check digit verificator
     const rolDigit = rol.charAt(rol.length - 1);
@@ -18,11 +23,11 @@ export function isRol(rol: string): boolean {
 
     switch (true) {
       case calculatedDigit === rolDigit:
-        return true;
+        return { check: true, rol: rolBody + '-' + rolDigit };
       case calculatedDigit === 'K' && rolDigit === '0':
-        return true;
+        return { check: true, rol: rolBody + '-' + calculatedDigit };
       default:
-        return false;
+        return { check: false, rol: undefined };
     }
   };
 

@@ -30,7 +30,7 @@ import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isRol as rolChecker } from '../../Functions/isRol';
+import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
@@ -58,7 +58,7 @@ import { dateLimit } from '../../Config/credential';
 
 const Suscription = (props: any) => {
   //hooks
-  const [isRol, setIsRol] = React.useState<boolean | null>(null);
+  const [rolRequest, setRolRequest] = React.useState<RolRequest | null>(null);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
 
   //objects states
@@ -129,11 +129,11 @@ const Suscription = (props: any) => {
     setProgressA(true); //progress bar ON
 
     //checking rut 👁‍🗨👁‍🗨
-    setIsRol(rolChecker(data.rut));
-    console.log('is rol valid?', isRol);
+    setRolRequest(rolChecker(data.rut));
+    console.log('is rol valid?', rolRequest);
 
     //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
-    const result = await checkBenefit(data);
+    const result = await checkBenefit(rolRequest);
     setGotBenefit(result); //state of having benefits active
     console.log('got benefits?', result);
   };
@@ -152,10 +152,10 @@ const Suscription = (props: any) => {
     }
   }, [gotBenefit]);
 
-  async function checkBenefit(data: Input) {
-    /**
-     * @function checkFirebase got is she got old active benefits
-     */
+  /**
+   * @function checkBenefit got is she got old active benefits
+   */
+  async function checkBenefit(rolRequest: RolRequest | null) {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
@@ -164,7 +164,7 @@ const Suscription = (props: any) => {
         'collection',
         dbKey.cvn,
         iBeneficiaryConverter,
-        where('rut', '==', data.rut.toUpperCase()),
+        where('rut', '==', rolRequest?.rol),
         where('dateSign', '>=', dateLimit)
       )) as IBeneficiary[];
 
@@ -235,12 +235,12 @@ const Suscription = (props: any) => {
                         value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
                         message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
                       },
-                      validate: { isTrue: (v) => rolChecker(v) === true },
+                      validate: { isTrue: (v) => rolChecker(v).check === true },
                     })}
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
-                  {isRol}
+                  {rolRequest}
                 </Grid>
 
                 <Grid item xs={12} sm={'auto'}>
@@ -621,8 +621,17 @@ const Suscription = (props: any) => {
         return false;
       }
 
-      //check the selected ROOM has already this RUT 🔎👤
+      //check rolRequest null state
+      if (rolRequest?.rol === undefined) {
+        console.log('check rol is ', undefined);
+        setErrorC({
+          value: true,
+          message: 'rut mal definido 🙊 ',
+        });
+        return false;
+      }
 
+      //check the selected ROOM has already this RUT 🔎👤
       const suscriptions = (await driver.get(
         undefined,
         'collection',
@@ -646,7 +655,7 @@ const Suscription = (props: any) => {
             fatherName: capitalWord(data.fatherName),
             motherName: capitalWord(data.motherName),
           },
-          rut: data.rut.toUpperCase(),
+          rut: rolRequest.rol,
           gender: getGender(data.name),
           classroom: {
             idCal: selectedRoom?.idCal ?? 'R000.00',
