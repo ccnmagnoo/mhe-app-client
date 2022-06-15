@@ -2,30 +2,31 @@ export function isRol(rol: string): boolean {
   //social number verification
   const rolChecker = (rol?: string): boolean => {
     //undefinded solution
-    if (rol === undefined) {
-      return false;
-    }
+    if (rol === undefined) return false;
 
-    rol = rol?.replace('‐', '-');
-    rol = rol?.split('.').join('');
-    const re: RegExp = /^[0-9]+[-|‐]{1}[0-9kK]{1}$/;
+    //check regular expression
+    rol = rol?.replace(/\W+/g, '').toUpperCase();
+    const re: RegExp = /[0-9]+[0-9kK]{1}/;
+    if (!re.test(rol)) return false;
 
-    if (!re.test(rol)) {
-      return false;
-    } else {
-      const rolSplited = rol.split('-');
-      let rolDigit: string = rolSplited[1];
-      const rolBody = rolSplited[0];
+    //check digit verificator
+    const rolDigit = rol.charAt(rol.length - 1);
+    const rolBody = rol.substring(0, rol.length - 1);
+    console.log('input', rol, 'rol components', rolDigit, rolBody);
 
-      if (rolDigit === 'K') {
-        rolDigit = 'k';
-      }
+    const calculatedDigit: string = calculateVerifyNumber(+rolBody);
 
-      return rolDigitGen(+rolBody) === rolDigit;
+    switch (true) {
+      case calculatedDigit === rolDigit:
+        return true;
+      case calculatedDigit === 'K' && rolDigit === '0':
+        return true;
+      default:
+        return false;
     }
   };
 
-  const rolDigitGen = (rol: number): string => {
+  const calculateVerifyNumber = (rol: number): string => {
     //generador de verificador de código calculado
     let M = 0,
       S = 1;
@@ -34,7 +35,7 @@ export function isRol(rol: string): boolean {
       S = (S + (rol % 10) * (9 - (M++ % 6))) % 11;
     }
 
-    return S ? (S - 1).toString() : 'k';
+    return S ? (S - 1).toString() : 'K';
   };
 
   return rolChecker(rol);
