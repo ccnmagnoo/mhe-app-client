@@ -302,15 +302,22 @@ const Validation = (props: any) => {
         );
       }
     } else {
-      return undefined;
+      return (
+        <Grid item xs={12}>
+          <Alert severity='info'>
+            si termina en <b>K</b> reemplace por un <b>CERO</b>.
+          </Alert>
+        </Grid>
+      );
     }
   };
 
   const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A: rut validation', true, data.rut);
+    const { rol } = rolChecker(data.rut);
 
     //fetch suscriptions
-    const checkSuscribed = await checkSuscription(data);
+    const checkSuscribed = await checkSuscription(rol);
     if (checkSuscribed !== undefined) {
       //disableA
       console.log('suscribed result', checkSuscribed);
@@ -324,7 +331,7 @@ const Validation = (props: any) => {
   };
 
   //Database part 🔥🔥🔥
-  async function checkSuscription(data: Input) {
+  async function checkSuscription(rol?: string) {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
       const suscriptions = (await driver.get<IPerson>(
@@ -332,7 +339,7 @@ const Validation = (props: any) => {
         'collection',
         dbKey.sus,
         iPersonConverter,
-        where('rut', '==', data.rut.toUpperCase()),
+        where('rut', '==', rol),
         orderBy('dateUpdate', 'desc')
       )) as IPerson[];
 
@@ -484,7 +491,7 @@ const Validation = (props: any) => {
                     required
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
-                    type='text'
+                    type='number'
                     variant='outlined'
                     {...register('rut', {
                       //pattern: {
@@ -517,6 +524,7 @@ const Validation = (props: any) => {
                     {disableA ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
+
                 {snackbarA()}
               </Grid>
             </Box>
