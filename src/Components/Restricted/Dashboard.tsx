@@ -10,7 +10,6 @@ import { Edit as Edition } from './Edition';
 //componentes
 import { PeriodSelector } from './Dashboard.PeriodSelector';
 import Home from './Home';
-import { Oversuscription } from './Oversuscription';
 import Create from './Create';
 import Incoming from './Incoming';
 import Outgoing from './Outgoing';
@@ -28,6 +27,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/auth';
 import { auth } from '../../Config/firebase';
+import Suscription from '../Public/Suscription';
 // import { Operations } from './Operations';
 
 const Dashboard = (props: any) => {
@@ -113,7 +113,7 @@ const Dashboard = (props: any) => {
             </Route>
             <Route path={`${path}/addperson`}>
               {/*create new unsuscribed person after period gap*/}
-              <Oversuscription />
+              <Suscription oversuscription={true} />
             </Route>
             <Route path={`${path}/create`}>
               {/*create new classroom*/}
