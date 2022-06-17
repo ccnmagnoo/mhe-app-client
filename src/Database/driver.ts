@@ -1,9 +1,9 @@
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
   getDocs,
-  PartialWithFieldValue,
   query,
   QueryConstraint,
   setDoc,
@@ -50,20 +50,27 @@ const driver = {
     }
   },
   set: async <T>(
-    uid: string[] | undefined,
     docType: dbKey.room | dbKey.cvn | dbKey.sus,
-    document: PartialWithFieldValue<T>,
+    document: T,
     converter: Converter<T>,
-    setOptions: SetOptions
+    uuid?: string,
+    options?: SetOptions
   ) => {
     const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
-    const ref = doc(db, path, ...(uid ?? [])).withConverter(converter);
 
     try {
-      await setDoc(ref, document, setOptions);
-      return true;
+      if (uuid === undefined) {
+        //automatic id solding: !double writing :(
+        const ref = collection(db, path).withConverter(converter);
+        const push = await addDoc(ref, document);
+        await setDoc(doc(db, path, push.id), { uuid: push.id }, { merge: true });
+      } else {
+        //defined uuid
+        const ref = doc(db, path, uuid).withConverter(converter);
+        await setDoc(ref, document, options ?? {});
+      }
     } catch (error) {
-      return false;
+      console.log(error);
     }
   },
 };

@@ -33,7 +33,7 @@ import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { orderBy, where } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
 import { storage } from '../../Config/firebase';
@@ -55,7 +55,7 @@ const Validation = (props: any) => {
 
   const signPaper = useStyles();
   //State hook with information
-  const [person, setPerson] = React.useState<IPerson | undefined>(undefined);
+  const [candidate, setCandidate] = React.useState<IPerson | undefined>(undefined);
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
@@ -302,21 +302,28 @@ const Validation = (props: any) => {
         );
       }
     } else {
-      return undefined;
+      return (
+        <Grid item xs={12}>
+          <Alert severity='info'>
+            si termina en <b>K</b> reemplace por un <b>CERO</b>.
+          </Alert>
+        </Grid>
+      );
     }
   };
 
   const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A: rut validation', true, data.rut);
+    const { rol } = rolChecker(data.rut);
 
     //fetch suscriptions
-    const checkSuscribed = await checkSuscription(data);
+    const checkSuscribed = await checkSuscription(rol);
     if (checkSuscribed !== undefined) {
       //disableA
       console.log('suscribed result', checkSuscribed);
       setDisableA(true);
       setVisibleB(true);
-      setPerson(checkSuscribed);
+      setCandidate(checkSuscribed);
       console.log('active B', true);
     } else {
       console.log('validation A on suspense', checkSuscribed);
@@ -324,7 +331,7 @@ const Validation = (props: any) => {
   };
 
   //Database part 🔥🔥🔥
-  async function checkSuscription(data: Input) {
+  async function checkSuscription(rol?: string) {
     try {
       //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
       const suscriptions = (await driver.get<IPerson>(
@@ -332,7 +339,7 @@ const Validation = (props: any) => {
         'collection',
         dbKey.sus,
         iPersonConverter,
-        where('rut', '==', data.rut.toUpperCase()),
+        where('rut', '==', rol),
         orderBy('dateUpdate', 'desc')
       )) as IPerson[];
 
@@ -379,11 +386,14 @@ const Validation = (props: any) => {
 
         // FIXME: some browser shows UTC wrong hours
         //act.setHours(act.getHours() - 6);
+        const countGap = process.env.REACT_APP_VALIDATION_TIME_GAP
+          ? +process.env.REACT_APP_VALIDATION_TIME_GAP
+          : 30;
         const timeGap: Date = new Date(
           lastSuscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
-          timeGap.getDate() + 120
+          timeGap.getDate() + countGap
         ); /*@timegap defines how much time got for validation */
 
         console.log('time of class', act);
@@ -481,7 +491,7 @@ const Validation = (props: any) => {
                     required
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
-                    type='text'
+                    type='number'
                     variant='outlined'
                     {...register('rut', {
                       //pattern: {
@@ -492,7 +502,7 @@ const Validation = (props: any) => {
                       validate: {
                         isTrue: (v) => {
                           if (disableA === false) {
-                            return rolChecker(v) === true;
+                            return rolChecker(v).check === true;
                           } else {
                             return true;
                           }
@@ -514,6 +524,7 @@ const Validation = (props: any) => {
                     {disableA ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
+
                 {snackbarA()}
               </Grid>
             </Box>
@@ -573,13 +584,13 @@ const Validation = (props: any) => {
       const signSvg = draw.getSvgXML();
 
       //new beneficiary with sign SVG code✍✍✍✒
-      if (person !== undefined) {
+      if (candidate !== undefined) {
         //upload signature and get string 📷🌄🚞🚵‍♂️
-        const uploadSignature = await setSvgToStorage(signSvg, person.uuid);
+        const uploadSignature = await setSignToStorage(signSvg, candidate.uuid);
 
         //building beneficiary 💏
         const beneficiary: IBeneficiary = {
-          ...person,
+          ...candidate,
           sign: uploadSignature,
           dateSign: now,
         };
@@ -587,7 +598,7 @@ const Validation = (props: any) => {
         //push sign database ⏫⏫⏫
         /*checking previous benefits*/
         const consolidation = (await driver.get(
-          person?.uuid,
+          candidate?.uuid,
           'doc',
           dbKey.cvn,
           iBeneficiaryConverter
@@ -595,8 +606,8 @@ const Validation = (props: any) => {
 
         //check is this benefit was already signed
         if (consolidation === undefined) {
-          //if it dosent exist, human can sign ✅
-          driver.set(undefined, dbKey.cvn, beneficiary, iBeneficiaryConverter, {
+          //if it dosent exist, human can sign ✅ create UUID defined consolidation
+          driver.set(dbKey.cvn, beneficiary, iBeneficiaryConverter, candidate.uuid, {
             merge: true,
           });
           console.log('posted beneficiary', beneficiary.uuid);
@@ -629,7 +640,7 @@ const Validation = (props: any) => {
     }
   }
 
-  async function setSvgToStorage(svgString: string | null, uuid: string) {
+  async function setSignToStorage(svgString: string | null, uuid: string) {
     /**
      * this @function setSvgToStorage takes svg
      * String XLM to a blob/PGN to upload to Firebase Storage as *.png
@@ -655,12 +666,15 @@ const Validation = (props: any) => {
           storage,
           `mheServices/signStorage/${thisYear}/${uuid}.png`
         );
-
-        const upload = await uploadBytes(storageRef, blob);
-        const done = upload.ref.fullPath;
-        console.log('signature upload', done);
-
-        return done;
+        try {
+          const data = await uploadBytes(storageRef, blob);
+          const done = getDownloadURL(data.ref);
+          console.log('signature upload', done);
+          return done;
+        } catch (error) {
+          console.log('signature upload', error);
+          return undefined;
+        }
       } else {
         return undefined;
       }
@@ -677,7 +691,7 @@ const Validation = (props: any) => {
           <Paper elevation={0}>
             <Box p={1}>
               {/*the DOCUMENT 🚩📖📚*/}
-              <SignDocument person={person as IBeneficiary} classroom={classroom} />
+              <SignDocument person={candidate as IBeneficiary} classroom={classroom} />
               <Paper variant='outlined' elevation={1}>
                 <Grid
                   container

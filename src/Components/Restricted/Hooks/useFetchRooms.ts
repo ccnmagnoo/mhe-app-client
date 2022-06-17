@@ -1,6 +1,6 @@
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import React from 'react';
-import { db } from '../../../Config/firebase';
+import { auth, db } from '../../../Config/firebase';
 import { iRoomConverter } from '../../../Models/Classroom.interface';
 import { dbKey } from '../../../Models/databaseKeys';
 import { Context } from '../Context/context';
@@ -25,12 +25,6 @@ export const useFetchRooms = () => {
       now: new Date(),
     };
     //firebase 🔥🔥🔥
-    // const ref = db
-    //   .collection(`${dbKey.act}/${refUuid}/${dbKey.room}`)
-    //   .where('placeActivity.date', '>=', timeGap.ini)
-    //   .where('placeActivity.date', '<=', timeGap.end)
-    //   .orderBy('placeActivity.date', 'desc')
-    //   .withConverter(iClassroomConverter);
 
     const q = query(
       collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
@@ -38,6 +32,7 @@ export const useFetchRooms = () => {
       ),
       where('placeActivity.date', '>=', timeGap.ini),
       where('placeActivity.date', '<=', timeGap.end),
+      where('op.uuid', '==', auth.currentUser?.uid), //user operator
       orderBy('placeActivity.date', 'desc')
     );
 

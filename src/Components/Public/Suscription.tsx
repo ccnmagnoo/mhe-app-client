@@ -4,13 +4,8 @@ import {
   Box,
   Card,
   CardContent,
-  FormControl,
-  InputAdornment,
-  InputLabel,
   LinearProgress,
-  MenuItem,
   Paper,
-  Select,
   TextFieldProps,
 } from '@material-ui/core';
 import {
@@ -30,7 +25,7 @@ import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isRol as rolChecker } from '../../Functions/isRol';
+import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 
 import { Requirements } from './Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
@@ -48,18 +43,39 @@ import { OnSuccessSuscription } from './Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
-import indigo from '@material-ui/core/colors/indigo';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Suscription.ClassroomCard';
-import { doc, where } from 'firebase/firestore';
+import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
-import { db } from '../../Config/firebase';
 import { dateLimit } from '../../Config/credential';
+import { EnergyPollForm } from './EnergyPollForm';
 
-const Suscription = (props: any) => {
+type Props = {
+  oversuscription?: boolean;
+};
+
+export type InputSuscription = {
+  rut: string;
+  name: string;
+  fatherName: string;
+  motherName: string;
+  dir: string;
+  city: string;
+  email: string;
+  phone?: string;
+  //energy poll ⚡
+  electricBill?: number;
+  electricity?: number;
+  gasBill?: number;
+  gasDuration?: number;
+};
+
+const Suscription = (props: Props) => {
+  //instance of oversuscription
+  const oversuscription: boolean = props.oversuscription ?? false;
   //hooks
-  const [isRol, setIsRol] = React.useState<boolean | null>(null);
+  const [rolRequest, setRolRequest] = React.useState<RolRequest | undefined>(undefined);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
 
   //objects states
@@ -89,23 +105,7 @@ const Suscription = (props: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     watch,
     formState: { errors },
-  } = useForm<Input>();
-
-  type Input = {
-    rut: string;
-    name: string;
-    fatherName: string;
-    motherName: string;
-    dir: string;
-    city: string;
-    email: string;
-    phone?: string;
-    //energy poll ⚡
-    electricBill?: number;
-    electricity?: number;
-    gasBill?: number;
-    gasDuration?: number;
-  };
+  } = useForm<InputSuscription>();
 
   //function move to bottom of the page⏬
   //TODO:search function
@@ -114,27 +114,37 @@ const Suscription = (props: any) => {
   const header = (
     <React.Fragment>
       <Typography variant='h6' color='primary'>
-        Inscripción a capacitaciones
+        {oversuscription ? (
+          <span>Inscripción forzada</span>
+        ) : (
+          <span>Inscripción a talleres</span>
+        )}
       </Typography>
       <Typography variant='body1' color='initial'>
-        recuerde tener su carnet a mano 🙌💳
+        {oversuscription ? (
+          <span>inscripción hasta 120 días después del taller</span>
+        ) : (
+          <span>recuerde tener su carnet a mano 🙌💳</span>
+        )}
       </Typography>
     </React.Fragment>
   );
 
   //FORM A 💖💖💗
-  const onSubmitA: SubmitHandler<Input> = async (data) => {
+  const onSubmitA: SubmitHandler<InputSuscription> = async (data) => {
     //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
     setProgressA(true); //progress bar ON
 
-    //checking rut 👁‍🗨👁‍🗨
-    setIsRol(rolChecker(data.rut));
-    console.log('is rol valid?', isRol);
+    //checking rut 👁‍🗨
+    const rolVerified = rolChecker(data.rut);
+    setRolRequest(rolVerified);
+
+    console.log('is rol valid?', rolVerified.rol);
 
     //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
-    const result = await checkBenefit(data);
+    const result = await checkBenefit(rolVerified);
     setGotBenefit(result); //state of having benefits active
     console.log('got benefits?', result);
   };
@@ -153,10 +163,10 @@ const Suscription = (props: any) => {
     }
   }, [gotBenefit]);
 
-  async function checkBenefit(data: Input) {
-    /**
-     * @function checkFirebase got is she got old active benefits
-     */
+  /**
+   * @function checkBenefit got is she got old active benefits
+   */
+  async function checkBenefit(rolRequest?: RolRequest) {
     try {
       //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
@@ -165,7 +175,7 @@ const Suscription = (props: any) => {
         'collection',
         dbKey.cvn,
         iBeneficiaryConverter,
-        where('rut', '==', data.rut.toUpperCase()),
+        where('rut', '==', rolRequest?.rol),
         where('dateSign', '>=', dateLimit)
       )) as IBeneficiary[];
 
@@ -189,7 +199,6 @@ const Suscription = (props: any) => {
       //active benefits, alert cant continue ❌❌
       return (
         <Grid item xs={12}>
-          {' '}
           <Alert severity='error'>no cumple los requisitos 🙈</Alert>
         </Grid>
       );
@@ -225,23 +234,25 @@ const Suscription = (props: any) => {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    fullWidth
                     required
                     disabled={disableA}
                     id='check-rut'
-                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese su rut'}
-                    type='text'
+                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese rut'}
+                    type='number'
                     variant='outlined'
                     {...register('rut', {
                       pattern: {
-                        value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                        message: 'rut inválido: sin puntos 🙅‍♂️, con guión 👌',
+                        value: /^\d{7,8}[-]*[Kk\d]{1}$/,
+                        message: 'rut inválido: 🙅‍♂️; puede reemplazar K por 0',
                       },
-                      validate: { isTrue: (v) => rolChecker(v) === true },
+                      validate: { isTrue: (v) => rolChecker(v).check === true },
                     })}
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
                   />
-                  {isRol}
+
+                  {rolRequest?.check}
                 </Grid>
 
                 <Grid item xs={12} sm={'auto'}>
@@ -256,7 +267,14 @@ const Suscription = (props: any) => {
                 </Grid>
 
                 {/*response alert*/}
-                {snackbarA()}
+                {snackbarA() ?? (
+                  // replace for K
+                  <Grid item xs={12}>
+                    <Alert severity='info' style={{ transform: 'scale(1)' }}>
+                      si termina en <b>K</b> reemplace por un <b>CERO:0</b>
+                    </Alert>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Paper>
@@ -266,7 +284,7 @@ const Suscription = (props: any) => {
   );
 
   //FROM B 💖💖💗
-  const onSubmitB: SubmitHandler<Input> = async (data) => {
+  const onSubmitB: SubmitHandler<InputSuscription> = async (data) => {
     console.log('form B', data);
     setDisableB(true);
     setProgressB(true); //progress bar ON
@@ -280,11 +298,11 @@ const Suscription = (props: any) => {
     setProgressB(false); //progress bar OFF
   };
 
-  async function fetchClassrooms(data: Input) {
-    /**
-     * @function fetchClassrooms got active incoming classrooms
-     * INSIDE the territory suscription
-     */
+  /**
+   * @function fetchClassrooms got active incoming classrooms
+   * INSIDE the territory suscription
+   */
+  async function fetchClassrooms(data: InputSuscription) {
     try {
       //firestore🔥🔥🔥: fetch incoming classes
       /**
@@ -295,9 +313,17 @@ const Suscription = (props: any) => {
        */
       //time restriction
       console.log('requested city', data.city, '');
-      const backwardDays = 14;
       const restrictionTime = new Date();
-      restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
+      if (oversuscription === false) {
+        //normal: get last 14 days Rooms
+        const backwardDays = 14;
+        restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
+      } else {
+        //oversuscription: set init year
+        restrictionTime.setDate(1);
+        restrictionTime.setMonth(0);
+        restrictionTime.setHours(0, 0);
+      }
       //firebase
       const rooms = (await driver.get<IRoom>(
         undefined,
@@ -305,34 +331,32 @@ const Suscription = (props: any) => {
         dbKey.room,
         iRoomConverter,
         where('dateInstance', '>', restrictionTime),
-        where('allowedCities', 'array-contains', data.city)
+        where('allowedCities', 'array-contains', data.city),
+        orderBy('dateInstance', 'desc')
       )) as IRoom[];
 
       console.log('incoming classrooms', rooms);
 
-      const roomsWithVacancies: IRoom[] = rooms.filter((classroom) => {
-        //filtering rooms with vacancies 👩👨👶👸👨👧🙅🚫
-        const vacancies: number = classroom.vacancies ?? 180;
-        console.log(
-          'analizing vancacies, enrolled',
-          classroom.enrolled.length,
-          'vacancies: ',
-          vacancies
-        );
-        return classroom.enrolled.length < vacancies;
-      });
+      const choosableRooms: IRoom[] =
+        oversuscription === false
+          ? rooms.filter((classroom) => {
+              //filtering rooms with vacancies
+              const vacancies: number = classroom.vacancies ?? 180;
+              return classroom.enrolled.length < vacancies;
+            })
+          : rooms; //full rooms;
 
       console.log(
         'list of avaliable classrooms on city',
         data.city,
-        roomsWithVacancies.length,
-        roomsWithVacancies.map((it) => it.idCal)
+        choosableRooms.length,
+        choosableRooms.map((it) => it.idCal)
       );
 
       //set near classrooms avaliable state  🎣
-      setAvaliableClassrooms(roomsWithVacancies);
+      setAvaliableClassrooms(choosableRooms);
 
-      return roomsWithVacancies.length > 0 ? true : false;
+      return choosableRooms.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch classrooms', error);
     }
@@ -444,126 +468,15 @@ const Suscription = (props: any) => {
                 </Grid>
 
                 {/*Energy Poll ⚡⚡🔌*/}
-                <Grid item xs={12}>
-                  <Paper
-                    variant='outlined'
-                    color='secondary'
-                    style={{ backgroundColor: indigo[50] }}
-                  >
-                    <Box margin={2}>
-                      <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                          <Typography variant='body2' color='primary'>
-                            ⚡ Encuesta de sus consumos energéticos
-                            <Typography
-                              variant='caption'
-                              color='textSecondary'
-                              paragraph
-                              align='justify'
-                            >
-                              esto es opcional, puedes contestar todo, parcialmente o
-                              nada, es sólo para conocerle mejor y mejorar nuestras
-                              charlas, porque el conocimiento es oro✨.
-                            </Typography>
-                          </Typography>
-                        </Grid>
-
-                        <Grid item xs={5} sm={5}>
-                          <TextField
-                            disabled={disableB}
-                            fullWidth
-                            id='name-field'
-                            label='electricidad mes'
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position='start'>$</InputAdornment>
-                              ),
-                            }}
-                            type='number'
-                            variant='standard'
-                            {...register('electricBill', {
-                              min: { value: 1_000, message: 'mínimo $1.000' },
-                              max: { value: 1_000_000, message: 'demasiado grande' },
-                            })}
-                            error={errors.electricBill && true}
-                            helperText={errors.electricBill?.message}
-                          />
-                        </Grid>
-                        <Grid item xs={7} sm={7}>
-                          <TextField
-                            disabled={disableB}
-                            fullWidth
-                            id='name-field'
-                            label='kiloWatt-horas'
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position='start'>kWh</InputAdornment>
-                              ),
-                            }}
-                            type='number'
-                            variant='standard'
-                            {...register('electricity', {
-                              min: { value: 10, message: 'mínimo 10 kWh' },
-                              max: { value: 5_000, message: 'demasiado grande' },
-                            })}
-                            error={errors.electricity && true}
-                            helperText={errors.electricity?.message}
-                          />
-                        </Grid>
-                        <Grid item xs={5} sm={5}>
-                          <TextField
-                            disabled={disableB}
-                            fullWidth
-                            id='gas-expense'
-                            label='gasto en Gas'
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position='start'>$</InputAdornment>
-                              ),
-                            }}
-                            type='number'
-                            variant='standard'
-                            {...register('gasBill', {
-                              min: { value: 0, message: 'no seamos negativos' },
-                              max: { value: 100_000, message: 'demasiado grande' },
-                            })}
-                            error={errors.gasBill && true}
-                            helperText={errors.gasBill?.message}
-                          />
-                        </Grid>
-
-                        <Grid item xs={7} sm={7}>
-                          <FormControl style={{ minWidth: 180 }}>
-                            <InputLabel
-                              id='select-gas-duration'
-                              style={{ marginLeft: 0 }}
-                            >
-                              Duración Balón 15kg
-                            </InputLabel>
-                            <Select
-                              labelId='id-select-gas-duration'
-                              id='select-gas-duration'
-                              variant='standard'
-                              disabled={disableB}
-                              {...register('gasDuration', {})}
-                            >
-                              <MenuItem value={undefined}>
-                                <em>sin respuesta</em>
-                              </MenuItem>
-                              <MenuItem value={7}>1 semana o ➖</MenuItem>
-                              <MenuItem value={15}>2 semanas</MenuItem>
-                              <MenuItem value={30}>1 mes</MenuItem>
-                              <MenuItem value={45}>1 mes y medio</MenuItem>
-                              <MenuItem value={60}>2 meses o ➕</MenuItem>
-                              <MenuItem value={30}>uso balón chico</MenuItem>
-                              <MenuItem value={30}>uso gas de red ⛽</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </Paper>
-                </Grid>
+                {
+                  oversuscription === false ? (
+                    <EnergyPollForm
+                      trigger={disableB}
+                      register={register}
+                      errors={errors}
+                    /> //show
+                  ) : undefined //hide
+                }
 
                 <Grid item xs={3} sm={'auto'}>
                   <Button
@@ -572,7 +485,7 @@ const Suscription = (props: any) => {
                     variant='outlined'
                     color='primary'
                   >
-                    {disableB ? '✅' : 'seguir'}{' '}
+                    {disableB ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
               </Grid>
@@ -584,7 +497,7 @@ const Suscription = (props: any) => {
   );
 
   //FORM C 💖💖💗
-  const onSubmitC: SubmitHandler<Input> = async (data) => {
+  const onSubmitC: SubmitHandler<InputSuscription> = async (data) => {
     console.log('form C', data);
     //init, disable "inscription button"
     setDisableC(true);
@@ -610,7 +523,7 @@ const Suscription = (props: any) => {
     null
   );
 
-  async function createSuscription(data: Input) {
+  async function createSuscription(data: InputSuscription) {
     try {
       //check if it's there a room selected ❓❓
       if (selectedRoom === undefined) {
@@ -622,8 +535,17 @@ const Suscription = (props: any) => {
         return false;
       }
 
-      //check the selected ROOM has already this RUT 🔎👤
+      //check rolRequest null state
+      if (rolRequest?.rol === undefined) {
+        console.log('check rol is ', undefined);
+        setErrorC({
+          value: true,
+          message: 'rut mal definido 🙊 ',
+        });
+        return false;
+      }
 
+      //check the selected ROOM has already this RUT 🔎👤
       const suscriptions = (await driver.get(
         undefined,
         'collection',
@@ -640,19 +562,17 @@ const Suscription = (props: any) => {
         console.log('prepare to upload suscription', data.email);
 
         //create reference of new doc Suscribed
-        const newRef = doc(db, ``);
-
         const person: IPerson = {
-          uuid: newRef.id,
+          uuid: '',
           name: {
             firstName: capitalWord(data.name),
             fatherName: capitalWord(data.fatherName),
             motherName: capitalWord(data.motherName),
           },
-          rut: data.rut.toUpperCase(),
+          rut: rolRequest.rol,
           gender: getGender(data.name),
           classroom: {
-            idCal: selectedRoom?.idCal ?? 'R000',
+            idCal: selectedRoom?.idCal ?? 'R000.00',
             uuid: selectedRoom?.uuid ?? 'no-data',
             dateInstance: selectedRoom?.dateInstance ?? new Date(),
           },
@@ -673,7 +593,7 @@ const Suscription = (props: any) => {
         };
 
         //set new suscription 🔥🔥🔥
-        await driver.set([newRef.id], dbKey.sus, person, iPersonConverter, {});
+        await driver.set(dbKey.sus, person, iPersonConverter);
 
         console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
@@ -917,10 +837,10 @@ const Suscription = (props: any) => {
       {progressB ? <LinearProgress color='primary' /> : undefined}
       {visibleC ? formC : undefined}
       <br />
-      {disableA ? undefined : <Requirements />}
+      {disableA ? undefined : oversuscription === false ? <Requirements /> : undefined}
       {dialogOnSuccess}
     </React.Fragment>
   );
 };
 
-export default withRouter(Suscription);
+export default withRouter<any, any>(Suscription);

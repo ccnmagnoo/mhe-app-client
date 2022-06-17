@@ -1,31 +1,36 @@
-export function isRol(rol: string): boolean {
+export interface RolRequest {
+  check: boolean;
+  rol?: string; //formated in 12345678-9
+}
+
+export function isRol(rol: string): RolRequest {
   //social number verification
-  const rolChecker = (rol?: string): boolean => {
+  const rolChecker = (rol?: string): RolRequest => {
     //undefinded solution
-    if (rol === undefined) {
-      return false;
-    }
+    if (rol === undefined) return { check: false, rol: undefined };
 
-    rol = rol?.replace('‐', '-');
-    rol = rol?.split('.').join('');
-    const re: RegExp = /^[0-9]+[-|‐]{1}[0-9kK]{1}$/;
+    //check regular expression
+    rol = rol?.replace(/\W+/g, '').toUpperCase();
+    const re: RegExp = /[0-9]+[0-9kK]{1}/;
+    if (!re.test(rol)) return { check: false, rol: undefined };
 
-    if (!re.test(rol)) {
-      return false;
-    } else {
-      const rolSplited = rol.split('-');
-      let rolDigit: string = rolSplited[1];
-      const rolBody = rolSplited[0];
+    //check digit verificator
+    const rolDigit = rol.charAt(rol.length - 1);
+    const rolBody = rol.substring(0, rol.length - 1);
 
-      if (rolDigit === 'K') {
-        rolDigit = 'k';
-      }
+    const calculatedDigit: string = calculateVerifyNumber(+rolBody);
 
-      return rolDigitGen(+rolBody) === rolDigit;
+    switch (true) {
+      case calculatedDigit === rolDigit:
+        return { check: true, rol: rolBody + '-' + rolDigit };
+      case calculatedDigit === 'K' && rolDigit === '0':
+        return { check: true, rol: rolBody + '-' + calculatedDigit };
+      default:
+        return { check: false, rol: undefined };
     }
   };
 
-  const rolDigitGen = (rol: number): string => {
+  const calculateVerifyNumber = (rol: number): string => {
     //generador de verificador de código calculado
     let M = 0,
       S = 1;
@@ -34,7 +39,7 @@ export function isRol(rol: string): boolean {
       S = (S + (rol % 10) * (9 - (M++ % 6))) % 11;
     }
 
-    return S ? (S - 1).toString() : 'k';
+    return S ? (S - 1).toString() : 'K';
   };
 
   return rolChecker(rol);

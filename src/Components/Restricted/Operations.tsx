@@ -2,19 +2,24 @@ import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firesto
 import { benefToUpdate, roomsToFix } from '../../Assets/update';
 import { db } from '../../Config/firebase';
 import driver from '../../Database/driver';
+import getAge from '../../Functions/getAge';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
-import { Gender } from '../../Models/Person.Interface';
+import { Gender, iPersonConverter } from '../../Models/Person.Interface';
+import IStatistics from '../../Models/Statistics.interface';
 
 export const Operations = () => {
   const onClickFixBenef = async () => {
     await fetchBenefToFix();
   };
 
-  //firebase:fetch 🔥🔥🔥
+  /**
+   * for giving @param year collects all beneficiaries
+   * @returns and ifx  all Rooms attendaces list
+   */
   const fetchBenefToFix = async () => {
-    const year = 2019;
+    const year = 2022;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
 
@@ -79,8 +84,49 @@ export const Operations = () => {
     });
   };
 
-  const eraseDuplicatedUUID = async () => {
-    const year = 2019;
+  const fixListsInRooms = async () => {
+    const year = 2021;
+    const iniSearch = new Date(`${year}/01/01`);
+    const endSearch = new Date(`${year}/12/31`);
+
+    //get Classrooms form a periord year
+    const refRoom = query(
+      collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`).withConverter(
+        iRoomConverter
+      ),
+      where('dateInstance', '>=', iniSearch),
+      where('dateInstance', '<=', endSearch)
+    );
+    const queries = await getDocs(refRoom);
+    const rooms = queries.docs.map((data) => data.data());
+
+    rooms.forEach(async (room) => {
+      //erase attendess duplicated
+      const refSus = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.sus}`).withConverter(
+          iPersonConverter
+        ),
+        where('classroom.uuid', '==', room.uuid)
+      );
+      const data = await getDocs(refSus);
+      const uuidList = data.docs.map((doc) => {
+        return doc.id;
+      });
+
+      // ref
+      const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
+      await setDoc(
+        docRef,
+        { enrolled: uuidList.length > 3 ? uuidList : room.attendees },
+        { merge: true }
+      );
+
+      console.log('updated', room.idCal, '♻️');
+    });
+  };
+
+  const implementStatistic = async () => {
+    const year = 2016;
     const iniSearch = new Date(`${year}/01/01`);
     const endSearch = new Date(`${year}/12/31`);
 
@@ -96,22 +142,40 @@ export const Operations = () => {
     const list = queries.docs.map((data) => data.data());
 
     list.forEach(async (room) => {
-      //erase attendess duplicated
-      const attendees = room.attendees;
-      const unique = new Set(attendees);
-      const list: string[] = Array.from(unique);
-      // ref
-      const docRef = doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}`, room.uuid);
-
-      await setDoc(docRef, { attendees: list }, { merge: true });
-      console.log(
-        'duplicate erased in',
-        room.idCal,
-        '♻️',
-        room.attendees.length,
-        '->',
-        list.length
+      const refBen = query(
+        collection(db, `${dbKey.act}/${dbKey.uid}/${dbKey.cvn}`).withConverter(
+          iBeneficiaryConverter
+        ),
+        where('classroom.uuid', '==', room.uuid)
       );
+      const benef = (await getDocs(refBen)).docs;
+      //generate statistics object
+      const statistics: Partial<IStatistics> = {};
+
+      benef.forEach((snap) => {
+        //defining keys
+        const keyGender = snap.data().gender;
+        const keyAge = getAge(snap.data().rut).group;
+        //build
+        if (statistics[keyGender] === undefined) {
+          statistics[keyGender] = 1;
+        } else {
+          statistics[keyGender]! += 1;
+        }
+        if (statistics[keyAge] === undefined) {
+          statistics[keyAge] = 1;
+        } else {
+          statistics[keyAge]! += 1;
+        }
+      });
+      await setDoc(
+        doc(db, `${dbKey.act}/${dbKey.uid}/${dbKey.room}/${room.uuid}`),
+        { statistics: statistics },
+        { merge: true }
+      );
+
+      console.log('statistic', statistics);
+      console.log('updated', room.idCal, '♻️');
     });
   };
 
@@ -188,8 +252,12 @@ export const Operations = () => {
       <button type='submit' className='' onClick={() => pushRoomDates()} disabled>
         fix
       </button>
-      <p>borrar room con attendees duplicados </p>
-      <button type='submit' className='' onClick={() => eraseDuplicatedUUID()} disabled>
+      <p>Reparar Rooms Attendes y listados </p>
+      <button type='submit' className='' onClick={() => fixListsInRooms()} disabled>
+        fix
+      </button>
+      <p>Actualizar Rooms Statistics </p>
+      <button type='submit' className='' onClick={() => implementStatistic()} disabled>
         fix
       </button>
       <p>subir consolidados faltantes 2019 </p>

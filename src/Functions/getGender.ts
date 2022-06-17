@@ -10,8 +10,11 @@ export function getGender(name: string) {
   if (lastChar === 'a') {
     return Gender.female;
   } else if (wierdFemaleNames.indexOf(capitalWord(firstWord)) !== -1) {
+    //if name is not in database of odd woman name
     return Gender.female;
   } else {
     return Gender.male;
   }
 }
+
+console.log('name genter', 'Carlos', getGender('Carlos'));
