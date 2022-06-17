@@ -16,5 +16,3 @@ export function getGender(name: string) {
     return Gender.male;
   }
 }
-
-console.log('name genter', 'Carlos', getGender('Carlos'));
