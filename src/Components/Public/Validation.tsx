@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 const Validation = (props: any) => {
   //type input form values
   //local storage o code💾
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [validationKey, setValidationKey] = React.useState<null | string>(
     sessionStorage.getItem('validationCode')
@@ -59,7 +60,7 @@ const Validation = (props: any) => {
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
-  const [disableEU, setDisableEU] = React.useState(false);
+  const [disableExternalUser, setDisableEU] = React.useState(false);
   const [disableA, setDisableA] = React.useState(true);
   const [disableB, setDisableB] = React.useState(true);
   const [disableSignPad, setDisableSignPad] = React.useState(false);
@@ -119,7 +120,7 @@ const Validation = (props: any) => {
     message: string;
   }>(null);
 
-  const snackbarEU = () => {
+  const snackbarExternalUser = () => {
     //check public account
     if (errorEU !== null) {
       if (errorEU.value) {
@@ -238,7 +239,7 @@ const Validation = (props: any) => {
 
                 <Grid item sm={6} xs={6}>
                   <TextField
-                    disabled={disableEU}
+                    disabled={disableExternalUser}
                     required
                     id='input-password'
                     label='código'
@@ -259,12 +260,12 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disableEU}
+                    disabled={disableExternalUser}
                   >
-                    {disableEU ? '✅' : 'seguir'}
+                    {disableExternalUser ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
-                {snackbarEU()}
+                {snackbarExternalUser()}
               </Grid>
             </Box>
           </Paper>
@@ -305,7 +306,7 @@ const Validation = (props: any) => {
       return (
         <Grid item xs={12}>
           <Alert severity='info'>
-            si termina en <b>K</b> reemplace por un <b>CERO</b>.
+            <b>solo cifras</b>, reemplace <b>K</b> por un <b>CERO</b>.
           </Alert>
         </Grid>
       );
@@ -347,8 +348,8 @@ const Validation = (props: any) => {
       if (suscriptions.length > 0) {
         //if this human  has a valid suscription
         console.log('detected suscriptions', suscriptions.length);
-        //getting last suscription in time...🚩🕜
 
+        //getting last suscription in time...🚩🕜
         const lastSuscription = suscriptions[0];
         console.log('last suscription was', lastSuscription.dateUpdate);
 
@@ -381,11 +382,11 @@ const Validation = (props: any) => {
         const now = new Date();
         const act: Date =
           room?.placeActivity.date !== undefined
-            ? new Date(room?.placeActivity.date.getTime())
+            ? room?.placeActivity.date
             : new Date(); /*day of class 📆*/
 
         // FIXME: some browser shows UTC wrong hours
-        //act.setHours(act.getHours() - 6);
+
         const countGap = process.env.REACT_APP_VALIDATION_TIME_GAP
           ? +process.env.REACT_APP_VALIDATION_TIME_GAP
           : 30;
@@ -413,9 +414,7 @@ const Validation = (props: any) => {
             // this bunny is running to fast, too early 🐇
             setErrorA({
               value: true,
-              message: `estás en el registro,el taller es ${moment(act)
-                .endOf('days')
-                .fromNow()} 🤗`,
+              message: `podrás firmar en ${moment(act).endOf('m').fromNow()} 🤗`,
             });
             console.log(errorA);
             return undefined;
@@ -494,11 +493,6 @@ const Validation = (props: any) => {
                     type='number'
                     variant='outlined'
                     {...register('rut', {
-                      //pattern: {
-                      //value: /^\d{7,8}[-]{1}[Kk\d]{1}$/,
-                      //message:
-                      //'rut inválido 🙅‍♂️: debe tener guión "-" y estár sin puntos "." 👌',
-                      //},
                       validate: {
                         isTrue: (v) => {
                           if (disableA === false) {
@@ -614,7 +608,7 @@ const Validation = (props: any) => {
 
           setErrorB({
             value: false,
-            message: `ya se encuentra validado 😀, no olvide retirar su kit 
+            message: `ya se encuentra validado 😀, pase a retirar su kit.
             📌 ${classroom?.placeDispatch?.dir} desde el ${moment(
               classroom?.placeDispatch?.date
             ).format('dddd DD [de] MMMM')}`,
@@ -623,19 +617,22 @@ const Validation = (props: any) => {
         } else {
           //if it's exist, human can not sign ⛔
           console.log(' benefit is already signed', beneficiary.uuid);
-          setErrorB({ value: true, message: 'beneficiario ya validado  🤔' });
+          setErrorB({
+            value: true,
+            message: 'beneficiario ya cuenta con beneficio previo🚩.',
+          });
           return false;
         }
       } else {
         //definition problem on referenced person ⛔
         console.log('error person ', undefined);
-        setErrorB({ value: true, message: 'beneficiario no definido' });
+        setErrorB({ value: true, message: 'beneficiario no definido.' });
         return false;
       }
     } catch (error) {
       //error on firebase.set() method ⛔
       console.log('error on post beneficiary', error);
-      setErrorB({ value: true, message: 'no se pudo cargar beneficiario 🙉' });
+      setErrorB({ value: true, message: 'no se pudo cargar beneficiario 🙉.' });
       return false;
     }
   }
