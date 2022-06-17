@@ -171,9 +171,9 @@ const RoomView = (props: RoomViewProps) => {
             <UrlChip
               url={room.placeDispatch?.dir}
               isDisable={!props.workDone}
-              textContent={`entrega el ${room.placeDispatch?.date.toLocaleDateString(
-                'es-ES'
-              )}`}
+              textContent={`entrega ${moment(room.placeDispatch?.date)
+                .locale('es')
+                .format('DD/MMM')}`}
             />
           </Grid>
 
