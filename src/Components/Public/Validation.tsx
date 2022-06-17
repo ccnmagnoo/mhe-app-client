@@ -228,17 +228,18 @@ const Validation = (props: any) => {
                 container
                 spacing={2}
                 alignItems='center'
-                justify='space-between'
+                justify='space-evenly'
                 direction='row'
               >
-                <Grid item sm={'auto'} xs={'auto'}>
+                <Grid item sm={'auto'} xs={12}>
                   <Typography variant='subtitle2' color='primary'>
                     Código
                   </Typography>
                 </Grid>
 
-                <Grid item sm={6} xs={6}>
+                <Grid item xs={8} sm={6}>
                   <TextField
+                    fullWidth
                     disabled={disableExternalUser}
                     required
                     id='input-password'
@@ -255,7 +256,7 @@ const Validation = (props: any) => {
                   />
                 </Grid>
 
-                <Grid item xs={3} sm={'auto'}>
+                <Grid item xs={4} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
@@ -473,19 +474,21 @@ const Validation = (props: any) => {
             <Box p={1}>
               <Grid
                 container
+                direction='row'
                 spacing={2}
                 alignItems='center'
-                justify='space-between'
-                direction='row'
+                justify='space-evenly'
+                alignContent='flex-start'
               >
-                <Grid item xs={'auto'}>
+                <Grid item xs={12} sm={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
                     Verificador
                   </Typography>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={8} sm={6}>
                   <TextField
+                    fullWidth
                     disabled={disableA}
                     required
                     id='check-rut'
@@ -508,7 +511,7 @@ const Validation = (props: any) => {
                   />
                 </Grid>
 
-                <Grid item xs={'auto'} sm={'auto'}>
+                <Grid item xs={4} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'

@@ -232,19 +232,19 @@ const Suscription = (props: Props) => {
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={8} sm={6}>
                   <TextField
                     fullWidth
                     required
                     disabled={disableA}
                     id='check-rut'
-                    label={errors?.rut && true ? 'rut inválido 🙈' : 'ingrese rut'}
+                    label={errors?.rut && true ? 'rut inválido 😗' : 'ingrese rut'}
                     type='number'
                     variant='outlined'
                     {...register('rut', {
                       pattern: {
                         value: /^\d{7,8}[-]*[Kk\d]{1}$/,
-                        message: 'rut inválido: 🙅‍♂️; puede reemplazar K por 0',
+                        message: 'esto no es un rut 😗',
                       },
                       validate: { isTrue: (v) => rolChecker(v).check === true },
                     })}
@@ -255,7 +255,7 @@ const Suscription = (props: Props) => {
                   {rolRequest?.check}
                 </Grid>
 
-                <Grid item xs={12} sm={'auto'}>
+                <Grid item xs={4} sm={'auto'}>
                   <Button
                     type='submit'
                     variant='outlined'
