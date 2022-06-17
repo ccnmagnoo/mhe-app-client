@@ -833,9 +833,9 @@ const Suscription = (props: Props) => {
       <br />
       {formA}
       {progressA ? <LinearProgress color='primary' /> : undefined}
-      {visibleB ? formB : undefined}
+      {visibleB && formB}
       {progressB ? <LinearProgress color='primary' /> : undefined}
-      {visibleC ? formC : undefined}
+      {visibleC && formC}
       <br />
       {disableA ? undefined : oversuscription === false ? <Requirements /> : undefined}
       {dialogOnSuccess}

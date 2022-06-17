@@ -496,6 +496,10 @@ const Validation = (props: any) => {
                     type='number'
                     variant='outlined'
                     {...register('rut', {
+                      pattern: {
+                        value: /^\d{7,8}[-]*[Kk\d]{1}$/,
+                        message: 'esto no es un rut 😗',
+                      },
                       validate: {
                         isTrue: (v) => {
                           if (disableA === false) {
@@ -812,11 +816,11 @@ const Validation = (props: any) => {
   return (
     <React.Fragment>
       {header}
-      <br />
-      {validationExternalUser}
-      <br />
-      {visibleA ? validationA : undefined}
-      {visibleB ? validationB : undefined}
+
+      {!visibleA && validationExternalUser}
+
+      {visibleA && validationA}
+      {visibleB && validationB}
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;
       </Alert>
