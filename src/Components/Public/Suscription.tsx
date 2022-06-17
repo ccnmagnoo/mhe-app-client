@@ -270,8 +270,8 @@ const Suscription = (props: Props) => {
                 {snackbarA() ?? (
                   // replace for K
                   <Grid item xs={12}>
-                    <Alert severity='info' style={{ transform: 'scale(1)' }}>
-                      si termina en <b>K</b> reemplace por un <b>CERO:0</b>
+                    <Alert severity='info' style={{ color: '#2196f3' }}>
+                      <b>solo cifras</b>, reemplace <b>K</b> por un <b>CERO</b>.
                     </Alert>
                   </Grid>
                 )}
