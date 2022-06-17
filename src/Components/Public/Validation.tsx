@@ -108,7 +108,7 @@ const Validation = (props: any) => {
         Valide su participación ✍
       </Typography>
       <Typography variant='body1' color='textSecondary'>
-        en esta sección solicitaremos su firma digital, solo para servicios
+        Para validarse contacte a <b>coordinación</b>
       </Typography>
     </React.Fragment>
   );
