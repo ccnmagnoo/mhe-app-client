@@ -316,7 +316,7 @@ const Suscription = (props: Props) => {
       const restrictionTime = new Date();
       if (oversuscription === false) {
         //normal: get last 14 days Rooms
-        const backwardDays = 14;
+        const backwardDays = +(process.env.REACT_APP_SUSCRIPTION_TIME_GAP ?? 14);
         restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       } else {
         //oversuscription: set init year
@@ -339,10 +339,10 @@ const Suscription = (props: Props) => {
 
       const choosableRooms: IRoom[] =
         oversuscription === false
-          ? rooms.filter((classroom) => {
+          ? rooms.filter((room) => {
               //filtering rooms with vacancies
-              const vacancies: number = classroom.vacancies ?? 180;
-              return classroom.enrolled.length < vacancies;
+              const vacancies: number = room.vacancies ?? 180;
+              return room.enrolled.length < vacancies;
             })
           : rooms; //full rooms;
 
