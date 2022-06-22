@@ -34,17 +34,17 @@ export const Welcome = () => {
               <Typography variant='subtitle1' color='inherit' align='justify' paragraph>
                 con esta mini app podrás{' '}
                 <Link component={NavLink} to='/suscription' color='primary'>
-                  <strong>inscribirte a los talleres</strong>
+                  <strong>inscribirte a nuestros talleres</strong>
                 </Link>{' '}
                 y posteriormente podrás validar tu asistencia a los Talleres de
-                capacitación de <strong>Seremi Energía Valparaíso</strong> de forma{' '}
+                capacitación <strong>Con Buena Energía</strong> de forma{' '}
                 <strong>on-line</strong>.
               </Typography>
               <Typography variant='caption' color='initial' paragraph>
                 Sólo consultas escribenos a{' '}
                 <Chip
                   avatar={<EmailIcon />}
-                  label='@EnergíaValpo'
+                  label='@Energía'
                   component='a'
                   href={mailTo}
                   color='primary'
