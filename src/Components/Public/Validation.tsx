@@ -224,7 +224,8 @@ const Validation = (props: any) => {
 
   const validationExternalUser = (
     <React.Fragment>
-      <Grow in={true}>
+      <br />
+      <Grow in={true} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitCredentials)}>
           <Paper elevation={2}>
             <Box p={1}>
@@ -472,7 +473,7 @@ const Validation = (props: any) => {
 
   const validationA = (
     <React.Fragment>
-      <Grow in={visibleA}>
+      <Grow in={visibleA} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitA)}>
           <Paper elevation={2}>
             <Box p={1}>
@@ -694,7 +695,7 @@ const Validation = (props: any) => {
 
   const validationB = (
     <React.Fragment>
-      <Grow in={visibleB}>
+      <Grow in={visibleB} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitB)}>
           <Paper elevation={0}>
             <Box p={1}>
