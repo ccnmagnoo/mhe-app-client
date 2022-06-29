@@ -32,7 +32,7 @@ import Canvg from 'canvg';
 import { dbKey } from '../../Models/databaseKeys';
 import { LinearProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import { orderBy, where } from 'firebase/firestore';
+import { limit, orderBy, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
@@ -178,7 +178,7 @@ const Validation = (props: any) => {
         }
       };
 
-      //firestore🔥🔥🔥 fetching al RUT benefits ins register
+      //firestore🔥🔥🔥 fetching al RUT benefits at register
       const storedCode = validationCode(data.ePass, validationKey);
 
       const key = (await driver.get<IExternal>(
@@ -186,12 +186,16 @@ const Validation = (props: any) => {
         'collection',
         dbKey.ext,
         IExternalConverter,
-        where('password', '==', storedCode)
+        where('password', '==', storedCode),
+        orderBy('expiration', 'desc'),
+        limit(1)
       )) as IExternal[];
 
       console.log('accounts detected', key.length);
+
       if (key.length > 0) {
-        const account = key[0];
+        const account = key[0]; //returnin first key created;
+
         const rightNow = new Date();
         if (rightNow <= account.expiration) {
           //great success very nice 👍
