@@ -32,6 +32,10 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
   //states 🅿⛽ list with details
   const [people, setPeople] = React.useState<IBeneficiary[]>([]);
 
+  const fileName = `${
+    props.room.idCal
+  } ${props.room.placeActivity.date.toLocaleDateString()} ${props.room.cityOnOp}`;
+
   //call beneficiaries/suscribed
   React.useEffect(() => {
     const onSubmitPeople = async () => {
@@ -97,13 +101,7 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       <br />
       {/*datos csv 🎲🎲*/}
       <Button variant='contained' color='primary' size='small'>
-        <CSVLink
-          data={csv}
-          separator={';'}
-          filename={`${props.room.cityOnOp} ${
-            props.room.idCal
-          } ${props.room.dateInstance.toLocaleDateString()}.csv`}
-        >
+        <CSVLink data={csv} separator={';'} filename={`${fileName}.csv`}>
           <TableChartIcon color='action' />
         </CSVLink>
       </Button>
@@ -111,13 +109,14 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       <Button variant='contained' color='secondary' size='small'>
         <PDFDownloadLink
           document={<Report room={props.room} people={people} />}
-          fileName='cvn.pdf'
+          fileName={`${fileName}.pdf`}
         >
           {({ blob, url, loading, error }) =>
             loading ? 'generating...' : <ReceiptIcon color='action' />
           }
         </PDFDownloadLink>
       </Button>
+
       {/*<img src={`data:image/svg+xml;utf8,${sign}`} alt='no' />*/}
     </>
   );
