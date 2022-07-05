@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataGrid, GridColDef } from '@material-ui/data-grid';
 import { convertToCsv, Mine } from '../../../Functions/convertToCsv';
 import {
@@ -6,13 +5,9 @@ import {
   iBeneficiaryConverter,
 } from '../../../Models/Beneficiary.interface';
 import { IRoom } from '../../../Models/Classroom.interface';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
-
-//pdf
-import { Report } from '../Report/Report';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 
 //icons
 import TableChartIcon from '@material-ui/icons/TableChart';
@@ -92,20 +87,19 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
 
   //package download
   const blobFile = useGenBlob(props.room, people, props.workDone) ?? new Blob();
-  const fileButton = () => {
-    return (
-      <Button
-        disabled={!fileIsReady}
-        variant='contained'
-        color={props.workDone ? 'secondary' : 'primary'}
-        size='medium'
-      >
-        <a href={URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
-          <ReceiptIcon color='action' />
-        </a>
-      </Button>
-    );
-  };
+  const fileButton = (
+    <Button
+      disabled={!fileIsReady}
+      variant='contained'
+      color={props.workDone ? 'secondary' : 'primary'}
+      size='medium'
+    >
+      <a href={URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
+        <ReceiptIcon color='action' titleAccess='zip' />
+      </a>
+    </Button>
+  );
+
   useEffect(() => {
     if (blobFile.size > 1000) {
       setFileIsReady(true);
@@ -129,12 +123,12 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       {/*datos csv 🎲🎲*/}
       <Button variant='contained' color='primary' size='medium' disabled={!fileIsReady}>
         <CSVLink data={csv} separator={';'} filename={`${fileName}.csv`}>
-          <TableChartIcon color='action' />
+          <TableChartIcon color='action' titleAccess='csv' />
         </CSVLink>
       </Button>
 
       {/*PDF 📃📃📃*/}
-      {fileButton()}
+      {fileButton}
     </>
   );
 };
