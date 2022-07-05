@@ -10,8 +10,8 @@ import { Certificate } from './Certificate';
 export const Report = (props: { room: IRoom; people: IBeneficiary[] }) => {
   return (
     <Document>
-      {props.people.map((p, index) => {
-        return <Certificate person={p} room={props.room} index={index} key={index} />;
+      {props.people.map((p, i) => {
+        return <Certificate person={p} room={props.room} index={i} key={i} />;
       })}
     </Document>
   );
