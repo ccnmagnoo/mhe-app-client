@@ -4,6 +4,13 @@ import { IRoom } from '../../../Models/Classroom.interface';
 import { Document, pdf } from '@react-pdf/renderer';
 import { useEffect, useState } from 'react';
 
+/**
+ * @function useDocument
+ * @param room IRoom document and @param people list of beneficiary
+ * @ref https://muhimasri.com/blogs/how-to-save-files-in-javascript/ for JSZIP multiple
+ * from blob
+ * @return Blob array
+ */
 export function useDocument(room: IRoom, people: IBeneficiary[]) {
   const [blob, setBlob] = useState<Blob[] | undefined>(undefined);
   useEffect(() => {
