@@ -1,6 +1,6 @@
 {
-  "name": "mhe-assistant-app",
-  "version": "0.1.1",
+  "name": "mhe-app-client",
+  "version": "0.1.3",
   "private": true,
   "dependencies": {
     "@date-io/moment": "^1.3.13",
