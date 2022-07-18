@@ -55,7 +55,9 @@ const ClassroomCard = (props: TClassroomCard) => {
               <Typography variant='h5' color={isSelected ? 'primary' : 'inherit'}>
                 {currentVacancies()}
               </Typography>
-              <div style={{ fontSize: '0.8rem', color: 'gray' }}>cupos</div>
+              <div style={{ fontSize: '0.8rem', color: 'gray' }}>
+                {currentVacancies() === 1 ? 'cupo' : 'cupos'}
+              </div>
             </div>
           }
           title={item.colaborator}
