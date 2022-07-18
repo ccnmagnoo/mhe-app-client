@@ -45,6 +45,10 @@ const ClassroomCard = (props: TClassroomCard) => {
                 justifyItems: 'center',
                 alignItems: 'center',
                 fontFamily: 'arial',
+                backgroundColor: 'rgb(176, 196, 222,0.1)',
+                padding: '2px',
+                borderRadius: '3px',
+                boxShadow: '1px 1px 2px rgb(0,0,0,0.1)',
               }}
             >
               <PersonPinIcon color={isSelected ? 'primary' : 'inherit'} />
