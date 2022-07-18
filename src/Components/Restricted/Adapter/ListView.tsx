@@ -5,13 +5,9 @@ import {
   iBeneficiaryConverter,
 } from '../../../Models/Beneficiary.interface';
 import { IRoom } from '../../../Models/Classroom.interface';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
-
-//pdf
-import { Report } from '../Report/Report';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 
 //icons
 import TableChartIcon from '@material-ui/icons/TableChart';
@@ -19,6 +15,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import { dbKey } from '../../../Models/databaseKeys';
 import { where } from 'firebase/firestore';
 import driver from '../../../Database/driver';
+import { useGenBlob } from '../Report/useGenBlob';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -31,6 +28,7 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
   //
   //states 🅿⛽ list with details
   const [people, setPeople] = React.useState<IBeneficiary[]>([]);
+  const [fileIsReady, setFileIsReady] = React.useState<boolean>(false);
 
   const fileName = `${
     props.room.idCal
@@ -87,6 +85,29 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
     };
   });
 
+  //package download
+  const blobFile = useGenBlob(props.room, people, props.workDone) ?? new Blob();
+  const fileButton = (
+    <Button
+      disabled={!fileIsReady}
+      variant='contained'
+      color={props.workDone ? 'secondary' : 'primary'}
+      size='medium'
+    >
+      <a href={URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
+        <ReceiptIcon color='action' titleAccess='zip' />
+      </a>
+    </Button>
+  );
+
+  useEffect(() => {
+    if (blobFile.size > 1000) {
+      setFileIsReady(true);
+    } else {
+      setFileIsReady(false);
+    }
+  }, [blobFile.size]);
+
   return (
     <>
       <div style={{ height: 400, width: '100%' }}>
@@ -100,24 +121,14 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       </div>
       <br />
       {/*datos csv 🎲🎲*/}
-      <Button variant='contained' color='primary' size='small'>
+      <Button variant='contained' color='primary' size='medium' disabled={!fileIsReady}>
         <CSVLink data={csv} separator={';'} filename={`${fileName}.csv`}>
-          <TableChartIcon color='action' />
+          <TableChartIcon color='action' titleAccess='csv' />
         </CSVLink>
       </Button>
-      {/*PDF 📃📃📃*/}
-      <Button variant='contained' color='secondary' size='small'>
-        <PDFDownloadLink
-          document={<Report room={props.room} people={people} />}
-          fileName={`${fileName}.pdf`}
-        >
-          {({ blob, url, loading, error }) =>
-            loading ? 'generating...' : <ReceiptIcon color='action' />
-          }
-        </PDFDownloadLink>
-      </Button>
 
-      {/*<img src={`data:image/svg+xml;utf8,${sign}`} alt='no' />*/}
+      {/*PDF 📃📃📃*/}
+      {fileButton}
     </>
   );
 };
