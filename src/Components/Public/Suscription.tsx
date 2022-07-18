@@ -681,7 +681,7 @@ const Suscription = (props: Props) => {
                 </IconButton>
               }
               title='Lo sentimos'
-              subheader='no hay talleres con vacantes disponibles en su zona'
+              subheader='No nos quedan más vacantes ☹️'
             />
             <CardContent>
               <Typography variant='subtitle2' color='primary'>
@@ -690,10 +690,11 @@ const Suscription = (props: Props) => {
               <Typography variant='body2' color='textSecondary' paragraph align='justify'>
                 Los talleres son implementados por el Ministerio de energía en
                 coordinación con una
-                <strong> institución municipal o servicio público</strong>, puede
-                acercarse a sus oficinas sociales para solicitar un taller o escribanos a{' '}
+                <strong> institución municipal o servicio público</strong>, eventualmente
+                realizaremos más talleres en su sector, por lo que le solicitamos estar
+                atent@s en sus redes de información, o bien puede consultarnos{' '}
                 <strong>
-                  <a href={mailTo}>este email </a>
+                  <a href={mailTo}>este email. </a>
                 </strong>
               </Typography>
             </CardContent>
