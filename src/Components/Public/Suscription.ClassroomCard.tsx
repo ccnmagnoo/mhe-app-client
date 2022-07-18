@@ -3,15 +3,15 @@ import {
   Card,
   CardHeader,
   Avatar,
-  IconButton,
   CardActions,
   Button,
+  Typography,
 } from '@material-ui/core';
 import moment from 'moment';
 import { IRoom } from '../../Models/Classroom.interface';
 //icons
 
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
 
 type TClassroomCard = {
   item: IRoom;
@@ -23,6 +23,10 @@ type TClassroomCard = {
 
 const ClassroomCard = (props: TClassroomCard) => {
   const { item, selectedRoom, setSelectedRoom, disableC, setDisableS } = props;
+  const currentVacancies = () => {
+    let res = item.vacancies ?? 100 - item.enrolled.length;
+    return res >= 0 ? res : 0;
+  };
   const isSelected = selectedRoom?.uuid === item.uuid;
   const backgroundColor = () => {
     return isSelected ? 'AliceBlue' : 'transparent';
@@ -32,18 +36,26 @@ const ClassroomCard = (props: TClassroomCard) => {
     <>
       <Card style={{ backgroundColor: backgroundColor() }}>
         <CardHeader
-          avatar={
-            <Avatar aria-label='idcal'>
-              {item.idCal.substring(1, item.idCal.length - 3)}
-            </Avatar>
-          }
+          avatar={<Avatar aria-label='idcal'>{item.colaborator.substring(0, 1)}</Avatar>}
           action={
-            <IconButton aria-label='seleccionar'>
-              <CheckCircleIcon color={isSelected ? 'primary' : 'inherit'} />
-            </IconButton>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyItems: 'center',
+                alignItems: 'center',
+                fontFamily: 'arial',
+              }}
+            >
+              <PersonPinIcon color={isSelected ? 'primary' : 'inherit'} />
+              <Typography variant='h5' color={isSelected ? 'primary' : 'inherit'}>
+                {currentVacancies()}
+              </Typography>
+              <div style={{ fontSize: '0.8rem', color: 'gray' }}>cupos</div>
+            </div>
           }
           title={item.colaborator}
-          subheader={moment(item.dateInstance).format('dddd DD MMM h:mm a')}
+          subheader={moment(item.dateInstance).format('dd DD MMM h:mm a')}
         />
         <CardActions>
           <Button
