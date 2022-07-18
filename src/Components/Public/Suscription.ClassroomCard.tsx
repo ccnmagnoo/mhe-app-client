@@ -24,7 +24,7 @@ type TClassroomCard = {
 const ClassroomCard = (props: TClassroomCard) => {
   const { item, selectedRoom, setSelectedRoom, disableC, setDisableS } = props;
   const currentVacancies = () => {
-    let res = item.vacancies ?? 100 - item.enrolled.length;
+    const res = (item.vacancies ?? 100) - item.enrolled.length;
     return res >= 0 ? res : 0;
   };
   const isSelected = selectedRoom?.uuid === item.uuid;
