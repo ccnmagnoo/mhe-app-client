@@ -46,9 +46,9 @@ const EventWidget = (props: {
         </article>
 
         <article className='appFlex right'>
-          <div>Inscritos</div>
+          <div>suscritos</div>
           <p>{event.suscribed}</p>
-          <div>Inscritos</div>
+          <div>entregas</div>
           <p>{event.benefited ?? 0}</p>
         </article>
       </span>
