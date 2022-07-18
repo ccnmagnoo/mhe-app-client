@@ -95,7 +95,7 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       size='medium'
     >
       <a href={URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
-        <ReceiptIcon color='action' titleAccess='zip' />
+        <ReceiptIcon color='action' titleAccess='.zip' />
       </a>
     </Button>
   );
@@ -123,7 +123,7 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
       {/*datos csv 🎲🎲*/}
       <Button variant='contained' color='primary' size='medium' disabled={!fileIsReady}>
         <CSVLink data={csv} separator={';'} filename={`${fileName}.csv`}>
-          <TableChartIcon color='action' titleAccess='csv' />
+          <TableChartIcon color='action' titleAccess='.csv' />
         </CSVLink>
       </Button>
 

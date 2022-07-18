@@ -189,7 +189,7 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('suscribed');
                 }}
               >
-                <TocIcon />
+                <TocIcon titleAccess='suscritos' />
               </Button>
               <Button
                 disabled={!props.workDone}
@@ -197,7 +197,7 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('validated');
                 }}
               >
-                <PlaylistAddCheckIcon />
+                <PlaylistAddCheckIcon titleAccess='consolidados' />
               </Button>
               <Button component={Link} to={`${jointed}/editroom/${room.uuid}`}>
                 <EditIcon />
