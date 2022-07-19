@@ -1,20 +1,10 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import {
-  Box,
-  Card,
-  CardContent,
-  LinearProgress,
-  Paper,
-  TextFieldProps,
-} from '@material-ui/core';
+import { Box, LinearProgress, Paper, TextFieldProps } from '@material-ui/core';
 import {
   TextField,
   Grid,
   Button,
-  Avatar,
-  CardHeader,
-  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
@@ -32,9 +22,6 @@ import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 
-//icons
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
 //transitions
 import Grow from '@material-ui/core/Grow';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
@@ -50,6 +37,7 @@ import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
 import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
+import { OnFailSuscription } from './Suscription.onFail';
 
 type Props = {
   oversuscription?: boolean;
@@ -664,43 +652,8 @@ const Suscription = (props: Props) => {
         );
       });
     } else {
-      const mailTo =
-        'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut y su comuna. motivo: no he encontrado un taller disponible'.replace(
-          ' ',
-          '%20'
-        );
-      return (
-        <Grid item xs={12}>
-          {/*mini card with no room avaliable 🙅‍♂️⛔*/}
-          <Card>
-            <CardHeader
-              avatar={<Avatar aria-label='idcal'>?</Avatar>}
-              action={
-                <IconButton aria-label='seleccionar'>
-                  <CheckCircleIcon color='action' />
-                </IconButton>
-              }
-              title='Lo sentimos'
-              subheader='No nos quedan más vacantes ☹️'
-            />
-            <CardContent>
-              <Typography variant='subtitle2' color='primary'>
-                ¿Como puedo participar en un taller?
-              </Typography>
-              <Typography variant='body2' color='textSecondary' paragraph align='justify'>
-                Los talleres son implementados por el Ministerio de energía en
-                coordinación con una
-                <strong> institución municipal o servicio público</strong>, eventualmente
-                realizaremos más talleres en su sector, por lo que le solicitamos estar
-                atent@s en sus redes de información, o bien puede consultarnos{' '}
-                <strong>
-                  <a href={mailTo}>este email. </a>
-                </strong>
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      );
+      // lo sentimos
+      return <OnFailSuscription />;
     }
   };
 
