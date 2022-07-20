@@ -627,11 +627,11 @@ const Validation = (props: any) => {
           });
           return true;
         } else {
-          //if it's exist, human can not sign ⛔
-          console.log(' benefit is already signed', beneficiary.uuid);
+          //if benefit exist, user can not sign ⛔
+          console.log('this user has previous benefit', beneficiary.uuid);
           setErrorB({
             value: true,
-            message: 'beneficiario ya cuenta con beneficio previo🚩.',
+            message: '⛔ Este usuario no puede recibir nuevamente el beneficio.',
           });
           return false;
         }
