@@ -140,7 +140,11 @@ const RoomView = (props: RoomViewProps) => {
               <Grid container direction='column'>
                 <Grid item xs={12}>
                   <Typography variant='body1' color='primary' align='left'>
-                    <strong>{room.attendees.length}</strong>
+                    <strong>
+                      {room.statistics !== undefined
+                        ? (room.statistics['M'] ?? 0) + (room.statistics['F'] ?? 0)
+                        : 0}
+                    </strong>
                     <Typography variant='body2' color='textSecondary' display='inline'>
                       {' '}
                       / {room.enrolled.length}

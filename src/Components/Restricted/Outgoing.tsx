@@ -45,7 +45,13 @@ const Outgoing = (props: any) => {
           return it.enrolled.length > 0;
         }).length,
         enrolled: outgoingRooms.map((it) => it.enrolled.length).reduce((a, b) => a + b),
-        attendees: outgoingRooms.map((it) => it.attendees.length).reduce((a, b) => a + b),
+        attendees: outgoingRooms
+          .map((it) =>
+            it.statistics !== undefined
+              ? (it.statistics['M'] ?? 0) + (it.statistics['F'] ?? 0)
+              : 0
+          )
+          .reduce((a, b) => a + b),
       };
 
       setStatisctis(result);
