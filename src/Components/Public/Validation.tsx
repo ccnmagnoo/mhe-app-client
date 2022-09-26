@@ -386,10 +386,15 @@ const Validation = (props: any) => {
 
         //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
-        const act: Date =
+
+        const allowValidation: Date =
           room?.placeActivity.date !== undefined
             ? room?.placeActivity.date
             : new Date(); /*day of class 📆*/
+
+        //set current time is allowed for validation
+        const timeBeforeActivity = process.env.REACT_APP_HOURS_PREVIOUS_VALIDATION;
+        allowValidation.setHours(allowValidation.getHours() - +(timeBeforeActivity ?? 0)); //set validation allowing time
 
         // FIXME: some browser shows UTC wrong hours
 
@@ -403,11 +408,11 @@ const Validation = (props: any) => {
           timeGap.getDate() + countGap
         ); /*@timegap defines how much time got for validation */
 
-        console.log('time of class', act);
+        console.log('time of class', allowValidation);
         console.log('time to sign', timeGap);
 
         switch (true) {
-          case now > act && now < timeGap: {
+          case now > allowValidation && now < timeGap: {
             //this human being is on time 👌
             setErrorA({
               value: false,
@@ -416,11 +421,13 @@ const Validation = (props: any) => {
             console.log(errorA);
             return lastSuscription;
           }
-          case now < act: {
+          case now < allowValidation: {
             // this bunny is running to fast, too early 🐇
             setErrorA({
               value: true,
-              message: `podrás firmar en ${moment(act).endOf('m').fromNow()} 🤗`,
+              message: `podrás firmar en ${moment(allowValidation)
+                .endOf('m')
+                .fromNow()} 🤗`,
             });
             console.log(errorA);
             return undefined;

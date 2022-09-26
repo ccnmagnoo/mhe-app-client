@@ -1,3 +1,24 @@
 {
-  "FSharp.suggestGitignore": false
+  "FSharp.suggestGitignore": false,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#2d14e2",
+    "activityBar.activeBorder": "#ea2f15",
+    "activityBar.background": "#2d14e2",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#ea2f15",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "sash.hoverBorder": "#2d14e2",
+    "statusBar.background": "#2410b3",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#2d14e2",
+    "statusBarItem.remoteBackground": "#2410b3",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#2410b3",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#2410b399",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "commandCenter.border": "#e7e7e799"
+  },
+  "peacock.color": "#2410b3"
 }
