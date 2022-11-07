@@ -52,6 +52,7 @@ export const iRoomConverter: Converter<IRoom> = {
       vacancies: it.vacancies ?? 150,
       op: { uuid: it.op?.uuid, cur: it.op?.cur },
       statistics: it.statistics,
+      validationSince: it.validationSince,
     };
   },
 };
