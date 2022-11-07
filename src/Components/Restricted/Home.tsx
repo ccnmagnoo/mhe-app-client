@@ -16,20 +16,6 @@ const Home = (props: any) => {
           <Calendar rooms={context.rooms} />
         </Grid>
       </Grid>
-
-      <Typography variant='body2' color='primary'>
-        <Button component={Link} to={`${url}/edituser/rvflslkjdf`}>
-          Editar usuario (desarrollo)
-        </Button>
-        <br />
-        <Button component={Link} to={`${url}/editroom/rvflslkjdf`}>
-          Editar taller (desarrollo)
-        </Button>
-        <br />
-        <Button component={Link} to={`${url}/operations`}>
-          op
-        </Button>
-      </Typography>
     </div>
   );
 };
