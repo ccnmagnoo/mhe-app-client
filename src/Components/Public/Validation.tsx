@@ -37,6 +37,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
 import { storage } from '../../Config/firebase';
+import getAllowValidation from '../../Functions/getAllowValidation';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -386,21 +387,13 @@ const Validation = (props: any) => {
 
         //checking if this person is on schechule ⌛🏁🏁to sign
         const now = new Date();
-
-        const allowValidation: Date =
-          room?.placeActivity.date !== undefined
-            ? room?.placeActivity.date
-            : new Date(); /*day of class 📆*/
-
-        //set current time is allowed for validation
-        const timeBeforeActivity = process.env.REACT_APP_HOURS_PREVIOUS_VALIDATION;
-        allowValidation.setHours(allowValidation.getHours() - +(timeBeforeActivity ?? 0)); //set validation allowing time
+        const allowValidation: Date = getAllowValidation(room);
 
         // FIXME: some browser shows UTC wrong hours
 
         const countGap = process.env.REACT_APP_VALIDATION_TIME_GAP
           ? +process.env.REACT_APP_VALIDATION_TIME_GAP
-          : 30;
+          : 30; /*time validation after activity*/
         const timeGap: Date = new Date(
           lastSuscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
