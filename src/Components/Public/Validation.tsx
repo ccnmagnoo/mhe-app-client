@@ -251,7 +251,7 @@ const Validation = (props: any) => {
                     id='input-password'
                     label='código'
                     defaultValue={validationKey}
-                    type='password'
+                    type='text'
                     variant='outlined'
                     {...register('ePass', {
                       minLength: { value: 6, message: 'muy corto' },
