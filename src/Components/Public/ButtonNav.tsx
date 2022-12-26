@@ -5,12 +5,13 @@ import React from 'react';
 import FaceIcon from '@material-ui/icons/Face';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import LockIcon from '@material-ui/icons/Lock';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 
 import { NavLink } from 'react-router-dom';
 
 export const ButtonNav = () => {
   return (
-    <React.Fragment>
+    <>
       <ButtonGroup
         variant='contained'
         color='primary'
@@ -24,6 +25,10 @@ export const ButtonNav = () => {
         <Button component={NavLink} to='/validation' startIcon={<VerifiedUserIcon />}>
           Valida
         </Button>
+
+        <Button component={NavLink} to='/resources' startIcon={<PlayCircleOutlineIcon />}>
+          Aprende
+        </Button>
         {/*<Button component={NavLink} to='/help'>
           Consultas
         </Button>*/}
@@ -31,6 +36,6 @@ export const ButtonNav = () => {
           Admin
         </Button>
       </ButtonGroup>
-    </React.Fragment>
+    </>
   );
 };

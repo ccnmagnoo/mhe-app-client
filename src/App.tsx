@@ -11,6 +11,7 @@ import Suscription from './Components/Public/Suscription';
 import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
+import { EducationalResources } from './Components/Public/EducationalResources';
 
 function App() {
   //auth user firebase
@@ -34,30 +35,32 @@ function App() {
       <br />
       <Container maxWidth='sm'>
         <Logo size={200} name={'Con Buena Energía'} />
-        <br />
         <ButtonNav />
-        <br />
-        <br />
-        <Switch>
-          <Route path='/suscription'>
-            <Suscription />
-          </Route>
-          <Route path='/validation'>
-            <Validation />
-          </Route>
-          <Route path='/help'>
-            <Help />
-          </Route>
-          <Route path='/login'>
-            <Login />
-          </Route>
-          <Route path='/dashboard'>
-            <Dashboard />
-          </Route>
-          <Route path='/' exact>
-            <Welcome />
-          </Route>
-        </Switch>
+        <div style={{ padding: '10px 0' }}>
+          <Switch>
+            <Route path='/suscription'>
+              <Suscription />
+            </Route>
+            <Route path='/validation'>
+              <Validation />
+            </Route>
+            <Route path='/help'>
+              <Help />
+            </Route>
+            <Route path='/login'>
+              <Login />
+            </Route>
+            <Route path='/resources'>
+              <EducationalResources />
+            </Route>
+            <Route path='/dashboard'>
+              <Dashboard />
+            </Route>
+            <Route path='/' exact>
+              <Welcome />
+            </Route>
+          </Switch>
+        </div>
       </Container>
     </Router>
   );
