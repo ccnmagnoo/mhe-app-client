@@ -17,7 +17,7 @@ import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 
-import { Requirements } from './Suscription.requirements';
+import { Requirements } from './Subscription/Suscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
@@ -26,18 +26,18 @@ import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import Grow from '@material-ui/core/Grow';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
-import { OnSuccessSuscription } from './Suscription.onSuccess';
+import { OnSuccessSuscription } from './Subscription/Suscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
-import ClassroomCard from './Suscription.ClassroomCard';
+import ClassroomCard from './Subscription/Suscription.ClassroomCard';
 import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
 import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
-import { OnFailSuscription } from './Suscription.onFail';
+import { OnFailSuscription } from './Subscription/Suscription.onFail';
 
 type Props = {
   oversuscription?: boolean;
