@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Expo } from './Educational/Expo';
+import { Videos } from './Educational/Videos';
 
 export const EducationalResources = () => {
   return (
@@ -18,7 +19,9 @@ export const EducationalResources = () => {
         <section>
           <Expo />
         </section>
-        <section>video carrousel</section>
+        <section>
+          <Videos></Videos>
+        </section>
         <section>apps</section>
       </main>
     </>
