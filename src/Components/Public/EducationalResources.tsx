@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import { Expo } from './Educational/Expo';
 
 export const EducationalResources = () => {
   return (
@@ -14,7 +15,9 @@ export const EducationalResources = () => {
         </Typography>
       </header>
       <main>
-        <section>ppt canva</section>
+        <section>
+          <Expo />
+        </section>
         <section>video carrousel</section>
         <section>apps</section>
       </main>
