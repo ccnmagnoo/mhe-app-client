@@ -1,5 +1,4 @@
 import Typography from '@material-ui/core/Typography';
-import './Educational.css';
 interface VideoProps {
   id: string;
   title: string;
