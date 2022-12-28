@@ -1,0 +1,32 @@
+#video-container {
+  border: solid 1px blue;
+  position: absolute;
+  box-sizing: border-box;
+  width: 550px;
+  height: fit-content;
+}
+
+/* https://css-tricks.com/css-only-carousel/ */
+
+.video-ul {
+  border: solid 1px red;
+  position: absolute;
+  display: flex;
+  flex-wrap: nowrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.video-ul .video-item {
+  position: relative;
+  scale: 1;
+  z-index: 1;
+  transition: all 0.2s ease-in;
+}
+
+.video-item:hover {
+  scale: 1.05;
+  z-index: 2;
+}
