@@ -17,16 +17,10 @@ export const EducationalResources = () => {
           Porque cada día se puede aprender algo más
         </Typography>
       </header>
-      <main>
-        <section>
-          <Expo />
-        </section>
-        <section>
-          <Videos></Videos>
-        </section>
-        <section>
-          <Mobile />
-        </section>
+      <main id='educational-main'>
+        <Expo />
+        <Mobile />
+        <Videos />
       </main>
     </>
   );

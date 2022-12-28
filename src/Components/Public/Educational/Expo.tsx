@@ -17,13 +17,14 @@ import Typography from '@material-ui/core/Typography';
 
 export const Expo = () => {
   return (
-    <>
+    <section id='expo-section'>
       <div style={{ marginTop: '1em' }}>
         <Typography variant='caption' color='primary'>
           Presentaciones
         </Typography>
       </div>
       <div
+        id='expo-container'
         style={{
           position: 'relative',
           width: '100%',
@@ -76,6 +77,6 @@ export const Expo = () => {
       >
         fuente
       </a>
-    </>
+    </section>
   );
 };

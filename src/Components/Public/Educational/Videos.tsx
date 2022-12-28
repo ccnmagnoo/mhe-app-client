@@ -47,7 +47,7 @@ const videoResource: Video[] = [
 
 export const Videos = () => {
   return (
-    <>
+    <section id='video-section'>
       <Typography variant='caption' color='primary'>
         Multimedia
       </Typography>
@@ -63,6 +63,6 @@ export const Videos = () => {
           })}
         </ul>
       </section>
-    </>
+    </section>
   );
 };

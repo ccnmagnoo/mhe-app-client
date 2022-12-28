@@ -2,13 +2,13 @@ import Typography from '@material-ui/core/Typography';
 
 export const Mobile = () => {
   return (
-    <>
+    <section id='mobile-section'>
       <Typography variant='caption' color='primary'>
         Apps interactivas
       </Typography>
-      <section id='mobile-container'>
+      <div id='mobile-container'>
         <ul>list</ul>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };

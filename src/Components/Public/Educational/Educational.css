@@ -1,3 +1,8 @@
+#educational-section {
+  position: absolute;
+  display: flex;
+}
+
 #video-container {
   border: solid 1px blue;
   position: absolute;
@@ -9,24 +14,31 @@
 /* https://css-tricks.com/css-only-carousel/ */
 
 .video-ul {
+  position: inherit;
   border: solid 1px red;
-  position: absolute;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   list-style-type: none;
   margin: 0;
   padding: 0;
   justify-content: center;
 }
 
-.video-ul .video-item {
-  position: relative;
+.video-item {
   scale: 1;
   z-index: 1;
   transition: all 0.2s ease-in;
+  width: auto;
+  height: auto;
+  filter: grayscale(50%);
 }
 
 .video-item:hover {
   scale: 1.05;
   z-index: 2;
+  filter: grayscale(0%);
+}
+
+#mobile-container {
+  position: absolute;
 }
