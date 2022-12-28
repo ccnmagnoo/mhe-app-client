@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/iframe-has-title */
 
+import Typography from '@material-ui/core/Typography';
+
 // position: 'relative',
 // width: '100%',
 // height: '0',
@@ -16,6 +18,11 @@
 export const Expo = () => {
   return (
     <>
+      <div style={{ marginTop: '1em' }}>
+        <Typography variant='caption' color='primary'>
+          Presentaciones
+        </Typography>
+      </div>
       <div
         style={{
           position: 'relative',
@@ -24,7 +31,7 @@ export const Expo = () => {
           paddingTop: '56.2500%',
           paddingBottom: '0',
           boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
-          marginTop: '1.6em',
+          marginTop: '0',
           marginBottom: '0.9em',
           overflow: 'hidden',
           border: '8px',
