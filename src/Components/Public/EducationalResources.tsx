@@ -2,6 +2,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Expo } from './Educational/Expo';
 import { Videos } from './Educational/Videos';
+import { Mobile } from './Educational/Mobile';
+import './Educational/Educational.css';
 
 export const EducationalResources = () => {
   return (
@@ -22,7 +24,9 @@ export const EducationalResources = () => {
         <section>
           <Videos></Videos>
         </section>
-        <section>apps</section>
+        <section>
+          <Mobile />
+        </section>
       </main>
     </>
   );
