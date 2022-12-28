@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/iframe-has-title */
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
 
 // position: 'relative',
 // width: '100%',
@@ -18,9 +16,6 @@ import Typography from '@material-ui/core/Typography';
 export const Expo = () => {
   return (
     <>
-      <Typography variant='h6' color='initial'>
-        nuestras presentaciones
-      </Typography>
       <div
         style={{
           position: 'relative',
@@ -72,7 +67,7 @@ export const Expo = () => {
         target='_blank'
         rel='noopener'
       >
-        origen
+        fuente
       </a>
     </>
   );
