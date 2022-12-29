@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, Route, Switch, withRouter, useRouteMatch } from 'react-router-dom';
+import React,{lazy,Suspence} from 'react';
+import { Link, Route, Switch, withRouter, useRouteMatch,Outlet } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';
@@ -11,8 +11,8 @@ import { Edit as Edition } from './Edition';
 import { PeriodSelector } from './Dashboard.PeriodSelector';
 import Home from './Home';
 import Create from './Create';
-import Incoming from './Incoming';
-import Outgoing from './Outgoing';
+//import Incoming from './Incoming';
+//import Outgoing from './Outgoing';
 import Provider from './Context/context';
 import UpdateBeneficiary from './UpdateBeneficiary';
 import UpdateClassroom from './UpdateClassroom';
@@ -29,6 +29,9 @@ import { User } from 'firebase/auth';
 import { auth } from '../../Config/firebase';
 import Suscription from '../Public/Suscription';
 // import { Operations } from './Operations';
+//lazy loading
+const Incoming = lazy(()=>import('./Incoming'));
+const Outgoing = lazy(()=>import('./Outgoing'));
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -129,6 +132,9 @@ const Dashboard = (props: any) => {
 
             {/* <Route path={`${path}/operations`} children={<Operations />} /> */}
           </Switch>
+          <Suspense fallback = {<Typography variant='caption' color='initial'>loading...</Typography>}>
+            <Outlet/>
+          </Suspense>
         </Grid>
       </Grid>
     </Provider>
