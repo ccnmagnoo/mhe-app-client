@@ -1,5 +1,5 @@
-import React,{lazy,Suspence} from 'react';
-import { Link, Route, Switch, withRouter, useRouteMatch,Outlet } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { Link, Route, Switch, withRouter, useRouteMatch } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';
@@ -30,8 +30,8 @@ import { auth } from '../../Config/firebase';
 import Suscription from '../Public/Suscription';
 // import { Operations } from './Operations';
 //lazy loading
-const Incoming = lazy(()=>import('./Incoming'));
-const Outgoing = lazy(()=>import('./Outgoing'));
+const Incoming = lazy(() => import('./Incoming'));
+const Outgoing = lazy(() => import('./Outgoing'));
 
 const Dashboard = (props: any) => {
   //nested routing
@@ -79,17 +79,21 @@ const Dashboard = (props: any) => {
             <Button component={Link} to={url}>
               <HomeIcon />
             </Button>
-            <Button component={Link} to={`${url}/incoming`}>
-              <DateRangeIcon />
-            </Button>
             <Button component={Link} to={`${url}/outgoing`}>
               <EventAvailableIcon />
+              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>pasadas</span>
+            </Button>
+            <Button component={Link} to={`${url}/incoming`}>
+              <DateRangeIcon titleAccess='Próximas actividades' />{' '}
+              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>próximas</span>
             </Button>
             <Button component={Link} to={`${url}/addperson`}>
               <PersonAddIcon />
+              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>usuario</span>
             </Button>
             <Button component={Link} to={`${url}/create`}>
               <PostAddIcon />
+              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>taller</span>
             </Button>
             <Button onClick={closeAdmin}>
               <ExitToAppIcon />
@@ -109,13 +113,30 @@ const Dashboard = (props: any) => {
               <Home />
             </Route>
             <Route path={`${path}/incoming`}>
-              <Incoming />
+              <Suspense
+                fallback={
+                  <Typography variant='caption' color='initial'>
+                    loading...
+                  </Typography>
+                }
+              >
+                <Incoming />
+              </Suspense>
             </Route>
             <Route path={`${path}/outgoing`}>
-              <Outgoing />
+              <Suspense
+                fallback={
+                  <Typography variant='caption' color='initial'>
+                    loading...
+                  </Typography>
+                }
+              >
+                <Outgoing />
+              </Suspense>
             </Route>
             <Route path={`${path}/addperson`}>
               {/*create new unsuscribed person after period gap*/}
+
               <Suscription oversuscription={true} />
             </Route>
             <Route path={`${path}/create`}>
@@ -132,9 +153,6 @@ const Dashboard = (props: any) => {
 
             {/* <Route path={`${path}/operations`} children={<Operations />} /> */}
           </Switch>
-          <Suspense fallback = {<Typography variant='caption' color='initial'>loading...</Typography>}>
-            <Outlet/>
-          </Suspense>
         </Grid>
       </Grid>
     </Provider>
