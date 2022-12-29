@@ -16,7 +16,7 @@ export const ButtonNav = () => {
       <ButtonGroup
         variant='contained'
         color='primary'
-        aria-label='navegación'
+        aria-label='main-button-group'
         fullWidth
         size='medium'
       >
