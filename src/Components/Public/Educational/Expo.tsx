@@ -26,7 +26,6 @@ export const Expo = () => {
       <div
         id='expo-container'
         style={{
-          position: 'relative',
           width: '100%',
           height: '0',
           paddingTop: '56.2500%',

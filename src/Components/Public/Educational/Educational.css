@@ -1,20 +1,42 @@
-#educational-section {
+#educational-main {
+  border: solid 1px magenta;
   position: absolute;
   display: flex;
+  flex-direction: column;
+  min-width: min(550px, 80vw);
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  margin-right: 30px;
+}
+
+#expo-section {
+  position: relative;
+  width: 100%;
+}
+
+#video-section {
+  position: relative;
+  width: 100%;
 }
 
 #video-container {
-  border: solid 1px blue;
-  position: absolute;
+  border: solid 2px blue;
   box-sizing: border-box;
-  width: 550px;
   height: fit-content;
+  max-width: 550px;
+}
+
+#video-container iframe {
+  width: 250px;
+  height: 150px;
+}
+
+@media screen {
 }
 
 /* https://css-tricks.com/css-only-carousel/ */
-
 .video-ul {
-  position: inherit;
   border: solid 1px red;
   display: flex;
   flex-wrap: wrap;
@@ -28,8 +50,6 @@
   scale: 1;
   z-index: 1;
   transition: all 0.2s ease-in;
-  width: auto;
-  height: auto;
   filter: grayscale(50%);
 }
 
@@ -40,5 +60,5 @@
 }
 
 #mobile-container {
-  position: absolute;
+  position: relative;
 }

@@ -22,8 +22,10 @@ class Video implements VideoProps {
   embed(): JSX.Element {
     return (
       <iframe
-        width={560 * this.sizeFactor}
-        height={315 * this.sizeFactor}
+        className='video-iframe'
+        // width={560 * this.sizeFactor}
+        // height={315 * this.sizeFactor}
+
         src={`https://www.youtube.com/embed/${this.id}`}
         title={this.title}
         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
@@ -42,7 +44,8 @@ class Video implements VideoProps {
 const videoResource: Video[] = [
   new Video({ title: 'El Consumo Vampiro', id: 'EQ2UQWEqsws' }),
   new Video({ title: 'El Gran Consumidor', id: 'cfVINbDXZQQ' }),
-  new Video({ title: 'Cuídate del Peligro', id: 'tz8KcOnP2Dg' }),
+  new Video({ title: 'Peligros Eléctrico', id: 'tz8KcOnP2Dg' }),
+  new Video({ title: 'SEC Charla Gas', id: '6TkQ3n2aG7w' }),
 ];
 
 export const Videos = () => {
