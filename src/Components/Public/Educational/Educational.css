@@ -40,7 +40,7 @@
   }
 }
 /* https://css-tricks.com/css-only-carousel/ */
-.video-ul {
+#video-container ul {
   border: solid 1px red;
   display: flex;
   flex-wrap: wrap;
@@ -50,7 +50,7 @@
   justify-content: center;
 }
 
-.video-item {
+#video-container li {
   scale: 1;
   z-index: 1;
   transition: all 0.2s ease-in;
@@ -58,7 +58,7 @@
   padding: 2px;
 }
 
-.video-item:hover {
+#video-container li:hover {
   scale: 1.05;
   z-index: 2;
   filter: grayscale(0%);
