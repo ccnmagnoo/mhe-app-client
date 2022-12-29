@@ -4,8 +4,7 @@ import { Expo } from './Educational/Expo';
 import { Videos } from './Educational/Videos';
 import { Mobile } from './Educational/Mobile';
 import './Educational/Educational.css';
-
-export const EducationalResources = () => {
+const EducationalResources = () => {
   return (
     <>
       <header>
@@ -25,3 +24,5 @@ export const EducationalResources = () => {
     </>
   );
 };
+
+export default EducationalResources;

@@ -1,9 +1,9 @@
-import React,{lazy,Suspense} from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Welcome } from './Components/Public/Welcome';
 import { Container, Typography } from '@material-ui/core';
 import { Logo } from './Components/Public/Logo';
 import { ButtonNav } from './Components/Public/ButtonNav';
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';
 import { auth } from './Config/firebase';
@@ -12,7 +12,9 @@ import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
 //import { EducationalResources } from './Components/Public/EducationalResources';
-const EducationalResources = lazy(()=>import('./Components/Public/EducationalResources'))
+const EducationalResources = lazy(
+  () => import('./Components/Public/EducationalResources')
+);
 
 function App() {
   //auth user firebase
@@ -39,9 +41,6 @@ function App() {
 
         {/* navigation 🟦🟦🟦🟦*/}
         <ButtonNav />
-        <Suspense fallback={<Typography variant='caption' color='initial'>loading...</Typography>}>
-          <Outlet></Outlet>
-        </Suspense>
 
         {/* viewport s */}
         <div style={{ padding: '10px 0' }}>
@@ -59,7 +58,15 @@ function App() {
               <Login />
             </Route>
             <Route path='/resources'>
-              <EducationalResources />
+              <Suspense
+                fallback={
+                  <Typography variant='caption' color='initial'>
+                    loading...
+                  </Typography>
+                }
+              >
+                <EducationalResources />
+              </Suspense>
             </Route>
             <Route path='/dashboard'>
               <Dashboard />
