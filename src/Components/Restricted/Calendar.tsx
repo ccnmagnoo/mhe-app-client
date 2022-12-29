@@ -97,8 +97,8 @@ const Calendar = (props: { rooms?: IRoom[] }) => {
 };
 
 /**
- * @funtion EventContainer component|
- * @param dateSet: date of calendar apointment,
+ * @function EventContainer component|
+ * @param dateSet: date of calendar appointment,
  * @param events: activity or dispatch from Classroom object
  * @returns React component calendar little Widget
  */
