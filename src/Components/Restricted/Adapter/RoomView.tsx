@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Accordion,
   AccordionSummary,
@@ -12,7 +13,7 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { IRoom } from '../../../Models/Classroom.interface';
 
 //icons
@@ -24,7 +25,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
-import { ListView } from './ListView';
+// import ListView from './ListView';
 import { Link, useRouteMatch, withRouter } from 'react-router-dom';
 
 /**
@@ -40,7 +41,11 @@ type RoomViewProps = {
   ) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => void;
 };
 
+type ViewOption = 'subscribed' | 'validated';
+
 const RoomView = (props: RoomViewProps) => {
+  const ListView = lazy(() => import('./ListView'));
+
   //input props 🍗🎱🐣
   const room = props.room;
   const expanded = props.expanded;
@@ -56,29 +61,29 @@ const RoomView = (props: RoomViewProps) => {
 
   //states 🅿⛽ list with details
 
-  const [typeListView, setTypeListView] = React.useState<
-    null | 'suscribed' | 'validated'
-  >(null);
+  const [typeListView, setTypeListView] = React.useState<ViewOption | null>(null);
 
   const getListView = () => {
-    switch (typeListView) {
-      case 'suscribed': {
-        return (
-          <Grid item xs={12}>
-            <ListView room={room} workDone={false} />
-          </Grid>
-        );
-      }
-      case 'validated': {
-        return (
-          <Grid item xs={12}>
-            <ListView room={room} workDone={true} />
-          </Grid>
-        );
-      }
-      default:
-        return undefined;
-    }
+    if (typeListView === null) return undefined;
+
+    const selector: { [key: string]: boolean } = {
+      subscribed: false,
+      validated: true,
+    };
+
+    return (
+      <Grid item xs={12}>
+        <Suspense
+          fallback={
+            <Typography variant='caption' color='initial'>
+              loading
+            </Typography>
+          }
+        >
+          <ListView room={room} workDone={selector[typeListView]} />
+        </Suspense>
+      </Grid>
+    );
   };
 
   return (
@@ -190,7 +195,7 @@ const RoomView = (props: RoomViewProps) => {
             >
               <Button
                 onClick={() => {
-                  setTypeListView('suscribed');
+                  setTypeListView('subscribed');
                 }}
               >
                 <TocIcon titleAccess='suscritos' />

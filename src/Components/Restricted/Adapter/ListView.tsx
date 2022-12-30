@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
   { field: 'rut', headerName: 'rut', width: 100 },
 ];
 
-export const ListView = (props: { room: IRoom; workDone: boolean }) => {
+const ListView = (props: { room: IRoom; workDone: boolean }) => {
   //
   //states 🅿⛽ list with details
   const [people, setPeople] = React.useState<IBeneficiary[]>([]);
@@ -132,3 +132,5 @@ export const ListView = (props: { room: IRoom; workDone: boolean }) => {
     </>
   );
 };
+
+export default ListView;
