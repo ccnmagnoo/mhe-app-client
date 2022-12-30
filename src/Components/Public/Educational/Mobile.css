@@ -1,5 +1,6 @@
 #mobile-section {
   position: relative;
+  margin-bottom: 20px;
 }
 #mobile-section ul {
   display: flex;
@@ -20,12 +21,12 @@
   justify-items: center;
   align-items: center;
   z-index: 2;
-  box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
   transition: 0.1s all ease-out;
 }
 .mobile-app-item:hover {
   z-index: 4;
-
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.2);
   transform: perspective(50px) scale(1.05);
 }
 
