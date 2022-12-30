@@ -1,5 +1,5 @@
 #educational-main {
-  border: solid 1px magenta;
+  /* border: solid 1px magenta; */
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
 }
 
 #video-container {
-  border: solid 2px blue;
+  /* border: solid 2px blue; */
   box-sizing: border-box;
   height: fit-content;
   max-width: 550px;
@@ -41,7 +41,7 @@
 }
 /* https://css-tricks.com/css-only-carousel/ */
 #video-container ul {
-  border: solid 1px red;
+  /* border: solid 1px red; */
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
@@ -62,8 +62,4 @@
   scale: 1.05;
   z-index: 2;
   filter: grayscale(0%);
-}
-
-#mobile-container {
-  position: relative;
 }
