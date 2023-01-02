@@ -1,7 +1,7 @@
 .background {
   position: fixed;
   background-color: teal;
-  background-image: url('https://cdn.discordapp.com/attachments/1054960334751928350/1059274040059109446/ccnmagnoo_clean_energy_field_beautiful_dream_octane_render_8ca7c2fb-59ea-4298-9f33-2d6aadffa6c4.png');
+  background-image: url('https://cdn.discordapp.com/attachments/1054960334751928350/1059570447152332839/ccnmagnoo_clean_energy_field_beautiful_dream_octane_render_2d4d64aa-889c-42ff-8c46-0b58a2e18bc4.png');
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -22,7 +22,12 @@
 }
 .App {
   position: relative;
-  background: rgba(255, 255, 255, 0.7);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.925) 0%,
+    rgba(255, 255, 255, 0.8) 60%,
+    rgba(51, 46, 1, 0.5) 100%
+  );
   backdrop-filter: blur(3px);
   max-width: 550px;
   min-height: 80vh;
