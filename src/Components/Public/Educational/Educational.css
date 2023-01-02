@@ -1,6 +1,6 @@
 #educational-main {
   /* border: solid 1px magenta; */
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: min(550px, 80vw);
@@ -8,9 +8,4 @@
   justify-content: center;
   align-self: center;
   margin-right: 30px;
-}
-
-#expo-section {
-  position: relative;
-  width: 100%;
 }

@@ -1,0 +1,27 @@
+#expo-section {
+  position: relative;
+}
+#expo-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+  padding-bottom: 0;
+  box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
+  margin: 0 auto 0.9em 0;
+  overflow: hidden;
+  border: 8px;
+  justify-self: center;
+  will-change: transform;
+}
+
+#expo-container iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
