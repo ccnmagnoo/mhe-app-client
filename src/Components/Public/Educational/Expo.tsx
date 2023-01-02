@@ -20,7 +20,7 @@ export const Expo = () => {
   return (
     <section id='expo-section'>
       <div style={{ marginTop: '1em' }}>
-        <Typography variant='caption' color='primary'>
+        <Typography className='section-name' variant='caption' color='primary'>
           Presentaciones
         </Typography>
       </div>

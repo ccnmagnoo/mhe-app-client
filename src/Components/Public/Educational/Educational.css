@@ -3,9 +3,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: min(550px, 80vw);
+  max-width: min(550px, 100vw);
   align-content: center;
   justify-content: center;
   align-self: center;
-  margin-right: 30px;
+}
+
+#educational-main .section-name {
+  font-weight: 400;
+  position: relative;
+  left: 20px;
 }

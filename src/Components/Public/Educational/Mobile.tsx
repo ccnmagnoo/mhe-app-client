@@ -129,7 +129,7 @@ const Mobile = () => {
 
   return (
     <section id='mobile-section'>
-      <Typography variant='caption' color='primary'>
+      <Typography className='section-name' variant='caption' color='primary'>
         Apps interactivas
       </Typography>
       <ul>

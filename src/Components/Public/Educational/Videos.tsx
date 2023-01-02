@@ -52,7 +52,7 @@ const videoResource: Video[] = [
 export const Videos = () => {
   return (
     <section id='video-section'>
-      <Typography variant='caption' color='primary'>
+      <Typography className='section-name' variant='caption' color='primary'>
         Energía en Minutos
       </Typography>
       <section id='video-container'>
