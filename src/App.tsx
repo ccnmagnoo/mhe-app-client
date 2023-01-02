@@ -11,6 +11,7 @@ import Suscription from './Components/Public/Suscription';
 import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
+import './App.css';
 //import { EducationalResources } from './Components/Public/EducationalResources';
 const EducationalResources = lazy(
   () => import('./Components/Public/EducationalResources')
@@ -35,7 +36,6 @@ function App() {
 
   const landingPage = (
     <Router>
-      <br />
       <Container maxWidth='sm'>
         <Logo size={200} name={'Con Buena Energía'} />
 
@@ -81,7 +81,12 @@ function App() {
   );
 
   return firebaseUser !== false ? (
-    <div className='App'>{landingPage}</div>
+    <>
+      <div className='background'></div>
+      <div className='container'>
+        <div className='App'>{landingPage}</div>
+      </div>
+    </>
   ) : (
     <div>
       <Typography variant='subtitle2' color='initial'>
