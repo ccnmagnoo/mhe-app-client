@@ -7,10 +7,14 @@
 .myCalendar {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.8rem;
-  display: block;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .myCalendar.container {
+  justify-content: flex-start;
+  height: 500px;
   border: 1px solid lightgrey;
   box-shadow: 4px 4px 8px lightgrey;
   border-radius: 8px;
