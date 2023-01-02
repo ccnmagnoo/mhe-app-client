@@ -9,10 +9,16 @@ type LogoProps = {
 
 export const Logo = (props: LogoProps) => {
   return (
-    <React.Fragment>
+    <>
       <Link to='/'>
-        <img className='button' src={logo} alt='logo taller' width={props.size} />
+        <img
+          className='button'
+          style={{ filter: 'drop-shadow(2px 2px 2px rgb(0 0 0 / 0.2))' }}
+          src={logo}
+          alt='logo taller'
+          width={props.size}
+        />
       </Link>
-    </React.Fragment>
+    </>
   );
 };
