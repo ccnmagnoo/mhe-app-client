@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import './Videos.css';
 interface VideoProps {
   id: string;
   title: string;
@@ -52,7 +53,7 @@ export const Videos = () => {
   return (
     <section id='video-section'>
       <Typography variant='caption' color='primary'>
-        Multimedia
+        Energía en Minutos
       </Typography>
       <section id='video-container'>
         <ul className='video-ul'>
