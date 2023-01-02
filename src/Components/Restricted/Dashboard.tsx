@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { Edit as Edition } from './Edition';
+import './Dashboard.css';
 
 //componentes
 import { PeriodSelector } from './Dashboard.PeriodSelector';
@@ -71,6 +72,7 @@ const Dashboard = (props: any) => {
       >
         <Grid item xs={12}>
           <ButtonGroup
+            id='private-navigation'
             variant='outlined'
             color='primary'
             aria-label='dashboad commands'
@@ -81,19 +83,18 @@ const Dashboard = (props: any) => {
             </Button>
             <Button component={Link} to={`${url}/outgoing`}>
               <EventAvailableIcon />
-              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>pasadas</span>
+              <span>pasadas</span>
             </Button>
             <Button component={Link} to={`${url}/incoming`}>
-              <DateRangeIcon titleAccess='Próximas actividades' />{' '}
-              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>próximas</span>
+              <DateRangeIcon titleAccess='Próximas actividades' /> <span>próximas</span>
             </Button>
             <Button component={Link} to={`${url}/addperson`}>
               <PersonAddIcon />
-              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>usuario</span>
+              <span>usuario</span>
             </Button>
             <Button component={Link} to={`${url}/create`}>
               <PostAddIcon />
-              <span style={{ fontSize: '.6rem', alignSelf: 'center' }}>taller</span>
+              <span>taller</span>
             </Button>
             <Button onClick={closeAdmin}>
               <ExitToAppIcon />

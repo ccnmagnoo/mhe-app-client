@@ -1,0 +1,10 @@
+#private-navigation span {
+  font-size: 0.6rem;
+  align-self: center;
+}
+
+@media (width<550px) {
+  #private-navigation span {
+    font-size: 0.4rem;
+  }
+}
