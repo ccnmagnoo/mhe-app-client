@@ -14,7 +14,7 @@
   position: relative;
   display: flex;
   justify-content: center;
-  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   transition: all 2s ease-in-out;
   left: 0;
@@ -24,10 +24,17 @@
   position: relative;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(3px);
-  width: fit-content;
+  max-width: 550px;
   min-height: 80vh;
   border-radius: 2em;
   padding: 1em 0em 1em 0em;
   margin-top: 0.25em;
   border: 2px beige solid;
+}
+
+@media (width<550px) {
+  .App {
+    max-width: 400px;
+    padding: 0.5em;
+  }
 }
