@@ -31,6 +31,13 @@
   border-radius: 20px;
 }
 
+@media (width<550px) {
+  .mobile-app-item > img {
+    max-width: 80px;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+}
 .mobile-app-item > h5 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: gray;
@@ -72,6 +79,12 @@
   align-items: center;
   justify-content: center;
   box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (width<550px) {
+  .os-button {
+    width: 2em;
+  }
 }
 
 .mobile-side-panel .os-button {
