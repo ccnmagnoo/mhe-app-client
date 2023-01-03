@@ -4,7 +4,7 @@
   --primary-300: rgb(88, 88, 146);
   --alert: rgba(92, 146, 172, 0.568);
 }
-.myCalendar {
+#myCalendar {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.8rem;
   position: relative;
@@ -12,9 +12,9 @@
   flex-direction: column;
 }
 
-.myCalendar.container {
+#myCalendar .container {
   justify-content: flex-start;
-  height: 500px;
+  height: auto;
   border: 1px solid lightgrey;
   box-shadow: 4px 4px 8px lightgrey;
   border-radius: 8px;
@@ -31,16 +31,14 @@ h4.myCalendar {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
-  color: gray;
 }
-p.myCalendar {
+#myCalendar p {
   padding-top: 0px;
   padding-bottom: 0px;
   padding-left: 10px;
-  color: gray;
 }
 
-ol.myCalendar {
+#myCalendar ol {
   list-style: none;
   display: grid;
   margin: 0;
@@ -49,7 +47,7 @@ ol.myCalendar {
   grid-template-columns: repeat(5, 1fr);
 }
 /*body days square*/
-li.myCalendar {
+#myCalendar li {
   font-size: 0.7rem;
   min-height: 60px;
   border: 1.5px white solid;
@@ -58,7 +56,7 @@ li.myCalendar {
 }
 
 /*headers L M M J V days */
-li.myCalendar.header {
+#myCalendar li.header {
   font-size: 0.8rem;
   min-height: 10px;
   background-color: rgb(255, 255, 255);
@@ -67,17 +65,17 @@ li.myCalendar.header {
 }
 
 /* Each day square in calendar */
-li.myCalendar.sequence {
+#myCalendar li.sequence {
   background-color: rgb(238, 240, 252);
   color: rgb(186, 189, 206);
 }
-li.myCalendar.sequence:hover {
+#myCalendar li.sequence:hover {
   transition: all 0.6s ease-in-out;
   color: white;
   background-color: var(--primary-200);
 }
-/* Today  square in calendar with diferent properties*/
-li.myCalendar.today {
+/* Today  square in calendar with different properties*/
+#myCalendar li.today {
   color: var(--primary-300);
   font-weight: bold;
   background-color: var(--primary-200);
@@ -146,13 +144,15 @@ li.myCalendar.today {
   padding: 2px;
 }
 
-span.myCalendar.tag {
+span.tag {
   max-height: 20px;
   align-items: center;
   text-align: center;
-  padding: 4px;
+  padding: 2px;
+  margin: 2px;
   max-width: 300px;
   min-width: 2rem;
+  border-radius: 2px;
 }
 
 @media (max-width: 550px) {
@@ -181,27 +181,20 @@ span.myCalendar.tag.permanent {
 
 /* popUp with details of each classrooms */
 span.myCalendar.popUp {
-  --width: 400px;
+  --width: 300px;
   --height: 200px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
   justify-content: space-around;
   font-size: 1rem;
-  max-width: var(--width);
-  min-height: var(--height);
+  min-width: var(--width);
+  max-height: var(--height);
   padding: 10px;
   background-color: rgba(61, 65, 126, 0.973);
   cursor: pointer;
   user-select: none;
   z-index: 1;
   box-shadow: 4px 4px 6px gray;
-  margin-top: calc(50vh - var(--height) / 2);
-  vertical-align: middle;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-top: calc(50vh - var(--height) / 2); */
 }
 
 @media (max-width: 500px) {
@@ -216,40 +209,73 @@ span.myCalendar.popUp.show {
   animation: fadeIn 0.8s;
 }
 
-.appFlex {
+.myCalendar.popUp .left-panel {
   display: flex;
-  flex-direction: column;
-  text-align: left;
 }
-.appFlex.right {
-  justify-content: space-around;
-  text-align: center;
-  padding: 1px;
-  border: 1px solid rgba(0, 0, 0, 0.438);
+.myCalendar.popUp .right-panel {
+  position: relative;
+  display: block;
+  justify-content: center;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.137);
-  padding: 15px 15px;
+  height: fit-content;
+  padding: 10px;
+  background: rgba(238, 210, 210, 0.137);
 }
 
-@media (max-width: 500px) {
-  .appFlex.right {
-    align-items: baseline;
+.right-panel > h5 {
+  margin: 0.4em;
+}
 
-    display: flex;
-    flex-direction: row;
+.right-panel div {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-around;
+  align-items: baseline;
+  transform: all 0.5 ease-out;
+}
+
+.myCalendar.popUp .right-panel [data-tier='1'] {
+  position: relative;
+  padding-top: 0;
+  font-size: 3rem;
+  font-weight: 500;
+  color: white;
+}
+.myCalendar.popUp .right-panel [data-tier='2'] {
+  position: relative;
+  padding-top: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+}
+
+@media (width< 500px) {
+  .right-panel div {
+    flex-direction: column;
+    align-items: center;
+  }
+  .myCalendar.popUp .right-panel [data-tier='1'] {
+    font-size: 2rem;
+  }
+  .myCalendar.popUp .right-panel [data-tier='2'] {
+    font-size: 1rem;
   }
 }
 
 /* transparent background of popUp dialog */
 .backgroundPopup {
   visibility: hidden;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   backdrop-filter: blur(2px) sepia(40%) !important;
-  background-color: rgba(0, 0, 0, 0.219);
-  top: 0%;
-  left: 0%;
+  background-color: rgba(149, 143, 184, 0.342);
+  top: 0;
+  left: 0;
 }
 
 .backgroundPopup.show {

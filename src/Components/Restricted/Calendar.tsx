@@ -82,10 +82,10 @@ const Calendar = (props: { rooms?: IRoom[] }) => {
   }
 
   return (
-    <div className='myCalendar'>
-      <div className='myCalendar container'>
-        <p className='myCalendar'>{moment(weekStart).format(' dddd DD MMM YYYY')}</p>
-        <ol className='myCalendar'>
+    <div id='myCalendar'>
+      <div className='container'>
+        <p>{moment(weekStart).format(' dddd DD MMM YYYY')}</p>
+        <ol>
           {/*days header 😀*/}
           {dayHeader}
           {/* day sequence 🅰️*/}
@@ -109,8 +109,8 @@ const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
     <li
       className={
         dateSet.toLocaleDateString() === new Date().toLocaleDateString()
-          ? 'myCalendar today'
-          : 'myCalendar sequence'
+          ? 'today'
+          : 'sequence'
       }
       key={dateSet.getTime()}
     >

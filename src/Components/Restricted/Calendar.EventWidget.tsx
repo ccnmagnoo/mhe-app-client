@@ -37,7 +37,7 @@ const EventWidget = (props: {
   const popUpDialog = (
     <div className={popUpClass()}>
       <span className='myCalendar popUp'>
-        <article className='appFlex'>
+        <article className='lef-panel'>
           {tag(true)}
           <p>{event.colaborator}</p>
           <h3>{moment(event.info?.date).format('dd DD/MMM H:mm')}</h3>
@@ -45,11 +45,13 @@ const EventWidget = (props: {
           <UrlChip url={event.info?.dir} textContent={'dirección'} />{' '}
         </article>
 
-        <article className='appFlex right'>
-          <div>suscritos</div>
-          <p>{event.suscribed}</p>
-          <div>entregas</div>
-          <p>{event.benefited ?? 0}</p>
+        <article className='right-panel'>
+          <h5>entregas</h5>
+          <div>
+            <div data-tier={1}>{event.benefited ?? 0}</div>
+            <div id='slash'>de</div>
+            <div data-tier={2}>{event.suscribed}</div>
+          </div>
         </article>
       </span>
     </div>
