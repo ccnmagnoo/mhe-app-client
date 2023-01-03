@@ -4,7 +4,7 @@
   background-image: url('https://cdn.discordapp.com/attachments/1054960334751928350/1059570447152332839/ccnmagnoo_clean_energy_field_beautiful_dream_octane_render_2d4d64aa-889c-42ff-8c46-0b58a2e18bc4.png');
   background-size: cover;
   background-position: center;
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
   left: 0;
   top: 0;
@@ -14,23 +14,21 @@
   position: relative;
   display: flex;
   justify-content: center;
-  max-width: 100%;
-  min-height: fit-content;
-  transition: all 2s ease-in-out;
+  animation: all 1s ease-in-out;
   left: 0;
   top: 0;
 }
 .App {
+  --transparent: 0.9;
   position: relative;
   background-image: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.925) 0%,
-    rgba(255, 255, 255, 0.8) 60%,
+    rgba(255, 255, 255, var(--transparent)) 0%,
+    rgba(255, 255, 255, calc(var(--transparent) - 0.3)) 60%,
     rgba(51, 46, 1, 0.5) 100%
   );
   backdrop-filter: blur(3px);
   max-width: 550px;
-  min-height: 80vh;
   border-radius: 2em;
   padding: 1em 0em 1em 0em;
   margin-top: 0.25em;
