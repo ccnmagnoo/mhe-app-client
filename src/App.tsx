@@ -83,7 +83,7 @@ function App() {
   return firebaseUser !== false ? (
     <>
       <div className='background'></div>
-      <div className='container'>
+      <div className='App-container'>
         <div className='App'>{landingPage}</div>
       </div>
     </>
