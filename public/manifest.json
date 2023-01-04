@@ -1,6 +1,8 @@
 {
-  "short_name": "mhe app",
-  "name": "mhe assistant app suscriptions",
+  "short_name": "cbe app",
+  "name": "Con Buena Energía Web App",
+  "description": "web app ERP, for Government Program's resource management ",
+  "version": "2.3p2023",
   "icons": [
     {
       "src": "cbelogo.png",
@@ -11,5 +13,9 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "developer": {
+    "name": "Carlos Campos Núñez",
+    "url": "https://github.com/ccnmagnoo/mhe-app-client"
+  }
 }
