@@ -38,10 +38,21 @@
       #root {
         position: relative;
         display: flex;
-        margin: 1em;
+        padding-top: 10vh;
         justify-content: center;
         left: 0;
         top: 0;
+      }
+
+      @media (width<550px) {
+        #root {
+          position: relative;
+          display: flex;
+          padding-top: 1rem;
+          justify-content: center;
+          left: 0;
+          top: 0;
+        }
       }
     </style>
   </head>
