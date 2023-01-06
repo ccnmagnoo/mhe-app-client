@@ -75,58 +75,58 @@ class MobileApp implements MobileProps {
   }
 }
 
-const Mobile = () => {
-  const appList: MobileApp[] = [
-    new MobileApp({
-      name: 'Explora Tu Energía',
-      logo: 'https://play-lh.googleusercontent.com/q5py2ne3MfyW9DgXBx70E3c8Zev9ELfaBp3tBLF_X0f4iuZaD5nqmVw9T_5FpBRWog=w240-h480-rw',
-      description: 'Explora la energía con Realidad Vitual',
-      size: 100,
-      platform: [
-        {
-          os: 'android',
-          link: 'https://play.google.com/store/apps/details?id=cl.minenergia.exploratuenergia&hl=es_419&gl=US',
-        },
-        {
-          os: 'apple',
-          link: 'https://apps.apple.com/cl/app/explora-tu-energ%C3%ADa/id1494385419',
-        },
-      ],
-    }),
-    new MobileApp({
-      name: 'Mi Casa Eficiente',
-      logo: 'https://play-lh.googleusercontent.com/S4wK5irqUb5bncIR6teT1Xg4_b00Sfg5U1YbFb0L5IsN-5HdLS-EbyZxboG1Uq3btOw=w240-h480-rw',
-      description: 'Aprende cómo ahorrar energía en tu Hogar',
-      size: 40,
-      platform: [
-        {
-          os: 'android',
-          link: 'https://play.google.com/store/apps/details?id=cl.MinEnergia.CasaEficiente&hl=gl&gl=US',
-        },
-        {
-          os: 'apple',
-          link: 'https://apps.apple.com/us/app/mi-casa-eficiente/id1521973518',
-        },
-      ],
-    }),
-    new MobileApp({
-      name: 'Energy Quiz',
-      logo: 'https://play-lh.googleusercontent.com/AMGRGB5vD_D_x22vzpxE-t_tGIRHo5D5jbIYYVpekOVFTwMND1e_HMyhi2F1RP3DBs8=w240-h480-rw',
-      description: 'Estruja tu 🧠 con esta trivia energética',
-      size: 100,
-      platform: [
-        {
-          os: 'android',
-          link: 'https://play.google.com/store/apps/details?id=cl.minenergia.EnergyQuiz&hl=es_CL&gl=US',
-        },
-        {
-          os: 'apple',
-          link: 'https://apps.apple.com/cl/app/energy-quiz/id1521973619',
-        },
-      ],
-    }),
-  ];
+const appList: MobileApp[] = [
+  new MobileApp({
+    name: 'Explora Tu Energía',
+    logo: 'https://play-lh.googleusercontent.com/q5py2ne3MfyW9DgXBx70E3c8Zev9ELfaBp3tBLF_X0f4iuZaD5nqmVw9T_5FpBRWog=w240-h480-rw',
+    description: 'Explora la red de energía con Realidad Virtual',
+    size: 100,
+    platform: [
+      {
+        os: 'android',
+        link: 'https://play.google.com/store/apps/details?id=cl.minenergia.exploratuenergia&hl=es_419&gl=US',
+      },
+      {
+        os: 'apple',
+        link: 'https://apps.apple.com/cl/app/explora-tu-energ%C3%ADa/id1494385419',
+      },
+    ],
+  }),
+  new MobileApp({
+    name: 'Mi Casa Eficiente',
+    logo: 'https://play-lh.googleusercontent.com/S4wK5irqUb5bncIR6teT1Xg4_b00Sfg5U1YbFb0L5IsN-5HdLS-EbyZxboG1Uq3btOw=w240-h480-rw',
+    description: 'Aprende cómo ahorrar energía en tu hogar',
+    size: 40,
+    platform: [
+      {
+        os: 'android',
+        link: 'https://play.google.com/store/apps/details?id=cl.MinEnergia.CasaEficiente&hl=gl&gl=US',
+      },
+      {
+        os: 'apple',
+        link: 'https://apps.apple.com/us/app/mi-casa-eficiente/id1521973518',
+      },
+    ],
+  }),
+  new MobileApp({
+    name: 'Energy Quiz',
+    logo: 'https://play-lh.googleusercontent.com/AMGRGB5vD_D_x22vzpxE-t_tGIRHo5D5jbIYYVpekOVFTwMND1e_HMyhi2F1RP3DBs8=w240-h480-rw',
+    description: 'Estruja tu 🧠 con esta trivia energética',
+    size: 100,
+    platform: [
+      {
+        os: 'android',
+        link: 'https://play.google.com/store/apps/details?id=cl.minenergia.EnergyQuiz&hl=es_CL&gl=US',
+      },
+      {
+        os: 'apple',
+        link: 'https://apps.apple.com/cl/app/energy-quiz/id1521973619',
+      },
+    ],
+  }),
+];
 
+const Mobile = () => {
   return (
     <section id='mobile-section'>
       <Typography className='section-name' variant='caption' color='primary'>

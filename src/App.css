@@ -41,3 +41,22 @@
     padding: 0.5em;
   }
 }
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 16px;
+  background: transparent;
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: royalblue;
+  border-radius: 40px;
+  height: 20px;
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+::-webkit-scrollbar-track {
+  background: #e7cfcf;
+  border-radius: 40px;
+}
