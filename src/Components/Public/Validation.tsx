@@ -121,7 +121,7 @@ const Validation = (props: any) => {
     message: string;
   }>(null);
 
-  const snackbarExternalUser = () => {
+  const code_snackbar = () => {
     //check public account
     if (errorEU !== null) {
       if (errorEU.value) {
@@ -272,7 +272,7 @@ const Validation = (props: any) => {
                     {disableCodeForm ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
-                {snackbarExternalUser()}
+                {code_snackbar()}
               </Grid>
             </Box>
           </Paper>
@@ -282,19 +282,19 @@ const Validation = (props: any) => {
   );
 
   //form A ✅✅
-  const [errorA, setErrorA] = React.useState<null | {
+  const [errorId, set_errorId] = React.useState<null | {
     value: boolean;
     message: string;
   }>(null);
 
-  const snackbarA = () => {
-    if (errorA !== null) {
-      if (errorA.value) {
+  const idValidation_snackbar = () => {
+    if (errorId !== null) {
+      if (errorId.value) {
         //if error true 😡❌📛
         return (
           <Grid item xs={12}>
             <Alert severity='error'>
-              {errorA.message}
+              {errorId.message}
               <UrlChip url={classroom?.placeActivity.dir} />
             </Alert>
           </Grid>
@@ -304,7 +304,7 @@ const Validation = (props: any) => {
         return (
           <Grid item xs={12}>
             <Alert severity='success'>
-              {errorA.message} <UrlChip url={classroom?.placeActivity.dir} />
+              {errorId.message} <UrlChip url={classroom?.placeActivity.dir} />
             </Alert>
           </Grid>
         );
@@ -320,11 +320,11 @@ const Validation = (props: any) => {
     }
   };
 
-  const onSubmitA: SubmitHandler<Input> = async (data: Input) => {
+  const on_submit_id: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A: rut validation', true, data.rut);
     const { rol } = rolChecker(data.rut);
 
-    //fetch suscriptions
+    //fetch subscriptions
     const checkSubscribed = await checkSubscription(rol);
     if (checkSubscribed !== undefined) {
       //disableA
@@ -362,11 +362,15 @@ const Validation = (props: any) => {
 
         //check if this person already if validate&signed this subscription🔥🔥🔥
         const isConsolidated = await checkConsolidated(lastSubscription.uuid);
-
-        if (isConsolidated) {
+        if (isConsolidated !== undefined) {
           //on consolidation ID existence; return undefined and error
           console.log(' benefit is already signed', lastSubscription.uuid);
-          setErrorA({ value: true, message: 'usted ya se validó previamente 🤔' });
+          set_errorId({
+            value: true,
+            message: `ya cuenta con validación ${moment(isConsolidated.dateSign)
+              .startOf('h')
+              .fromNow()}  🤔`,
+          });
           return undefined;
         }
 
@@ -407,74 +411,71 @@ const Validation = (props: any) => {
         switch (true) {
           case now > allowValidation && now < timeGap: {
             //this human being is on time 👌
-            setErrorA({
+            set_errorId({
               value: false,
               message: 'continue para validarse 🤗',
             });
-            console.log(errorA);
+            console.log(errorId);
             return lastSubscription;
           }
           case now < allowValidation: {
             // this bunny is running to fast, too early 🐇
-            setErrorA({
+            set_errorId({
               value: true,
               message: `podrás firmar en ${moment(allowValidation)
                 .endOf('m')
                 .fromNow()} 🤗`,
             });
-            console.log(errorA);
+            console.log(errorId);
             return undefined;
           }
           default: {
             //this turtle was not in time 🐢 🚫
-            setErrorA({
+            set_errorId({
               value: true,
               message: 'no llegaste a tiempo 😥, debes esperar a otro taller ',
             });
-            console.log(errorA);
+            console.log(errorId);
             return undefined;
           }
         }
       } else {
         //return error no subscription found
         console.log('no subscriptions detected', subscriptions.length);
-        setErrorA({
+        set_errorId({
           value: true,
           message: 'no encuentro este rut 🙊, tienes que que haberte inscrito antes',
         });
-        console.log(errorA);
+        console.log(errorId);
       }
     } catch (error) {
       console.log('error in validation', error);
-      setErrorA({ value: true, message: 'no pude obtener los datos 🙈' });
+      set_errorId({ value: true, message: 'no pude obtener los datos 🙈' });
     }
   }
 
-  async function checkConsolidated(suscription: string) {
+  async function checkConsolidated(subscription: string) {
     /**
-     *  @function checkConsolidated 🔥🔥🔥 return if this suscription ID
+     *  @function checkConsolidated 🔥🔥🔥 return if this subscription ID
      * was already signed and validate, fetching sus ID inside Consolidated,
      * if this is not (undefined) will return FALSE , which means is ok👌🆗:
      */
-    console.log('search for consolidated', suscription);
+    console.log('search for consolidated', subscription);
 
-    const consolidation = (await driver.get(
-      suscription,
+    const consolidation: IBeneficiary = (await driver.get(
+      subscription,
       'doc',
       dbKey.cvn,
       iBeneficiaryConverter
     )) as IBeneficiary;
-    if (consolidation === undefined) {
-      return false; /*not consolidated*/
-    } else {
-      return true; /* already consolidated*/
-    }
+
+    return consolidation;
   }
 
   const idValidation = (
     <>
       <Grow in={id_form_is_visible} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitA)}>
+        <form onSubmit={handleSubmit(on_submit_id)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -531,7 +532,7 @@ const Validation = (props: any) => {
                   </Button>
                 </Grid>
 
-                {snackbarA()}
+                {idValidation_snackbar()}
               </Grid>
             </Box>
           </Paper>
