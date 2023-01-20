@@ -367,9 +367,9 @@ const Validation = (props: any) => {
           console.log(' benefit is already signed', lastSubscription.uuid);
           set_errorId({
             value: true,
-            message: `ya cuenta con validación ${moment(isConsolidated.dateSign)
+            message: `AVISO: ya registra un beneficio ${moment(isConsolidated.dateSign)
               .startOf('h')
-              .fromNow()}  🤔`,
+              .fromNow()} 🤔`,
           });
           return undefined;
         }
