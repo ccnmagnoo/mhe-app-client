@@ -61,15 +61,15 @@ const Validation = (props: any) => {
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
-  const [disableExternalUser, setDisableEU] = React.useState(false);
-  const [disableA, setDisableA] = React.useState(true);
-  const [disableB, setDisableB] = React.useState(true);
-  const [disableSignPad, setDisableSignPad] = React.useState(false);
-  const [isUploading, setIsUploading] = React.useState(false);
+  const [disableCodeForm, set_disableCodeForm] = React.useState(false);
+  const [disableIdForm, sed_disableIdForm] = React.useState(true);
+  const [disableSignForm, set_disableSignForm] = React.useState(true);
+  const [disableSignPad, set_disableSignPad] = React.useState(false);
+  const [isUploading, set_isUploading] = React.useState(false);
 
   //State hooks visibility
-  const [visibleA, setVisibleA] = React.useState(false);
-  const [visibleB, setVisibleB] = React.useState(false);
+  const [id_form_is_visible, set_id_form_is_visible] = React.useState(false);
+  const [sign_form_is_visible, set_sign_form_is_visible] = React.useState(false);
 
   //React hook form
   const {
@@ -88,7 +88,7 @@ const Validation = (props: any) => {
     rut: string;
   };
 
-  //canvas hookconst 👩‍🎨👨‍🎨🎨
+  //canvas hook const 👩‍🎨👨‍🎨🎨
   const [renderRef, draw] = useSvgDrawing({
     penWidth: 2, // pen width
     penColor: 'blue', // pen color
@@ -152,10 +152,10 @@ const Validation = (props: any) => {
     const checkAccount = await checkInputCode(data);
     if (checkAccount === true) {
       //disableA
-      console.log('suscribed result', checkAccount);
-      setDisableEU(true);
-      setDisableA(false);
-      setVisibleA(true);
+      console.log('subscribed result', checkAccount);
+      set_disableCodeForm(true);
+      sed_disableIdForm(false);
+      set_id_form_is_visible(true);
       console.log('active user', true);
     } else {
       console.log('check external account on suspense', checkAccount);
@@ -195,7 +195,7 @@ const Validation = (props: any) => {
       console.log('accounts detected', key.length);
 
       if (key.length > 0) {
-        const account = key[0]; //returnin first key created;
+        const account = key[0]; //returning first key created;
 
         const rightNow = new Date();
         if (rightNow <= account.expiration) {
@@ -223,8 +223,8 @@ const Validation = (props: any) => {
     }
   };
 
-  const validationExternalUser = (
-    <React.Fragment>
+  const codeValidationForm = (
+    <>
       <br />
       <Grow in={true} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitCredentials)}>
@@ -246,7 +246,7 @@ const Validation = (props: any) => {
                 <Grid item xs={8} sm={6}>
                   <TextField
                     fullWidth
-                    disabled={disableExternalUser}
+                    disabled={disableCodeForm}
                     required
                     id='input-password'
                     label='código'
@@ -267,9 +267,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disableExternalUser}
+                    disabled={disableCodeForm}
                   >
-                    {disableExternalUser ? '✅' : 'seguir'}
+                    {disableCodeForm ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
                 {snackbarExternalUser()}
@@ -278,7 +278,7 @@ const Validation = (props: any) => {
           </Paper>
         </form>
       </Grow>
-    </React.Fragment>
+    </>
   );
 
   //form A ✅✅
@@ -325,24 +325,24 @@ const Validation = (props: any) => {
     const { rol } = rolChecker(data.rut);
 
     //fetch suscriptions
-    const checkSuscribed = await checkSuscription(rol);
-    if (checkSuscribed !== undefined) {
+    const checkSubscribed = await checkSubscription(rol);
+    if (checkSubscribed !== undefined) {
       //disableA
-      console.log('suscribed result', checkSuscribed);
-      setDisableA(true);
-      setVisibleB(true);
-      setCandidate(checkSuscribed);
+      console.log('subscribed result', checkSubscribed);
+      sed_disableIdForm(true);
+      set_sign_form_is_visible(true);
+      setCandidate(checkSubscribed);
       console.log('active B', true);
     } else {
-      console.log('validation A on suspense', checkSuscribed);
+      console.log('validation A on suspense', checkSubscribed);
     }
   };
 
   //Database part 🔥🔥🔥
-  async function checkSuscription(rol?: string) {
+  async function checkSubscription(rol?: string) {
     try {
-      //search in suscriptions of RUT on Sucribed collection 🔥🔥🔥
-      const suscriptions = (await driver.get<IPerson>(
+      //search in subscriptions of RUT on Subscribed collection 🔥🔥🔥
+      const subscriptions = (await driver.get<IPerson>(
         undefined,
         'collection',
         dbKey.sus,
@@ -351,27 +351,27 @@ const Validation = (props: any) => {
         orderBy('dateUpdate', 'desc')
       )) as IPerson[];
 
-      //there's suscriptions?
-      if (suscriptions.length > 0) {
-        //if this human  has a valid suscription
-        console.log('detected suscriptions', suscriptions.length);
+      //there's subscriptions?
+      if (subscriptions.length > 0) {
+        //if this human  has a valid subscription
+        console.log('detected subscriptions', subscriptions.length);
 
-        //getting last suscription in time...🚩🕜
-        const lastSuscription = suscriptions[0];
-        console.log('last suscription was', lastSuscription.dateUpdate);
+        //getting last subscription in time...🚩🕜
+        const lastSubscription = subscriptions[0];
+        console.log('last subscription was', lastSubscription.dateUpdate);
 
-        //check if this person already if validate&signed this suscription🔥🔥🔥
-        const isConsolidated = await checkConsolidated(lastSuscription.uuid);
+        //check if this person already if validate&signed this subscription🔥🔥🔥
+        const isConsolidated = await checkConsolidated(lastSubscription.uuid);
 
         if (isConsolidated) {
-          //on consolidation ID existance; return undefined and error
-          console.log(' benefit is already signed', lastSuscription.uuid);
+          //on consolidation ID existence; return undefined and error
+          console.log(' benefit is already signed', lastSubscription.uuid);
           setErrorA({ value: true, message: 'usted ya se validó previamente 🤔' });
           return undefined;
         }
 
         const room = (await driver.get<IRoom>(
-          lastSuscription.classroom.uuid,
+          lastSubscription.classroom.uuid,
           'doc',
           dbKey.room,
           iRoomConverter
@@ -385,7 +385,7 @@ const Validation = (props: any) => {
           console.log('i wasn"t able to fetch classroom object');
         }
 
-        //checking if this person is on schechule ⌛🏁🏁to sign
+        //checking if this person is on schedule ⌛🏁🏁to sign
         const now = new Date();
         const allowValidation: Date = getAllowValidation(room);
 
@@ -395,7 +395,7 @@ const Validation = (props: any) => {
           ? +process.env.REACT_APP_VALIDATION_TIME_GAP
           : 30; /*time validation after activity*/
         const timeGap: Date = new Date(
-          lastSuscription.classroom.dateInstance.getTime()
+          lastSubscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
           timeGap.getDate() + countGap
@@ -412,7 +412,7 @@ const Validation = (props: any) => {
               message: 'continue para validarse 🤗',
             });
             console.log(errorA);
-            return lastSuscription;
+            return lastSubscription;
           }
           case now < allowValidation: {
             // this bunny is running to fast, too early 🐇
@@ -436,8 +436,8 @@ const Validation = (props: any) => {
           }
         }
       } else {
-        //return error no suscription found
-        console.log('no suscriptions detected', suscriptions.length);
+        //return error no subscription found
+        console.log('no subscriptions detected', subscriptions.length);
         setErrorA({
           value: true,
           message: 'no encuentro este rut 🙊, tienes que que haberte inscrito antes',
@@ -471,9 +471,9 @@ const Validation = (props: any) => {
     }
   }
 
-  const validationA = (
-    <React.Fragment>
-      <Grow in={visibleA} timeout={800}>
+  const idValidation = (
+    <>
+      <Grow in={id_form_is_visible} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitA)}>
           <Paper elevation={2}>
             <Box p={1}>
@@ -494,7 +494,7 @@ const Validation = (props: any) => {
                 <Grid item xs={8} sm={6}>
                   <TextField
                     fullWidth
-                    disabled={disableA}
+                    disabled={disableIdForm}
                     required
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
@@ -507,7 +507,7 @@ const Validation = (props: any) => {
                       },
                       validate: {
                         isTrue: (v) => {
-                          if (disableA === false) {
+                          if (disableIdForm === false) {
                             return rolChecker(v).check === true;
                           } else {
                             return true;
@@ -525,9 +525,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disableA}
+                    disabled={disableIdForm}
                   >
-                    {disableA ? '✅' : 'Seguir'}
+                    {disableIdForm ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
 
@@ -538,7 +538,7 @@ const Validation = (props: any) => {
         </form>
       </Grow>
       <br />
-    </React.Fragment>
+    </>
   );
 
   //form B  ✅✅
@@ -568,18 +568,18 @@ const Validation = (props: any) => {
   };
 
   const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
-    console.log('init valudation B', data);
+    console.log('init validation B', data);
     //init states
-    setIsUploading(true); /*loading progress*/
-    setDisableB(true); /*on click*/
+    set_isUploading(true); /*loading progress*/
+    set_disableSignForm(true); /*on click*/
 
     //upload sign )SVG to storage 🔥🔥💾
 
     //upload IBeneficiary to Consolidated 🔥🔥🔥
     const result = await postBeneficiary();
     //setState
-    setIsUploading(false); /*loading progress*/
-    setDisableSignPad(result);
+    set_isUploading(false); /*loading progress*/
+    set_disableSignPad(result);
   };
 
   async function postBeneficiary() {
@@ -693,9 +693,9 @@ const Validation = (props: any) => {
     }
   }
 
-  const validationB = (
+  const signValidation = (
     <React.Fragment>
-      <Grow in={visibleB} timeout={800}>
+      <Grow in={sign_form_is_visible} timeout={800}>
         <form onSubmit={handleSubmit(onSubmitB)}>
           <Paper elevation={0}>
             <Box p={1}>
@@ -730,7 +730,7 @@ const Validation = (props: any) => {
                         aria-label='done'
                         startIcon={<CheckCircleOutlineIcon />}
                         onClick={() => {
-                          setDisableB(false);
+                          set_disableSignForm(false);
                         }}
                       >
                         {/*🔽*/}
@@ -743,7 +743,7 @@ const Validation = (props: any) => {
                         aria-label='back-signpad'
                         startIcon={<ReplayIcon />}
                         onClick={() => {
-                          setDisableB(true);
+                          set_disableSignForm(true);
                           draw.undo();
                         }}
                       >
@@ -756,7 +756,7 @@ const Validation = (props: any) => {
                         aria-label='erase-signpad'
                         startIcon={<HighlightOffIcon />}
                         onClick={() => {
-                          setDisableB(true);
+                          set_disableSignForm(true);
                           draw.clear();
                         }}
                       >
@@ -783,13 +783,13 @@ const Validation = (props: any) => {
                         type='submit'
                         size='large'
                         color='secondary'
-                        disabled={disableB}
+                        disabled={disableSignForm}
                         startIcon={<CheckCircleOutlineIcon />}
                       >
                         validar compromiso
                       </Button>
                       {/*summon new button to reload current page 🔃*/}
-                      {disableSignPad && disableB ? (
+                      {disableSignPad && disableSignForm ? (
                         <Button
                           onClick={() => {
                             //props.history.push('/suscription');
@@ -819,17 +819,17 @@ const Validation = (props: any) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       {header}
 
-      {!visibleA && validationExternalUser}
+      {!id_form_is_visible && codeValidationForm}
 
-      {visibleA && validationA}
-      {visibleB && validationB}
+      {id_form_is_visible && idValidation}
+      {sign_form_is_visible && signValidation}
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;
       </Alert>
-    </React.Fragment>
+    </>
   );
 };
 
