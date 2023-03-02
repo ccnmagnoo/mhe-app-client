@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-export const OnFailSuscription = () => {
+export const OnFailSubscription = () => {
   const mailTo =
     'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut y su comuna. motivo: no he encontrado un taller disponible'.replace(
       ' ',

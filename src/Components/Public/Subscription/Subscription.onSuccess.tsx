@@ -16,7 +16,7 @@ type SuccessProps = {
   person?: IPerson;
 };
 
-export const OnSuccessSuscription = (props: SuccessProps) => {
+export const OnSuccessSubscription = (props: SuccessProps) => {
   //referencias
   const classroom = props.classroom;
 

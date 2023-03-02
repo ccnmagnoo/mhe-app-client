@@ -12,9 +12,9 @@ export default function getAllowValidation(room?: IRoom): Date {
         : new Date(); /*day of class 📆*/
 
     //set current time is allowed for validation
-    const timeBeforeActivity = process.env.REACT_APP_HOURS_PREVIOUS_VALIDATION;
+    const earlyValidation = process.env.REACT_APP_HOURS_EARLY_VALIDATION;
     defaultTimeValidation.setHours(
-      defaultTimeValidation.getHours() - +(timeBeforeActivity ?? 0)
+      defaultTimeValidation.getHours() - +(earlyValidation ?? 0)
     );
     return defaultTimeValidation; //set validation allowing time
   }

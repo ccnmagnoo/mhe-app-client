@@ -17,7 +17,7 @@ import 'moment/locale/es'; // Pasar a español
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 
-import { Requirements } from './Subscription/Suscription.requirements';
+import { Requirements } from './Subscription/Subscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
@@ -26,24 +26,24 @@ import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import Grow from '@material-ui/core/Grow';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
 import { getGender } from '../../Functions/getGender';
-import { OnSuccessSuscription } from './Subscription/Suscription.onSuccess';
+import { OnSuccessSubscription } from './Subscription/Subscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
-import ClassroomCard from './Subscription/Suscription.ClassroomCard';
+import ClassroomCard from './Subscription/Subscription.ClassroomCard';
 import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
 import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
-import { OnFailSuscription } from './Subscription/Suscription.onFail';
+import { OnFailSubscription } from './Subscription/Subscription.onFail';
 
 type Props = {
-  oversuscription?: boolean;
+  overSubscription?: boolean;
 };
 
-export type InputSuscription = {
+export type InputSubscription = {
   rut: string;
   name: string;
   fatherName: string;
@@ -59,9 +59,9 @@ export type InputSuscription = {
   gasDuration?: number;
 };
 
-const Suscription = (props: Props) => {
-  //instance of oversuscription
-  const oversuscription: boolean = props.oversuscription ?? false;
+const Subscription = (props: Props) => {
+  //instance of oversubscription
+  const overSubscription: boolean = props.overSubscription ?? false;
   //hooks
   const [rolRequest, setRolRequest] = React.useState<RolRequest | undefined>(undefined);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
@@ -69,7 +69,7 @@ const Suscription = (props: Props) => {
   //objects states
   const [avaliableClassrooms, setAvaliableClassrooms] = React.useState<IRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = React.useState<IRoom | undefined>(undefined);
-  const [suscribedPerson] = React.useState<IPerson | undefined>(undefined);
+  const [subscribedPerson] = React.useState<IPerson | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //form is disabled
@@ -93,7 +93,7 @@ const Suscription = (props: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     watch,
     formState: { errors },
-  } = useForm<InputSuscription>();
+  } = useForm<InputSubscription>();
 
   //function move to bottom of the page⏬
   //TODO:search function
@@ -102,14 +102,14 @@ const Suscription = (props: Props) => {
   const header = (
     <React.Fragment>
       <Typography variant='h6' color='primary'>
-        {oversuscription ? (
+        {overSubscription ? (
           <span>Inscripción forzada</span>
         ) : (
           <span>Inscripción a talleres</span>
         )}
       </Typography>
       <Typography variant='body1' color='initial'>
-        {oversuscription ? (
+        {overSubscription ? (
           <span>inscripción hasta 120 días después del taller</span>
         ) : (
           <span>recuerde tener su carnet a mano 🙌💳</span>
@@ -119,7 +119,7 @@ const Suscription = (props: Props) => {
   );
 
   //FORM A 💖💖💗
-  const onSubmitA: SubmitHandler<InputSuscription> = async (data) => {
+  const onSubmitA: SubmitHandler<InputSubscription> = async (data) => {
     //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
@@ -272,7 +272,7 @@ const Suscription = (props: Props) => {
   );
 
   //FROM B 💖💖💗
-  const onSubmitB: SubmitHandler<InputSuscription> = async (data) => {
+  const onSubmitB: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form B', data);
     setDisableB(true);
     setProgressB(true); //progress bar ON
@@ -290,7 +290,7 @@ const Suscription = (props: Props) => {
    * @function fetchClassrooms got active incoming classrooms
    * INSIDE the territory suscription
    */
-  async function fetchClassrooms(data: InputSuscription) {
+  async function fetchClassrooms(data: InputSubscription) {
     try {
       //firestore🔥🔥🔥: fetch incoming classes
       /**
@@ -302,9 +302,9 @@ const Suscription = (props: Props) => {
       //time restriction
       console.log('requested city', data.city, '');
       const restrictionTime = new Date();
-      if (oversuscription === false) {
+      if (overSubscription === false) {
         //normal: get last 14 days Rooms
-        const backwardDays = +(process.env.REACT_APP_SUSCRIPTION_TIME_GAP ?? 14);
+        const backwardDays = +(process.env.REACT_APP_SUBSCRIPTION_TIME_GAP ?? 14);
         restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       } else {
         //oversuscription: set init year
@@ -326,7 +326,7 @@ const Suscription = (props: Props) => {
       console.log('incoming classrooms', rooms);
 
       const choosableRooms: IRoom[] =
-        oversuscription === false
+        overSubscription === false
           ? rooms.filter((room) => {
               //filtering rooms with vacancies
               const vacancies: number = room.vacancies ?? 180;
@@ -457,7 +457,7 @@ const Suscription = (props: Props) => {
 
                 {/*Energy Poll ⚡⚡🔌*/}
                 {
-                  oversuscription === false ? (
+                  overSubscription === false ? (
                     <EnergyPollForm
                       trigger={disableB}
                       register={register}
@@ -485,7 +485,7 @@ const Suscription = (props: Props) => {
   );
 
   //FORM C 💖💖💗
-  const onSubmitC: SubmitHandler<InputSuscription> = async (data) => {
+  const onSubmitC: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form C', data);
     //init, disable "inscription button"
     setDisableC(true);
@@ -511,7 +511,7 @@ const Suscription = (props: Props) => {
     null
   );
 
-  async function createSuscription(data: InputSuscription) {
+  async function createSuscription(data: InputSubscription) {
     try {
       //check if it's there a room selected ❓❓
       if (selectedRoom === undefined) {
@@ -653,7 +653,7 @@ const Suscription = (props: Props) => {
       });
     } else {
       // lo sentimos
-      return <OnFailSuscription />;
+      return <OnFailSubscription />;
     }
   };
 
@@ -758,13 +758,13 @@ const Suscription = (props: Props) => {
     >
       <DialogTitle id='index'>
         <Typography variant='subtitle1' color='primary'>
-          Felicidades <strong> {suscribedPerson?.name.firstName} </strong>ya estás
+          Felicidades <strong> {subscribedPerson?.name.firstName} </strong>ya estás
           inscrit@ 🎉✨
         </Typography>
       </DialogTitle>
       <DialogContent>
         {/*dialog content 🧁*/}
-        <OnSuccessSuscription person={suscribedPerson} classroom={selectedRoom} />
+        <OnSuccessSubscription person={subscribedPerson} classroom={selectedRoom} />
       </DialogContent>
       <DialogActions>
         <Button
@@ -791,10 +791,10 @@ const Suscription = (props: Props) => {
       {progressB ? <LinearProgress color='primary' /> : undefined}
       {visibleC && formC}
       <br />
-      {disableA ? undefined : oversuscription === false ? <Requirements /> : undefined}
+      {disableA ? undefined : overSubscription === false ? <Requirements /> : undefined}
       {dialogOnSuccess}
     </React.Fragment>
   );
 };
 
-export default withRouter<any, any>(Suscription);
+export default withRouter<any, any>(Subscription);

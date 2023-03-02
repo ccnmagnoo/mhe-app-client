@@ -28,7 +28,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'firebase/auth';
 import { auth } from '../../Config/firebase';
-import Suscription from '../Public/Suscription';
+import Subscription from '../Public/Subscription';
 // import { Operations } from './Operations';
 //lazy loading
 const Incoming = lazy(() => import('./Incoming'));
@@ -138,7 +138,7 @@ const Dashboard = (props: any) => {
             <Route path={`${path}/addperson`}>
               {/*create new unsuscribed person after period gap*/}
 
-              <Suscription oversuscription={true} />
+              <Subscription oversuscription={true} />
             </Route>
             <Route path={`${path}/create`}>
               {/*create new classroom*/}

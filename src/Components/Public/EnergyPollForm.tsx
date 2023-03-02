@@ -11,10 +11,10 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
-import { DeepMap, FieldError, UseFormRegister } from 'react-hook-form';
-import { InputSuscription as In } from './Suscription';
+import { DeepMap, FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
+import { InputSubscription as In } from './Subscription';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   trigger: boolean;
   register: UseFormRegister<T>;
   errors: DeepMap<T, FieldError>;

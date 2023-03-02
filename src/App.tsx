@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Components/Restricted/Login';
 import Dashboard from './Components/Restricted/Dashboard';
 import { auth } from './Config/firebase';
-import Suscription from './Components/Public/Suscription';
+import Subscription from './Components/Public/Subscription';
 import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
@@ -28,7 +28,7 @@ function App() {
         setFirebaseUser(user);
         //set user if true, and set FALSE if not😮😮
       } else {
-        //present null on problems of conection 🧠❔
+        //present null on problems of confection 🧠❔
         setFirebaseUser(null);
       }
     });
@@ -45,8 +45,8 @@ function App() {
         {/* viewport s */}
         <div style={{ padding: '10px 0' }}>
           <Switch>
-            <Route path='/suscription'>
-              <Suscription />
+            <Route path='/subscription'>
+              <Subscription />
             </Route>
             <Route path='/validation'>
               <Validation />

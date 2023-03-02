@@ -20,7 +20,7 @@ export const ButtonNav = () => {
         fullWidth
         size='medium'
       >
-        <Button component={NavLink} to='/suscription' startIcon={<FaceIcon />}>
+        <Button component={NavLink} to='/subscription' startIcon={<FaceIcon />}>
           <span>Inscribete</span>
         </Button>
         <Button component={NavLink} to='/validation' startIcon={<VerifiedUserIcon />}>
