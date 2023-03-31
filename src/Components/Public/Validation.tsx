@@ -218,7 +218,7 @@ const Validation = (props: any) => {
     } catch (error) {
       //im having some problems with conection
       console.log('checking external user', error);
-      setErrorEU({ value: true, message: 'error de conexión 🧠' });
+      setErrorEU({ value: true, message: 'error de conexión 😵' });
       return false;
     }
   };
@@ -246,6 +246,7 @@ const Validation = (props: any) => {
                 <Grid item xs={8} sm={6}>
                   <TextField
                     fullWidth
+                    autoComplete='off'
                     disabled={disableCodeForm}
                     required
                     id='input-password'
@@ -494,6 +495,8 @@ const Validation = (props: any) => {
 
                 <Grid item xs={8} sm={6}>
                   <TextField
+                    autoFocus={id_form_is_visible}
+                    autoComplete='off'
                     fullWidth
                     disabled={disableIdForm}
                     required
