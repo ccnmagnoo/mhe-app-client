@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import popipo from '../../Assets/popiposoft.svg';
 import EmailIcon from '@material-ui/icons/Email';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 import { NavLink } from 'react-router-dom';
 
 export const Welcome = () => {
@@ -26,28 +27,47 @@ export const Welcome = () => {
         <CardHeader
           avatar={<Avatar aria-label='W'>👋</Avatar>}
           title='Bienvenidos a la mini app '
-          subheader='Incribete y valida on-line'
+          subheader='Incríbete y valida on-line'
         />
         <CardContent>
           <Grid container spacing={3} justify='center'>
             <Grid item>
               <Typography variant='subtitle1' color='inherit' align='justify' paragraph>
                 con esta mini app podrás{' '}
-                <Link component={NavLink} to='/suscription' color='primary'>
+                <Link component={NavLink} to='/subscription' color='primary'>
                   <strong>inscribirte a nuestros talleres</strong>
                 </Link>{' '}
                 y posteriormente podrás validar tu asistencia a los Talleres de
                 capacitación <strong>Con Buena Energía</strong> de forma{' '}
                 <strong>on-line</strong>.
               </Typography>
-              <Typography variant='caption' color='initial' paragraph>
-                Sólo consultas escribenos a{' '}
+              <Typography
+                variant='caption'
+                color='initial'
+                paragraph
+                style={{
+                  position: 'relative',
+                  alignItems: 'flex-start',
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                Puedes ingresar aquí 👉
+                <Chip
+                  avatar={<HowToRegIcon />}
+                  label='Inscripción'
+                  component={NavLink}
+                  to='/subscription'
+                  color='primary'
+                  clickable
+                />{' '}
                 <Chip
                   avatar={<EmailIcon />}
-                  label='@Energía'
+                  label='Consultas?'
                   component='a'
                   href={mailTo}
-                  color='primary'
+                  color='default'
+                  size='medium'
                   clickable
                 />
               </Typography>
