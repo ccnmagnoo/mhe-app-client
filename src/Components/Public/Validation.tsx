@@ -98,9 +98,40 @@ const Validation = (props: any) => {
     fill: 'none', // Set fill attribute for path. default is `none`
   });
 
-  const Drawing = () => {
+  const SignPad = () => {
     // Drawing area will be resized to fit the rendering area
-    return <div style={{ width: '100%', height: 200 }} ref={renderRef} />;
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+          height: 200,
+          border: '2px solid RoyalBlue',
+          boxSizing: 'content-box',
+          borderRadius: '5px',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: 200,
+            zIndex: 1,
+          }}
+          ref={renderRef}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            border: '2px royalblue dotted',
+            borderRadius: 5,
+            width: '80%',
+            height: '80px',
+          }}
+        ></div>
+      </div>
+    );
   };
 
   const header = (
@@ -144,7 +175,7 @@ const Validation = (props: any) => {
     }
   };
 
-  const onSubmitCredentials: SubmitHandler<Input> = async (data, e) => {
+  const onSubmitCode: SubmitHandler<Input> = async (data, e) => {
     //init on submit
     console.log('form External User', true, data.eUser);
 
@@ -223,11 +254,11 @@ const Validation = (props: any) => {
     }
   };
 
-  const codeValidationForm = (
+  const code_validation_form = (
     <>
       <br />
       <Grow in={true} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitCredentials)}>
+        <form onSubmit={handleSubmit(onSubmitCode)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -321,7 +352,7 @@ const Validation = (props: any) => {
     }
   };
 
-  const on_submit_id: SubmitHandler<Input> = async (data: Input) => {
+  const on_submit_rol: SubmitHandler<Input> = async (data: Input) => {
     console.log('form A: rut validation', true, data.rut);
     const { rol } = rolChecker(data.rut);
 
@@ -473,10 +504,10 @@ const Validation = (props: any) => {
     return consolidation;
   }
 
-  const idValidation = (
+  const rol_validation = (
     <>
       <Grow in={rol_form_is_visible} timeout={800}>
-        <form onSubmit={handleSubmit(on_submit_id)}>
+        <form onSubmit={handleSubmit(on_submit_rol)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -571,7 +602,7 @@ const Validation = (props: any) => {
     }
   };
 
-  const onSubmitB: SubmitHandler<Input> = async (data: Input) => {
+  const onSubmit_signing: SubmitHandler<Input> = async (data: Input) => {
     console.log('init validation B', data);
     //init states
     set_isUploading(true); /*loading progress*/
@@ -697,10 +728,10 @@ const Validation = (props: any) => {
     }
   }
 
-  const signValidation = (
+  const sign_validation = (
     <React.Fragment>
       <Grow in={sign_form_is_visible} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitB)}>
+        <form onSubmit={handleSubmit(onSubmit_signing)}>
           <Paper elevation={0}>
             <Box p={1}>
               {/*the DOCUMENT 🚩📖📚*/}
@@ -775,7 +806,7 @@ const Validation = (props: any) => {
                   <Grid item xs={12} sm={9}>
                     <Paper elevation={4} className={signPaper.paperRoot}>
                       <Box m={2} p={2} color='secondary'>
-                        {Drawing}
+                        {SignPad}
                       </Box>
                     </Paper>
                   </Grid>
@@ -826,10 +857,10 @@ const Validation = (props: any) => {
     <>
       {header}
 
-      {!rol_form_is_visible && codeValidationForm}
+      {!rol_form_is_visible && code_validation_form}
 
-      {rol_form_is_visible && idValidation}
-      {sign_form_is_visible && signValidation}
+      {rol_form_is_visible && rol_validation}
+      {sign_form_is_visible && sign_validation}
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;
       </Alert>
