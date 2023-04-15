@@ -1,5 +1,4 @@
 import { Chip, Avatar } from '@material-ui/core';
-import React from 'react';
 import { isUrl } from '../../Functions/IsURL';
 
 export const UrlChip = (props: {
