@@ -73,17 +73,18 @@ const Subscription = (props: Props) => {
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //form is disabled
-  const [disable_form_inputId, setDisableA] = React.useState(false);
-  const [disable_form_personalData, setDisableB] = React.useState(false);
-  const [disable_form_selectRoom, setDisableC] = React.useState(false);
-  const [disableS, setDisableS] = React.useState(true); /*final submit button*/
+  const [disable_form_rol, set_disability_form_rol] = React.useState(false);
+  const [disable_form_identity, set_disability_form_identity] = React.useState(false);
+  const [disable_form_select_room, set_disability_select_room] = React.useState(false);
+  const [disable_final_message, set_disability_final_message] =
+    React.useState(true); /*final submit button*/
   //hooks or form is visible
-  const [visible_inputPersonalData, setVisibleB] = React.useState(false);
-  const [visible_selectRoom, setVisibleC] = React.useState(false);
+  const [visible_identity_form, setVisibleB] = React.useState(false);
+  const [visible_select_room, setVisibleC] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
   //progressing bar state
-  const [loading_inputId, setProgressA] = React.useState(false);
-  const [loading_personalData, setProgressB] = React.useState(false);
+  const [loading_rol, set_loading_rol] = React.useState(false);
+  const [loading_identity, set_loading_identity] = React.useState(false);
 
   //React hook form
   const {
@@ -119,11 +120,11 @@ const Subscription = (props: Props) => {
   );
 
   //FORM A 💖💖💗
-  const onSubmitA: SubmitHandler<InputSubscription> = async (data) => {
+  const onSubmit_rol: SubmitHandler<InputSubscription> = async (data) => {
     //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
-    setProgressA(true); //progress bar ON
+    set_loading_rol(true); //progress bar ON
 
     //checking rut 👁‍🗨
     const rolVerified = rolChecker(data.rut);
@@ -140,14 +141,14 @@ const Subscription = (props: Props) => {
   //on result of onSubmitStepA
   React.useEffect(() => {
     //is everything ok the must be done🆗👌
-    setProgressA(false); //progress bar OFF
+    set_loading_rol(false); //progress bar OFF
     if (gotBenefit === false) {
       //on success 👌 disable RUT input
-      setDisableA(true);
+      set_disability_form_rol(true);
       //set visible second form 👁‍🗨
       setVisibleB(true);
     } else {
-      setDisableA(false);
+      set_disability_form_rol(false);
     }
   }, [gotBenefit]);
 
@@ -180,7 +181,7 @@ const Subscription = (props: Props) => {
   }
 
   //alert snackbar A💥💢
-  const snackbarA = () => {
+  const snackbar_rol_form = () => {
     if (gotBenefit === undefined) {
       return undefined;
     } else if (gotBenefit === true) {
@@ -203,7 +204,7 @@ const Subscription = (props: Props) => {
   const form_inputId = (
     <>
       <Grow in={true}>
-        <form onSubmit={handleSubmit(onSubmitA)}>
+        <form onSubmit={handleSubmit(onSubmit_rol)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -224,9 +225,9 @@ const Subscription = (props: Props) => {
                   <TextField
                     fullWidth
                     autoComplete='off'
-                    autoFocus={!disable_form_inputId}
+                    autoFocus={!disable_form_rol}
                     required
-                    disabled={disable_form_inputId}
+                    disabled={disable_form_rol}
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 😗' : 'ingrese rut'}
                     type='number'
@@ -250,14 +251,14 @@ const Subscription = (props: Props) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disable_form_inputId}
+                    disabled={disable_form_rol}
                   >
-                    {disable_form_inputId ? '✅' : 'seguir'}
+                    {disable_form_rol ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
 
                 {/*response alert*/}
-                {snackbarA() ?? (
+                {snackbar_rol_form() ?? (
                   // replace for K
                   <Grid item xs={12}>
                     <Alert severity='info' style={{ color: '#2196f3' }}>
@@ -274,10 +275,10 @@ const Subscription = (props: Props) => {
   );
 
   //FROM B 💖💖💗
-  const onSubmitB: SubmitHandler<InputSubscription> = async (data) => {
+  const onSubmit_identity: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form B', data);
-    setDisableB(true);
-    setProgressB(true); //progress bar ON
+    set_disability_form_identity(true);
+    set_loading_identity(true); //progress bar ON
 
     //fetch Classrooms form firebase 🔥🔥🔥
     const getClassrooms = await fetchClassrooms(data);
@@ -285,7 +286,7 @@ const Subscription = (props: Props) => {
     //open form C
     setVisibleB(false); //hide step2
     setVisibleC(true);
-    setProgressB(false); //progress bar OFF
+    set_loading_identity(false); //progress bar OFF
   };
 
   /**
@@ -327,7 +328,7 @@ const Subscription = (props: Props) => {
 
       console.log('incoming classrooms', rooms);
 
-      const choosableRooms: IRoom[] =
+      const available_rooms: IRoom[] =
         overSubscription === false
           ? rooms.filter((room) => {
               //filtering rooms with vacancies
@@ -337,28 +338,28 @@ const Subscription = (props: Props) => {
           : rooms; //full rooms;
 
       console.log(
-        'list of avaliable classrooms on city',
+        'list of available classrooms on city',
         data.city,
-        choosableRooms.length,
-        choosableRooms.map((it) => it.idCal)
+        available_rooms.length,
+        available_rooms.map((it) => it.idCal)
       );
 
-      //set near classrooms avaliable state  🎣
-      setAvailableClassrooms(choosableRooms);
+      //set near classrooms available state  🎣
+      setAvailableClassrooms(available_rooms);
 
-      return choosableRooms.length > 0 ? true : false;
+      return available_rooms.length > 0 ? true : false;
     } catch (error) {
       console.log('fetch classrooms', error);
     }
   }
 
-  const form_inputPersonalData = (
+  const form_identity = (
     <>
       <br />
-      <Grow in={visible_inputPersonalData}>
+      <Grow in={visible_identity_form}>
         <Paper elevation={2}>
           <Box p={1}>
-            <form onSubmit={handleSubmit(onSubmitB)}>
+            <form onSubmit={handleSubmit(onSubmit_identity)}>
               <Grid container spacing={1} justify='flex-end'>
                 <Grid item xs={12}>
                   <Typography variant='subtitle2' color='primary'>
@@ -369,6 +370,7 @@ const Subscription = (props: Props) => {
                   {/*nombres: 👨‍🦳👩‍🦳👨‍🦰👩‍🦰👩‍🦱👨‍🦱*/}
                   <TextField
                     required
+                    autoComplete='off'
                     fullWidth
                     id='name-field'
                     label='nombre(s)'
@@ -386,7 +388,8 @@ const Subscription = (props: Props) => {
                 <Grid item xs={6} sm={4}>
                   <TextField
                     required
-                    disabled={disable_form_personalData}
+                    autoComplete='off'
+                    disabled={disable_form_identity}
                     id='name-field'
                     label='paterno'
                     type='text'
@@ -403,7 +406,8 @@ const Subscription = (props: Props) => {
                 <Grid item xs={6} sm={4}>
                   <TextField
                     required
-                    disabled={disable_form_personalData}
+                    autoComplete='off'
+                    disabled={disable_form_identity}
                     id='name-field'
                     label='materno'
                     type='text'
@@ -421,10 +425,11 @@ const Subscription = (props: Props) => {
                 <Grid item xs={6}>
                   {/*dirección: 🌐🗺🚗*/}
                   <TextField
-                    id='name-field'
-                    disabled={disable_form_personalData}
+                    id='user_address'
+                    autoComplete='off'
+                    disabled={disable_form_identity}
                     fullWidth
-                    label='dirección o sector'
+                    label='dirección'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
                     variant='outlined'
@@ -437,8 +442,8 @@ const Subscription = (props: Props) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Autocomplete
-                    id='combo-box-demo'
-                    disabled={disable_form_personalData}
+                    id='city_address'
+                    disabled={disable_form_identity}
                     options={cities}
                     getOptionLabel={(option) => option.city}
                     renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
@@ -460,7 +465,7 @@ const Subscription = (props: Props) => {
                 {
                   overSubscription === false ? (
                     <EnergyPollForm
-                      trigger={disable_form_personalData}
+                      trigger={disable_form_identity}
                       register={register}
                       errors={errors}
                     /> //show
@@ -469,12 +474,12 @@ const Subscription = (props: Props) => {
 
                 <Grid item xs={3} sm={'auto'}>
                   <Button
-                    disabled={disable_form_personalData}
+                    disabled={disable_form_identity}
                     type='submit'
                     variant='outlined'
                     color='primary'
                   >
-                    {disable_form_personalData ? '✅' : 'seguir'}
+                    {disable_form_identity ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
               </Grid>
@@ -489,8 +494,8 @@ const Subscription = (props: Props) => {
   const onSubmitC: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form C', data);
     //init, disable "inscription button"
-    setDisableC(true);
-    setDisableS(true);
+    set_disability_select_room(true);
+    set_disability_final_message(true);
     setIsUploading(true);
 
     //load to firebase Suscribed 🔥🔥🔥
@@ -501,7 +506,7 @@ const Subscription = (props: Props) => {
       setDialogOpen(true);
       setIsUploading(false);
     } else {
-      setDisableC(false);
+      set_disability_select_room(false);
 
       setIsUploading(false);
     }
@@ -646,8 +651,8 @@ const Subscription = (props: Props) => {
               item={item}
               selectedRoom={selectedRoom}
               setSelectedRoom={setSelectedRoom}
-              disableC={disable_form_selectRoom}
-              setDisableS={setDisableS}
+              disableC={disable_form_select_room}
+              setDisableS={set_disability_final_message}
             ></ClassroomCard>
           </Grid>
         );
@@ -661,7 +666,7 @@ const Subscription = (props: Props) => {
   const form_selectRoom = (
     <>
       <br />
-      <Grow in={visible_selectRoom}>
+      <Grow in={visible_select_room}>
         <Paper>
           <Box p={1}>
             <form onSubmit={handleSubmit(onSubmitC)}>
@@ -681,7 +686,7 @@ const Subscription = (props: Props) => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
-                    disabled={disable_form_selectRoom}
+                    disabled={disable_form_select_room}
                     fullWidth
                     id='email-text-field'
                     label={
@@ -703,7 +708,7 @@ const Subscription = (props: Props) => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    disabled={disable_form_selectRoom}
+                    disabled={disable_form_select_room}
                     id='phone-text-field'
                     label='teléfono (opcional)'
                     type='phone'
@@ -725,9 +730,11 @@ const Subscription = (props: Props) => {
                     type='submit'
                     variant='contained'
                     color='primary'
-                    disabled={disable_form_selectRoom && disableS}
+                    disabled={disable_form_select_room && disable_final_message}
                   >
-                    {disable_form_selectRoom && disableS ? '✅' : 'Incripción'}
+                    {disable_form_select_room && disable_final_message
+                      ? '✅'
+                      : 'Incripción'}
                   </Button>
                 </Grid>
                 {/*linear progress bar*/}
@@ -787,12 +794,12 @@ const Subscription = (props: Props) => {
       {header}
       <br />
       {form_inputId}
-      {loading_inputId ? <LinearProgress color='primary' /> : undefined}
-      {visible_inputPersonalData && form_inputPersonalData}
-      {loading_personalData ? <LinearProgress color='primary' /> : undefined}
-      {visible_selectRoom && form_selectRoom}
+      {loading_rol ? <LinearProgress color='primary' /> : undefined}
+      {visible_identity_form && form_identity}
+      {loading_identity ? <LinearProgress color='primary' /> : undefined}
+      {visible_select_room && form_selectRoom}
       <br />
-      {disable_form_inputId ? undefined : overSubscription === false ? (
+      {disable_form_rol ? undefined : overSubscription === false ? (
         <Requirements />
       ) : undefined}
       {dialogOnSuccess}
