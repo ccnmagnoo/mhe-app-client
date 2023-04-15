@@ -61,14 +61,14 @@ const Validation = (props: any) => {
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks diable buttons
-  const [disableCodeForm, set_disableCodeForm] = React.useState(false);
-  const [disableIdForm, sed_disableIdForm] = React.useState(true);
-  const [disableSignForm, set_disableSignForm] = React.useState(true);
-  const [disableSignPad, set_disableSignPad] = React.useState(false);
+  const [disable_code_form, set_disability_code_form] = React.useState(false);
+  const [disable_from_rol, set_disability_rol_form] = React.useState(true);
+  const [disable_sign_form, set_disability_sign_form] = React.useState(true);
+  const [disable_sign_pad, set_disability_sign_pad] = React.useState(false);
   const [isUploading, set_isUploading] = React.useState(false);
 
   //State hooks visibility
-  const [id_form_is_visible, set_id_form_is_visible] = React.useState(false);
+  const [rol_form_is_visible, set_id_form_is_visible] = React.useState(false);
   const [sign_form_is_visible, set_sign_form_is_visible] = React.useState(false);
 
   //React hook form
@@ -153,8 +153,8 @@ const Validation = (props: any) => {
     if (checkAccount === true) {
       //disableA
       console.log('subscribed result', checkAccount);
-      set_disableCodeForm(true);
-      sed_disableIdForm(false);
+      set_disability_code_form(true);
+      set_disability_rol_form(false);
       set_id_form_is_visible(true);
       console.log('active user', true);
     } else {
@@ -247,7 +247,7 @@ const Validation = (props: any) => {
                   <TextField
                     fullWidth
                     autoComplete='off'
-                    disabled={disableCodeForm}
+                    disabled={disable_code_form}
                     required
                     id='input-password'
                     label='código'
@@ -268,9 +268,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disableCodeForm}
+                    disabled={disable_code_form}
                   >
-                    {disableCodeForm ? '✅' : 'seguir'}
+                    {disable_code_form ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
                 {code_snackbar()}
@@ -330,7 +330,7 @@ const Validation = (props: any) => {
     if (checkSubscribed !== undefined) {
       //disableA
       console.log('subscribed result', checkSubscribed);
-      sed_disableIdForm(true);
+      set_disability_rol_form(true);
       set_sign_form_is_visible(true);
       setCandidate(checkSubscribed);
       console.log('active B', true);
@@ -475,7 +475,7 @@ const Validation = (props: any) => {
 
   const idValidation = (
     <>
-      <Grow in={id_form_is_visible} timeout={800}>
+      <Grow in={rol_form_is_visible} timeout={800}>
         <form onSubmit={handleSubmit(on_submit_id)}>
           <Paper elevation={2}>
             <Box p={1}>
@@ -495,10 +495,10 @@ const Validation = (props: any) => {
 
                 <Grid item xs={8} sm={6}>
                   <TextField
-                    autoFocus={id_form_is_visible}
+                    autoFocus={rol_form_is_visible}
                     autoComplete='off'
                     fullWidth
-                    disabled={disableIdForm}
+                    disabled={disable_from_rol}
                     required
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
@@ -511,7 +511,7 @@ const Validation = (props: any) => {
                       },
                       validate: {
                         isTrue: (v) => {
-                          if (disableIdForm === false) {
+                          if (disable_from_rol === false) {
                             return rolChecker(v).check === true;
                           } else {
                             return true;
@@ -529,9 +529,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disableIdForm}
+                    disabled={disable_from_rol}
                   >
-                    {disableIdForm ? '✅' : 'Seguir'}
+                    {disable_from_rol ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
 
@@ -575,7 +575,7 @@ const Validation = (props: any) => {
     console.log('init validation B', data);
     //init states
     set_isUploading(true); /*loading progress*/
-    set_disableSignForm(true); /*on click*/
+    set_disability_sign_form(true); /*on click*/
 
     //upload sign )SVG to storage 🔥🔥💾
 
@@ -583,7 +583,7 @@ const Validation = (props: any) => {
     const result = await postBeneficiary();
     //setState
     set_isUploading(false); /*loading progress*/
-    set_disableSignPad(result);
+    set_disability_sign_pad(result);
   };
 
   async function postBeneficiary() {
@@ -729,12 +729,12 @@ const Validation = (props: any) => {
                       size='medium'
                     >
                       <Button
-                        disabled={disableSignPad}
+                        disabled={disable_sign_pad}
                         color='primary'
                         aria-label='done'
                         startIcon={<CheckCircleOutlineIcon />}
                         onClick={() => {
-                          set_disableSignForm(false);
+                          set_disability_sign_form(false);
                         }}
                       >
                         {/*🔽*/}
@@ -742,12 +742,12 @@ const Validation = (props: any) => {
                       </Button>
 
                       <Button
-                        disabled={disableSignPad}
+                        disabled={disable_sign_pad}
                         color='primary'
                         aria-label='back-signpad'
                         startIcon={<ReplayIcon />}
                         onClick={() => {
-                          set_disableSignForm(true);
+                          set_disability_sign_form(true);
                           draw.undo();
                         }}
                       >
@@ -755,12 +755,12 @@ const Validation = (props: any) => {
                         atrás
                       </Button>
                       <Button
-                        disabled={disableSignPad}
+                        disabled={disable_sign_pad}
                         color='secondary'
                         aria-label='erase-signpad'
                         startIcon={<HighlightOffIcon />}
                         onClick={() => {
-                          set_disableSignForm(true);
+                          set_disability_sign_form(true);
                           draw.clear();
                         }}
                       >
@@ -787,13 +787,13 @@ const Validation = (props: any) => {
                         type='submit'
                         size='large'
                         color='secondary'
-                        disabled={disableSignForm}
+                        disabled={disable_sign_form}
                         startIcon={<CheckCircleOutlineIcon />}
                       >
                         validar compromiso
                       </Button>
                       {/*summon new button to reload current page 🔃*/}
-                      {disableSignPad && disableSignForm ? (
+                      {disable_sign_pad && disable_sign_form ? (
                         <Button
                           onClick={() => {
                             //props.history.push('/suscription');
@@ -826,9 +826,9 @@ const Validation = (props: any) => {
     <>
       {header}
 
-      {!id_form_is_visible && codeValidationForm}
+      {!rol_form_is_visible && codeValidationForm}
 
-      {id_form_is_visible && idValidation}
+      {rol_form_is_visible && idValidation}
       {sign_form_is_visible && signValidation}
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;
