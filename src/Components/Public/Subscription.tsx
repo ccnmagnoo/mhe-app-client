@@ -180,7 +180,7 @@ const Subscription = (props: Props) => {
     }
   }
 
-  //alert snackbar A💥💢
+  //alert snackbar of personal ID💥💢
   const snackbar_rol_form = () => {
     if (gotBenefit === undefined) {
       return undefined;
@@ -274,9 +274,9 @@ const Subscription = (props: Props) => {
     </>
   );
 
-  //FROM B 💖💖💗
+  //input personal data 💖💖💗
   const onSubmit_identity: SubmitHandler<InputSubscription> = async (data) => {
-    console.log('form B', data);
+    console.log('form identity and location', data);
     set_disability_form_identity(true);
     set_loading_identity(true); //progress bar ON
 
@@ -332,7 +332,9 @@ const Subscription = (props: Props) => {
         overSubscription === false
           ? rooms.filter((room) => {
               //filtering rooms with vacancies
-              const vacancies: number = room.vacancies ?? 180;
+
+              //const vacancies: number = room.vacancies ?? 120;
+              const vacancies = overSubscription ? 1000 : room.vacancies ?? 120;
               return room.enrolled.length < vacancies;
             })
           : rooms; //full rooms;
@@ -441,23 +443,30 @@ const Subscription = (props: Props) => {
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  {/* TODO:select proper city, by levenshtein */}
                   <Autocomplete
                     id='city_address'
+                    autoSelect
+                    autoCorrect='true'
                     disabled={disable_form_identity}
                     options={cities}
-                    getOptionLabel={(option) => option.city}
-                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
-                      <TextField
-                        {...params}
-                        required
-                        label='comuna'
-                        variant='outlined'
-                        type='text'
-                        {...register('city', {})}
-                        error={errors.city && true}
-                        helperText={errors.city && true ? 'requerido' : undefined}
-                      />
-                    )}
+                    getOptionLabel={(option) => {
+                      return option.city;
+                    }}
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => {
+                      return (
+                        <TextField
+                          {...params}
+                          required
+                          label='comuna'
+                          variant='outlined'
+                          type='text'
+                          {...register('city', {})}
+                          error={errors.city && true}
+                          helperText={errors.city && true ? 'requerido' : undefined}
+                        />
+                      );
+                    }}
                   />
                 </Grid>
 
