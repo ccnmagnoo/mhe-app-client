@@ -366,7 +366,7 @@ const Validation = (props: any) => {
       setCandidate(checkSubscribed);
       console.log('active B', true);
     } else {
-      console.log('validation A on suspense', checkSubscribed);
+      console.log('validation id on suspense', checkSubscribed);
     }
   };
 
@@ -430,6 +430,7 @@ const Validation = (props: any) => {
         const countGap = process.env.REACT_APP_VALIDATION_TIME_GAP
           ? +process.env.REACT_APP_VALIDATION_TIME_GAP
           : 30; /*time validation after activity*/
+
         const timeGap: Date = new Date(
           lastSubscription.classroom.dateInstance.getTime()
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
@@ -437,7 +438,7 @@ const Validation = (props: any) => {
           timeGap.getDate() + countGap
         ); /*@timegap defines how much time got for validation */
 
-        console.log('time of class', allowValidation);
+        console.log('day before where is allowed to sign doc: ', allowValidation);
         console.log('time to sign', timeGap);
 
         switch (true) {
