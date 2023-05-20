@@ -328,14 +328,14 @@ const Subscription = (props: Props) => {
 
       console.log('incoming classrooms', rooms);
 
+      //filtering  available rooms by vacancies, or oversubscription su.
       const available_rooms: IRoom[] =
         overSubscription === false
           ? rooms.filter((room) => {
               //filtering rooms with vacancies
 
-              //const vacancies: number = room.vacancies ?? 120;
-              const vacancies = overSubscription ? 1000 : room.vacancies ?? 120;
-              return room.enrolled.length < vacancies;
+              const vacancies: number = room.vacancies ?? 120;
+              return room.enrolled.length <= vacancies;
             })
           : rooms; //full rooms;
 
@@ -507,7 +507,7 @@ const Subscription = (props: Props) => {
     set_disability_final_message(true);
     setIsUploading(true);
 
-    //load to firebase Suscribed 🔥🔥🔥
+    //load to firebase Subscribed 🔥🔥🔥
     const isUploaded = await createSubscription(data);
     console.log('is uploaded?', isUploaded);
 
@@ -558,7 +558,7 @@ const Subscription = (props: Props) => {
       )) as IPerson[];
       const clientSubscriptions = subscriptions.map((it) => it.classroom.uuid);
 
-      //if indexOf is -1: this person isnt subscribed to selected room
+      //if indexOf is -1: this person isn't subscribed to selected room
       const isNotSubscribed =
         clientSubscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
       if (isNotSubscribed) {
