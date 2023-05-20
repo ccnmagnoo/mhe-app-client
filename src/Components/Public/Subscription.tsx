@@ -530,10 +530,10 @@ const Subscription = (props: Props) => {
     try {
       //check if it's there a room selected ❓❓
       if (selectedRoom === undefined) {
-        console.log('isnt a selected room', undefined);
+        console.log("isn't a selected room", undefined);
         setErrorC({
           value: true,
-          message: 'no has selecionado un taller 🙊 ',
+          message: 'no has seleccionado un taller 🙊 ',
         });
         return false;
       }
