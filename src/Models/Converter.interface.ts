@@ -1,6 +1,12 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
+import {
+  QueryDocumentSnapshot,
+  SnapshotOptions,
+  WithFieldValue,
+  DocumentData,
+} from 'firebase/firestore';
 
 export default interface Converter<T> {
-  toFirestore(val: T): T;
-  fromFirestore(snapshot: QueryDocumentSnapshot): T;
+  toFirestore: (it: WithFieldValue<T>) => DocumentData;
+
+  fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions) => T;
 }

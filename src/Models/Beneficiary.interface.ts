@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
+import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import Converter from './Converter.interface';
 import { Gender, IPerson } from './Person.Interface';
 
@@ -8,7 +8,7 @@ export interface IBeneficiary extends IPerson {
 }
 
 export const iBeneficiaryConverter: Converter<IBeneficiary> = {
-  toFirestore: function (person: IBeneficiary) {
+  toFirestore: function (person: WithFieldValue<IBeneficiary>) {
     return person;
   },
   fromFirestore: function (snapshot: QueryDocumentSnapshot): IBeneficiary {

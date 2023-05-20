@@ -560,9 +560,20 @@ const Subscription = (props: Props) => {
         where('rut', '==', data.rut)
       )) as IPerson[];
 
+      //room uuid subscription check
       const isSubscribed = subscriptions.some(
         (it) => it.classroom.uuid === selectedRoom?.uuid
       );
+
+      if (isSubscribed) {
+        console.log('on previous existence on this room', selectedRoom?.idCal);
+        setErrorC({
+          value: true,
+          message: 'tranquilidad, ya estabas a este taller 🤔 ',
+        });
+        return false;
+      }
+
       if (!isSubscribed) {
         //prepare to upload new subscription
         console.log('prepare to upload subscription', data.email);
@@ -615,13 +626,6 @@ const Subscription = (props: Props) => {
         }
 
         return true;
-      } else {
-        console.log('on previous existence on this room', selectedRoom?.idCal);
-        setErrorC({
-          value: true,
-          message: 'tranquilidad, ya estabas a este taller 🤔 ',
-        });
-        return false;
       }
     } catch (error) {
       console.log('no upload', error);

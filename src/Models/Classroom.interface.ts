@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
+import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import { LandType } from '../Functions/GetTerritoryList';
 import Converter from './Converter.interface';
 import { IPlace } from './Place.interface';
@@ -23,8 +23,8 @@ export interface IRoom {
 }
 
 export const iRoomConverter: Converter<IRoom> = {
-  toFirestore: function (classroom: IRoom) {
-    return classroom;
+  toFirestore: function (room: WithFieldValue<IRoom>) {
+    return room;
   },
   fromFirestore: function (snapshot: QueryDocumentSnapshot): IRoom {
     const it = snapshot.data();

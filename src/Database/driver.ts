@@ -14,7 +14,7 @@ import Converter from '../Models/Converter.interface';
 import { dbKey } from '../Models/databaseKeys';
 
 const driver = {
-  //fucntion firebase modular web 9 driver,
+  //function firebase modular web 9 driver,
   get: async <T>(
     uid: string | undefined,
     request: 'collection' | 'doc',

@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
+import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import Converter from './Converter.interface';
 
 export default interface IExternal {
@@ -8,7 +8,7 @@ export default interface IExternal {
 }
 
 export const IExternalConverter: Converter<IExternal> = {
-  toFirestore: (external: IExternal) => external,
+  toFirestore: (external: WithFieldValue<IExternal>) => external,
   fromFirestore: (snapshot: QueryDocumentSnapshot): IExternal => {
     const it = snapshot.data();
     return {

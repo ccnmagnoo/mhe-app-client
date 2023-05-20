@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
+import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import Converter from './Converter.interface';
 import { IEnergyPoll } from './EnergyPoll.interface';
 
@@ -33,7 +33,7 @@ export enum Gender {
 }
 
 export const iPersonConverter: Converter<IPerson> = {
-  toFirestore: function (person: IPerson) {
+  toFirestore: function (person: WithFieldValue<IPerson>) {
     return person;
   },
   fromFirestore: function (snapshot: QueryDocumentSnapshot): IPerson {
