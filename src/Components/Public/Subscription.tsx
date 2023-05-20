@@ -549,6 +549,8 @@ const Subscription = (props: Props) => {
       }
 
       //check the selected ROOM has already this RUT 🔎👤
+
+      //fetch actual RUT subscription instances
       const subscriptions = (await driver.get(
         undefined,
         'collection',
@@ -556,12 +558,11 @@ const Subscription = (props: Props) => {
         iPersonConverter,
         where('rut', '==', data.rut)
       )) as IPerson[];
-      const clientSubscriptions = subscriptions.map((it) => it.classroom.uuid);
 
-      //if indexOf is -1: this person isn't subscribed to selected room
-      const isNotSubscribed =
-        clientSubscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
-      if (isNotSubscribed) {
+      const isSubscribed = subscriptions.some(
+        (it) => it.classroom.uuid === selectedRoom?.uuid
+      );
+      if (!isSubscribed) {
         //prepare to upload new subscription
         console.log('prepare to upload subscription', data.email);
 
