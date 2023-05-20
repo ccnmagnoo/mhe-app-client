@@ -557,7 +557,7 @@ const Subscription = (props: Props) => {
         'collection',
         dbKey.sus,
         iPersonConverter,
-        where('rut', '==', data.rut)
+        where('rut', '==', rolChecker(data.rut).rol)
       )) as IPerson[];
 
       //room uuid subscription check

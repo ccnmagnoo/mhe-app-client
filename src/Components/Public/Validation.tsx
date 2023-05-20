@@ -210,7 +210,7 @@ const Validation = (props: any) => {
         }
       };
 
-      //firestore🔥🔥🔥 fetching al RUT benefits at register
+      //firestore🔥🔥🔥 fetching al CODE benefits at register
       const storedCode = validationCode(data.ePass, validationKey);
 
       const key = (await driver.get<IExternal>(
