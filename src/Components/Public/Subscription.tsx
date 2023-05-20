@@ -95,20 +95,19 @@ const Subscription = (props: Props) => {
   } = useForm<InputSubscription>();
 
   //function move to bottom of the page⏬
-  //TODO:search function
 
   //Return static content
   const header = (
     <React.Fragment>
       <Typography variant='h6' color='primary'>
-        {props.overSubscription ? (
+        {!props.overSubscription ? (
           <span>Inscripción forzada</span>
         ) : (
           <span>Inscripción a talleres</span>
         )}
       </Typography>
       <Typography variant='body1' color='initial'>
-        {props.overSubscription ? (
+        {!props.overSubscription ? (
           <span>inscripción hasta 120 días después del taller</span>
         ) : (
           <span>recuerde tener su carnet a mano 🙌💳</span>
@@ -303,12 +302,12 @@ const Subscription = (props: Props) => {
       //time restriction
       console.log('requested city', data.city, '');
       const restrictionTime = new Date();
-      if (props.overSubscription) {
+      if (!props.overSubscription) {
         //normal: get last 14 days Rooms
         const backwardDays = +(process.env.REACT_APP_SUBSCRIPTION_TIME_GAP ?? 14);
         restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       } else {
-        //oversubscription: set init year
+        //oversubscription true: set init year
         restrictionTime.setDate(1);
         restrictionTime.setMonth(0);
         restrictionTime.setHours(0, 0);
@@ -474,7 +473,7 @@ const Subscription = (props: Props) => {
 
                 {/*Energy Poll ⚡⚡🔌*/}
                 {
-                  props.overSubscription ? (
+                  !props.overSubscription ? (
                     <EnergyPollForm
                       trigger={disable_form_identity}
                       register={register}
@@ -812,7 +811,7 @@ const Subscription = (props: Props) => {
       {loading_identity ? <LinearProgress color='primary' /> : undefined}
       {visible_select_room && form_selectRoom}
       <br />
-      {disable_form_rol ? undefined : props.overSubscription ? (
+      {disable_form_rol ? undefined : !props.overSubscription ? (
         <Requirements />
       ) : undefined}
       {dialogOnSuccess}
