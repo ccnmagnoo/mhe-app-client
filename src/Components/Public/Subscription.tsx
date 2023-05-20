@@ -60,8 +60,6 @@ export type InputSubscription = {
 };
 
 const Subscription = (props: Props) => {
-  //instance of oversubscription
-  const overSubscription: boolean = props.overSubscription ?? false;
   //hooks
   const [rolRequest, setRolRequest] = React.useState<RolRequest | undefined>(undefined);
   const [gotBenefit, setGotBenefit] = React.useState<boolean | undefined>(undefined);
@@ -99,18 +97,18 @@ const Subscription = (props: Props) => {
   //function move to bottom of the page⏬
   //TODO:search function
 
-  //Return stactic content
+  //Return static content
   const header = (
     <React.Fragment>
       <Typography variant='h6' color='primary'>
-        {overSubscription ? (
+        {props.overSubscription ? (
           <span>Inscripción forzada</span>
         ) : (
           <span>Inscripción a talleres</span>
         )}
       </Typography>
       <Typography variant='body1' color='initial'>
-        {overSubscription ? (
+        {props.overSubscription ? (
           <span>inscripción hasta 120 días después del taller</span>
         ) : (
           <span>recuerde tener su carnet a mano 🙌💳</span>
@@ -291,26 +289,26 @@ const Subscription = (props: Props) => {
 
   /**
    * @function fetchClassrooms got active incoming classrooms
-   * INSIDE the territory suscription
+   * INSIDE the territory subscription
    */
   async function fetchClassrooms(data: InputSubscription) {
     try {
       //firestore🔥🔥🔥: fetch incoming classes
       /**
        * @param backwardDays is how many days back is a classroom
-       *  will keep open to suscribe in,  on cases for late suscriptions
-       * if value= 0 so suscription will close at start room date.
+       *  will keep open to susbcribe in,  on cases for late subscriptions
+       * if value= 0 so subscription will close at start room date.
        *
        */
       //time restriction
       console.log('requested city', data.city, '');
       const restrictionTime = new Date();
-      if (overSubscription === false) {
+      if (props.overSubscription) {
         //normal: get last 14 days Rooms
         const backwardDays = +(process.env.REACT_APP_SUBSCRIPTION_TIME_GAP ?? 14);
         restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
       } else {
-        //oversuscription: set init year
+        //oversubscription: set init year
         restrictionTime.setDate(1);
         restrictionTime.setMonth(0);
         restrictionTime.setHours(0, 0);
@@ -326,18 +324,22 @@ const Subscription = (props: Props) => {
         orderBy('dateInstance', 'desc')
       )) as IRoom[];
 
-      console.log('incoming classrooms', rooms);
+      console.log(
+        'incoming classrooms',
+        rooms,
+        'oversubscription:',
+        props.overSubscription
+      );
 
       //filtering  available rooms by vacancies, or oversubscription su.
-      const available_rooms: IRoom[] =
-        overSubscription === false
-          ? rooms.filter((room) => {
-              //filtering rooms with vacancies
+      const available_rooms: IRoom[] = !props.overSubscription
+        ? rooms.filter((room) => {
+            //filtering rooms with vacancies
 
-              const vacancies: number = room.vacancies ?? 120;
-              return room.enrolled.length <= vacancies;
-            })
-          : rooms; //full rooms;
+            const vacancies: number = room.vacancies ?? 120;
+            return room.enrolled.length <= vacancies;
+          })
+        : rooms; //full rooms;
 
       console.log(
         'list of available classrooms on city',
@@ -472,7 +474,7 @@ const Subscription = (props: Props) => {
 
                 {/*Energy Poll ⚡⚡🔌*/}
                 {
-                  overSubscription === false ? (
+                  props.overSubscription ? (
                     <EnergyPollForm
                       trigger={disable_form_identity}
                       register={register}
@@ -810,7 +812,7 @@ const Subscription = (props: Props) => {
       {loading_identity ? <LinearProgress color='primary' /> : undefined}
       {visible_select_room && form_selectRoom}
       <br />
-      {disable_form_rol ? undefined : overSubscription === false ? (
+      {disable_form_rol ? undefined : props.overSubscription ? (
         <Requirements />
       ) : undefined}
       {dialogOnSuccess}

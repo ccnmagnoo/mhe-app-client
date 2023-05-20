@@ -46,7 +46,7 @@ function App() {
         <div style={{ padding: '10px 0' }}>
           <Switch>
             <Route path='/subscription'>
-              <Subscription />
+              <Subscription overSubscription={false} />
             </Route>
             <Route path='/validation'>
               <Validation />

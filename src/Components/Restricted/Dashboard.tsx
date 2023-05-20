@@ -138,7 +138,7 @@ const Dashboard = (props: any) => {
             <Route path={`${path}/addperson`}>
               {/*create new unsuscribed person after period gap*/}
 
-              <Subscription oversuscription={true} />
+              <Subscription overSubscription={true} />
             </Route>
             <Route path={`${path}/create`}>
               {/*create new classroom*/}
