@@ -508,7 +508,7 @@ const Subscription = (props: Props) => {
     setIsUploading(true);
 
     //load to firebase Suscribed 🔥🔥🔥
-    const isUploaded = await createSuscription(data);
+    const isUploaded = await createSubscription(data);
     console.log('is uploaded?', isUploaded);
 
     if (isUploaded) {
@@ -521,12 +521,12 @@ const Subscription = (props: Props) => {
     }
   };
 
-  //firebase create Suscribed🔥🔥🔥
+  //firebase create Subscribed🔥🔥🔥
   const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
     null
   );
 
-  async function createSuscription(data: InputSubscription) {
+  async function createSubscription(data: InputSubscription) {
     try {
       //check if it's there a room selected ❓❓
       if (selectedRoom === undefined) {
@@ -549,22 +549,23 @@ const Subscription = (props: Props) => {
       }
 
       //check the selected ROOM has already this RUT 🔎👤
-      const suscriptions = (await driver.get(
+      const subscriptions = (await driver.get(
         undefined,
         'collection',
         dbKey.sus,
         iPersonConverter,
         where('rut', '==', data.rut)
       )) as IPerson[];
-      const clientSuscriptions = suscriptions.map((it) => it.classroom.uuid);
+      const clientSubscriptions = subscriptions.map((it) => it.classroom.uuid);
 
-      //if indexOf is -1: this person isnt suscribed to seleced room
-      const isNotSuscribed = clientSuscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
-      if (isNotSuscribed) {
-        //prepare to upload new suscription
-        console.log('prepare to upload suscription', data.email);
+      //if indexOf is -1: this person isnt subscribed to selected room
+      const isNotSubscribed =
+        clientSubscriptions.indexOf(selectedRoom?.uuid ?? '') === -1;
+      if (isNotSubscribed) {
+        //prepare to upload new subscription
+        console.log('prepare to upload subscription', data.email);
 
-        //create reference of new doc Suscribed
+        //create reference of new doc Subscribed
         const person: IPerson = {
           uuid: '',
           name: {
@@ -595,17 +596,17 @@ const Subscription = (props: Props) => {
           },
         };
 
-        //set new suscription 🔥🔥🔥
+        //set new subscription 🔥🔥🔥
         await driver.set(dbKey.sus, person, iPersonConverter);
 
-        console.log('suscription success 👌', person.rut, '➡', selectedRoom?.idCal);
+        console.log('subscription success 👌', person.rut, '➡', selectedRoom?.idCal);
         setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
 
         //set new enrolled 🔥🔥🔥 (moved to cloud functions)
 
         const enrolled = selectedRoom?.enrolled;
         if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
-          //update classroom enrolled list is dosent exist, avoid duplication
+          //update classroom enrolled list is doesn't exist, avoid duplication
           //enrolled?.push(person.uuid);
           //refRoom.set({ enrolled: enrolled }, { merge: true });
           console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
@@ -613,7 +614,7 @@ const Subscription = (props: Props) => {
 
         return true;
       } else {
-        console.log('on previous existance on this room', selectedRoom?.idCal);
+        console.log('on previous existence on this room', selectedRoom?.idCal);
         setErrorC({
           value: true,
           message: 'tranquilidad, ya estabas a este taller 🤔 ',
@@ -648,8 +649,8 @@ const Subscription = (props: Props) => {
       );
     }
   };
-  // cards of avaliables classrooms or not
-  const classRoomsAvaliableDisplay = () => {
+  // cards of available classrooms or not
+  const classRoomsAvailableDisplay = () => {
     if (availableClassrooms.length > 0) {
       return availableClassrooms.map((item, index) => {
         return (
@@ -688,7 +689,7 @@ const Subscription = (props: Props) => {
                 <Grid item xs={12}>
                   <Grid container spacing={1}>
                     {/*room mini card slection*/}
-                    {classRoomsAvaliableDisplay()}
+                    {classRoomsAvailableDisplay()}
                   </Grid>
                 </Grid>
 
@@ -763,7 +764,7 @@ const Subscription = (props: Props) => {
     </>
   );
 
-  //Dialog on success suscription
+  //Dialog on success subscription
   const dialogOnSuccess = (
     <Dialog
       open={dialogOpen}
@@ -771,7 +772,7 @@ const Subscription = (props: Props) => {
         setDialogOpen(false);
         reset();
       }}
-      aria-labelledby='success suscription'
+      aria-labelledby='success subscription'
     >
       <DialogTitle id='index'>
         <Typography variant='subtitle1' color='primary'>
@@ -797,7 +798,7 @@ const Subscription = (props: Props) => {
     </Dialog>
   );
 
-  //SUSCRIPTION APP
+  //SUBSCRIPTION APP
   return (
     <React.Fragment>
       {header}
