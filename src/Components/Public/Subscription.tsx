@@ -295,7 +295,7 @@ const Subscription = (props: Props) => {
       //firestore🔥🔥🔥: fetch incoming classes
       /**
        * @param backwardDays is how many days back is a classroom
-       *  will keep open to susbcribe in,  on cases for late subscriptions
+       *  will keep open to subscribed in,  on cases for late subscriptions
        * if value= 0 so subscription will close at start room date.
        *
        */
@@ -312,7 +312,7 @@ const Subscription = (props: Props) => {
         restrictionTime.setMonth(0);
         restrictionTime.setHours(0, 0);
       }
-      //firebase
+      //firebase getting rooms available
       const rooms = (await driver.get<IRoom>(
         undefined,
         'collection',
@@ -336,7 +336,7 @@ const Subscription = (props: Props) => {
             //filtering rooms with vacancies
 
             const vacancies: number = room.vacancies ?? 120;
-            return room.enrolled.length <= vacancies;
+            return room.enrolled.length < vacancies;
           })
         : rooms; //full rooms;
 

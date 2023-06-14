@@ -539,7 +539,7 @@ const Validation = (props: any) => {
                     {...register('rut', {
                       pattern: {
                         value: /^\d{7,8}[-]*[Kk\d]{1}$/,
-                        message: 'esto no es un rut 😗',
+                        message: 'este no es un rut 😗',
                       },
                       validate: {
                         isTrue: (v) => {
