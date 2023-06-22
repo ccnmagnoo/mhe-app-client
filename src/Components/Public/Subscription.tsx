@@ -201,7 +201,11 @@ const Subscription = (props: Props) => {
   const form_inputId = (
     <>
       <Grow in={true}>
-        <form onSubmit={handleSubmit(onSubmit_rol)} onChange={handleSubmit(onSubmit_rol)}>
+        <form
+          id='subscription_rol_form'
+          onSubmit={handleSubmit(onSubmit_rol)}
+          onChange={handleSubmit(onSubmit_rol)}
+        >
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
