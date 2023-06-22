@@ -60,7 +60,7 @@ const Validation = (props: any) => {
   const [candidate, setCandidate] = React.useState<IPerson | undefined>(undefined);
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
-  //State Hooks diable buttons
+  //State Hooks disable buttons
   const [disable_code_form, set_disability_code_form] = React.useState(false);
   const [disable_from_rol, set_disability_rol_form] = React.useState(true);
   const [disable_sign_form, set_disability_sign_form] = React.useState(true);
@@ -175,7 +175,7 @@ const Validation = (props: any) => {
     }
   };
 
-  const onSubmitCode: SubmitHandler<Input> = async (data, e) => {
+  const onSubmitCode: SubmitHandler<Partial<Input>> = async (data, _e) => {
     //init on submit
     console.log('form External User', true, data.eUser);
 
@@ -187,14 +187,14 @@ const Validation = (props: any) => {
       set_disability_code_form(true);
       set_disability_rol_form(false);
       set_id_form_is_visible(true);
-      console.log('active user', true);
+      console.log('active secret code', true);
     } else {
       console.log('check external account on suspense', checkAccount);
     }
   };
 
-  const checkInputCode = async (data: Input) => {
-    console.log('checking external user:', data.eUser);
+  const checkInputCode = async (data?: Partial<Input>) => {
+    console.log('checking external user:', data?.eUser);
     try {
       //use local storage
       const validationCode = (
@@ -211,7 +211,7 @@ const Validation = (props: any) => {
       };
 
       //firestore🔥🔥🔥 fetching al CODE benefits at register
-      const storedCode = validationCode(data.ePass, validationKey);
+      const storedCode = validationCode(data?.ePass, validationKey);
 
       const key = (await driver.get<IExternal>(
         undefined,
@@ -233,7 +233,7 @@ const Validation = (props: any) => {
           //great success very nice 👍
           setErrorEU({ value: false, message: 'código verificado 😀' });
           //set local storage validationKey if null 💾
-          if (data.ePass !== undefined) {
+          if (data?.ePass) {
             sessionStorage.setItem('validationCode', data.ePass);
           }
           return true;
@@ -253,6 +253,12 @@ const Validation = (props: any) => {
       return false;
     }
   };
+
+  React.useEffect(() => {
+    if (validationKey) {
+      onSubmitCode({});
+    }
+  }, []);
 
   const code_validation_form = (
     <>
@@ -281,13 +287,14 @@ const Validation = (props: any) => {
                     disabled={disable_code_form}
                     required
                     id='input-password'
-                    label='código'
+                    label='código secreto'
                     defaultValue={validationKey}
                     type='text'
                     variant='outlined'
                     {...register('ePass', {
                       minLength: { value: 6, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
+                      validate: { isTrue: (v) => v.length >= 4 },
                     })}
                     error={errors.ePass && true}
                     helperText={errors.ePass?.message}
@@ -370,7 +377,7 @@ const Validation = (props: any) => {
     }
   };
 
-  //Database part 🔥🔥🔥
+  //Database check for subscription 🔥🔥🔥
   async function checkSubscription(rol?: string) {
     try {
       //search in subscriptions of RUT on Subscribed collection 🔥🔥🔥
@@ -508,7 +515,10 @@ const Validation = (props: any) => {
   const rol_validation = (
     <>
       <Grow in={rol_form_is_visible} timeout={800}>
-        <form onChange={handleSubmit(on_submit_rol)}>
+        <form
+          onSubmit={handleSubmit(on_submit_rol)}
+          onChange={handleSubmit(on_submit_rol)}
+        >
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
