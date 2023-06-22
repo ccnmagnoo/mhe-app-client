@@ -2,7 +2,11 @@ export interface RolRequest {
   check: boolean;
   rol?: string; //formated in 12345678-9
 }
-
+/**
+ *
+ * @param rol string to check
+ * @returns object {check:boolean, rol?:string}
+ */
 export function isRol(rol: string): RolRequest {
   //social number verification
   const rolChecker = (rol?: string): RolRequest => {
