@@ -116,7 +116,7 @@ const Subscription = (props: Props) => {
     </React.Fragment>
   );
 
-  //FORM A 💖💖💗
+  //FORM checking Rol 💖💖💗
   const onSubmit_rol: SubmitHandler<InputSubscription> = async (data) => {
     //init
     console.log('register', 'step A', true);
@@ -201,7 +201,11 @@ const Subscription = (props: Props) => {
   const form_inputId = (
     <>
       <Grow in={true}>
-        <form onSubmit={handleSubmit(onSubmit_rol)}>
+        <form
+          id='subscription_rol_form'
+          onSubmit={handleSubmit(onSubmit_rol)}
+          onChange={handleSubmit(onSubmit_rol)}
+        >
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -234,7 +238,7 @@ const Subscription = (props: Props) => {
                         value: /^\d{7,8}[-]*[Kk\d]{1}$/,
                         message: 'esto no es un rut 😗',
                       },
-                      validate: { isTrue: (v) => rolChecker(v).check === true },
+                      validate: { isTrue: (v) => rolChecker(v).check },
                     })}
                     error={errors.rut && true}
                     helperText={errors.rut?.message}
