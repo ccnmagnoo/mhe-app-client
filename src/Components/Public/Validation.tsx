@@ -258,7 +258,7 @@ const Validation = (props: any) => {
     <>
       <br />
       <Grow in={true} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitCode)}>
+        <form onChange={handleSubmit(onSubmitCode)} onClick={handleSubmit(onSubmitCode)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -508,7 +508,7 @@ const Validation = (props: any) => {
   const rol_validation = (
     <>
       <Grow in={rol_form_is_visible} timeout={800}>
-        <form onSubmit={handleSubmit(on_submit_rol)}>
+        <form onChange={handleSubmit(on_submit_rol)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
