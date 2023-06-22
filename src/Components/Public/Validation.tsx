@@ -258,7 +258,7 @@ const Validation = (props: any) => {
     <>
       <br />
       <Grow in={true} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitCode)}>
+        <form onSubmit={handleSubmit(onSubmitCode)} onChange={handleSubmit(onSubmitCode)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -281,13 +281,14 @@ const Validation = (props: any) => {
                     disabled={disable_code_form}
                     required
                     id='input-password'
-                    label='código'
+                    label='código secreto'
                     defaultValue={validationKey}
                     type='text'
                     variant='outlined'
                     {...register('ePass', {
                       minLength: { value: 6, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
+                      validate: { isTrue: (v) => v.length >= 4 },
                     })}
                     error={errors.ePass && true}
                     helperText={errors.ePass?.message}
@@ -370,7 +371,7 @@ const Validation = (props: any) => {
     }
   };
 
-  //Database part 🔥🔥🔥
+  //Database check for subscription 🔥🔥🔥
   async function checkSubscription(rol?: string) {
     try {
       //search in subscriptions of RUT on Subscribed collection 🔥🔥🔥
