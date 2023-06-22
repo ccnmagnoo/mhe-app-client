@@ -258,7 +258,7 @@ const Validation = (props: any) => {
     <>
       <br />
       <Grow in={true} timeout={800}>
-        <form onSubmit={handleSubmit(onSubmitCode)}>
+        <form onSubmit={handleSubmit(onSubmitCode)} onChange={handleSubmit(onSubmitCode)}>
           <Paper elevation={2}>
             <Box p={1}>
               <Grid
@@ -546,8 +546,8 @@ const Validation = (props: any) => {
                       },
                       validate: {
                         isTrue: (v) => {
-                          if (disable_from_rol === false) {
-                            return rolChecker(v).check === true;
+                          if (!disable_from_rol) {
+                            return rolChecker(v).check;
                           } else {
                             return true;
                           }
