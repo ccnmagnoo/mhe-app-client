@@ -201,13 +201,9 @@ const Validation = (props: any) => {
         inputCode: string | undefined,
         storedCode: string | null | undefined
       ) => {
-        if (inputCode !== undefined) {
-          return inputCode;
-        } else if (storedCode != null) {
-          return storedCode;
-        } else {
-          return null;
-        }
+        if (inputCode) return inputCode;
+        if (storedCode) return storedCode;
+        return null;
       };
 
       //firestore🔥🔥🔥 fetching al CODE benefits at register
@@ -294,7 +290,6 @@ const Validation = (props: any) => {
                     {...register('ePass', {
                       minLength: { value: 6, message: 'muy corto' },
                       maxLength: { value: 30, message: 'muy largo' },
-                      validate: { isTrue: (v) => v.length >= 4 },
                     })}
                     error={errors.ePass && true}
                     helperText={errors.ePass?.message}
@@ -552,13 +547,7 @@ const Validation = (props: any) => {
                         message: 'este no es un rut 😗',
                       },
                       validate: {
-                        isTrue: (v) => {
-                          if (disable_from_rol === false) {
-                            return rolChecker(v).check === true;
-                          } else {
-                            return true;
-                          }
-                        },
+                        isTrue: (v) => rolChecker(v).check,
                       },
                     })}
                     error={errors.rut && true}
