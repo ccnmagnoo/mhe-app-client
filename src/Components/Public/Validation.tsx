@@ -864,11 +864,10 @@ const Validation = (props: any) => {
   return (
     <>
       {header}
-
       {!rol_form_is_visible && code_validation_form}
-
       {rol_form_is_visible && rol_validation}
       {sign_form_is_visible && sign_validation}
+
       <Alert variant='filled' color='warning'>
         validación no compatible con 📵iPhone&trade;
       </Alert>
