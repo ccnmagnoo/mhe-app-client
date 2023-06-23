@@ -107,37 +107,48 @@ export const DisclaimerDocument = (props: PropsDS) => {
                 {room?.placeDispatch?.dir} y además que ha asistido a una capacitación en
                 eficiencia energética.
               </Typography>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='justify'
-                paragraph
-              >
-                💠 Se compromete a destinar el kit de eficiencia energética por este acto
-                de recepción, para su uso en el domicilio familiar.
-              </Typography>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='justify'
-                paragraph
-              >
-                💠 Acepta que los datos que contiene esta planilla y cualquier otro
-                obtenido con motivo de esta iniciativa, se utilicen para los efectos del
-                procesamiento y tratamiento de la información, a fin de lograr un adecuado
-                monitoreo de los beneficios arriba especificados, lo anterior en el marco
-                de la Ley 19.628, sobre protección de la Vida Privada.
-              </Typography>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='justify'
-                paragraph
-              >
-                💠 Se compromete a no vender, regalar, transferir y en general a
-                comercializar el referido pack ni ninguno de sus componentes por separado,
-                ni darle un uso diverso al señalado en este documento.
-              </Typography>
+              <details>
+                <summary
+                  style={{
+                    color: 'Gray',
+                    fontFamily: 'calibri',
+                    margin: '5px',
+                  }}
+                >
+                  ver mas...
+                </summary>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  align='justify'
+                  paragraph
+                >
+                  💠 Se compromete a destinar el kit de eficiencia energética por este
+                  acto de recepción, para su uso en el domicilio familiar.
+                </Typography>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  align='justify'
+                  paragraph
+                >
+                  💠 Acepta que los datos que contiene esta planilla y cualquier otro
+                  obtenido con motivo de esta iniciativa, se utilicen para los efectos del
+                  procesamiento y tratamiento de la información, a fin de lograr un
+                  adecuado monitoreo de los beneficios arriba especificados, lo anterior
+                  en el marco de la Ley 19.628, sobre protección de la Vida Privada.
+                </Typography>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  align='justify'
+                  paragraph
+                >
+                  💠 Se compromete a no vender, regalar, transferir y en general a
+                  comercializar el referido pack ni ninguno de sus componentes por
+                  separado, ni darle un uso diverso al señalado en este documento.
+                </Typography>
+              </details>
             </Grid>
             <Grid item xs={12}></Grid>
 
