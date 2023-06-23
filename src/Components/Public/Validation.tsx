@@ -777,7 +777,7 @@ const Validation = (props: any) => {
                         }}
                       >
                         {/*🔽*/}
-                        seguir
+                        firma lista
                       </Button>
 
                       <Button
@@ -825,17 +825,19 @@ const Validation = (props: any) => {
                         variant='contained'
                         type='submit'
                         size='large'
+                        style={{ height: '60px', margin: '8px 0 24px 0' }}
                         color='secondary'
                         disabled={disable_sign_form}
                         startIcon={<CheckCircleOutlineIcon />}
                       >
                         validar compromiso
                       </Button>
+
                       {/*summon new button to reload current page 🔃*/}
                       {disable_sign_pad && disable_sign_form ? (
                         <Button
+                          style={{ height: '60px', margin: '8px 0 24px 0' }}
                           onClick={() => {
-                            //props.history.push('/suscription');
                             window.location.reload();
                           }}
                         >
