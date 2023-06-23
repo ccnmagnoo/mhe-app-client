@@ -874,7 +874,7 @@ const Validation = (props: any) => {
     <>
       {header}
       {!rol_form_is_visible && code_validation_form}
-      {rol_form_is_visible && !sign_form_is_visible && rol_validation}
+      {rol_form_is_visible && rol_validation}
       {sign_form_is_visible && sign_validation}
 
       <Alert variant='filled' color='warning'>
