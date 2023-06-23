@@ -18,7 +18,7 @@ import { isRol as rolChecker } from '../../Functions/isRol';
 import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
-import { SignDocument } from './SignDocument';
+import { DisclaimerDocument } from './SignDocument';
 import { UrlChip } from './UrlChip';
 
 //icons
@@ -743,7 +743,10 @@ const Validation = (props: any) => {
           <Paper elevation={0}>
             <Box p={1}>
               {/*the DOCUMENT 🚩📖📚*/}
-              <SignDocument person={candidate as IBeneficiary} classroom={classroom} />
+              <DisclaimerDocument
+                person={candidate as IBeneficiary}
+                classroom={classroom}
+              />
               <Paper variant='outlined' elevation={1}>
                 <Grid
                   container
@@ -830,7 +833,7 @@ const Validation = (props: any) => {
                         disabled={disable_sign_form}
                         startIcon={<CheckCircleOutlineIcon />}
                       >
-                        validar compromiso
+                        validar recepción
                       </Button>
 
                       {/*summon new button to reload current page 🔃*/}

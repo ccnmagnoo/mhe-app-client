@@ -3,7 +3,7 @@ import React from 'react';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IRoom } from '../../Models/Classroom.interface';
 
-export const SignDocument = (props: PropsDS) => {
+export const DisclaimerDocument = (props: PropsDS) => {
   //little refs
   let pers = props.person;
   const room = props.classroom;
