@@ -38,6 +38,7 @@ import driver from '../../Database/driver';
 import IExternal, { IExternalConverter } from '../../Models/External.interface';
 import { storage } from '../../Config/firebase';
 import getAllowValidation from '../../Functions/getAllowValidation';
+import { validate } from '@material-ui/pickers';
 //sign paper style
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -362,12 +363,15 @@ const Validation = (props: any) => {
     //fetch subscriptions
     const checkSubscribed = await checkSubscription(rol);
     if (checkSubscribed !== undefined) {
-      //disableA
+      //disable Rol ID form
       console.log('subscribed result', checkSubscribed);
       set_disable_rol_form(true);
       set_sign_form_is_visible(true);
       setCandidate(checkSubscribed);
-      console.log('active B', true);
+      console.log('set visibility sign form & pad', true);
+      //scroll to sign path
+      const validateButton = document.getElementById('validate_button');
+      validateButton?.scrollIntoView({ behavior: 'smooth' });
     } else {
       console.log('validation id on suspense', checkSubscribed);
     }
@@ -826,6 +830,7 @@ const Validation = (props: any) => {
                     <ButtonGroup variant='outlined' color='secondary' aria-label=''>
                       <Button
                         variant='contained'
+                        id='validate_button'
                         type='submit'
                         size='large'
                         style={{ height: '60px', margin: '8px 0 24px 0' }}
