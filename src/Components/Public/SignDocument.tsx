@@ -95,28 +95,27 @@ export const DisclaimerDocument = (props: PropsDS) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='justify'
-                paragraph
-              >
-                💠 Declara que reconoce la recepción de un kit de eficiencia energética y
-                que es de su exclusiva responsabilidad el retiro de este material desde el
-                punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
-                {room?.placeDispatch?.dir} y además que ha asistido a una capacitación en
-                eficiencia energética.
-              </Typography>
               <details>
                 <summary
                   style={{
                     color: 'Gray',
                     fontFamily: 'calibri',
-                    margin: '5px',
                   }}
                 >
-                  ver mas...
+                  leer más...
                 </summary>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  align='justify'
+                  paragraph
+                >
+                  💠 Declara que reconoce la recepción de un kit de eficiencia energética
+                  y que es de su exclusiva responsabilidad el retiro de este material
+                  desde el punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
+                  {room?.placeDispatch?.dir} y además que ha asistido a una capacitación
+                  en eficiencia energética.
+                </Typography>
                 <Typography
                   variant='caption'
                   color='textSecondary'
