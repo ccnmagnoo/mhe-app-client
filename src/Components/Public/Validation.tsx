@@ -61,10 +61,10 @@ const Validation = (props: any) => {
   const [classroom, setClassroom] = React.useState<IRoom | undefined>(undefined);
 
   //State Hooks disable buttons
-  const [disable_code_form, set_disability_code_form] = React.useState(false);
-  const [disable_from_rol, set_disability_rol_form] = React.useState(true);
-  const [disable_sign_form, set_disability_sign_form] = React.useState(true);
-  const [disable_sign_pad, set_disability_sign_pad] = React.useState(false);
+  const [use_code_form, set_use_code_form] = React.useState(false);
+  const [use_rol_form, set_use_rol_form] = React.useState(true);
+  const [use_sign_form, set_use_sign_form] = React.useState(true);
+  const [use_sign_pad, set_use_sign_pad] = React.useState(false);
   const [isUploading, set_isUploading] = React.useState(false);
 
   //State hooks visibility
@@ -184,8 +184,8 @@ const Validation = (props: any) => {
     if (checkAccount === true) {
       //disableA
       console.log('subscribed result', checkAccount);
-      set_disability_code_form(true);
-      set_disability_rol_form(false);
+      set_use_code_form(true);
+      set_use_rol_form(false);
       set_id_form_is_visible(true);
       console.log('active secret code', true);
     } else {
@@ -254,6 +254,7 @@ const Validation = (props: any) => {
     if (validationKey) {
       onSubmitCode({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const code_validation_form = (
@@ -280,7 +281,7 @@ const Validation = (props: any) => {
                   <TextField
                     fullWidth
                     autoComplete='off'
-                    disabled={disable_code_form}
+                    disabled={use_code_form}
                     required
                     id='input-password'
                     label='código secreto'
@@ -301,9 +302,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disable_code_form}
+                    disabled={use_code_form}
                   >
-                    {disable_code_form ? '✅' : 'seguir'}
+                    {use_code_form ? '✅' : 'seguir'}
                   </Button>
                 </Grid>
                 {code_snackbar()}
@@ -363,7 +364,7 @@ const Validation = (props: any) => {
     if (checkSubscribed !== undefined) {
       //disableA
       console.log('subscribed result', checkSubscribed);
-      set_disability_rol_form(true);
+      set_use_rol_form(true);
       set_sign_form_is_visible(true);
       setCandidate(checkSubscribed);
       console.log('active B', true);
@@ -535,7 +536,7 @@ const Validation = (props: any) => {
                     autoFocus={rol_form_is_visible}
                     autoComplete='off'
                     fullWidth
-                    disabled={disable_from_rol}
+                    disabled={use_rol_form}
                     required
                     id='check-rut'
                     label={errors?.rut && true ? 'rut inválido 🙈' : 'rut beneficiario'}
@@ -548,7 +549,7 @@ const Validation = (props: any) => {
                       },
                       validate: {
                         isTrue: (v) => {
-                          if (!disable_from_rol) {
+                          if (!use_rol_form) {
                             return rolChecker(v).check;
                           } else {
                             return true;
@@ -566,9 +567,9 @@ const Validation = (props: any) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={disable_from_rol}
+                    disabled={use_rol_form}
                   >
-                    {disable_from_rol ? '✅' : 'Seguir'}
+                    {use_rol_form ? '✅' : 'Seguir'}
                   </Button>
                 </Grid>
 
@@ -583,23 +584,24 @@ const Validation = (props: any) => {
   );
 
   //form B  ✅✅
-  const [errorB, setErrorB] = React.useState<{ value: boolean; message: string } | null>(
-    null
-  );
+  const [errorOnRol, setErrorOnRol] = React.useState<{
+    value: boolean;
+    message: string;
+  } | null>(null);
   const snackbarC = () => {
-    if (errorB !== null) {
-      if (errorB.value) {
+    if (errorOnRol !== null) {
+      if (errorOnRol.value) {
         //if error true 😡❌📛
         return (
           <Grid item xs={12}>
-            <Alert severity='error'>{errorB.message}</Alert>
+            <Alert severity='error'>{errorOnRol.message}</Alert>
           </Grid>
         );
       } else {
         //if validation is success ✅
         return (
           <Grid item xs={12}>
-            <Alert severity='success'>{errorB.message}</Alert>
+            <Alert severity='success'>{errorOnRol.message}</Alert>
           </Grid>
         );
       }
@@ -612,7 +614,7 @@ const Validation = (props: any) => {
     console.log('init validation B', data);
     //init states
     set_isUploading(true); /*loading progress*/
-    set_disability_sign_form(true); /*on click*/
+    set_use_sign_form(true); /*on click*/
 
     //upload sign )SVG to storage 🔥🔥💾
 
@@ -620,7 +622,7 @@ const Validation = (props: any) => {
     const result = await postBeneficiary();
     //setState
     set_isUploading(false); /*loading progress*/
-    set_disability_sign_pad(result);
+    set_use_sign_pad(result);
   };
 
   async function postBeneficiary() {
@@ -659,7 +661,7 @@ const Validation = (props: any) => {
           });
           console.log('posted beneficiary', beneficiary.uuid);
 
-          setErrorB({
+          setErrorOnRol({
             value: false,
             message: `ya se encuentra validado 😀, pase a retirar su kit.
             📌 ${classroom?.placeDispatch?.dir} desde el ${moment(
@@ -670,7 +672,7 @@ const Validation = (props: any) => {
         } else {
           //if benefit exist, user can not sign ⛔
           console.log('this user has previous benefit', beneficiary.uuid);
-          setErrorB({
+          setErrorOnRol({
             value: true,
             message: '⛔ Este usuario no puede recibir nuevamente el beneficio.',
           });
@@ -679,13 +681,13 @@ const Validation = (props: any) => {
       } else {
         //definition problem on referenced person ⛔
         console.log('error person ', undefined);
-        setErrorB({ value: true, message: 'beneficiario no definido.' });
+        setErrorOnRol({ value: true, message: 'beneficiario no definido.' });
         return false;
       }
     } catch (error) {
       //error on firebase.set() method ⛔
       console.log('error on post beneficiary', error);
-      setErrorB({ value: true, message: 'no se pudo cargar beneficiario 🙉.' });
+      setErrorOnRol({ value: true, message: 'no se pudo cargar beneficiario 🙉.' });
       return false;
     }
   }
@@ -766,12 +768,12 @@ const Validation = (props: any) => {
                       size='medium'
                     >
                       <Button
-                        disabled={disable_sign_pad}
+                        disabled={use_sign_pad}
                         color='primary'
                         aria-label='done'
                         startIcon={<CheckCircleOutlineIcon />}
                         onClick={() => {
-                          set_disability_sign_form(false);
+                          set_use_sign_form(false);
                         }}
                       >
                         {/*🔽*/}
@@ -779,12 +781,12 @@ const Validation = (props: any) => {
                       </Button>
 
                       <Button
-                        disabled={disable_sign_pad}
+                        disabled={use_sign_pad}
                         color='primary'
                         aria-label='back-signpad'
                         startIcon={<ReplayIcon />}
                         onClick={() => {
-                          set_disability_sign_form(true);
+                          set_use_sign_form(true);
                           draw.undo();
                         }}
                       >
@@ -792,12 +794,12 @@ const Validation = (props: any) => {
                         atrás
                       </Button>
                       <Button
-                        disabled={disable_sign_pad}
+                        disabled={use_sign_pad}
                         color='secondary'
                         aria-label='erase-signpad'
                         startIcon={<HighlightOffIcon />}
                         onClick={() => {
-                          set_disability_sign_form(true);
+                          set_use_sign_form(true);
                           draw.clear();
                         }}
                       >
@@ -824,13 +826,13 @@ const Validation = (props: any) => {
                         type='submit'
                         size='large'
                         color='secondary'
-                        disabled={disable_sign_form}
+                        disabled={use_sign_form}
                         startIcon={<CheckCircleOutlineIcon />}
                       >
                         validar compromiso
                       </Button>
                       {/*summon new button to reload current page 🔃*/}
-                      {disable_sign_pad && disable_sign_form ? (
+                      {use_sign_pad && use_sign_form ? (
                         <Button
                           onClick={() => {
                             //props.history.push('/suscription');
