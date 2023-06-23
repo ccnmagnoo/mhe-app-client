@@ -77,8 +77,8 @@ const Subscription = (props: Props) => {
   const [disable_final_message, set_disability_final_message] =
     React.useState(true); /*final submit button*/
   //hooks or form is visible
-  const [visible_identity_form, setVisibleB] = React.useState(false);
-  const [visible_select_room, setVisibleC] = React.useState(false);
+  const [visible_identity_form, set_visibility_identity_form] = React.useState(false);
+  const [visible_select_room, set_visibility_room_form] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
   //progressing bar state
   const [loading_rol, set_loading_rol] = React.useState(false);
@@ -135,19 +135,27 @@ const Subscription = (props: Props) => {
     console.log('got benefits?', result);
   };
 
-  //on result of onSubmitStepA
   React.useEffect(() => {
+    //on result of on submit Rol check form
     //is everything ok the must be done🆗👌
     set_loading_rol(false); //progress bar OFF
     if (gotBenefit === false) {
       //on success 👌 disable RUT input
       set_disability_form_rol(true);
       //set visible second form 👁‍🗨
-      setVisibleB(true);
+      set_visibility_identity_form(true);
     } else {
       set_disability_form_rol(false);
     }
   }, [gotBenefit]);
+
+  React.useEffect(() => {
+    //scroll to identity button
+    if (disable_form_rol) {
+      const identityButton = document.getElementById('continue_identity_form_button');
+      identityButton?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [disable_form_rol]);
 
   /**
    * @function checkBenefit got is she got old active benefits
@@ -252,6 +260,7 @@ const Subscription = (props: Props) => {
                     type='submit'
                     variant='outlined'
                     color='primary'
+                    id='continue_rol_form_button'
                     disabled={disable_form_rol}
                   >
                     {disable_form_rol ? '✅' : 'seguir'}
@@ -284,11 +293,19 @@ const Subscription = (props: Props) => {
     //fetch Classrooms form firebase 🔥🔥🔥
     const getClassrooms = await fetchClassrooms(data);
     console.log('getClassrooms result', getClassrooms);
-    //open form C
-    setVisibleB(false); //hide step2
-    setVisibleC(true);
+    //open form select
+    set_visibility_identity_form(false); //hide step2
+    set_visibility_room_form(true);
     set_loading_identity(false); //progress bar OFF
   };
+
+  React.useEffect(() => {
+    //scroll to subscription_button id
+    if (visible_select_room) {
+      const submitButton = document.getElementById('subscribe_button');
+      submitButton?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [visible_select_room]);
 
   /**
    * @function fetchClassrooms got active incoming classrooms
@@ -489,6 +506,7 @@ const Subscription = (props: Props) => {
                 <Grid item xs={3} sm={'auto'}>
                   <Button
                     disabled={disable_form_identity}
+                    id='continue_identity_form_button'
                     type='submit'
                     variant='outlined'
                     color='primary'
@@ -504,8 +522,8 @@ const Subscription = (props: Props) => {
     </>
   );
 
-  //FORM C 💖💖💗
-  const onSubmitC: SubmitHandler<InputSubscription> = async (data) => {
+  //Room selection form 💖💖💗
+  const onSubmitRoom: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form C', data);
     //init, disable "inscription button"
     set_disability_select_room(true);
@@ -689,7 +707,7 @@ const Subscription = (props: Props) => {
       <Grow in={visible_select_room}>
         <Paper>
           <Box p={1}>
-            <form onSubmit={handleSubmit(onSubmitC)}>
+            <form onSubmit={handleSubmit(onSubmitRoom)}>
               <Grid container spacing={2} justify='flex-end'>
                 <Grid item xs={12}>
                   <Typography variant='subtitle1' color='primary'>
@@ -749,6 +767,7 @@ const Subscription = (props: Props) => {
                   <Button
                     type='submit'
                     variant='contained'
+                    id='subscribe_button'
                     color='primary'
                     disabled={disable_form_select_room && disable_final_message}
                   >
