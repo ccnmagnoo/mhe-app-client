@@ -37,7 +37,7 @@ function App() {
   const landingPage = (
     <Router>
       <Container maxWidth='sm'>
-        <Logo size={200} name={'Con Buena Energía'} />
+        <Logo size={200} name={'Siempre Listos'} />
 
         {/* navigation 🟦🟦🟦🟦*/}
         <ButtonNav />

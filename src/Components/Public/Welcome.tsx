@@ -35,11 +35,10 @@ export const Welcome = () => {
               <Typography variant='subtitle1' color='inherit' align='justify' paragraph>
                 con esta mini app podrás{' '}
                 <Link component={NavLink} to='/subscription' color='primary'>
-                  <strong>inscribirte a nuestros talleres</strong>
+                  <strong>inscribirte a nuestras actividades</strong>
                 </Link>{' '}
-                y posteriormente podrás validar tu asistencia a los Talleres de
-                capacitación <strong>Con Buena Energía</strong> de forma{' '}
-                <strong>on-line</strong>.
+                y posteriormente podrás validar tu asistencia a los programas de{' '}
+                <strong>Siempre Listos</strong> de forma <strong>on-line</strong>.
               </Typography>
               <Typography
                 variant='caption'
@@ -73,9 +72,9 @@ export const Welcome = () => {
               </Typography>
               <Typography variant='caption' color='initial'>
                 {' '}
-                Popipo
+                CCN
                 <img className='button' src={popipo} alt='logo taller' width={20} />
-                Soft &trade;
+                app &trade;
               </Typography>
             </Grid>
           </Grid>
