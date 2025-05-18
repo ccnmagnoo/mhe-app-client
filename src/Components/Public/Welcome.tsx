@@ -27,7 +27,7 @@ export const Welcome = () => {
         <CardHeader
           avatar={<Avatar aria-label='W'>👋</Avatar>}
           title='Bienvenidos a la mini app '
-          subheader='Incríbete y valida on-line'
+          subheader='Inscríbete y valida on-line'
         />
         <CardContent>
           <Grid container spacing={3} justify='center'>
