@@ -38,7 +38,8 @@ export const Welcome = () => {
                   <strong>inscribirte a nuestras actividades</strong>
                 </Link>{' '}
                 y posteriormente podrás validar tu asistencia a los programas de{' '}
-                <strong>Siempre Listos</strong> de forma <strong>on-line</strong>.
+                <strong>{process.env.REACT_APP_NAME || 'la app'}</strong> de forma{' '}
+                <strong>on-line</strong>.
               </Typography>
               <Typography
                 variant='caption'

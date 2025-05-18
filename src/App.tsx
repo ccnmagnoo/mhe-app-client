@@ -37,7 +37,7 @@ function App() {
   const landingPage = (
     <Router>
       <Container maxWidth='sm'>
-        <Logo size={200} name={'Siempre Listos'} />
+        <Logo size={200} name={process.env.REACT_APP_NAME || 'App'} />
 
         {/* navigation 🟦🟦🟦🟦*/}
         <ButtonNav />

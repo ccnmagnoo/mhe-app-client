@@ -16,6 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "rootDir": "src",
+    "baseUrl": "src",
     "outDir": "build"
   },
   "include": ["src", "typing.d.ts"]
