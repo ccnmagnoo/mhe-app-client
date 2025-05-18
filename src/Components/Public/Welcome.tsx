@@ -63,7 +63,7 @@ export const Welcome = () => {
                 />{' '}
                 <Chip
                   avatar={<EmailIcon />}
-                  label='Consultas?'
+                  label='¿soporte?'
                   component='a'
                   href={mailTo}
                   color='default'

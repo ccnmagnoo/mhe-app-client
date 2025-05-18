@@ -32,7 +32,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "nvm use 16 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

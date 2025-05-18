@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const logo = require(`../../../${process.env.REACT_APP_LOGO}`);
+import logo from '../../Assets/siempre_listos_logo.svg';
 
 type LogoProps = {
   size: number;
