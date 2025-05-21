@@ -1,11 +1,11 @@
 {
-  "short_name": "cbe app",
-  "name": "Con Buena Energía Web App",
+  "short_name": "psl app",
+  "name": "Siempre Listos Web App",
   "description": "web app ERP, for Government Program's resource management ",
-  "version": "2.3p2023",
+  "version": "1.3p2025",
   "icons": [
     {
-      "src": "cbelogo.png",
+      "src": "siempre_listos_ico.svg",
       "type": "image/svg",
       "sizes": "512x512"
     }
