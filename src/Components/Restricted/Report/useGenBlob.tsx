@@ -12,8 +12,13 @@ import JSZip from 'jszip';
  * from blob
  * @return {Blob} array
  */
-export function useGenBlob(room: IRoom, people: IBeneficiary[], workDone: boolean) {
+export function useGenBlob(
+  room: IRoom,
+  people: IBeneficiary[],
+  workDone: boolean
+): [Blob | undefined, 'done' | 'undone'] {
   const [blob, setBlob] = useState<Blob | undefined>(undefined);
+  const [job_done, set_job_status] = useState<'done' | 'undone'>('undone');
 
   useEffect(() => {
     //generate promise blob[]
@@ -26,7 +31,7 @@ export function useGenBlob(room: IRoom, people: IBeneficiary[], workDone: boolea
       const zip = new JSZip();
 
       if (workDone) {
-        //snap array of blobs
+        //snap array of blobs with signed docs
         const blobs = await Promise.all(snapBlobs as Promise<Blob>[]);
         people.forEach((person, index) => {
           zip.file(`${person.rut}.pdf`, blobs[index]);
@@ -40,12 +45,13 @@ export function useGenBlob(room: IRoom, people: IBeneficiary[], workDone: boolea
       const zippedFile = await zip.generateAsync({ type: 'blob' });
 
       setBlob(zippedFile);
+      set_job_status('done');
     };
 
     document();
   }, [people, room, workDone]);
 
-  return blob;
+  return [blob, job_done];
 }
 
 function getPromiseBlob(
@@ -67,7 +73,7 @@ function getPromiseBlob(
 
     return result;
   } else {
-    //return a one blob
+    //return a one blob with a book with documents TO SIGN
     const book = (
       <Document>
         {people.map((p, i) => {

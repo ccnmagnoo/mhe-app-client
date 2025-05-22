@@ -86,7 +86,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
   });
 
   //package download
-  const blobFile = useGenBlob(props.room, people, props.workDone) ?? new Blob();
+  const [blobFile, job_status] = useGenBlob(props.room, people, props.workDone);
   const fileButton = (
     <Button
       disabled={!fileIsReady}
@@ -94,19 +94,19 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
       color={props.workDone ? 'secondary' : 'primary'}
       size='medium'
     >
-      <a href={URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
+      <a href={URL.createObjectURL(blobFile ?? new Blob())} download={fileName + '.zip'}>
         <ReceiptIcon color='action' titleAccess='.zip' />
       </a>
     </Button>
   );
 
   useEffect(() => {
-    if (blobFile.size > 1000) {
+    if (job_status === 'done') {
       setFileIsReady(true);
     } else {
       setFileIsReady(false);
     }
-  }, [blobFile.size]);
+  }, [job_status]);
 
   return (
     <>
