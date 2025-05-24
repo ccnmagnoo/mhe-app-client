@@ -34,12 +34,12 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
     props.room.idCal
   } ${props.room.placeActivity.date.toLocaleDateString()} ${props.room.cityOnOp}`;
 
-  //call beneficiaries/suscribed
+  //call beneficiaries/subscribed
   React.useEffect(() => {
     const onSubmitPeople = async () => {
-      //call firebase suscribed 🔥🔥🔥🔥
+      //call firebase subscribed 🔥🔥🔥🔥
       try {
-        //change colection router
+        //change collection router
         const list = (await driver.get(
           undefined,
           'collection',
@@ -59,7 +59,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
 
         //
       } catch (error) {
-        console.log('error fetching suscribed', error);
+        console.log('error fetching subscribed', error);
       }
     };
 
@@ -69,7 +69,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
   //csv contents
   const [csv, setCsv] = React.useState<Mine[]>([]);
   React.useEffect(() => {
-    console.log('download csv suscribed');
+    console.log('download csv subscribed');
     const data = people.map((it, i) => convertToCsv(it, props.room, i + 1));
     setCsv(data);
   }, [people, props.room]);
