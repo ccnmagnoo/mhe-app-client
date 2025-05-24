@@ -4,6 +4,7 @@ import { IRoom } from '../../../Models/Classroom.interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import logo from '../../../Assets/siempre_listos_logo.png';
+import SocialProgram, { socialContext } from '../../../Models/Program';
 
 /* example: https://codesandbox.io/s/react-pdf-demo-i1ted?from-embed=&file=/src/index.js */
 
@@ -61,6 +62,7 @@ export const Certificate = (props: {
   room: IRoom;
   index: number;
 }) => {
+  const ctx = socialContext[process.env.REACT_APP_NAME as SocialProgram];
   //sign
 
   function signature(signUrl?: string) {
@@ -85,12 +87,12 @@ export const Certificate = (props: {
   return (
     <Page size='A5' style={styles.page}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-        <Image src={logo} style={{ width: '100px', objectFit: 'contain' }}></Image>
+        <Image src={ctx.logoUrl} style={{ width: '100px', objectFit: 'contain' }}></Image>
 
         <View style={{ ...styles.section, justifyContent: 'flex-start' }}>
           <Text style={styles.title}>Recepción Conforme de Beneficio</Text>
           <Text style={styles.subtitle}>
-            <strong>Programa {process.env.REACT_APP_NAME || 'Ministerial'}</strong>
+            <strong>Programa {ctx.program}</strong>
           </Text>
           <Text style={{ fontSize: 10, color: '#777' }}>{props.room?.colaborator}</Text>
         </View>
@@ -100,9 +102,9 @@ export const Certificate = (props: {
           uuid:{props.person.uuid} idCal: {props.room?.idCal} version:rev.rjs.9.0
         </Text>
         <Text style={styles.text2}>
-          En el marco del programa {process.env.REACT_APP_NAME || 'Ministerial'}, que
-          desarrolla la SEREMI de Energía regional y la Subsecretaría de Energía, se deja
-          constancia por este medio de lo siguiente que:
+          En el marco del programa de {ctx.goal} {ctx.program}, que desarrolla la SEREMI
+          de Energía regional y la Subsecretaría de Energía, se deja constancia por este
+          medio de lo siguiente que:
         </Text>
       </View>
       <View style={styles.section}>
@@ -116,10 +118,9 @@ export const Certificate = (props: {
       </View>
       <View style={styles.section}>
         <Text style={styles.text2}>
-          - Declara que reconoce el derecho a un solo kit del programa{' '}
-          {process.env.REACT_APP_NAME || 'Ministerial'} y que es de su exclusiva
-          responsabilidad el retiro de este material desde el punto de retiro{' '}
-          {props.room?.placeDispatch?.dir ? 'en' : undefined}{' '}
+          - Declara que reconoce el derecho a un solo kit del programa {ctx.program} y que
+          es de su exclusiva responsabilidad el retiro de este material desde el punto de
+          retiro {props.room?.placeDispatch?.dir ? 'en' : undefined}{' '}
           {props.room?.placeDispatch?.dir} y además que ha asistido a una capacitación en
           eficiencia energética.
         </Text>

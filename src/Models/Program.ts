@@ -7,12 +7,12 @@ const socialContext: Record<
   'Con Buena Energía': {
     program: 'Con Buena Energía',
     goal: 'educación energética',
-    logoUrl: 'https://conbuenaenergia.web.app/cbelogo.svg',
+    logoUrl: '/cbe_logo.png', // inside /%PUBLIC%/ folder
   },
   'Siempre Listos': {
     program: 'Siempre Listos',
-    goal: 'resilencia energética',
-    logoUrl: 'https://siemprelistos.web.app/siempre_listos.svg',
+    goal: 'resiliencia energética',
+    logoUrl: '/siempre_listos_logo.png', // inside /%PUBLIC%/ folder
   },
 };
 

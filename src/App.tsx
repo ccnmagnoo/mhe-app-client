@@ -12,6 +12,7 @@ import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
 import './App.css';
+import { socialContext } from './Models/Program';
 //import { EducationalResources } from './Components/Public/EducationalResources';
 const EducationalResources = lazy(
   () => import('./Components/Public/EducationalResources')
@@ -38,7 +39,6 @@ function App() {
     <Router>
       <Container maxWidth='sm'>
         <Logo size={200} name={process.env.REACT_APP_NAME || 'App'} />
-
         {/* navigation 🟦🟦🟦🟦*/}
         <ButtonNav />
 
