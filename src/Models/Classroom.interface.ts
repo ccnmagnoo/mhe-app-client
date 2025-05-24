@@ -3,6 +3,7 @@ import { LandType } from '../Functions/GetTerritoryList';
 import Converter from './Converter.interface';
 import { IPlace } from './Place.interface';
 import IStatistics from './Statistics.interface';
+import SocialProgram from './Program';
 
 export interface IRoom {
   uuid: string;
@@ -20,6 +21,7 @@ export interface IRoom {
   op?: { uuid?: string; cur?: number };
   statistics?: Partial<IStatistics>;
   validationSince?: Date /*exceptional date allowing validation ej: case Rapa Nui*/;
+  program?: SocialProgram;
 }
 
 export const iRoomConverter: Converter<IRoom> = {
@@ -53,6 +55,7 @@ export const iRoomConverter: Converter<IRoom> = {
       op: { uuid: it.op?.uuid, cur: it.op?.cur },
       statistics: it.statistics,
       validationSince: it.validationSince?.toDate(),
+      program: it.program ?? 'Con Buena Energía',
     };
   },
 };
