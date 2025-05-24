@@ -16,6 +16,7 @@ import { dbKey } from '../../../Models/databaseKeys';
 import { where } from 'firebase/firestore';
 import driver from '../../../Database/driver';
 import { useGenBlob } from '../Report/useGenBlob';
+import loading_ico from '../../../Assets/loading.svg';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'id', width: 40 },
@@ -95,16 +96,20 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
       size='medium'
     >
       <a href={blobFile && URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
-        <ReceiptIcon color='action' titleAccess='.zip' />
+        {fileIsReady ? (
+          <ReceiptIcon color='action' titleAccess='.zip' />
+        ) : (
+          <img src={loading_ico} alt='loading ico' />
+        )}
       </a>
     </Button>
   );
 
   useEffect(() => {
     if (job_status === 'done') {
-      setFileIsReady(true);
-    } else {
-      setFileIsReady(false);
+      setTimeout(() => {
+        setFileIsReady(true);
+      }, 3000);
     }
   }, [job_status]);
 
