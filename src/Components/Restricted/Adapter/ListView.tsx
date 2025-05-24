@@ -94,7 +94,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
       color={props.workDone ? 'secondary' : 'primary'}
       size='medium'
     >
-      <a href={URL.createObjectURL(blobFile ?? new Blob())} download={fileName + '.zip'}>
+      <a href={blobFile && URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
         <ReceiptIcon color='action' titleAccess='.zip' />
       </a>
     </Button>

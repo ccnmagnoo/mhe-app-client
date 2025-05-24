@@ -22,28 +22,26 @@ export function useGenBlob(
 
   useEffect(() => {
     //generate promise blob[]
-    const snapBlobs = getPromiseBlob(room, people, workDone);
 
     //await documents
 
     const document = async () => {
       //zip build
       const zip = new JSZip();
+      const blobs = await Promise.all(getPromiseBlob(room, people, workDone));
 
       if (workDone) {
         //snap array of blobs with signed docs
-        const blobs = await Promise.all(snapBlobs as Promise<Blob>[]);
+
         people.forEach((person, index) => {
           zip.file(`${person.rut}.pdf`, blobs[index]);
         });
       } else {
         //snap unique blob
-        const blob = await (snapBlobs as Promise<Blob>);
-        zip.file(`print-me.pdf`, blob);
+        zip.file(`${room.idCal}-${room.cityOnOp}.pdf`, blobs[0]);
       }
 
       const zippedFile = await zip.generateAsync({ type: 'blob' });
-
       setBlob(zippedFile);
       set_job_status('done');
     };
@@ -58,7 +56,7 @@ function getPromiseBlob(
   room: IRoom,
   people: IBeneficiary[],
   workDone: boolean
-): Promise<Blob>[] | Promise<Blob> {
+): Promise<Blob>[] {
   if (workDone) {
     //return a blob for each page
     const result = people.map((p, i) => {
@@ -81,7 +79,7 @@ function getPromiseBlob(
         })}
       </Document>
     );
-    const result = pdf(book).toBlob();
+    const result = [pdf(book).toBlob()];
     return result;
   }
 }
