@@ -1,8 +1,10 @@
 .background {
   position: fixed;
-  background-color: teal;
-  background-image: url('https://i.postimg.cc/P5j9b1nz/ccnmagnoo-clean-energy-field-beautiful-dream-octane-render-2d4d64aa-889c-42ff-8c46-0b58a2e18bc4.png');
+  background-color: #a1a1a1;
+  /* background: linear-gradient(180deg, #23537e, #132e45 50%); */
+  /* background-image: url('https://i.postimg.cc/d1KwfF93/future-energy-turbine.png'); */
   background-size: cover;
+  object-fit: cover;
   background-position: center;
   width: 100vw;
   min-height: 100vh;

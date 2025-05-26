@@ -12,7 +12,7 @@ import Validation from './Components/Public/Validation';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
 import './App.css';
-import { socialContext } from './Models/Program';
+import SocialProgram, { currentContext, socialContext } from './Models/Program';
 //import { EducationalResources } from './Components/Public/EducationalResources';
 const EducationalResources = lazy(
   () => import('./Components/Public/EducationalResources')
@@ -82,7 +82,11 @@ function App() {
 
   return firebaseUser !== false ? (
     <>
-      <div className='background'></div>
+      <img
+        src={currentContext.app_background}
+        className='background'
+        alt='background'
+      ></img>
       <div className='App-container'>
         <div className='App'>{landingPage}</div>
       </div>

@@ -13,8 +13,10 @@ import popipo from '../../Assets/popiposoft.svg';
 import EmailIcon from '@material-ui/icons/Email';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import { NavLink } from 'react-router-dom';
+import SocialProgram, { currentContext, socialContext } from '../../Models/Program';
 
 export const Welcome = () => {
+  const ctx = socialContext[process.env.REACT_APP_NAME!! as SocialProgram];
   const mailTo =
     'mailto:ccamposn@minenergia.cl?subject=consulta CBE desde mini app&body=incluir nombre completo, rut, su comuna y motivo de la consulta'.replace(
       ' ',
@@ -27,7 +29,7 @@ export const Welcome = () => {
         <CardHeader
           avatar={<Avatar aria-label='W'>👋</Avatar>}
           title='Bienvenidos a la mini app '
-          subheader='Inscríbete y valida on-line'
+          subheader='Inscríbase y valide on-line'
         />
         <CardContent>
           <Grid container spacing={3} justify='center'>
@@ -37,8 +39,9 @@ export const Welcome = () => {
                 <Link component={NavLink} to='/subscription' color='primary'>
                   <strong>inscribirte a nuestras actividades</strong>
                 </Link>{' '}
-                y posteriormente podrás validar tu asistencia a los programas de{' '}
-                <strong>{process.env.REACT_APP_NAME || 'la app'}</strong> de forma{' '}
+                y posteriormente podrás validar tu asistencia al programa de{' '}
+                {currentContext.goal}
+                <strong> {currentContext.program}</strong> de forma{' '}
                 <strong>on-line</strong>.
               </Typography>
               <Typography
