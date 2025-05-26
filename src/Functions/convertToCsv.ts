@@ -1,5 +1,6 @@
 import { IRoom } from '../Models/Classroom.interface';
 import { IPerson } from '../Models/Person.Interface';
+import SocialProgram from '../Models/Program';
 
 export function convertToCsv(p: IPerson, r: IRoom, index?: number) {
   const iAttendee = r.attendees.indexOf(p.uuid);
@@ -21,6 +22,7 @@ export function convertToCsv(p: IPerson, r: IRoom, index?: number) {
     genero: p.gender,
     valida: validation,
     uuid: p.uuid,
+    program: r.program ?? 'Con Buena Energía',
   };
 
   return mine;
@@ -42,4 +44,5 @@ export type Mine = {
   genero: string;
   valida: 'si' | 'no';
   uuid: string;
+  program: SocialProgram;
 };
