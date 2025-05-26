@@ -121,31 +121,32 @@ export const Certificate = (props: {
         <Text style={styles.text2}>
           - Declara que reconoce el derecho a un solo kit del programa{' '}
           {currentContext.program} y que es de su exclusiva responsabilidad el retiro de
-          este material desde el punto de retiro{' '}
+          este material desde el punto coordinado{' '}
           {props.room?.placeDispatch?.dir ? 'en' : undefined}{' '}
-          {props.room?.placeDispatch?.dir} y además que ha asistido a una capacitación en
-          eficiencia energética.
+          {props.room?.placeDispatch?.dir}.
         </Text>
         <Text style={styles.text2}>
-          - Se compromete a destinar el kit de eficiencia energética por este acto de
-          recepción, para su uso en el domicilio familiar.
+          - Declara que ha recibido el kit de {currentContext.goal} y se compromete a
+          seguir las instrucciones sobre su uso y cuidado, garantizando su vida útil y la
+          seguridad de quienes lo usen. .
         </Text>
         <Text style={styles.text2}>
           - Acepta que los datos que contiene esta planilla y cualquier otro obtenido con
           motivo de esta iniciativa, se utilicen para los efectos del procesamiento y
-          tratamiento de la información, a fin de lograr un adecuado monitoreo de los
-          beneficios arriba especificados, lo anterior en el marco de la Ley 19.628, sobre
-          protección de la Vida Privada.
+          tratamiento de la información en el marco de la Ley 19.628, sobre protección de
+          la Vida Privada.
         </Text>
         <Text style={styles.text2}>
           - Se compromete a no vender, regalar, transferir y en general a comercializar el
-          referido pack ni ninguno de sus componentes por separado, ni darle un uso
-          diverso al señalado en este documento.
+          referido kit ni ninguno de sus componentes por separado, ni darle un uso diverso
+          al señalado en este documento.
         </Text>
       </View>
       <View style={styles.section}>
         {signature(props.person.sign)}
-        <Text style={{ ...styles.text1, textAlign: 'center' }}>firma beneficiario</Text>
+        <Text style={{ ...styles.text1, textAlign: 'center' }}>
+          firma {props.person.name.firstName} {props.person.name.fatherName}
+        </Text>
         <Text style={{ ...styles.text1, textAlign: 'center' }}>
           {moment(props.person.dateSign).format('dddd DD [de] MMMM [de] YYYY')}
         </Text>
