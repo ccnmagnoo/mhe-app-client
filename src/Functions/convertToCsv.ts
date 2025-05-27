@@ -21,6 +21,7 @@ export function convertToCsv(p: IPerson, r: IRoom, index?: number) {
     genero: p.gender,
     valida: validation,
     uuid: p.uuid,
+    program: r.program ?? 'Con Buena Energía',
   };
 
   return mine;
@@ -42,4 +43,5 @@ export type Mine = {
   genero: string;
   valida: 'si' | 'no';
   uuid: string;
+  program: string;
 };
