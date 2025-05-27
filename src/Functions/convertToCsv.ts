@@ -44,4 +44,5 @@ export type Mine = {
   genero: string;
   valida: 'si' | 'no';
   uuid: string;
+  program: SocialProgram;
 };

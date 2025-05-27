@@ -140,9 +140,6 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
           style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
           href={blobUrl}
           download={fileName + '.zip'}
-          onClick={(event) => {
-            console.log(event);
-          }}
         >
           {fileIsReady ? (
             <ReceiptIcon color='action' titleAccess='.zip' />
