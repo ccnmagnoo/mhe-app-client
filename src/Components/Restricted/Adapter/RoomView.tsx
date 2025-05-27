@@ -80,7 +80,7 @@ const RoomView = (props: RoomViewProps) => {
             </Typography>
           }
         >
-          <ListView room={room} workDone={selector[typeListView]} />
+          <ListView room={room} workDone={selector[typeListView]} key={room.idCal} />
         </Suspense>
       </Grid>
     );

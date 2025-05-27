@@ -2,7 +2,7 @@ import { Certificate } from './Certificate';
 import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IRoom } from '../../../Models/Classroom.interface';
 import { Document, pdf } from '@react-pdf/renderer';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import JSZip from 'jszip';
 
 /**
@@ -15,10 +15,12 @@ import JSZip from 'jszip';
 export function useGenBlob(
   room: IRoom,
   people: IBeneficiary[],
-  workDone: boolean
-): [Blob | undefined, 'done' | 'undone'] {
+  workDone: boolean,
+  setZipStatus: Dispatch<SetStateAction<number>>
+): [Blob | undefined, string | undefined, 'done' | 'undone'] {
   const [blob, setBlob] = useState<Blob | undefined>(undefined);
-  const [job_done, set_job_status] = useState<'done' | 'undone'>('undone');
+  const [blobStatus, setBlobStatus] = useState<'done' | 'undone'>('undone');
+  const [blobUrl, setBlobUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     //generate promise blob[]
@@ -41,15 +43,22 @@ export function useGenBlob(
         zip.file(`${room.idCal}-${room.cityOnOp}.pdf`, blobs[0]);
       }
 
-      const zippedFile = await zip.generateAsync({ type: 'blob' });
+      const zippedFile = await zip.generateAsync({ type: 'blob' }, (metadata) => {
+        setZipStatus(metadata.percent);
+      });
+
       setBlob(zippedFile);
-      set_job_status('done');
+      const blobUrl = URL.createObjectURL(zippedFile);
+      setBlobUrl(blobUrl);
+
+      setBlobStatus('done');
+      return blobUrl;
     };
 
     document();
-  }, [people, room, workDone]);
+  }, [people, room, workDone, setZipStatus]);
 
-  return [blob, job_done];
+  return [blob, blobUrl, blobStatus];
 }
 
 function getPromiseBlob(
