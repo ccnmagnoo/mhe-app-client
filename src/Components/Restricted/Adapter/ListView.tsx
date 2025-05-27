@@ -5,7 +5,7 @@ import {
   iBeneficiaryConverter,
 } from '../../../Models/Beneficiary.interface';
 import { IRoom } from '../../../Models/Classroom.interface';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import Button from '@material-ui/core/Button';
 
@@ -87,31 +87,21 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
   });
 
   //package download
-  const [blobFile, job_status] = useGenBlob(props.room, people, props.workDone);
-  const fileButton = (
-    <Button
-      disabled={!fileIsReady}
-      variant='contained'
-      color={props.workDone ? 'secondary' : 'primary'}
-      size='medium'
-    >
-      <a href={blobFile && URL.createObjectURL(blobFile)} download={fileName + '.zip'}>
-        {fileIsReady ? (
-          <ReceiptIcon color='action' titleAccess='.zip' />
-        ) : (
-          <img src={loading_ico} alt='loading ico' />
-        )}
-      </a>
-    </Button>
+  const [zipStatus, setZipStatus] = useState<number>(0);
+  const [blobFile, blobUrl, job_status] = useGenBlob(
+    props.room,
+    people,
+    props.workDone,
+    setZipStatus
   );
 
   useEffect(() => {
-    if (job_status === 'done') {
+    if (job_status === 'done' && zipStatus === 100) {
       setTimeout(() => {
         setFileIsReady(true);
-      }, 3000);
+      }, 5000);
     }
-  }, [job_status]);
+  }, [job_status, zipStatus]);
 
   return (
     <>
@@ -126,14 +116,46 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
       </div>
       <br />
       {/*datos csv 🎲🎲*/}
-      <Button variant='contained' color='primary' size='medium' disabled={!fileIsReady}>
+      <Button
+        variant='contained'
+        color='primary'
+        size='medium'
+        disabled={!fileIsReady}
+        style={{ height: '50px' }}
+      >
         <CSVLink data={csv} separator={';'} filename={`${fileName}.csv`}>
           <TableChartIcon color='action' titleAccess='.csv' />
         </CSVLink>
       </Button>
 
       {/*PDF 📃📃📃*/}
-      {fileButton}
+      <Button
+        disabled={!fileIsReady}
+        variant='contained'
+        color={props.workDone ? 'secondary' : 'primary'}
+        size='medium'
+        style={{ height: '50px' }}
+      >
+        <a
+          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+          href={blobUrl}
+          download={fileName + '.zip'}
+          onClick={(event) => {
+            console.log(event);
+          }}
+        >
+          {fileIsReady ? (
+            <ReceiptIcon color='action' titleAccess='.zip' />
+          ) : (
+            <div>
+              <img src={loading_ico} alt='loading ico' style={{ color: '#fff' }} />
+              <span style={{ textDecoration: 'none', fontSize: '0.7rem', color: '#555' }}>
+                {Math.round(zipStatus)}%
+              </span>
+            </div>
+          )}
+        </a>
+      </Button>
     </>
   );
 };
