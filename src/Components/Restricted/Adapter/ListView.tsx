@@ -94,25 +94,6 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
     props.workDone,
     setZipStatus
   );
-  const fileButton = (
-    <Button
-      disabled={!fileIsReady}
-      variant='contained'
-      color={props.workDone ? 'secondary' : 'primary'}
-      size='medium'
-    >
-      <a href={blobUrl} download={fileName + '.zip'}>
-        {fileIsReady ? (
-          <ReceiptIcon color='action' titleAccess='.zip' />
-        ) : (
-          <div>
-            <img src={loading_ico} alt='loading ico' />
-            {Math.round(zipStatus)}%
-          </div>
-        )}
-      </a>
-    </Button>
-  );
 
   useEffect(() => {
     if (job_status === 'done' && zipStatus === 100) {
