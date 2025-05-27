@@ -137,7 +137,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
         style={{ height: '50px' }}
       >
         <a
-          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
           href={blobUrl}
           download={fileName + '.zip'}
           onClick={(event) => {
@@ -148,7 +148,7 @@ const ListView = (props: { room: IRoom; workDone: boolean }) => {
             <ReceiptIcon color='action' titleAccess='.zip' />
           ) : (
             <div>
-              <img src={loading_ico} alt='loading ico' />
+              <img src={loading_ico} alt='loading ico' style={{ color: '#fff' }} />
               <span style={{ textDecoration: 'none', fontSize: '0.7rem', color: '#555' }}>
                 {Math.round(zipStatus)}%
               </span>
