@@ -38,25 +38,10 @@ import driver from '../../Database/driver';
 import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
 import { OnFailSubscription } from './Subscription/Subscription.onFail';
+import { InputSubscription } from '../../Models/SubscriptionData';
 
 type Props = {
   overSubscription?: boolean;
-};
-
-export type InputSubscription = {
-  rut: string;
-  name: string;
-  fatherName: string;
-  motherName: string;
-  dir: string;
-  city: string;
-  email: string;
-  phone?: string;
-  //energy poll ⚡
-  electricBill?: number;
-  electricity?: number;
-  gasBill?: number;
-  gasDuration?: number;
 };
 
 const Subscription = (props: Props) => {
