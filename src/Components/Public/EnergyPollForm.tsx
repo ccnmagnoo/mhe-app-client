@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormGroup,
   FormHelperText,
+  Switch,
 } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
@@ -229,7 +230,7 @@ export const EnergyPollForm = (props: Props<IS>) => {
                 <FormLabel component='legend'>¿vivo en zona de riesgo?</FormLabel>
                 <FormHelperText>
                   {'zona de riesgo: '}
-                  {someTrue(form.watch().risk_zone) ? '🟥' : '🔲'}
+                  <Switch checked={someTrue(form.watch().risk_zone)}></Switch>
                 </FormHelperText>
                 {controlGroup('risk_zone.tsunami', 'zona de tsunami')}
                 {controlGroup('risk_zone.riverside', 'zona de inundación rio o canal')}
@@ -242,7 +243,7 @@ export const EnergyPollForm = (props: Props<IS>) => {
                 <FormLabel component='legend'>¿ha sufrido daños graves?</FormLabel>
                 <FormHelperText>
                   {'afectación previa: '}
-                  {someTrue(form.watch().damage_experience) ? '🟥' : '🔲'}
+                  <Switch checked={someTrue(form.watch().damage_experience)}></Switch>
                 </FormHelperText>
                 {controlGroup('damage_experience.rain', 'por lluvias')}
                 {controlGroup('damage_experience.fire', 'por incendio')}
