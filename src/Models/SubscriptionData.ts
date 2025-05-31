@@ -15,12 +15,14 @@ type EnergyPoll = {
   gasDuration: number;
 };
 
+type RiskReason = 'tsunami' | 'river' | 'mountain' | 'landslide';
+
 type ResiliencePoll = {
   energy_cut: number;
   emergency_contact: 'City' | 'Company' | 'SEC' | 'Mine';
   emergency_causes: 'fire' | 'flood' | 'wind' | 'rain';
   risk_zone: boolean;
-  risk_reason: 'tsunami' | 'river' | 'mountain' | 'landslide';
+  risk_reason: Partial<Record<RiskReason, boolean>>;
 };
 
 export type InputSubscription = Subscriber &
