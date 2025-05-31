@@ -12,18 +12,25 @@ import {
   FormControlLabel,
 } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
-import { DeepMap, FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
+import {
+  DeepMap,
+  FieldError,
+  FieldValues,
+  UseFormRegister,
+  UseFormReturn,
+} from 'react-hook-form';
 import { InputSubscription as IS } from '../../Models/SubscriptionData';
 import Checkbox from '@material-ui/core/Checkbox';
 
 type Props<T extends FieldValues> = {
   trigger: boolean;
-  register: UseFormRegister<T>;
+  form: UseFormReturn<T>;
   errors: DeepMap<T, FieldError>;
 };
 
 export const EnergyPollForm = (props: Props<IS>) => {
-  const { trigger: disableB, register, errors } = props;
+  const { trigger: disableB, form, errors } = props;
+  const { register } = form;
 
   return (
     <>

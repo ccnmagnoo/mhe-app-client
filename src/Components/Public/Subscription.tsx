@@ -70,6 +70,7 @@ const Subscription = (props: Props) => {
   const [loading_identity, set_loading_identity] = React.useState(false);
 
   //React hook form
+  const form = useForm<InputSubscription>();
   const {
     register,
     handleSubmit,
@@ -77,7 +78,7 @@ const Subscription = (props: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     watch,
     formState: { errors },
-  } = useForm<InputSubscription>();
+  } = form;
 
   //function move to bottom of the page⏬
 
@@ -482,7 +483,7 @@ const Subscription = (props: Props) => {
                   !props.overSubscription ? (
                     <EnergyPollForm
                       trigger={disable_form_identity}
-                      register={register}
+                      form={form}
                       errors={errors}
                     /> //show
                   ) : undefined //hide
