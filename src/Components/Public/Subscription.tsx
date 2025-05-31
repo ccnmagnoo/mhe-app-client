@@ -481,11 +481,7 @@ const Subscription = (props: Props) => {
                 {/*Energy Poll ⚡⚡🔌*/}
                 {
                   !props.overSubscription ? (
-                    <EnergyPollForm
-                      trigger={disable_form_identity}
-                      form={form}
-                      errors={errors}
-                    /> //show
+                    <EnergyPollForm trigger={disable_form_identity} form={form} /> //show
                   ) : undefined //hide
                 }
 

@@ -25,12 +25,14 @@ import Checkbox from '@material-ui/core/Checkbox';
 type Props<T extends FieldValues> = {
   trigger: boolean;
   form: UseFormReturn<T>;
-  errors: DeepMap<T, FieldError>;
 };
 
 export const EnergyPollForm = (props: Props<IS>) => {
-  const { trigger: disableB, form, errors } = props;
-  const { register } = form;
+  const { trigger: disableB, form } = props;
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
   return (
     <>
@@ -44,15 +46,15 @@ export const EnergyPollForm = (props: Props<IS>) => {
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <Typography variant='body2' color='primary'>
-                  ⚡ Encuesta de sus consumos energéticos
+                  ⚡ Encuesta energética
                   <Typography
                     variant='caption'
                     color='textSecondary'
                     paragraph
-                    align='justify'
+                    align='left'
                   >
-                    Esta encuesta es opcional, pero contestando nos ayudas a mejorar
-                    nuestros programas✨.
+                    Encuesta opcional que nos ayuda a mejorar nuestros programas de
+                    beneficios✨.
                   </Typography>
                 </Typography>
               </Grid>
