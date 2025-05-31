@@ -53,6 +53,18 @@ export const EnergyPollForm = (props: Props<IS>) => {
     );
   };
 
+  function someTrue<K extends string, V extends boolean>(
+    obj?: Partial<Record<K, V>>
+  ): boolean {
+    if (!obj) {
+      return false;
+    }
+
+    const res = Object.values(obj).some((it) => it === true);
+
+    return res;
+  }
+
   return (
     <>
       <Grid item xs={12}>
@@ -215,26 +227,28 @@ export const EnergyPollForm = (props: Props<IS>) => {
             <Grid item xs={6} sm={12} style={{ marginTop: '2rem' }}>
               <FormControl component='fieldset'>
                 <FormLabel component='legend'>¿vivo en zona de riesgo?</FormLabel>
+                <FormHelperText>
+                  {'zona de riesgo: '}
+                  {someTrue(form.watch().risk_zone) ? '🟥' : '🔲'}
+                </FormHelperText>
                 {controlGroup('risk_zone.tsunami', 'zona de tsunami')}
                 {controlGroup('risk_zone.riverside', 'zona de inundación rio o canal')}
                 {controlGroup('risk_zone.forest', 'zona incendios forestales')}
                 {controlGroup('risk_zone.landslide', 'zona de derrumbes o aluviones')}
-                <FormHelperText>
-                  zona de riesgo {Object.values(form.watch('risk_zone') || {})}
-                </FormHelperText>
               </FormControl>
             </Grid>
             <Grid item xs={6} sm={12} style={{ marginTop: '2rem' }}>
               <FormControl component='fieldset'>
                 <FormLabel component='legend'>¿ha sufrido daños graves?</FormLabel>
+                <FormHelperText>
+                  {'afectación previa: '}
+                  {someTrue(form.watch().damage_experience) ? '🟥' : '🔲'}
+                </FormHelperText>
                 {controlGroup('damage_experience.rain', 'por lluvias')}
                 {controlGroup('damage_experience.fire', 'por incendio')}
                 {controlGroup('damage_experience.flood', 'por inundación')}
                 {controlGroup('damage_experience.landslide', 'por derrumbes o aluvión')}
                 {controlGroup('damage_experience.wind', 'por vientos muy fuertes')}
-                <FormHelperText>
-                  daños experimentados {JSON.stringify(form.watch())}
-                </FormHelperText>
               </FormControl>
             </Grid>
           </Box>
