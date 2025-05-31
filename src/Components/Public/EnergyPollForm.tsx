@@ -15,16 +15,9 @@ import {
   FormHelperText,
 } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
-import {
-  FieldValues,
-  NestedValue,
-  UnpackNestedValue,
-  UseFormGetValues,
-  UseFormReturn,
-} from 'react-hook-form';
-import { InputSubscription as IS, RiskReason } from '../../Models/SubscriptionData';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { InputSubscription as IS } from '../../Models/SubscriptionData';
 import Checkbox from '@material-ui/core/Checkbox';
-import { ParamHTMLAttributes } from 'react';
 
 type Props<T extends FieldValues> = {
   trigger: boolean;
@@ -54,7 +47,7 @@ export const EnergyPollForm = (props: Props<IS>) => {
               name={risk_zone.toString()}
             />
           }
-          label={`en zona de ${risk_title ?? 'riesgo'}`}
+          label={risk_title}
         />
       </FormGroup>
     );
@@ -222,12 +215,25 @@ export const EnergyPollForm = (props: Props<IS>) => {
             <Grid item xs={6} sm={12} style={{ marginTop: '2rem' }}>
               <FormControl component='fieldset'>
                 <FormLabel component='legend'>¿vivo en zona de riesgo?</FormLabel>
-                {controlGroup('risk_zone.tsunami', 'tsunami')}
-                {controlGroup('risk_zone.riverside', 'inundación rio o canal')}
-                {controlGroup('risk_zone.forest', 'incendios forestales')}
-                {controlGroup('risk_zone.landslide', 'derrumbes o aluviones')}
+                {controlGroup('risk_zone.tsunami', 'zona de tsunami')}
+                {controlGroup('risk_zone.riverside', 'zona de inundación rio o canal')}
+                {controlGroup('risk_zone.forest', 'zona incendios forestales')}
+                {controlGroup('risk_zone.landslide', 'zona de derrumbes o aluviones')}
                 <FormHelperText>
-                  zona de riesgo {JSON.stringify(form.watch())}
+                  zona de riesgo {Object.values(form.watch('risk_zone') || {})}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6} sm={12} style={{ marginTop: '2rem' }}>
+              <FormControl component='fieldset'>
+                <FormLabel component='legend'>¿ha sufrido daños graves?</FormLabel>
+                {controlGroup('damage_experience.rain', 'por lluvias')}
+                {controlGroup('damage_experience.fire', 'por incendio')}
+                {controlGroup('damage_experience.flood', 'por inundación')}
+                {controlGroup('damage_experience.landslide', 'por derrumbes o aluvión')}
+                {controlGroup('damage_experience.wind', 'por vientos muy fuertes')}
+                <FormHelperText>
+                  daños experimentados {JSON.stringify(form.watch())}
                 </FormHelperText>
               </FormControl>
             </Grid>
