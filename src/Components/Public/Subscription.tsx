@@ -70,7 +70,9 @@ const Subscription = (props: Props) => {
   const [loading_identity, set_loading_identity] = React.useState(false);
 
   //React hook form
-  const form = useForm<InputSubscription>();
+  const form = useForm<InputSubscription>({
+    defaultValues: {},
+  });
   const {
     register,
     handleSubmit,

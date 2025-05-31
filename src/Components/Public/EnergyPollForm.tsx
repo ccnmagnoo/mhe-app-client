@@ -10,17 +10,21 @@ import {
   Select,
   MenuItem,
   FormControlLabel,
+  FormLabel,
+  FormGroup,
+  FormHelperText,
 } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import {
-  DeepMap,
-  FieldError,
   FieldValues,
-  UseFormRegister,
+  NestedValue,
+  UnpackNestedValue,
+  UseFormGetValues,
   UseFormReturn,
 } from 'react-hook-form';
-import { InputSubscription as IS } from '../../Models/SubscriptionData';
+import { InputSubscription as IS, RiskReason } from '../../Models/SubscriptionData';
 import Checkbox from '@material-ui/core/Checkbox';
+import { ParamHTMLAttributes } from 'react';
 
 type Props<T extends FieldValues> = {
   trigger: boolean;
@@ -33,6 +37,28 @@ export const EnergyPollForm = (props: Props<IS>) => {
     register,
     formState: { errors },
   } = form;
+
+  const controlGroup = (
+    risk_zone: Parameters<typeof form.getValues>[0][0],
+    risk_title: string
+  ) => {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={() => {
+                const param = form.getValues(risk_zone);
+                form.setValue(risk_zone, !param as never);
+              }}
+              name={risk_zone.toString()}
+            />
+          }
+          label={`en zona de ${risk_title ?? 'riesgo'}`}
+        />
+      </FormGroup>
+    );
+  };
 
   return (
     <>
@@ -47,15 +73,15 @@ export const EnergyPollForm = (props: Props<IS>) => {
               <Grid item xs={12}>
                 <Typography variant='body2' color='primary'>
                   ⚡ Encuesta energética
-                  <Typography
-                    variant='caption'
-                    color='textSecondary'
-                    paragraph
-                    align='left'
-                  >
-                    Encuesta opcional que nos ayuda a mejorar nuestros programas de
-                    beneficios✨.
-                  </Typography>
+                </Typography>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  paragraph
+                  align='left'
+                >
+                  Encuesta opcional que nos ayuda a mejorar nuestros programas de
+                  beneficios✨.
                 </Typography>
               </Grid>
 
@@ -120,7 +146,7 @@ export const EnergyPollForm = (props: Props<IS>) => {
               </Grid>
 
               <Grid item xs={7} sm={7}>
-                <FormControl style={{ minWidth: 200 }}>
+                <FormControl style={{ minWidth: 260 }}>
                   <InputLabel id='select-gas-duration' style={{ marginLeft: 0 }}>
                     cuanto dura balón 15kg
                   </InputLabel>
@@ -129,7 +155,7 @@ export const EnergyPollForm = (props: Props<IS>) => {
                     id='select-gas-duration'
                     variant='standard'
                     disabled={disableB}
-                    {...register('gasDuration', {})}
+                    {...register('gasDuration')}
                   >
                     <MenuItem value={undefined}>
                       <em>sin respuesta</em>
@@ -150,8 +176,8 @@ export const EnergyPollForm = (props: Props<IS>) => {
               </Grid>
             </Grid>
 
-            <Grid item xs={5} sm={5}>
-              <FormControl style={{ minWidth: 180, margin: 0, border: '2px solid red' }}>
+            <Grid item xs={6} sm={12}>
+              <FormControl style={{ minWidth: 180, marginRight: 8 }}>
                 <InputLabel id='id-energy-cut' style={{ marginLeft: 0 }}>
                   🔌 cortes por año
                 </InputLabel>
@@ -171,11 +197,10 @@ export const EnergyPollForm = (props: Props<IS>) => {
                   <MenuItem value={3}>3 o más</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={7} sm={7}>
+
               <FormControl style={{ minWidth: 250 }}>
-                <InputLabel id='label-emergency-contact' style={{ marginLeft: 0 }}>
-                  ☎️en caso de corte contacto
+                <InputLabel id='label-emergency-contact'>
+                  ☎️ contacto en caso de corte
                 </InputLabel>
                 <Select
                   labelId='label-emergency-contact'
@@ -194,20 +219,17 @@ export const EnergyPollForm = (props: Props<IS>) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item>
-              <FormControlLabel
-                value={true}
-                style={{
-                  color: '#888',
-                  margin: '8px 0',
-                  // border: 'solid 1px #555',
-                  // borderRadius: '40px',
-                  padding: '0px 16px',
-                }}
-                control={<Checkbox color='primary' {...register('risk_zone')} />}
-                label='vivo en zona de riesgo'
-                labelPlacement='start'
-              />
+            <Grid item xs={6} sm={12} style={{ marginTop: '2rem' }}>
+              <FormControl component='fieldset'>
+                <FormLabel component='legend'>¿vivo en zona de riesgo?</FormLabel>
+                {controlGroup('risk_zone.tsunami', 'tsunami')}
+                {controlGroup('risk_zone.riverside', 'inundación rio o canal')}
+                {controlGroup('risk_zone.forest', 'incendios forestales')}
+                {controlGroup('risk_zone.landslide', 'derrumbes o aluviones')}
+                <FormHelperText>
+                  zona de riesgo {JSON.stringify(form.watch())}
+                </FormHelperText>
+              </FormControl>
             </Grid>
           </Box>
         </Paper>
