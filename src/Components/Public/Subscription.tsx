@@ -140,8 +140,11 @@ const Subscription = (props: Props) => {
   React.useEffect(() => {
     //scroll to identity button
     if (disable_form_rol) {
-      const identityButton = document.getElementById('continue_identity_form_button');
-      identityButton?.scrollIntoView({ behavior: 'smooth' });
+      // const elementToScroll = document.getElementById('continue_identity_form_button');
+      const elementToScroll = document.getElementById('personal-data-title');
+      setTimeout(() => {
+        elementToScroll?.scrollIntoView({ behavior: 'smooth' });
+      }, 1000);
     }
   }, [disable_form_rol]);
 
@@ -291,7 +294,9 @@ const Subscription = (props: Props) => {
     //scroll to subscription_button id
     if (visible_select_room) {
       const submitButton = document.getElementById('subscribe_button');
-      submitButton?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        submitButton?.scrollIntoView({ behavior: 'smooth' });
+      }, 1000);
     }
   }, [visible_select_room]);
 
@@ -374,7 +379,11 @@ const Subscription = (props: Props) => {
             <form onSubmit={handleSubmit(onSubmit_identity)}>
               <Grid container spacing={1} justify='flex-end'>
                 <Grid item xs={12}>
-                  <Typography variant='subtitle2' color='primary'>
+                  <Typography
+                    id='personal-data-title'
+                    variant='subtitle2'
+                    color='primary'
+                  >
                     Ingrese sus datos
                   </Typography>
                 </Grid>
@@ -402,7 +411,7 @@ const Subscription = (props: Props) => {
                     required
                     autoComplete='off'
                     disabled={disable_form_identity}
-                    id='name-field'
+                    id='surname-field'
                     label='paterno'
                     type='text'
                     inputProps={{ style: { textTransform: 'capitalize' } }}
@@ -654,7 +663,7 @@ const Subscription = (props: Props) => {
       return (
         <Grid item xs={12}>
           <Alert severity='success'>
-            Inscripción existosa 💖 , recuerda <strong>no faltar</strong> al taller, es{' '}
+            Inscripción exitosa 👌 , recuerda <strong>no faltar</strong> al taller, es{' '}
             {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos.
           </Alert>
         </Grid>
