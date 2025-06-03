@@ -28,4 +28,4 @@ type ResiliencePoll = {
 
 type InputSubscription = Subscriber & Partial<EnergyPoll> & Partial<ResiliencePoll>;
 
-export type { InputSubscription, RiskZone };
+export type { InputSubscription, RiskZone, DamageExperience };
