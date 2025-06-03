@@ -28,7 +28,7 @@ import {
 import { pad } from '../../Functions/paddingNumber';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
-import SocialProgram from '../../Models/Program';
+import SocialProgram, { currentContext, socialContext } from '../../Models/Program';
 
 const Create = (props: any) => {
   //Land type and land list
@@ -152,7 +152,7 @@ const Create = (props: any) => {
               uuid: auth.currentUser?.uid,
               cur: territoryId,
             },
-            program: (process.env.REACT_APP_NAME as SocialProgram) ?? 'Con Buena Energía',
+            program: currentContext.program,
           };
           return classRoom;
         };

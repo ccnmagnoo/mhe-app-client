@@ -3,7 +3,7 @@ import { IBeneficiary } from '../../../Models/Beneficiary.interface';
 import { IRoom } from '../../../Models/Classroom.interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
-import { currentContext } from '../../../Models/Program';
+import { currentContext as programCtx } from '../../../Models/Program';
 
 /* example: https://codesandbox.io/s/react-pdf-demo-i1ted?from-embed=&file=/src/index.js */
 
@@ -86,14 +86,14 @@ export const Certificate = (props: {
     <Page size='A5' style={styles.page}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
         <Image
-          src={currentContext.logoUrl}
+          src={programCtx.logoUrl}
           style={{ width: '100px', objectFit: 'contain' }}
         ></Image>
 
         <View style={{ ...styles.section, justifyContent: 'flex-start' }}>
           <Text style={styles.title}>Recepción Conforme de Beneficio</Text>
           <Text style={styles.subtitle}>
-            <strong>Programa {currentContext.program}</strong>
+            <strong>Programa {programCtx.program}</strong>
           </Text>
           <Text style={{ fontSize: 10, color: '#777' }}>{props.room?.colaborator}</Text>
         </View>
@@ -103,7 +103,7 @@ export const Certificate = (props: {
           uuid:{props.person.uuid} idCal: {props.room?.idCal} version:rev.rjs.9.0
         </Text>
         <Text style={styles.text2}>
-          En el marco del programa de {currentContext.goal} {currentContext.program}, que
+          En el marco del programa de {programCtx.goal} {programCtx.program}, que
           desarrolla la SEREMI de Energía regional y la Subsecretaría de Energía, se deja
           constancia por este medio de lo siguiente que:
         </Text>
@@ -119,16 +119,15 @@ export const Certificate = (props: {
       </View>
       <View style={styles.section}>
         <Text style={styles.text2}>
-          - Declara que reconoce el derecho a un solo kit del programa{' '}
-          {currentContext.program} y que es de su exclusiva responsabilidad el retiro de
-          este material desde el punto coordinado{' '}
-          {props.room?.placeDispatch?.dir ? 'en' : undefined}{' '}
+          - Declara que reconoce el derecho a un solo kit del program {programCtx.program}{' '}
+          y que es de su exclusiva responsabilidad el retiro de este material desde el
+          punto coordinado {props.room?.placeDispatch?.dir ? 'en' : undefined}{' '}
           {props.room?.placeDispatch?.dir}.
         </Text>
         <Text style={styles.text2}>
-          - Declara que ha recibido el kit de {currentContext.goal} y se compromete a
-          seguir las instrucciones sobre su uso y cuidado, garantizando su vida útil y la
-          seguridad de quienes lo usen. .
+          - Declara que ha recibido el kit de {programCtx.goal} y se compromete a seguir
+          las instrucciones sobre su uso y cuidado, garantizando su vida útil y la
+          seguridad de quienes lo usen.
         </Text>
         <Text style={styles.text2}>
           - Acepta que los datos que contiene esta planilla y cualquier otro obtenido con

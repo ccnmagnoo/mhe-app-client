@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import Converter from './Converter.interface';
-import { IEnergyPoll } from './EnergyPoll.interface';
+import { EnergyPoll, ResiliencePoll } from './SubscriptionData';
 
 export interface IPerson {
   uuid: string;
@@ -12,7 +12,8 @@ export interface IPerson {
   email: string;
   phone?: string | null;
   address?: Dir;
-  energy?: IEnergyPoll | null;
+  energy?: Partial<EnergyPoll>;
+  resilience?: Partial<ResiliencePoll>;
 }
 
 export type Name = {

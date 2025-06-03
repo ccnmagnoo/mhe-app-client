@@ -19,6 +19,7 @@ import { indigo } from '@material-ui/core/colors';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { InputSubscription as IS } from '../../Models/SubscriptionData';
 import Checkbox from '@material-ui/core/Checkbox';
+import someTrue from '../../Functions/someTrue';
 
 type Props<T extends FieldValues> = {
   trigger: boolean;
@@ -53,18 +54,6 @@ export const EnergyPollForm = (props: Props<IS>) => {
       </FormGroup>
     );
   };
-
-  function someTrue<K extends string, V extends boolean>(
-    obj?: Partial<Record<K, V>>
-  ): boolean {
-    if (!obj) {
-      return false;
-    }
-
-    const res = Object.values(obj).some((it) => it === true);
-
-    return res;
-  }
 
   return (
     <>

@@ -27,9 +27,9 @@ export const iBeneficiaryConverter: Converter<IBeneficiary> = {
       email: it.email,
       phone: it.phone,
       address: it.address,
-      energy: it.energy,
       sign: it?.sign,
       dateSign: it.dateSign?.toDate(),
+      energy: it.energy,
     };
   },
 };

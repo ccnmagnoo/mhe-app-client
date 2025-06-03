@@ -39,6 +39,7 @@ import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
 import { OnFailSubscription } from './Subscription/Subscription.onFail';
 import { InputSubscription } from '../../Models/SubscriptionData';
+import someTrue from '../../Functions/someTrue';
 
 type Props = {
   overSubscription?: boolean;
@@ -617,10 +618,18 @@ const Subscription = (props: Props) => {
             city: data.city,
           },
           energy: {
-            electricity: data.electricity === undefined ? null : +data.electricity,
-            electricBill: data.electricBill === undefined ? null : +data.electricBill,
-            gasDuration: data.gasDuration === undefined ? null : +data.gasDuration,
-            gasBill: data.gasBill === undefined ? null : +data.gasBill,
+            electricBill: data.electricBill,
+            electricity: data.electricity,
+            gasBill: data.gasBill,
+            gasDuration: data.gasDuration,
+          },
+          resilience: {
+            energy_cut: data.energy_cut,
+            emergency_contact: data.emergency_contact,
+            is_risk_zone: someTrue(data.risk_zone),
+            risk_zone: data.risk_zone,
+            has_damage_experience: someTrue(data.damage_experience),
+            damage_experience: data.damage_experience,
           },
         };
 

@@ -21,11 +21,12 @@ type DamageExperience = 'fire' | 'flood' | 'wind' | 'rain' | 'landslide';
 type ResiliencePoll = {
   energy_cut: number;
   emergency_contact: 'City' | 'Company' | 'SEC' | 'Mine';
-  damage_experience: Partial<Record<DamageExperience, boolean>>;
   is_risk_zone: boolean;
   risk_zone: Partial<Record<RiskZone, boolean>>;
+  has_damage_experience: boolean;
+  damage_experience: Partial<Record<DamageExperience, boolean>>;
 };
 
 type InputSubscription = Subscriber & Partial<EnergyPoll> & Partial<ResiliencePoll>;
 
-export type { InputSubscription, RiskZone, DamageExperience };
+export type { InputSubscription, RiskZone, DamageExperience, EnergyPoll, ResiliencePoll };
