@@ -2,6 +2,7 @@ import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
 import React from 'react';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IRoom } from '../../Models/Classroom.interface';
+import { currentContext as programCtx } from '../../Models/Program';
 
 export const DisclaimerDocument = (props: PropsDS) => {
   //little refs
@@ -64,8 +65,11 @@ export const DisclaimerDocument = (props: PropsDS) => {
             <Grid item xs={12}>
               <Typography variant='caption' color='textSecondary' align='justify'>
                 En el marco del programa
-                <strong> Difusión y educación para el buen uso de la energía</strong> ,
-                que desarrolla la SEREMI de Energía regional y la Subsecretaría de
+                <strong>
+                  {' '}
+                  de {programCtx.goal} {programCtx.program}
+                </strong>{' '}
+                , que desarrolla la SEREMI de Energía regional y la Subsecretaría de
                 Energía, se deja constancia por este medio de lo siguiente que:
               </Typography>
             </Grid>
@@ -110,11 +114,11 @@ export const DisclaimerDocument = (props: PropsDS) => {
                   align='justify'
                   paragraph
                 >
-                  💠 Declara que reconoce la recepción de un kit de eficiencia energética
-                  y que es de su exclusiva responsabilidad el retiro de este material
-                  desde el punto de retiro {room?.placeDispatch?.dir ? 'en' : undefined}{' '}
-                  {room?.placeDispatch?.dir} y además que ha asistido a una capacitación
-                  en eficiencia energética.
+                  💠 Declara que reconoce la recepción de un kit del programa{' '}
+                  {programCtx.program} y que es de su exclusiva responsabilidad el retiro
+                  de este material desde el punto de coordinado{' '}
+                  {room?.placeDispatch?.dir ? 'en' : undefined} {room?.placeDispatch?.dir}
+                  .
                 </Typography>
                 <Typography
                   variant='caption'
@@ -122,8 +126,9 @@ export const DisclaimerDocument = (props: PropsDS) => {
                   align='justify'
                   paragraph
                 >
-                  💠 Se compromete a destinar el kit de eficiencia energética por este
-                  acto de recepción, para su uso en el domicilio familiar.
+                  💠 Declara que ha recibido el kit de {programCtx} y se compromete a
+                  seguir las instrucciones sobre su uso y cuidado, garantizando su vida
+                  útil y la seguridad de quienes los usen.
                 </Typography>
                 <Typography
                   variant='caption'
@@ -144,7 +149,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
                   paragraph
                 >
                   💠 Se compromete a no vender, regalar, transferir y en general a
-                  comercializar el referido pack ni ninguno de sus componentes por
+                  comercializar el referido kit ni ninguno de sus componentes por
                   separado, ni darle un uso diverso al señalado en este documento.
                 </Typography>
               </details>
