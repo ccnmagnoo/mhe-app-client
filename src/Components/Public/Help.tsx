@@ -14,6 +14,7 @@ import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { Gender } from '../../Models/Person.Interface';
 import { dbKey } from '../../Models/databaseKeys';
 import { doc, setDoc } from 'firebase/firestore';
+import { currentContext } from '../../Models/Program';
 
 type RoomJson = {
   city: string;
@@ -88,6 +89,7 @@ export const Help = () => {
           cityOnOp: rum.city,
           colaborator: rum.colaborator,
           land: { type: LandType.city, name: rum.city },
+          program: currentContext.program,
         };
 
         //get person in repository with this on site classroom

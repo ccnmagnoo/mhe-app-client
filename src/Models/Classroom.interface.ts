@@ -21,7 +21,7 @@ export interface IRoom {
   op?: { uuid?: string; cur?: number };
   statistics?: Partial<IStatistics>;
   validationSince?: Date /*exceptional date allowing validation ej: case Rapa Nui*/;
-  program?: SocialProgram;
+  program: SocialProgram;
 }
 
 export const iRoomConverter: Converter<IRoom> = {

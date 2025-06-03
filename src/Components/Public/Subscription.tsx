@@ -40,6 +40,7 @@ import { EnergyPollForm } from './EnergyPollForm';
 import { OnFailSubscription } from './Subscription/Subscription.onFail';
 import { InputSubscription } from '../../Models/SubscriptionData';
 import someTrue from '../../Functions/someTrue';
+import { currentContext } from '../../Models/Program';
 
 type Props = {
   overSubscription?: boolean;
@@ -351,7 +352,9 @@ const Subscription = (props: Props) => {
             //filtering rooms with vacancies
 
             const vacancies: number = room.vacancies ?? 120;
-            return room.enrolled.length < vacancies;
+            return (
+              room.enrolled.length < vacancies && room.program === currentContext.program
+            );
           })
         : rooms; //full rooms;
 

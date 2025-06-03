@@ -125,7 +125,7 @@ const Create = (props: any) => {
           const datePostSetting = new Date(data.postDate);
           const territoryId = getTerritoryId(data.landName, data.landType as LandType);
 
-          //Add input: vancancies allowed
+          //Add input: vacancies allowed
           const classRoom: IRoom = {
             uuid: '',
             idCal: `R${pad(data.idCal, 3)}.${pad(territoryId ?? 0, 2)}`,
@@ -157,7 +157,7 @@ const Create = (props: any) => {
           return classRoom;
         };
 
-        //Return classoom with UUID
+        //Return classroom with UUID
         const pushRoom = await driver.set<IRoom>(
           dbKey.room,
           buildObject(inputData), //builder
@@ -171,7 +171,7 @@ const Create = (props: any) => {
       }
     } catch (error) {
       console.log('create classroom', false, error);
-      setError('no se pudo cargar actividad 🎃');
+      setError('no se pudo cargar actividad 😫');
     }
   };
 
