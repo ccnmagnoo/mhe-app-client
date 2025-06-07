@@ -16,19 +16,19 @@ import moment from 'moment';
 export const Requirements = () => {
   const requirementList = [
     {
-      main: 'haber sido convocad@ por un servicio público válidado',
+      main: 'haber sido convocad@ por un servicio público validado',
       sub: 'un municipio o servicio público con convenio vigente',
     },
     {
       main: 'haberse inscrito en esta mini app',
-      sub: 'pre-inscripción online sin salir de casa 🏡',
+      sub: 'online sin salir de casa 🏡',
     },
     {
       main: 'pertenecer al registro social de hogares',
-      sub: 'y tener menos del 70% RSH',
+      sub: 'y tener menos del 40% RSH',
     },
     {
-      main: 'ser beneficiado único en el grupo familiar',
+      main: 'ser beneficiado único',
       sub: 'solo un Kit por hogar',
     },
     {
