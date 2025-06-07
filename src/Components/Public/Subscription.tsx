@@ -29,18 +29,18 @@ import { getGender } from '../../Functions/getGender';
 import { OnSuccessSubscription } from './Subscription/Subscription.onSuccess';
 import { capitalWord } from '../../Functions/capitalWord';
 import { dbKey } from '../../Models/databaseKeys';
-import { IBeneficiary, iBeneficiaryConverter } from '../../Models/Beneficiary.interface';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Subscription/Subscription.ClassroomCard';
 import { orderBy, where } from 'firebase/firestore';
 import driver from '../../Database/driver';
-import { dateLimit } from '../../Config/credential';
 import { EnergyPollForm } from './EnergyPollForm';
 import { OnFailSubscription } from './Subscription/Subscription.onFail';
 import { InputSubscription } from '../../Models/SubscriptionData';
 import someTrue from '../../Functions/someTrue';
 import { currentContext } from '../../Models/Program';
+import checkBenefit from '../../Functions/checkBenefits';
+import fetchClassrooms from '../../Functions/fetchClassrooms';
 
 type Props = {
   overSubscription?: boolean;
@@ -150,34 +150,6 @@ const Subscription = (props: Props) => {
     }
   }, [disable_form_rol]);
 
-  /**
-   * @function checkBenefit got is she got old active benefits
-   */
-  async function checkBenefit(rolRequest?: RolRequest) {
-    try {
-      //firestore🔥🔥🔥 fetching al RUT benefits ins register
-
-      const benefits = (await driver.get<IBeneficiary>(
-        undefined,
-        'collection',
-        dbKey.cvn,
-        iBeneficiaryConverter,
-        where('rut', '==', rolRequest?.rol),
-        where('dateSign', '>=', dateLimit)
-      )) as IBeneficiary[];
-
-      //filter all benefits after date limit (now 31-01-2017)
-
-      console.log('benefits after date limit', benefits.length);
-
-      //true: failure, had benefits,  false:go go go, this person is ok
-      return benefits.length > 0 ? true : false;
-    } catch (error) {
-      console.log('fetch checker rut', error);
-      return true;
-    }
-  }
-
   //alert snackbar of personal ID💥💢
   const snackbar_rol_form = () => {
     if (gotBenefit === undefined) {
@@ -284,7 +256,11 @@ const Subscription = (props: Props) => {
     set_loading_identity(true); //progress bar ON
 
     //fetch Classrooms form firebase 🔥🔥🔥
-    const getClassrooms = await fetchClassrooms(data);
+    const getClassrooms = await fetchClassrooms(
+      data,
+      setAvailableClassrooms,
+      props.overSubscription
+    );
     console.log('getClassrooms result', getClassrooms);
     //open form select
     set_visibility_identity_form(false); //hide step2
@@ -301,78 +277,6 @@ const Subscription = (props: Props) => {
       }, 1000);
     }
   }, [visible_select_room]);
-
-  /**
-   * @function fetchClassrooms got active incoming classrooms
-   * INSIDE the territory subscription
-   */
-  async function fetchClassrooms(data: InputSubscription) {
-    try {
-      //firestore🔥🔥🔥: fetch incoming classes
-      /**
-       * @param backwardDays is how many days back is a classroom
-       *  will keep open to subscribed in,  on cases for late subscriptions
-       * if value= 0 so subscription will close at start room date.
-       *
-       */
-      //time restriction
-      console.log('requested city', data.city, '');
-      const restrictionTime = new Date();
-      if (!props.overSubscription) {
-        //normal: get last 14 days Rooms
-        const backwardDays = +(process.env.REACT_APP_SUBSCRIPTION_TIME_GAP ?? 14);
-        restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
-      } else {
-        //oversubscription true: set init year
-        restrictionTime.setDate(1);
-        restrictionTime.setMonth(0);
-        restrictionTime.setHours(0, 0);
-      }
-      //firebase getting rooms available
-      const rooms = (await driver.get<IRoom>(
-        undefined,
-        'collection',
-        dbKey.room,
-        iRoomConverter,
-        where('dateInstance', '>', restrictionTime),
-        where('allowedCities', 'array-contains', data.city),
-        orderBy('dateInstance', 'desc')
-      )) as IRoom[];
-
-      console.log(
-        'incoming classrooms',
-        rooms,
-        'oversubscription:',
-        props.overSubscription
-      );
-
-      //filtering  available rooms by vacancies, or oversubscription su.
-      const available_rooms: IRoom[] = !props.overSubscription
-        ? rooms.filter((room) => {
-            //filtering rooms with vacancies
-
-            const vacancies: number = room.vacancies ?? 120;
-            return (
-              room.enrolled.length < vacancies && room.program === currentContext.program
-            );
-          })
-        : rooms; //full rooms;
-
-      console.log(
-        'list of available classrooms on city',
-        data.city,
-        available_rooms.length,
-        available_rooms.map((it) => it.idCal)
-      );
-
-      //set near classrooms available state  🎣
-      setAvailableClassrooms(available_rooms);
-
-      return available_rooms.length > 0 ? true : false;
-    } catch (error) {
-      console.log('fetch classrooms', error);
-    }
-  }
 
   const form_identity = (
     <>
