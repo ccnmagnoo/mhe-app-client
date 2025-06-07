@@ -37,7 +37,7 @@ export const Requirements = () => {
     },
     {
       main: `participar y validar su asistencia al taller inscrito`,
-      sub: 'debe anunciar su asistencia en cada taller con nombre y rut',
+      sub: 'debe validar su visita en la actividad',
     },
   ];
 
