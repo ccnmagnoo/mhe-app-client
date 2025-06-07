@@ -47,11 +47,11 @@ export function useGenBlob(
         setZipStatus(metadata.percent);
       });
 
-      setBlob(zippedFile);
+      setBlob(() => zippedFile);
       const blobUrl = URL.createObjectURL(zippedFile);
-      setBlobUrl(blobUrl);
+      setBlobUrl(() => blobUrl);
 
-      setBlobStatus('done');
+      setBlobStatus(() => 'done');
       return blobUrl;
     };
 

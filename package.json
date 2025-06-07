@@ -33,10 +33,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "nvm use 16 && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "firebase deploy --only hosting:siemprelistos"
   },
   "eslintConfig": {
     "extends": [
