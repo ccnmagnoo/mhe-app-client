@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Box, LinearProgress, Paper, TextFieldProps } from '@material-ui/core';
 import {
@@ -20,27 +20,21 @@ import { isRol as rolChecker, RolRequest } from '../../Functions/isRol';
 import { Requirements } from './Subscription/Subscription.requirements';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { cities } from '../../Assets/cities';
-import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
+import { IRoom } from '../../Models/Classroom.interface';
 
 //transitions
 import Grow from '@material-ui/core/Grow';
-import { IPerson, iPersonConverter } from '../../Models/Person.Interface';
-import { getGender } from '../../Functions/getGender';
+import { IPerson } from '../../Models/Person.Interface';
 import { OnSuccessSubscription } from './Subscription/Subscription.onSuccess';
-import { capitalWord } from '../../Functions/capitalWord';
-import { dbKey } from '../../Models/databaseKeys';
 import { withRouter } from 'react-router-dom';
 import isEmail from '../../Functions/isEmail';
 import ClassroomCard from './Subscription/Subscription.ClassroomCard';
-import { orderBy, where } from 'firebase/firestore';
-import driver from '../../Database/driver';
 import { EnergyPollForm } from './EnergyPollForm';
 import { OnFailSubscription } from './Subscription/Subscription.onFail';
 import { InputSubscription } from '../../Models/SubscriptionData';
-import someTrue from '../../Functions/someTrue';
-import { currentContext } from '../../Models/Program';
 import checkBenefit from '../../Functions/checkBenefits';
 import fetchClassrooms from '../../Functions/fetchClassrooms';
+import createSubscription from '../../Functions/createSubscription';
 
 type Props = {
   overSubscription?: boolean;
@@ -111,21 +105,22 @@ const Subscription = (props: Props) => {
     //init
     console.log('register', 'step A', true);
     console.log('submit A', data);
-    set_loading_rol(true); //progress bar ON
+    set_loading_rol(() => true); //progress bar ON
 
     //checking rut 👁‍🗨
-    const rolVerified = rolChecker(data.rut);
-    setRolRequest(rolVerified);
+    setRolRequest(() => rolChecker(data.rut));
 
-    console.log('is rol valid?', rolVerified.rol);
-
-    //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
-    const result = await checkBenefit(rolVerified);
-    setGotBenefit(result); //state of having benefits active
-    console.log('got benefits?', result);
+    console.log('is rol valid?', rolRequest?.rol);
   };
+  //on valid ROL effect this
+  useEffect(() => {
+    if (rolRequest?.check) {
+      //check is already got kit 👁‍🗨👁‍🗨 on firebase🔥🔥🔥
+      checkBenefit(rolRequest, setGotBenefit);
+    }
+  }, [rolRequest]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //on result of on submit Rol check form
     //is everything ok the must be done🆗👌
     set_loading_rol(false); //progress bar OFF
@@ -423,146 +418,32 @@ const Subscription = (props: Props) => {
     </>
   );
 
-  //Room selection form 💖💖💗
-  const onSubmitRoom: SubmitHandler<InputSubscription> = async (data) => {
-    console.log('form C', data);
-    //init, disable "inscription button"
-    set_disability_select_room(true);
-    set_disability_final_message(true);
-    setIsUploading(true);
-
-    //load to firebase Subscribed 🔥🔥🔥
-    const isUploaded = await createSubscription(data);
-    console.log('is uploaded?', isUploaded);
-
-    if (isUploaded) {
-      setDialogOpen(true);
-      setIsUploading(false);
-    } else {
-      set_disability_select_room(false);
-
-      setIsUploading(false);
-    }
-  };
-
   //firebase create Subscribed🔥🔥🔥
   const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
     null
   );
+  //Room selection form 💖💖💗
+  const onSubmitRoom: SubmitHandler<InputSubscription> = async (data) => {
+    console.log('form C', data);
+    //init, disable "inscription button"
+    set_disability_select_room(() => true);
+    set_disability_final_message(() => true);
+    setIsUploading(() => true);
 
-  async function createSubscription(data: InputSubscription) {
-    try {
-      //check if it's there a room selected ❓❓
-      if (selectedRoom === undefined) {
-        console.log("isn't a selected room", undefined);
-        setErrorC({
-          value: true,
-          message: 'no has seleccionado un taller 🙊 ',
-        });
-        return false;
+    //load to firebase Subscribed 🔥🔥🔥
+    if (selectedRoom) {
+      const isUploaded = await createSubscription(data, selectedRoom, setErrorC);
+      console.log('is uploaded?', isUploaded);
+      if (isUploaded) {
+        setDialogOpen(() => true);
+        setIsUploading(() => false);
+      } else {
+        set_disability_select_room(() => false);
+
+        setIsUploading(() => false);
       }
-
-      //check rolRequest null state
-      if (rolRequest?.rol === undefined) {
-        console.log('check rol is ', undefined);
-        setErrorC({
-          value: true,
-          message: 'rut mal definido 🙊 ',
-        });
-        return false;
-      }
-
-      //check the selected ROOM has already this RUT 🔎👤
-
-      //fetch actual RUT subscription instances
-      const subscriptions = (await driver.get(
-        undefined,
-        'collection',
-        dbKey.sus,
-        iPersonConverter,
-        where('rut', '==', rolChecker(data.rut).rol)
-      )) as IPerson[];
-
-      //room uuid subscription check
-      const isSubscribed = subscriptions.some(
-        (it) => it.classroom.uuid === selectedRoom?.uuid
-      );
-
-      if (isSubscribed) {
-        console.log('on previous existence on this room', selectedRoom?.idCal);
-        setErrorC({
-          value: true,
-          message: 'tranquilidad, ya estabas a este taller 🤔 ',
-        });
-        return false;
-      }
-
-      if (!isSubscribed) {
-        //prepare to upload new subscription
-        console.log('prepare to upload subscription', data.email);
-
-        //create reference of new doc Subscribed
-        const person: IPerson = {
-          uuid: '',
-          name: {
-            firstName: capitalWord(data.name),
-            fatherName: capitalWord(data.fatherName),
-            motherName: capitalWord(data.motherName),
-          },
-          rut: rolRequest.rol,
-          gender: getGender(data.name),
-          classroom: {
-            idCal: selectedRoom?.idCal ?? 'R000.00',
-            uuid: selectedRoom?.uuid ?? 'no-data',
-            dateInstance: selectedRoom?.dateInstance ?? new Date(),
-          },
-          dateUpdate: new Date(),
-          email: data.email.toLowerCase(),
-          phone: data.phone ?? null,
-          address: {
-            dir:
-              data.dir !== undefined ? capitalWord(data.dir.toLowerCase()) : 'no-informa',
-            city: data.city,
-          },
-          energy: {
-            electricBill: data.electricBill,
-            electricity: data.electricity,
-            gasBill: data.gasBill,
-            gasDuration: data.gasDuration,
-          },
-          resilience: {
-            energy_cut: data.energy_cut,
-            emergency_contact: data.emergency_contact,
-            is_risk_zone: someTrue(data.risk_zone),
-            risk_zone: data.risk_zone,
-            has_damage_experience: someTrue(data.damage_experience),
-            damage_experience: data.damage_experience,
-          },
-        };
-
-        //set new subscription 🔥🔥🔥
-        await driver.set(dbKey.sus, person, iPersonConverter);
-
-        console.log('subscription success 👌', person.rut, '➡', selectedRoom?.idCal);
-        setErrorC({ value: false, message: 'felicidades, ya estás participando ' });
-
-        //set new enrolled 🔥🔥🔥 (moved to cloud functions)
-
-        const enrolled = selectedRoom?.enrolled;
-        if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
-          //update classroom enrolled list is doesn't exist, avoid duplication
-          //enrolled?.push(person.uuid);
-          //refRoom.set({ enrolled: enrolled }, { merge: true });
-          console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
-        }
-
-        return true;
-      }
-    } catch (error) {
-      console.log('no upload', error);
-      return false;
     }
-  }
+  };
 
   //alert: snack bar C💥💢
   const snackbarC = () => {

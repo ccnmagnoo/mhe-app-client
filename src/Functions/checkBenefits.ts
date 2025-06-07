@@ -4,11 +4,15 @@ import { IBeneficiary, iBeneficiaryConverter } from '../Models/Beneficiary.inter
 import { RolRequest } from './isRol';
 import { dbKey } from '../Models/databaseKeys';
 import { dateLimit } from '../Config/credential';
+import { Dispatch, SetStateAction } from 'react';
 
 /**
  * @function checkBenefit got is she got old active benefits
  */
-async function checkBenefit(rolRequest?: RolRequest) {
+async function checkBenefit(
+  rolRequest?: RolRequest,
+  setGotBenefit?: Dispatch<SetStateAction<boolean | undefined>>
+) {
   try {
     //firestore🔥🔥🔥 fetching al RUT benefits ins register
 
@@ -26,10 +30,14 @@ async function checkBenefit(rolRequest?: RolRequest) {
     console.log('benefits after date limit', benefits.length);
 
     //true: failure, had benefits,  false:go go go, this person is ok
-    return benefits.length > 0 ? true : false;
+    if (setGotBenefit) {
+      setGotBenefit(benefits.length > 0 ? true : false);
+    }
   } catch (error) {
     console.log('fetch checker rut', error);
-    return true;
+    if (setGotBenefit) {
+      setGotBenefit(true);
+    }
   }
 }
 
