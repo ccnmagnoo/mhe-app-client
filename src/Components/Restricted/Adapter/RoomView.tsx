@@ -123,8 +123,16 @@ const RoomView = (props: RoomViewProps) => {
           </Grid>
 
           <Grid item xs={6} sm={4}>
-            <Typography variant='caption' color='initial'>
-              {room.colaborator}
+            <Typography variant='caption' color='initial' style={{ fontSize: '.8rem' }}>
+              {room.colaborator.replace('Municipalidad', 'Mun')}
+            </Typography>
+            <br />
+            <Typography
+              variant='caption'
+              color='initial'
+              style={{ fontSize: '.6rem', color: '#a1a1a1' }}
+            >
+              {room.program}
             </Typography>
           </Grid>
           {!props.workDone ? (
@@ -150,14 +158,24 @@ const RoomView = (props: RoomViewProps) => {
                         ? (room.statistics['M'] ?? 0) + (room.statistics['F'] ?? 0)
                         : 0}
                     </strong>
-                    <Typography variant='body2' color='textSecondary' display='inline'>
+                    <Typography
+                      variant='body2'
+                      color='textSecondary'
+                      display='inline'
+                      style={{ fontSize: '.75rem' }}
+                    >
                       {' '}
                       / {room.enrolled.length}
                     </Typography>
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant='caption' color='textSecondary' align='left'>
+                  <Typography
+                    variant='caption'
+                    color='textSecondary'
+                    align='left'
+                    style={{ fontSize: '.9rem' }}
+                  >
                     {room.enrolled.length === 0
                       ? 0
                       : Math.floor((room.attendees.length / room.enrolled.length) * 100)}
