@@ -85,16 +85,16 @@ const Subscription = (props: Props) => {
     <React.Fragment>
       <Typography variant='h6' color='primary'>
         {!props.overSubscription ? (
-          <span>Inscripción forzada</span>
-        ) : (
           <span>Inscripción a talleres</span>
+        ) : (
+          <span>Inscripción ilimitado</span>
         )}
       </Typography>
-      <Typography variant='body1' color='initial'>
+      <Typography variant='body2' color='initial'>
         {!props.overSubscription ? (
-          <span>inscripción hasta 120 días después del taller</span>
+          <span>hay cupos limitados🔒</span>
         ) : (
-          <span>recuerde tener su carnet a mano 🙌💳</span>
+          <span>cupos infinitos: activado 🔓 </span>
         )}
       </Typography>
     </React.Fragment>
