@@ -1,1 +1,1 @@
-export type Nullable<T> = { [PARAM in keyof T]: T[PARAM] | null };
+export type Nullable<T> = { [PARAM in keyof T]: T[PARAM] | null | undefined };

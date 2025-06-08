@@ -629,7 +629,7 @@ const Subscription = (props: Props) => {
       <br />
       {form_inputId}
       {/* test */}
-      {JSON.stringify(watch())}
+      {/* {JSON.stringify(watch())} */}
       {loading_rol ? <LinearProgress color='primary' /> : undefined}
       {visible_identity_form && form_identity}
       {loading_identity ? <LinearProgress color='primary' /> : undefined}

@@ -157,8 +157,8 @@ export const Help = () => {
               address: { dir: person.dir, city: person.city },
               sign: physicalSign,
               dateSign: itDate,
-              energy: {},
-              resilience: {},
+              energy: null,
+              resilience: null,
             };
             //upload to firebase
 

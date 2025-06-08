@@ -85,25 +85,25 @@ async function createSubscription(
         },
         dateUpdate: now,
         email: data.email.toLowerCase(),
-        phone: data.phone,
+        phone: data.phone ?? null,
         address: {
           dir:
             data.dir !== undefined ? capitalWord(data.dir.toLowerCase()) : 'no-informa',
           city: data.city,
         },
         energy: {
-          electricBill: data.electricBill,
-          electricity: data.electricity,
-          gasBill: data.gasBill,
-          gasDuration: data.gasDuration,
+          electricBill: data.electricBill ?? null,
+          electricity: data.electricity ?? null,
+          gasBill: data.gasBill ?? null,
+          gasDuration: data.gasDuration ?? null,
         },
         resilience: {
-          energy_cut: data.energy_cut,
-          emergency_contact: data.emergency_contact,
+          energy_cut: data.energy_cut ?? null,
+          emergency_contact: data.emergency_contact ?? null,
           is_risk_zone: someTrue(data.risk_zone) ?? false,
-          risk_zone: data.risk_zone,
+          risk_zone: data.risk_zone ?? null,
           has_damage_experience: someTrue(data.damage_experience) ?? false,
-          damage_experience: data.damage_experience,
+          damage_experience: data.damage_experience ?? null,
         },
       };
 
