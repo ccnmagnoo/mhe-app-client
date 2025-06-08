@@ -12,7 +12,7 @@ import {
   TextFieldProps,
   Slider,
 } from '@material-ui/core';
-import React from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import { useForm } from 'react-hook-form';
 import { withRouter } from 'react-router-dom';
@@ -32,10 +32,10 @@ import { currentContext } from '../../Models/Program';
 
 const Create = (props: any) => {
   //Land type and land list
-  const [landList, setLandList] = React.useState<string[]>([]);
-  const [placeDate, setPlaceDate] = React.useState<Date>(new Date());
-  const [postDate, setPostDate] = React.useState<Date>(new Date());
-  const [error, setError] = React.useState<string | null>(null);
+  const [landList, setLandList] = useState<string[]>([]);
+  const [placeDate, setPlaceDate] = useState<Date>(new Date());
+  const [postDate, setPostDate] = useState<Date>(new Date());
+  const [error, setError] = useState<string | null>(null);
 
   //set form inputs init state
   const initInput: TInputForm = {
@@ -52,48 +52,49 @@ const Create = (props: any) => {
     vacancies: 150,
     op: auth.currentUser?.uid,
   };
-  const [inputData, setInputData] = React.useState<TInputForm>(initInput);
+  const [inputData, setInputData] = useState<TInputForm>(initInput);
 
   //on Input OnChange🔃
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     console.log(`working: ${e.target.name}:${e.target.value}`);
     //update de los props onChange en la medida que se escriben
     setInputData({ ...inputData, [e.target.name]: e.target.value });
   }
 
   //LandType
-  const [landType, setLandType] = React.useState<LandType>(LandType.city);
+  const [landType, setLandType] = useState<LandType>(LandType.city);
 
-  const handleLandTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleLandTypeChange = (event: ChangeEvent<{ value: unknown }>) => {
     setLandType(event.target.value as LandType);
     setInputData({ ...inputData, landType: event.target.value as string });
   };
 
   //Land Name
-  const handleLandNameChange = (event: React.ChangeEvent<{}>, value: string | null) => {
+  const handleLandNameChange = (event: ChangeEvent<{}>, value: string | null) => {
     setInputData({ ...inputData, landName: value ?? 'Valparaíso' });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     //for each change of land type, populate autocomplete list
     console.log('land type input state:', landType);
     setLandList(getTerritoryNames(landType));
   }, [landType]);
 
-  const handlePlaceDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handlePlaceDateChange = (event: ChangeEvent<{ value: unknown }>) => {
     //set state activity time
     const newDatePlace = event.target.value as Date;
-
     setPlaceDate(newDatePlace);
     //set state delivery time
-    setPostDate(newDatePlace);
+    const newPostDate = event.target.value as Date;
+    setPostDate(newPostDate);
     //set state input
     setInputData({ ...inputData, placeDate: newDatePlace });
   };
-  const handlePostDateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handlePostDateChange = (event: ChangeEvent<{ value: unknown }>) => {
     const newPostDate = event.target.value as Date;
 
     //set state delivery time
+    console.log('delivery date', newPostDate);
     setPostDate(newPostDate);
     //set state of inputs
     setInputData({ ...inputData, postDate: newPostDate });
@@ -344,7 +345,7 @@ const Create = (props: any) => {
 
             <Grid item xs={12}>
               <Typography variant='subtitle2' color='primary'>
-                Punto de entrega 🚚
+                Punto de retiro 🚚
               </Typography>
             </Grid>
             <Grid item xs={12} sm={5}>
