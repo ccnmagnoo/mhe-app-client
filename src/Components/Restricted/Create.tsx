@@ -349,15 +349,14 @@ const Create = (props: any) => {
             </Grid>
             <Grid item xs={12} sm={5}>
               <Slider
-                defaultValue={150}
+                defaultValue={50}
                 aria-labelledby='discrete-slider'
                 step={25}
                 min={25}
-                max={280}
-                marks={[
-                  { value: 25, label: '25' },
-                  { value: 150, label: '150 cupos' },
-                ]}
+                max={200}
+                marks={[25, 100, 200].map((value) => {
+                  return { value: value, label: value.toString() };
+                })}
                 valueLabelDisplay='auto'
                 onChange={(e, value) => {
                   console.log('slider value:', value as number);
