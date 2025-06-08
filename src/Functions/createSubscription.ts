@@ -9,6 +9,7 @@ import { isRol, RolRequest } from './isRol';
 import { Dispatch, SetStateAction } from 'react';
 import someTrue from './someTrue';
 import { getGender } from './getGender';
+import { Nullable } from '../Models/Nullable';
 
 async function createSubscription(
   data: InputSubscription,
@@ -65,6 +66,7 @@ async function createSubscription(
     if (!isSubscribed) {
       //prepare to upload new subscription
       console.log('prepare to upload subscription', data.email);
+      const now = new Date();
 
       //create reference of new doc Subscribed
       const person: IPerson = {
@@ -77,13 +79,13 @@ async function createSubscription(
         rut: rolRequest.rol,
         gender: getGender(data.name),
         classroom: {
-          idCal: selectedRoom?.idCal ?? 'R000.00',
-          uuid: selectedRoom?.uuid ?? 'no-data',
-          dateInstance: selectedRoom?.dateInstance ?? new Date(),
+          idCal: selectedRoom?.idCal ?? null,
+          uuid: selectedRoom?.uuid ?? null,
+          dateInstance: selectedRoom?.dateInstance ?? now,
         },
-        dateUpdate: new Date(),
+        dateUpdate: now,
         email: data.email.toLowerCase(),
-        phone: data.phone ?? null,
+        phone: data.phone,
         address: {
           dir:
             data.dir !== undefined ? capitalWord(data.dir.toLowerCase()) : 'no-informa',
@@ -98,9 +100,9 @@ async function createSubscription(
         resilience: {
           energy_cut: data.energy_cut,
           emergency_contact: data.emergency_contact,
-          is_risk_zone: someTrue(data.risk_zone),
+          is_risk_zone: someTrue(data.risk_zone) ?? false,
           risk_zone: data.risk_zone,
-          has_damage_experience: someTrue(data.damage_experience),
+          has_damage_experience: someTrue(data.damage_experience) ?? false,
           damage_experience: data.damage_experience,
         },
       };
@@ -114,7 +116,7 @@ async function createSubscription(
       //set new enrolled 🔥🔥🔥 (moved to cloud functions)
 
       const enrolled = selectedRoom?.enrolled;
-      if (enrolled !== undefined && enrolled.indexOf(person?.uuid) === -1) {
+      if (enrolled !== undefined && enrolled.indexOf(person.uuid!!) === -1) {
         //update classroom enrolled list is doesn't exist, avoid duplication
         //enrolled?.push(person.uuid);
         //refRoom.set({ enrolled: enrolled }, { merge: true });
@@ -124,7 +126,8 @@ async function createSubscription(
       return true;
     }
   } catch (error) {
-    console.log('no upload', error);
+    errorDispatch({ value: false, message: `app error: ${error}` });
+    console.log('no upload', error, data);
     return false;
   }
 }

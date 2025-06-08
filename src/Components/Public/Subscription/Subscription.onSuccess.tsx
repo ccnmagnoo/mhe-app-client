@@ -36,20 +36,16 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
   return (
     <React.Fragment>
       <Paper elevation={0}>
-        <Box p={1}>
+        <Box p={3}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant='body1' color='textPrimary'>
-                no te olvides de participar, y anota los siguientes datos
-                <br />
-              </Typography>
-            </Grid>
             <Grid item xs={12}>
               <Box p={1}>
                 <Card>
                   <CardHeader
                     avatar={
-                      <Avatar aria-label='id'>{classroom?.idCal.replace('R', '')}</Avatar>
+                      <Avatar aria-label='id' style={{ fontSize: '1rem' }}>
+                        {classroom?.idCal.replace('R', '').split('.')[0]}
+                      </Avatar>
                     }
                     action={
                       <IconButton aria-label=''>
@@ -60,7 +56,8 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                     subheader={moment(classroom?.dateInstance).format(
                       'dddd DD MMMM YYYY [a las] h:mm a'
                     )}
-                  />
+                  ></CardHeader>
+
                   <CardContent>
                     <Typography variant='caption' color='primary'>
                       no olvides que es{' '}
@@ -95,6 +92,10 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                         <strong>responsabilidad</strong> .
                       </Typography>
                     </Alert>
+                    <Typography variant='body1' color='textPrimary'>
+                      no te olvides de participar.
+                      <br />
+                    </Typography>
                   </CardContent>
                 </Card>
               </Box>

@@ -28,7 +28,7 @@ import {
 import { pad } from '../../Functions/paddingNumber';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
-import SocialProgram, { currentContext, socialContext } from '../../Models/Program';
+import { currentContext } from '../../Models/Program';
 
 const Create = (props: any) => {
   //Land type and land list

@@ -30,6 +30,7 @@ export const iBeneficiaryConverter: Converter<IBeneficiary> = {
       sign: it?.sign,
       dateSign: it.dateSign?.toDate(),
       energy: it.energy,
+      resilience: it.resilience,
     };
   },
 };

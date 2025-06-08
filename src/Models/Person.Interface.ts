@@ -1,6 +1,7 @@
 import { QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
 import Converter from './Converter.interface';
 import { EnergyPoll, ResiliencePoll } from './SubscriptionData';
+import { Nullable } from './Nullable';
 
 export interface IPerson {
   uuid: string;
@@ -10,10 +11,10 @@ export interface IPerson {
   gender: Gender;
   dateUpdate: Date;
   email: string;
-  phone?: string | null;
+  phone?: string;
   address?: Dir;
-  energy?: Partial<EnergyPoll>;
-  resilience?: Partial<ResiliencePoll>;
+  energy: Partial<EnergyPoll>;
+  resilience: Partial<ResiliencePoll>;
 }
 
 export type Name = {
@@ -34,8 +35,8 @@ export enum Gender {
 }
 
 export const iPersonConverter: Converter<IPerson> = {
-  toFirestore: function (person: WithFieldValue<IPerson>) {
-    return person;
+  toFirestore: function (it: WithFieldValue<IPerson>) {
+    return it;
   },
   fromFirestore: function (snapshot: QueryDocumentSnapshot): IPerson {
     const it = snapshot.data();
@@ -54,6 +55,7 @@ export const iPersonConverter: Converter<IPerson> = {
       phone: it.phone,
       address: it.address,
       energy: it.energy,
+      resilience: it.resilience,
     };
   },
 };

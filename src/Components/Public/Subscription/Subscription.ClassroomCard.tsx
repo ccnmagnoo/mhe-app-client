@@ -75,7 +75,7 @@ const ClassroomCard = (props: TClassroomCard) => {
               setDisableS(false);
             }}
           >
-            selecionar
+            seleccionar
           </Button>
         </CardActions>
       </Card>

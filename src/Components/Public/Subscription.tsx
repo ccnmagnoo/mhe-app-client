@@ -432,7 +432,12 @@ const Subscription = (props: Props) => {
 
     //load to firebase Subscribed 🔥🔥🔥
     if (selectedRoom) {
-      const isUploaded = await createSubscription(data, selectedRoom, setErrorC);
+      const isUploaded = await createSubscription(
+        data,
+        selectedRoom,
+        setErrorC,
+        rolRequest
+      );
       console.log('is uploaded?', isUploaded);
       if (isUploaded) {
         setDialogOpen(() => true);
@@ -506,7 +511,7 @@ const Subscription = (props: Props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={1}>
-                    {/*room mini card slection*/}
+                    {/*room mini card selection*/}
                     {classRoomsAvailableDisplay()}
                   </Grid>
                 </Grid>
@@ -563,7 +568,7 @@ const Subscription = (props: Props) => {
                   >
                     {disable_form_select_room && disable_final_message
                       ? '✅'
-                      : 'Incripción'}
+                      : 'Inscripción'}
                   </Button>
                 </Grid>
                 {/*linear progress bar*/}
@@ -623,6 +628,8 @@ const Subscription = (props: Props) => {
       {header}
       <br />
       {form_inputId}
+      {/* test */}
+      {JSON.stringify(watch())}
       {loading_rol ? <LinearProgress color='primary' /> : undefined}
       {visible_identity_form && form_identity}
       {loading_identity ? <LinearProgress color='primary' /> : undefined}
