@@ -438,7 +438,7 @@ const Validation = (props: any) => {
           : 30; /*time validation after activity*/
 
         const timeGap: Date = new Date(
-          lastSubscription.classroom.dateInstance.getTime()
+          lastSubscription.classroom.dateInstance
         ); /*last moment to VALIDATE 👮‍♀️⌛*/
         timeGap.setDate(
           timeGap.getDate() + countGap
