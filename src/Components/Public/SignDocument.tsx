@@ -1,41 +1,40 @@
 import { Paper, Box, Grid, Typography, Divider } from '@material-ui/core';
-import React from 'react';
 import { IBeneficiary } from '../../Models/Beneficiary.interface';
 import { IRoom } from '../../Models/Classroom.interface';
-import { currentContext as programCtx } from '../../Models/Program';
+import { currentContext as ctx } from '../../Models/Program';
 
 export const DisclaimerDocument = (props: PropsDS) => {
   //little refs
-  let pers = props.person;
+  let p = props.person;
   const room = props.classroom;
 
   const personData = [
     {
       key: 'Nombre',
-      value: `${pers?.name.firstName ?? 'nombres'} 
-      ${pers?.name.fatherName ?? 'paterno'} 
-        ${pers?.name.motherName ?? 'materno'}`,
+      value: `${p?.name.firstName ?? 'nombres'} 
+      ${p?.name.fatherName ?? 'paterno'} 
+        ${p?.name.motherName ?? 'materno'}`,
     },
-    { key: 'Rut', value: pers?.rut ?? '12.345.678-0' },
+    { key: 'Rut', value: p?.rut ?? '12.345.678-0' },
     {
       key: 'Domicilio',
-      value: `${pers?.address?.dir ?? 'calle Nro 0'}, ${pers?.address?.city ?? 'ciudad'}`,
+      value: `${p?.address?.dir ?? 'calle Nro 0'}, ${p?.address?.city ?? 'ciudad'}`,
     },
   ];
 
   const signaturePad = () => {
-    if (pers?.sign !== undefined) {
+    if (p?.sign !== undefined) {
       return (
-        <React.Fragment>
+        <>
           <Grid item xs={12}>
             <Typography variant='body2' color='primary'>
-              firma beneficiado {pers?.dateSign}
+              firma beneficiado {p?.dateSign}
             </Typography>
           </Grid>
           <Grid item xs={12} justify='center'>
-            firma firma ✨
+            firma ✨
           </Grid>
-        </React.Fragment>
+        </>
       );
     } else {
       return undefined;
@@ -43,7 +42,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Paper elevation={0} variant='outlined'>
         <Box p={3}>
           <Grid container spacing={2} justify='center' alignItems='baseline'>
@@ -52,13 +51,13 @@ export const DisclaimerDocument = (props: PropsDS) => {
                 Identificación Conforme de Beneficio
               </Typography>
               <Typography variant='subtitle2' color='textSecondary' align='center'>
-                <strong>Con Buena Energía</strong> en {room?.land.name}
+                <strong>{ctx.program}</strong> en {room?.land.name}
               </Typography>
             </Grid>
 
             <Grid item xs={12}>
               <Typography variant='caption' align='justify' color='textSecondary'>
-                🆔: {room?.uuid} 📆idCal: {room?.idCal} version:rev.rjs.9.0miniApp
+                🆔: {room?.uuid} 📆idCal: {room?.idCal}
               </Typography>
             </Grid>
 
@@ -67,7 +66,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
                 En el marco del programa
                 <strong>
                   {' '}
-                  de {programCtx.goal} {programCtx.program}
+                  de {ctx.goal} {ctx.program}
                 </strong>{' '}
                 , que desarrolla la SEREMI de Energía regional y la Subsecretaría de
                 Energía, se deja constancia por este medio de lo siguiente que:
@@ -80,7 +79,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
 
                 {personData.map((doc, key) => {
                   return (
-                    <React.Fragment key={key}>
+                    <div key={key}>
                       <Grid item xs={4}>
                         <Typography variant='body2' color='textSecondary'>
                           {doc.key}:
@@ -91,7 +90,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
                           {doc.value}
                         </Typography>
                       </Grid>
-                    </React.Fragment>
+                    </div>
                   );
                 })}
               </Grid>
@@ -115,8 +114,8 @@ export const DisclaimerDocument = (props: PropsDS) => {
                   paragraph
                 >
                   💠 Declara que reconoce la recepción de un kit del programa{' '}
-                  {programCtx.program} y que es de su exclusiva responsabilidad el retiro
-                  de este material desde el punto de coordinado{' '}
+                  {ctx.program} y que es de su exclusiva responsabilidad el retiro de este
+                  material desde el punto de coordinado{' '}
                   {room?.placeDispatch?.dir ? 'en' : undefined} {room?.placeDispatch?.dir}
                   .
                 </Typography>
@@ -126,7 +125,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
                   align='justify'
                   paragraph
                 >
-                  💠 Declara que ha recibido el kit de {programCtx} y se compromete a
+                  💠 Declara que ha recibido el kit de {ctx.program} y se compromete a
                   seguir las instrucciones sobre su uso y cuidado, garantizando su vida
                   útil y la seguridad de quienes los usen.
                 </Typography>
@@ -160,7 +159,7 @@ export const DisclaimerDocument = (props: PropsDS) => {
           </Grid>
         </Box>
       </Paper>
-    </React.Fragment>
+    </>
   );
 };
 

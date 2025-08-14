@@ -18,7 +18,8 @@ const socialContext: Record<
   },
 };
 
-const currentContext = socialContext[process.env.REACT_APP_NAME!! as SocialProgram];
+// const currentContext = socialContext[process.env.REACT_APP_NAME!! as SocialProgram];
+const currentContext = socialContext['Siempre Listos'];
 
 export default SocialProgram;
 export { socialContext, currentContext };
