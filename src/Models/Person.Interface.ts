@@ -1,15 +1,20 @@
-import { DocumentData, QueryDocumentSnapshot, WithFieldValue } from 'firebase/firestore';
+import {
+  DocumentData,
+  QueryDocumentSnapshot,
+  Timestamp,
+  WithFieldValue,
+} from 'firebase/firestore';
 import Converter from './Converter.interface';
 import { EnergyPoll, ResiliencePoll } from './SubscriptionData';
 import { Nullable } from './Nullable';
 
-export interface IPerson {
+export interface IPerson<DATE = Date> {
   uuid: string;
   name: Name;
   rut: string;
-  classroom: { idCal: string; uuid: string; dateInstance: Date };
+  classroom: { idCal: string; uuid: string; dateInstance: DATE };
   gender: Gender;
-  dateUpdate: Date;
+  dateUpdate: DATE;
   email: string;
   phone?: string | null;
   address?: Dir | null;
@@ -39,7 +44,8 @@ export const iPersonConverter: Converter<IPerson> = {
     return it;
   },
   fromFirestore: function (snapshot: QueryDocumentSnapshot): IPerson {
-    const it = snapshot.data() as IPerson;
+    const it = snapshot.data() as IPerson<Timestamp>;
+
     return {
       uuid: it.uuid,
       name: it.name,
@@ -47,10 +53,10 @@ export const iPersonConverter: Converter<IPerson> = {
       classroom: {
         idCal: it.classroom.idCal,
         uuid: it.classroom.uuid,
-        dateInstance: it.classroom.dateInstance,
+        dateInstance: it.classroom.dateInstance.toDate(),
       },
       gender: it.gender as Gender,
-      dateUpdate: it.dateUpdate,
+      dateUpdate: it.dateUpdate.toDate(),
       email: it.email,
       phone: it.phone,
       address: it.address,
