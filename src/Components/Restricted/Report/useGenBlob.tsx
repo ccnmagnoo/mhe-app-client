@@ -4,6 +4,7 @@ import { IRoom } from '../../../Models/Classroom.interface';
 import { Document, pdf } from '@react-pdf/renderer';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import JSZip from 'jszip';
+import { getSignAsBlob } from './getSignAsBlob';
 
 /**
  * @function useDocument
@@ -68,10 +69,11 @@ function getPromiseBlob(
 ): Promise<Blob>[] {
   if (workDone) {
     //return a blob for each page
-    const result = people.map((p, i) => {
+    const result = people.map(async (p, i) => {
+      const sign = await getSignAsBlob(p.sign);
       const blob = (
         <Document>
-          <Certificate person={p} room={room} index={i} key={i} />
+          <Certificate person={p} room={room} index={i} key={i} urlBlob={sign} />
         </Document>
       );
 

@@ -60,6 +60,7 @@ export const Certificate = (props: {
   person: IBeneficiary;
   room: IRoom;
   index: number;
+  urlBlob?: string;
 }) => {
   //sign
 
@@ -100,7 +101,7 @@ export const Certificate = (props: {
       </View>
       <View style={styles.section}>
         <Text style={styles.caption}>
-          uuid:{props.person.uuid} idCal: {props.room?.idCal} version:rev.rjs.9.0
+          uuid:{props.person.uuid} idCal: {props.room?.idCal} version:sl.08.25
         </Text>
         <Text style={styles.text2}>
           En el marco del programa de {programCtx.goal} {programCtx.program}, que
@@ -142,7 +143,7 @@ export const Certificate = (props: {
         </Text>
       </View>
       <View style={styles.section}>
-        {signature(props.person.sign)}
+        {signature(props.urlBlob)}
         <Text style={{ ...styles.text1, textAlign: 'center' }}>
           firma {props.person.name.firstName} {props.person.name.fatherName}
         </Text>
