@@ -821,7 +821,7 @@ const Validation = (props: any) => {
                   <Grid item xs={12} sm={9}>
                     <Paper elevation={4} className={signPaper.paperRoot}>
                       <Box m={2} p={2} color='secondary'>
-                        {SignPad} {/*sign pad*/}
+                        {SignPad}
                       </Box>
                     </Paper>
                   </Grid>
