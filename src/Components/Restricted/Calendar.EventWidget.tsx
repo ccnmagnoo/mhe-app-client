@@ -29,7 +29,7 @@ const EventWidget = (props: {
     const permanent = isReactive ? 'permanent' : undefined;
     return (
       <span className={`myCalendar tag ${permanent} ${event.variant}`}>
-        {event.variant === 'delivery' ? 'kits' : 'taller'}
+        {event.variant === 'delivery' ? 'kit' : 'taller'}
       </span>
     );
   };
@@ -65,7 +65,7 @@ const EventWidget = (props: {
         onClick={handleOnClick}
       >
         <div className='upper'>
-          {event.idCal}
+          <span style={{ fontFamily: 'sans-serif' }}>{event.idCal?.slice(1)}</span>{' '}
           {tag(false)}
         </div>
         <div className='bottom'>{event.land?.name}</div>

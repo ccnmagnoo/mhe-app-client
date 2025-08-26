@@ -135,24 +135,24 @@ h4.myCalendar {
 }
 
 /* Tag with type of event */
-.myCalendar span {
-  font-size: x-small;
+span.myCalendar {
+  font-size: 0.7rem;
   box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   justify-content: baseline;
   border-radius: 8px;
   vertical-align: center;
   padding: 2px;
 }
 
-span.tag {
-  max-height: 20px;
+span.myCalendar.tag {
   align-items: center;
   text-align: center;
   padding: 2px;
-  margin: 2px;
-  max-width: 300px;
-  min-width: 2rem;
-  border-radius: 2px;
+  margin: 2px 2px 2px 4px;
+  width: 2rem;
+  border-radius: 3px;
+  text-shadow: 1px 1px 1px #00000023;
 }
 
 @media (max-width: 550px) {
@@ -163,12 +163,12 @@ span.tag {
 
 span.myCalendar.tag.permanent {
   display: flex;
+  position: relative;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-variant: unset;
   font-size: 1rem;
   justify-content: center;
-  max-height: 40px;
-  max-width: 400px;
+  height: 40px;
+  width: 40px;
 }
 
 .activity {
