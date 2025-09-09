@@ -300,7 +300,7 @@ const Create = (props: any) => {
 
             <Grid item xs={12}>
               <Typography variant='subtitle2' color='primary'>
-                Depliege territorial 🌐
+                Despliege territorial 🌐
               </Typography>
             </Grid>
 
