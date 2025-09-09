@@ -29,6 +29,7 @@ import { pad } from '../../Functions/paddingNumber';
 import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 import { currentContext } from '../../Models/Program';
+import { addHoursDatePicker } from '../../Functions/addHoursDatePicket';
 
 const Create = (props: any) => {
   //Land type and land list
@@ -85,8 +86,8 @@ const Create = (props: any) => {
     const newDatePlace = event.target.value as Date;
     setPlaceDate(newDatePlace);
     //set state delivery time
-    const newPostDate = event.target.value as Date;
-    setPostDate(newPostDate);
+    const newPostDate = addHoursDatePicker(event.target.value as string, 1) as unknown;
+    setPostDate(newPostDate as Date);
     //set state input
     setInputData({ ...inputData, placeDate: newDatePlace });
   };
