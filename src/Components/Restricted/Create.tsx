@@ -351,12 +351,12 @@ const Create = (props: any) => {
             </Grid>
             <Grid item xs={12} sm={5}>
               <Slider
-                defaultValue={50}
+                defaultValue={40}
                 aria-labelledby='discrete-slider'
-                step={25}
-                min={25}
-                max={200}
-                marks={[25, 100, 200].map((value) => {
+                step={10}
+                min={20}
+                max={140}
+                marks={[20, 40, 80, 140].map((value) => {
                   return { value: value, label: value.toString() };
                 })}
                 valueLabelDisplay='auto'
