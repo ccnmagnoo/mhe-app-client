@@ -57,9 +57,17 @@ const Create = (props: any) => {
 
   //on Input OnChange🔃
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    console.log(`working: ${e.target.name}:${e.target.value}`);
+    console.log(`working on: ${e.target.name}:${e.target.value}`);
     //update de los props onChange en la medida que se escriben
     setInputData({ ...inputData, [e.target.name]: e.target.value });
+    //duplicate data postDir and placeDir
+    if (e.target.name === 'placeName') {
+      setInputData({ ...inputData, postName: e.target.value });
+    }
+    if (e.target.name === 'placeDir') {
+      setInputData({ ...inputData, postDir: e.target.value });
+    }
+    console.log(inputData);
   }
 
   //LandType
@@ -104,7 +112,7 @@ const Create = (props: any) => {
   const {
     register,
     handleSubmit,
-    //watch,
+    watch,
     reset,
     formState: { errors },
   } = useForm();
@@ -394,10 +402,12 @@ const Create = (props: any) => {
               {/*lugar🔰📌*/}
               <TextField
                 required
-                id='standard-required'
+                id='postLocation'
                 type='text'
                 label='lugar entrega'
                 variant='outlined'
+                focused={inputData.postName ? true : undefined}
+                value={inputData.postName}
                 fullWidth
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 {...register('postName', {})}
@@ -408,10 +418,12 @@ const Create = (props: any) => {
               {/*address 🗺🦝🗾*/}
               <TextField
                 required
-                id='standard-required'
+                id='postAddress'
                 type='text'
-                label='dirección'
+                label='retiro kit'
                 variant='outlined'
+                focused={inputData.postDir ? true : undefined}
+                value={inputData.postDir}
                 fullWidth
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 {...register('postDir', {})}
