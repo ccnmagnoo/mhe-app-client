@@ -15,7 +15,7 @@ async function checkBenefit(
 ) {
   try {
     //firestore🔥🔥🔥 fetching al RUT benefits ins register
-
+    console.log('setted filter limit:', dateLimit);
     const benefits = (await driver.get<IBeneficiary>(
       undefined,
       'collection',

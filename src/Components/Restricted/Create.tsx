@@ -231,7 +231,7 @@ const Create = (props: any) => {
               <TextField
                 required
                 id='standard-required'
-                label='código'
+                label='codigo'
                 type='number'
                 variant='outlined'
                 {...register('idCal', {
