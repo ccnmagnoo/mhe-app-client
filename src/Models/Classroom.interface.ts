@@ -23,6 +23,14 @@ export interface IRoom {
   validationSince?: Date /*exceptional date allowing validation ej: case Rapa Nui*/;
   program: SocialProgram;
 }
+export const ipartialConverter: Converter<Partial<IRoom>> = {
+  toFirestore: function (room: WithFieldValue<Partial<IRoom>>) {
+    return room;
+  },
+  fromFirestore: function (snapshot: QueryDocumentSnapshot): Partial<IRoom> {
+    return snapshot.data();
+  },
+};
 
 export const iRoomConverter: Converter<IRoom> = {
   toFirestore: function (room: WithFieldValue<IRoom>) {

@@ -7,11 +7,22 @@ import {
   Chip,
   Avatar,
 } from '@material-ui/core';
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useParams, withRouter } from 'react-router-dom';
-import { IRoom } from '../../Models/Classroom.interface';
+import {
+  ipartialConverter,
+  IRoom,
+  iRoomConverter,
+} from '../../Models/Classroom.interface';
 import { Context } from './Context/context';
 import { useForm } from 'react-hook-form';
+import {
+  addHoursDatePicker,
+  datePicketToDate,
+  dateToDatePicker,
+} from '../../Functions/addHoursDatePicket';
+import driver from '../../Database/driver';
+import { dbKey } from '../../Models/databaseKeys';
 
 const UpdateClassroom = (props: any) => {
   //passed uuid by react-router-dom
@@ -19,12 +30,15 @@ const UpdateClassroom = (props: any) => {
   //fetching data from context
   const { rooms } = React.useContext(Context);
   const room: IRoom | undefined = rooms[rooms.findIndex((it) => it.uuid === uuid)];
+  const [placeDate, setPlaceDate] = useState<Date | null>(null);
+  const [postDate, setPostDate] = useState<Date | null>(null);
   //useForm
   const {
     register,
     handleSubmit,
-    //watch,
-    //reset,
+    watch,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<TInputForm>();
 
@@ -41,6 +55,55 @@ const UpdateClassroom = (props: any) => {
     //deploy
     vacancies: room?.vacancies ?? 0,
   };
+
+  const updateClassRoom = async () => {
+    try {
+      if (inputData !== null) {
+        //firestore🔥🔥🔥
+
+        //build object function
+        const buildObject = (data: Partial<TInputForm>) => {
+          const datePlaceSetting = new Date(data.placeDate!!);
+          const datePostSetting = new Date(data.postDate!!);
+
+          //Add input: vacancies allowed
+          const classRoom: Partial<IRoom> = {
+            uuid: room?.uuid,
+            dateInstance: inputData.placeDate!!,
+            vacancies: inputData.vacancies,
+            placeActivity: {
+              name: inputData.placeName!!,
+              dir: inputData.placeDir!!,
+              date: inputData.placeDate!!,
+            },
+
+            placeDispatch: {
+              name: inputData.postName!!,
+              dir: inputData.postDir!!,
+              date: inputData.postDate!!,
+            },
+          };
+          return classRoom;
+        };
+
+        //Return classroom with UUID
+        const pushRoom = await driver.patch<Partial<IRoom>>(
+          dbKey.room,
+          buildObject(inputData), //builde
+          ipartialConverter,
+          room?.uuid
+        );
+        console.log('room create status', pushRoom);
+
+        reset();
+        //setError(null);
+        props.history.push('/dashboard');
+      }
+    } catch (error) {
+      console.log('update classroom', false, error);
+      //setError('no se pudo cargar actividad 😫');
+    }
+  };
   const [inputData, setInputData] = React.useState<Partial<TInputForm>>(initInput);
 
   //on Input OnChange🔃
@@ -56,9 +119,33 @@ const UpdateClassroom = (props: any) => {
       setInputData({ ...inputData, placeDir: e.target.value, postDir: e.target.value });
     }
   }
+  const handlePlaceDateChange = (event: ChangeEvent<{ value: unknown }>) => {
+    //set state activity time
+    const newDatePlace = event.target.value as string;
+    setPlaceDate(datePicketToDate(newDatePlace));
+    //set state delivery time
+    const newPostDate = addHoursDatePicker(event.target.value as string, 1);
+    setPostDate(datePicketToDate(newPostDate));
+    //set state input
+    setInputData({
+      ...inputData,
+      placeDate: datePicketToDate(newDatePlace),
+      postDate: datePicketToDate(newPostDate),
+    });
+  };
+  const handlePostDateChange = (event: ChangeEvent<{ value: unknown }>) => {
+    const newPostDate = event.target.value as string;
+
+    //set state delivery time
+    console.log('delivery date', newPostDate);
+    setPostDate(datePicketToDate(newPostDate));
+    //set state of inputs
+    setInputData({ ...inputData, postDate: datePicketToDate(newPostDate) });
+  };
   //on update onSubmit
   function onSubmit() {
     console.log('on submit');
+    updateClassRoom();
   }
 
   return (
@@ -145,7 +232,8 @@ const UpdateClassroom = (props: any) => {
                       label='fecha/hora taller'
                       variant='outlined'
                       color='primary'
-                      value={inputData.placeDate}
+                      defaultValue={dateToDatePicker(room.placeActivity.date)}
+                      //value={dateToDatePicker(inputData.placeDate!!)}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -153,7 +241,7 @@ const UpdateClassroom = (props: any) => {
                       {...register('placeDate')}
                       error={errors.placeDate && true}
                       helperText={errors.placeDate && true ? 'en el pasado?' : undefined}
-                      onChange={handleInputChange}
+                      onChange={handlePlaceDateChange}
                     />
                   </Grid>
                 </Grid>
@@ -213,15 +301,18 @@ const UpdateClassroom = (props: any) => {
                       label='fecha/hora despacho'
                       variant='outlined'
                       color='primary'
-                      value={inputData.postDate}
+                      defaultValue={dateToDatePicker(
+                        room.placeDispatch?.date ?? new Date()
+                      )}
+                      //value={dateToDatePicker(inputData.postDate!!)}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       fullWidth
                       {...register('postDate', {
-                        validate: { lessThan: (v: Date) => v >= inputData.placeDate! },
+                        //validate: { lessThan: (v: Date) => v >= inputData.placeDate! },
                       })}
-                      onChange={handleInputChange}
+                      onChange={handlePostDateChange}
                       error={errors.postDate && true}
                       helperText={
                         errors.postDate && true ? 'entrega temprana' : undefined
@@ -236,6 +327,7 @@ const UpdateClassroom = (props: any) => {
                       label='cupos'
                       inputProps={{ min: 1, max: 300, step: 1 }}
                       defaultValue={room.vacancies ?? 0}
+                      {...register('vacancies', { valueAsNumber: true })}
                       onChange={handleInputChange}
                     />
                   </Grid>

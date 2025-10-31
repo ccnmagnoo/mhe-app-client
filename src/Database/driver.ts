@@ -74,6 +74,29 @@ const driver = {
       console.log(error);
     }
   },
+  patch: async <T>(
+    docType: dbKey.room | dbKey.cvn | dbKey.sus,
+    document: Partial<T>,
+    converter: Converter<T>,
+    uuid?: string,
+    options?: SetOptions
+  ) => {
+    const path: string = `${dbKey.act}/${dbKey.uid}/${docType}`;
+
+    try {
+      if (uuid === undefined) {
+        //automatic id solding: !double writing :(
+        console.log('UUID is undefined for patch operation');
+      } else {
+        //defined uuid
+        const ref = doc(db, path, uuid).withConverter(converter);
+        await setDoc(ref, document, { merge: true, ...options });
+        console.log('Document patched successfully');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default driver;
