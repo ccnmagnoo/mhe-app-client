@@ -50,7 +50,7 @@ const Create = (props: any) => {
     postDate: new Date(),
     landType: LandType.city,
     landName: 'Valparaíso',
-    vacancies: 150,
+    vacancies: 40,
     op: auth.currentUser?.uid,
   };
   const [inputData, setInputData] = useState<TInputForm>(initInput);
@@ -62,10 +62,10 @@ const Create = (props: any) => {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
     //duplicate data postDir and placeDir
     if (e.target.name === 'placeName') {
-      setInputData({ ...inputData, postName: e.target.value });
+      setInputData({ ...inputData, placeName: e.target.value, postName: e.target.value });
     }
     if (e.target.name === 'placeDir') {
-      setInputData({ ...inputData, postDir: e.target.value });
+      setInputData({ ...inputData, placeDir: e.target.value, postDir: e.target.value });
     }
     console.log(inputData);
   }
@@ -97,7 +97,11 @@ const Create = (props: any) => {
     const newPostDate = addHoursDatePicker(event.target.value as string, 1) as unknown;
     setPostDate(newPostDate as Date);
     //set state input
-    setInputData({ ...inputData, placeDate: newDatePlace });
+    setInputData({
+      ...inputData,
+      placeDate: newDatePlace,
+      postDate: newPostDate as Date,
+    });
   };
   const handlePostDateChange = (event: ChangeEvent<{ value: unknown }>) => {
     const newPostDate = event.target.value as Date;
@@ -226,12 +230,13 @@ const Create = (props: any) => {
               <Typography variant='subtitle1' color='primary'>
                 nueva actividad
               </Typography>
+              <div>{JSON.stringify(inputData)}</div>
             </Grid>
             <Grid item xs={5}>
               <TextField
                 required
                 id='standard-required'
-                label='codigo'
+                label='código'
                 type='number'
                 variant='outlined'
                 {...register('idCal', {
@@ -359,7 +364,7 @@ const Create = (props: any) => {
             </Grid>
             <Grid item xs={12} sm={5}>
               <Slider
-                defaultValue={40}
+                defaultValue={initInput.vacancies}
                 aria-labelledby='discrete-slider'
                 step={10}
                 min={20}
