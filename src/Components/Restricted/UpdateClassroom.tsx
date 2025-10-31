@@ -1,4 +1,12 @@
-import { Paper, Grid, Typography, TextField, Button } from '@material-ui/core';
+import {
+  Paper,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Chip,
+  Avatar,
+} from '@material-ui/core';
 import React from 'react';
 import { useParams, withRouter } from 'react-router-dom';
 import { IRoom } from '../../Models/Classroom.interface';
@@ -6,9 +14,9 @@ import { Context } from './Context/context';
 import { useForm } from 'react-hook-form';
 
 const UpdateClassroom = (props: any) => {
-  //pased uuid by react-router-dom
+  //passed uuid by react-router-dom
   let { uuid } = useParams<{ uuid: string }>();
-  //feching data from context
+  //fetching data from context
   const { rooms } = React.useContext(Context);
   const room: IRoom | undefined = rooms[rooms.findIndex((it) => it.uuid === uuid)];
   //useForm
@@ -40,6 +48,13 @@ const UpdateClassroom = (props: any) => {
     console.log(`working: ${e.target.name}:${e.target.value}`);
     //update de los props onChange en la medida que se escriben
     setInputData({ ...inputData, [e.target.name]: e.target.value });
+    //duplicate data postDir and placeDir
+    if (e.target.name === 'placeName') {
+      setInputData({ ...inputData, placeName: e.target.value, postName: e.target.value });
+    }
+    if (e.target.name === 'placeDir') {
+      setInputData({ ...inputData, placeDir: e.target.value, postDir: e.target.value });
+    }
   }
   //on update onSubmit
   function onSubmit() {
@@ -65,24 +80,31 @@ const UpdateClassroom = (props: any) => {
                 editar actividad
               </Typography>
             </Grid>
-
             {/**
              * Place activity
              */}
 
             <Grid item xs={12} sm={12}>
-              {room?.idCal ?? 'R000'}
+              <Chip
+                style={{ fontSize: '.9rem' }}
+                avatar={<Avatar>{(props.workDone as boolean) ? '✓' : '✏️'}</Avatar>}
+                label={room.idCal.slice(1)}
+                color={props.workDone ? 'primary' : 'default'}
+              />{' '}
+              <Typography variant='caption' color='textSecondary'>
+                <span style={{ fontWeight: 'bold', color: '#3f51b5', fontSize: '1rem' }}>
+                  {room.land.name}
+                </span>{' '}
+                ({room.land.type})
+              </Typography>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <Paper
-                variant='outlined'
-                style={{ padding: '10px 5px', backgroundColor: 'whitesmoke' }}
-              >
+              <Paper variant='outlined' style={{ padding: '10px 5px' }}>
                 <Grid container spacing={2}>
                   <Grid item>
                     <Typography variant='caption' color='primary'>
-                      Charla
+                      actividad
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -141,12 +163,12 @@ const UpdateClassroom = (props: any) => {
             <Grid item xs={12} sm={6}>
               <Paper
                 variant='outlined'
-                style={{ padding: '10px 5px', backgroundColor: 'SeaShell' }}
+                style={{ padding: '10px 5px', backgroundColor: '#3f51b513' }}
               >
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant='caption' color='primary'>
-                      Despacho
+                      🚚 lugar de entrega
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -159,6 +181,8 @@ const UpdateClassroom = (props: any) => {
                       variant='outlined'
                       fullWidth
                       defaultValue={room.placeDispatch?.name}
+                      focused={inputData.postName ? true : undefined}
+                      value={inputData.postName}
                       inputProps={{ style: { textTransform: 'capitalize' } }}
                       {...register('postName', {})}
                       onChange={handleInputChange}
@@ -174,6 +198,8 @@ const UpdateClassroom = (props: any) => {
                       variant='outlined'
                       fullWidth
                       defaultValue={room.placeDispatch?.dir}
+                      focused={inputData.postDir ? true : undefined}
+                      value={inputData.postDir}
                       inputProps={{ style: { textTransform: 'capitalize' } }}
                       {...register('postDir', {})}
                       onChange={handleInputChange}
@@ -202,6 +228,17 @@ const UpdateClassroom = (props: any) => {
                       }
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type='number'
+                      variant='filled'
+                      id='vacancies'
+                      label='cupos'
+                      inputProps={{ min: 1, max: 300, step: 1 }}
+                      defaultValue={room.vacancies ?? 0}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
                 </Grid>
               </Paper>
               {/**
@@ -211,7 +248,7 @@ const UpdateClassroom = (props: any) => {
 
             <Grid item xs={12}>
               <Button variant='contained' color='primary' type='submit'>
-                actualizar
+                modificar
               </Button>
             </Grid>
           </Grid>

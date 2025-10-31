@@ -229,7 +229,10 @@ const RoomView = (props: RoomViewProps) => {
               >
                 <PlaylistAddCheckIcon titleAccess='consolidados' />
               </Button>
-              <Button component={Link} to={`${jointed}/editroom/${room.uuid}`}>
+              <Button
+                component={Link}
+                to={`${jointed}/editroom/${room.uuid}?workDone=${props.workDone}`}
+              >
                 <EditIcon />
               </Button>
               <Button>
