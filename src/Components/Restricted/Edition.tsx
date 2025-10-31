@@ -58,7 +58,7 @@ export const Edit = () => {
 
   type Input = {
     //place class 📌
-    place: { name: string; dir: string; date: Date; vacancies: number };
+    place: { name: string; dir: string; date: Date };
     //place delivery🚚
     post: { name: string; dir: string; date: Date };
   };
@@ -225,7 +225,9 @@ export const Edit = () => {
                 onChange={handlePostDateChange}
                 error={errors.postDate && true}
                 helperText={
-                  errors.postDate && true ? 'no puedes antes de la actividad' : undefined
+                  errors.postDate && true
+                    ? 'entrega de kit antes de la actividad'
+                    : undefined
                 }
               />
             </Grid>
@@ -258,7 +260,7 @@ export const Edit = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button variant='contained' color='primary' type='submit' fullWidth>
+              <Button variant='contained' color='secondary' type='submit' fullWidth>
                 crear
               </Button>
             </Grid>

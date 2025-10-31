@@ -312,7 +312,7 @@ const Create = (props: any) => {
 
             <Grid item xs={12}>
               <Typography variant='subtitle2' color='primary'>
-                Despliege territorial 🌐
+                Despliegue territorial 🌐
               </Typography>
             </Grid>
 
@@ -367,6 +367,7 @@ const Create = (props: any) => {
             <Grid item xs={12} sm={5}>
               <Slider
                 defaultValue={initInput.vacancies}
+                color='secondary'
                 aria-labelledby='discrete-slider'
                 step={10}
                 min={20}
@@ -440,8 +441,8 @@ const Create = (props: any) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button variant='contained' color='primary' type='submit' fullWidth>
-                crear
+              <Button variant='contained' color='secondary' type='submit' fullWidth>
+                crear actividad
               </Button>
             </Grid>
 
