@@ -15,8 +15,8 @@ export const UrlChip = (props: {
     if (isUrl(chain)) {
       return (
         <Chip
-          avatar={<Avatar>Z</Avatar>}
-          label='video'
+          avatar={<Avatar>🔗</Avatar>}
+          label='link'
           href={chain}
           target='_blank'
           clickable
@@ -28,7 +28,7 @@ export const UrlChip = (props: {
     } else {
       return (
         <Chip
-          avatar={<Avatar>D</Avatar>}
+          avatar={<Avatar>📍</Avatar>}
           label={props.textContent === undefined ? 'mapa' : props.textContent}
           href={`${gmapsSufix}${chain.replace(' ', '+')}`}
           target='_blank'

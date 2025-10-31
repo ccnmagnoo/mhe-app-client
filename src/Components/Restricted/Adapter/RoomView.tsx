@@ -100,8 +100,9 @@ const RoomView = (props: RoomViewProps) => {
         <Grid container spacing={2} alignItems='center' justify='space-evenly'>
           <Grid item xs={6} sm={2}>
             <Chip
-              avatar={<Avatar>R</Avatar>}
-              label={room.idCal.slice(1, 4)}
+              style={{ fontSize: '.7rem' }}
+              avatar={<Avatar>{props.workDone ? '✓' : '⏱'}</Avatar>}
+              label={room.idCal.slice(1)}
               color={props.workDone ? 'primary' : 'secondary'}
             />
           </Grid>
@@ -109,7 +110,7 @@ const RoomView = (props: RoomViewProps) => {
             <Grid item xs={12}>
               <Typography variant='caption' color='initial'>
                 {props.workDone
-                  ? moment(room.placeActivity.date).locale('es').format('DD MMM')
+                  ? moment(room.placeActivity.date).locale('es').format('dd DD MMM H:mm')
                   : moment(room.placeActivity.date).locale('es').format('dd DD MMM H:mm')}
               </Typography>
             </Grid>
@@ -124,7 +125,7 @@ const RoomView = (props: RoomViewProps) => {
 
           <Grid item xs={6} sm={4}>
             <Typography variant='caption' color='initial' style={{ fontSize: '.8rem' }}>
-              {room.colaborator.replace('Municipalidad', 'Mun')}
+              {room.colaborator.replace('Municipalidad', 'M.')}
             </Typography>
             <br />
             <Typography
@@ -136,7 +137,7 @@ const RoomView = (props: RoomViewProps) => {
             </Typography>
           </Grid>
           {!props.workDone ? (
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={1} sm={1} container direction='column' alignItems='center'>
               <Badge
                 variant='standard'
                 badgeContent={room.enrolled.length}
@@ -145,28 +146,30 @@ const RoomView = (props: RoomViewProps) => {
               >
                 <GroupIcon color='primary' titleAccess={'inscritos'} />
               </Badge>
+              <Typography
+                variant='caption'
+                color='textSecondary'
+                style={{ fontSize: '.6rem' }}
+              >
+                <div style={{ width: '50px' }}>
+                  <span style={{ fontWeight: 'bold' }}>
+                    {room.vacancies ? room.vacancies - room.enrolled.length : '0'}
+                  </span>{' '}
+                  cupos
+                </div>
+              </Typography>
             </Grid>
           ) : undefined}
 
           {props.workDone ? (
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={1}>
               <Grid container direction='column'>
-                <Grid item xs={12}>
-                  <Typography variant='body1' color='primary' align='left'>
-                    <strong>
-                      {room.statistics !== undefined
-                        ? (room.statistics['M'] ?? 0) + (room.statistics['F'] ?? 0)
-                        : 0}
+                <Grid item sm={12} xs={12}>
+                  <Typography variant='caption' color='textSecondary' align='center'>
+                    <strong style={{ color: '#3f51b5', fontSize: '.9rem' }}>
+                      {room.attendees.length}
                     </strong>
-                    <Typography
-                      variant='body2'
-                      color='textSecondary'
-                      display='inline'
-                      style={{ fontSize: '.75rem' }}
-                    >
-                      {' '}
-                      / {room.enrolled.length}
-                    </Typography>
+                    /{room.enrolled.length}
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -200,7 +203,7 @@ const RoomView = (props: RoomViewProps) => {
               isDisable={!props.workDone}
               textContent={`entrega ${moment(room.placeDispatch?.date)
                 .locale('es')
-                .format('DD/MMM')}`}
+                .format('DD MMM')}`}
             />
           </Grid>
 
