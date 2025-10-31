@@ -58,7 +58,7 @@ export const Edit = () => {
 
   type Input = {
     //place class 📌
-    place: { name: string; dir: string; date: Date };
+    place: { name: string; dir: string; date: Date; vacancies: number };
     //place delivery🚚
     post: { name: string; dir: string; date: Date };
   };
@@ -163,7 +163,7 @@ export const Edit = () => {
 
             <Grid item xs={12}>
               <Typography variant='subtitle2' color='primary'>
-                Depliege territorial 🌐
+                Despliegue territorial 🌐
               </Typography>
             </Grid>
 
