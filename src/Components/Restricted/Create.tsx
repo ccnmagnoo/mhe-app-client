@@ -41,12 +41,12 @@ const Create = (props: any) => {
   //set form inputs init state
   const initInput: TInputForm = {
     idCal: 0,
-    colaborator: '',
-    placeName: '',
-    placeDir: '',
+    colaborator: 'Energia Valpo',
+    placeName: 'sin definir',
+    placeDir: 'sin definir',
     placeDate: new Date(),
-    postName: '',
-    postDir: '',
+    postName: 'sin definir',
+    postDir: 'sin definir',
     postDate: new Date(),
     landType: LandType.city,
     landName: 'Valparaíso',
@@ -230,7 +230,6 @@ const Create = (props: any) => {
               <Typography variant='subtitle1' color='primary'>
                 nueva actividad
               </Typography>
-              <div>{JSON.stringify(inputData)}</div>
             </Grid>
             <Grid item xs={5}>
               <TextField
@@ -359,7 +358,10 @@ const Create = (props: any) => {
 
             <Grid item xs={12}>
               <Typography variant='subtitle2' color='primary'>
-                Punto de retiro 🚚
+                Cupos & Punto de retiro 🚚
+              </Typography>
+              <Typography variant='caption' color='textSecondary'>
+                Punto de entrega a modificar en caso de entregas diferidas.
               </Typography>
             </Grid>
             <Grid item xs={12} sm={5}>
@@ -379,6 +381,7 @@ const Create = (props: any) => {
                 }}
               />
             </Grid>
+
             <Grid item xs={12} sm={7}>
               {/*date delivery Picker 📆📅*/}
               <TextField
