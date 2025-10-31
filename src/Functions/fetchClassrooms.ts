@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction } from 'react';
 async function fetchClassrooms(
   data: InputSubscription,
   dispatch: Dispatch<SetStateAction<IRoom[]>>,
-  overSubs: boolean = true
+  overSubscription: boolean = true
 ) {
   try {
     //firestore🔥🔥🔥: fetch incoming classes
@@ -26,7 +26,7 @@ async function fetchClassrooms(
     //time restriction
     console.log('requested city', data.city, '');
     const restrictionTime = new Date();
-    if (overSubs) {
+    if (!overSubscription) {
       //normal: get last 14 days Rooms
       const backwardDays = +(process.env.REACT_APP_SUBSCRIPTION_TIME_GAP ?? 14);
       restrictionTime.setDate(restrictionTime.getDate() - backwardDays);
@@ -47,10 +47,10 @@ async function fetchClassrooms(
       orderBy('dateInstance', 'desc')
     )) as IRoom[];
 
-    console.log('incoming classrooms', rooms, 'oversubscription:', overSubs);
+    console.log('incoming classrooms', rooms, 'oversubscription:', overSubscription);
 
     //filtering  available rooms by vacancies, or oversubscription su.
-    const available_rooms: IRoom[] = overSubs
+    const available_rooms: IRoom[] = !overSubscription
       ? rooms.filter((room) => {
           //filtering rooms with vacancies
 
