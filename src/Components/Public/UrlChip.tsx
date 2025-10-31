@@ -28,8 +28,8 @@ export const UrlChip = (props: {
     } else {
       return (
         <Chip
-          avatar={<Avatar>📍</Avatar>}
-          label={props.textContent === undefined ? 'mapa' : props.textContent}
+          avatar={<Avatar>⚐</Avatar>}
+          label={props.textContent === undefined ? 'map' : props.textContent}
           href={`${gmapsSufix}${chain.replace(' ', '+')}`}
           target='_blank'
           clickable
