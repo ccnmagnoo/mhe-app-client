@@ -152,10 +152,10 @@ const RoomView = (props: RoomViewProps) => {
                 style={{ fontSize: '.6rem' }}
               >
                 <div style={{ width: '50px' }}>
+                  quedan{' '}
                   <span style={{ fontWeight: 'bold' }}>
                     {room.vacancies ? room.vacancies - room.enrolled.length : '0'}
-                  </span>{' '}
-                  cupos
+                  </span>
                 </div>
               </Typography>
             </Grid>
