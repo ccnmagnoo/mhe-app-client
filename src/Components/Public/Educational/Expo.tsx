@@ -3,6 +3,7 @@
 
 import Typography from '@material-ui/core/Typography';
 import './Expo.css';
+import { currentContext as ctx } from '../../../Models/Program';
 
 export const Expo = () => {
   return (
@@ -12,35 +13,32 @@ export const Expo = () => {
           Presentaciones
         </Typography>
       </div>
+      <div></div>
       <div
         id='expo-container'
         style={{
           willChange: 'transform',
         }}
       >
-        <iframe
-          loading='lazy'
-          src='https://www.canva.com/design/DAFTEzGMFcA/view?embed'
-          allowFullScreen={true}
-          allow='fullscreen'
-        />
+        <img width='100%' src={ctx.ppt_cover} alt='presentation cover' />
       </div>
       <a
         style={{
-          opacity: 0.5,
+          opacity: 1,
           position: 'relative',
           fontFamily: 'monospace',
           width: '150px',
           height: '0',
           left: '20px',
-          top: '-70px',
+          top: '-55px',
           textDecoration: 'none',
           border: '2px solid White',
-          color: 'whitesmoke',
+          color: 'white',
           padding: '5px',
-          borderRadius: '2px',
+          borderRadius: '4px',
+          backgroundColor: 'rgb(255,255,255,0.3)',
         }}
-        href='https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFTEzGMFcA&#x2F;view?utm_content=DAFTEzGMFcA&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link'
+        href={ctx.ppt_url}
         target='_blank'
         rel='noopener'
       >
