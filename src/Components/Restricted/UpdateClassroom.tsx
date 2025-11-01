@@ -18,8 +18,8 @@ import { Context } from './Context/context';
 import { useForm } from 'react-hook-form';
 import {
   addHoursDatePicker,
-  datePicketToDate,
-  dateToDatePicker,
+  pickerToDate,
+  dateToPicker,
 } from '../../Functions/addHoursDatePicket';
 import driver from '../../Database/driver';
 import { dbKey } from '../../Models/databaseKeys';
@@ -63,8 +63,8 @@ const UpdateClassroom = (props: any) => {
 
         //build object function
         const buildObject = (data: Partial<TInputForm>) => {
-          const datePlaceSetting = new Date(data.placeDate!!);
-          const datePostSetting = new Date(data.postDate!!);
+          const datePlaceSetting = new Date(data.placeDate ?? new Date());
+          const datePostSetting = new Date(data.postDate ?? new Date());
 
           //Add input: vacancies allowed
           const classRoom: Partial<IRoom> = {
@@ -104,9 +104,13 @@ const UpdateClassroom = (props: any) => {
       //setError('no se pudo cargar actividad 😫');
     }
   };
+
   const [inputData, setInputData] = React.useState<Partial<TInputForm>>(initInput);
 
   //on Input OnChange🔃
+  /***
+   * duplicate data postDir and placeDir
+   */
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     console.log(`working: ${e.target.name}:${e.target.value}`);
     //update de los props onChange en la medida que se escriben
@@ -119,18 +123,25 @@ const UpdateClassroom = (props: any) => {
       setInputData({ ...inputData, placeDir: e.target.value, postDir: e.target.value });
     }
   }
+  //on Date Change📅
+  /***
+   * duplicate dates postDate and placeDate
+   */
   const handlePlaceDateChange = (event: ChangeEvent<{ value: unknown }>) => {
     //set state activity time
-    const newDatePlace = event.target.value as string;
-    setPlaceDate(datePicketToDate(newDatePlace));
+    const newPlaceDate = event.target.value as string;
+    setPlaceDate(pickerToDate(newPlaceDate));
+
     //set state delivery time
-    const newPostDate = addHoursDatePicker(event.target.value as string, 1);
-    setPostDate(datePicketToDate(newPostDate));
+    const newPostDate = addHoursDatePicker(event.target.value as string, 1).slice(0, -7);
+    console.log('delivery date', newPostDate);
+    setPostDate(pickerToDate(newPostDate));
+
     //set state input
     setInputData({
       ...inputData,
-      placeDate: datePicketToDate(newDatePlace),
-      postDate: datePicketToDate(newPostDate),
+      placeDate: pickerToDate(newPlaceDate),
+      postDate: pickerToDate(newPostDate),
     });
   };
   const handlePostDateChange = (event: ChangeEvent<{ value: unknown }>) => {
@@ -138,9 +149,9 @@ const UpdateClassroom = (props: any) => {
 
     //set state delivery time
     console.log('delivery date', newPostDate);
-    setPostDate(datePicketToDate(newPostDate));
+    setPostDate(pickerToDate(newPostDate));
     //set state of inputs
-    setInputData({ ...inputData, postDate: datePicketToDate(newPostDate) });
+    setInputData({ ...inputData, postDate: pickerToDate(newPostDate) });
   };
   //on update onSubmit
   function onSubmit() {
@@ -232,7 +243,7 @@ const UpdateClassroom = (props: any) => {
                       label='fecha/hora taller'
                       variant='outlined'
                       color='primary'
-                      defaultValue={dateToDatePicker(room.placeActivity.date)}
+                      defaultValue={dateToPicker(room.placeActivity.date)}
                       //value={dateToDatePicker(inputData.placeDate!!)}
                       InputLabelProps={{
                         shrink: true,
@@ -301,16 +312,16 @@ const UpdateClassroom = (props: any) => {
                       label='fecha/hora despacho'
                       variant='outlined'
                       color='primary'
-                      defaultValue={dateToDatePicker(
-                        room.placeDispatch?.date ?? new Date()
-                      )}
-                      //value={dateToDatePicker(inputData.postDate!!)}
+                      defaultValue={dateToPicker(room.placeDispatch?.date ?? new Date())}
+                      value={dateToPicker(inputData.postDate!!)}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       fullWidth
                       {...register('postDate', {
-                        //validate: { lessThan: (v: Date) => v >= inputData.placeDate! },
+                        validate: {
+                          //lessThan: (deliver: Date) => deliver >= inputData.placeDate!!,
+                        },
                       })}
                       onChange={handlePostDateChange}
                       error={errors.postDate && true}
