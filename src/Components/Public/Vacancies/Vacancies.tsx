@@ -79,10 +79,14 @@ const Vacancies = () => {
           </article>
           <article className='room-data free'>
             <h3>libres</h3>
+
             <p>{restVacancies(room?.vacancies, room?.enrolled.length)}</p>
             <meter
-              max={room ? room.enrolled.length : 0}
-              value={restVacancies(room?.vacancies, room?.enrolled.length)}
+              low={0.3 * (room ? room?.vacancies ?? 0 : 0)}
+              high={0.6 * (room ? room?.vacancies ?? 0 : 0)}
+              optimum={0.8 * (room ? room?.vacancies ?? 0 : 0)}
+              max={room ? room?.vacancies ?? 0 : 0}
+              value={room ? room?.enrolled.length : 0}
             ></meter>
           </article>
           <article className='room-data validated'>

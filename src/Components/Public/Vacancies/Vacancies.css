@@ -82,10 +82,10 @@
       background-color: #303f9f;
     }
     meter::-webkit-meter-suboptimum-value {
-      /* background-color: #616dba; */
+      background-color: #616dba;
     }
     meter::-webkit-meter-even-less-good-value {
-      /* background-color: orange; */
+      background-color: orange;
     }
   }
 }
