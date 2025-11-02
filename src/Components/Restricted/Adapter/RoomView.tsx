@@ -23,6 +23,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
 import InfoIcon from '@material-ui/icons/Info';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import EventSeatIcon from '@material-ui/icons/EventSeat'; //free seats
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
@@ -152,13 +153,24 @@ const RoomView = (props: RoomViewProps) => {
               <Typography
                 variant='caption'
                 color='textSecondary'
-                style={{ fontSize: '.6rem' }}
+                style={{ fontSize: '.8rem' }}
               >
-                <div style={{ width: '50px' }}>
-                  quedan{' '}
-                  <span style={{ fontWeight: 'bold' }}>
+                <div
+                  style={{
+                    //width: '30px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span style={{ fontWeight: 'normal' }}>
                     {room.vacancies ? room.vacancies - room.enrolled.length : '0'}
                   </span>
+                  <EventSeatIcon
+                    color='action'
+                    style={{ height: '1rem' }}
+                    titleAccess='vacantes disponibles'
+                  />
                 </div>
               </Typography>
             </Grid>

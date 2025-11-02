@@ -60,7 +60,7 @@ const Vacancies = () => {
     <>
       <main className='container'>
         <section className='header-section'>
-          <h2>estado de pre-inscripción</h2>
+          <h2>reporte actividad</h2>
           <article className='article-location'>
             <p>{room?.land.name}</p>
             <p>
