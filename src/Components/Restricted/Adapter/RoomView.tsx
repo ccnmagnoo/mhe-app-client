@@ -91,8 +91,8 @@ const RoomView = (props: RoomViewProps) => {
 
   return (
     <Accordion
-      expanded={expanded === room.idCal}
-      onChange={handleAccordionChange(room.idCal)}
+      expanded={expanded === room.uuid}
+      onChange={handleAccordionChange(room.uuid)}
     >
       {/*summary accordion head 🤯🤯*/}
       <AccordionSummary
@@ -195,7 +195,7 @@ const RoomView = (props: RoomViewProps) => {
       </AccordionSummary>
 
       {/*summary details 🤯🤯*/}
-      <AccordionDetails>
+      <AccordionDetails key={room.uuid}>
         <Grid container spacing={1} alignItems='center' justify='flex-end'>
           <Grid item>
             <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
