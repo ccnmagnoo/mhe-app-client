@@ -19,14 +19,16 @@ import { IRoom } from '../../../Models/Classroom.interface';
 //icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GroupIcon from '@material-ui/icons/Group';
-import TocIcon from '@material-ui/icons/Toc';
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
-import EditIcon from '@material-ui/icons/Edit';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import InfoIcon from '@material-ui/icons/Info';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { UrlChip } from '../../Public/UrlChip';
 // import ListView from './ListView';
 import { Link, useRouteMatch, withRouter } from 'react-router-dom';
+import { SettingsApplications } from '@material-ui/icons';
 
 /**
  * @function RoomView panel for individual params of each room
@@ -194,7 +196,7 @@ const RoomView = (props: RoomViewProps) => {
 
       {/*summary details 🤯🤯*/}
       <AccordionDetails>
-        <Grid container spacing={2} alignItems='center' justify='flex-end'>
+        <Grid container spacing={1} alignItems='center' justify='flex-end'>
           <Grid item>
             <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
           </Grid>
@@ -202,9 +204,7 @@ const RoomView = (props: RoomViewProps) => {
             <UrlChip
               url={room.placeDispatch?.dir}
               isDisable={!props.workDone}
-              textContent={`entrega ${moment(room.placeDispatch?.date)
-                .locale('es')
-                .format('DD/MM')}`}
+              textContent={`entrega`}
             />
           </Grid>
 
@@ -223,7 +223,7 @@ const RoomView = (props: RoomViewProps) => {
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                info
+                <InfoIcon titleAccess='info pública' />
               </Button>
 
               <Button
@@ -231,8 +231,8 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('subscribed');
                 }}
               >
-                <TocIcon titleAccess='suscritos' />
-                ins
+                <AssignmentIndIcon titleAccess='inscritos' />
+                in
               </Button>
 
               <Button
@@ -241,18 +241,18 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('validated');
                 }}
               >
-                <PlaylistAddCheckIcon titleAccess='consolidados' />
+                <AssignmentTurnedInIcon titleAccess='consolidados' />
                 ok
               </Button>
               <Button
                 component={Link}
                 to={`${jointed}/editroom/${room.uuid}?workDone=${props.workDone}`}
               >
-                <EditIcon />
+                <SettingsApplicationsIcon />
               </Button>
-              <Button disabled>
+              {/* <Button disabled>
                 <DeleteIcon />
-              </Button>
+              </Button> */}
             </ButtonGroup>
           </Grid>
 
