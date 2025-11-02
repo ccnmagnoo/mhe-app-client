@@ -56,6 +56,7 @@ const RoomView = (props: RoomViewProps) => {
    */
   let { url } = useRouteMatch();
   const splited = url.split('/');
+  console.log('url split', splited);
   splited.splice(2, 1);
   const jointed = splited.join('/');
 
@@ -193,34 +194,47 @@ const RoomView = (props: RoomViewProps) => {
 
       {/*summary details 🤯🤯*/}
       <AccordionDetails>
-        <Grid container spacing={2} alignItems='center' justify='space-evenly'>
-          <Grid item xs={6} sm={3}>
+        <Grid container spacing={2} alignItems='center' justify='flex-end'>
+          <Grid item>
             <UrlChip url={room.placeActivity.dir} isDisable={props.workDone} />
           </Grid>
-          <Grid item xs={6} sm={5}>
+          <Grid item>
             <UrlChip
               url={room.placeDispatch?.dir}
               isDisable={!props.workDone}
               textContent={`entrega ${moment(room.placeDispatch?.date)
                 .locale('es')
-                .format('DD MMM')}`}
+                .format('DD/MM')}`}
             />
           </Grid>
 
-          <Grid item xs={12} sm={4} alignContent='stretch'>
+          <Grid item alignContent='stretch'>
             <ButtonGroup
-              variant='text'
+              variant='outlined'
               color='primary'
               aria-label='actividades-view'
               size='small'
+              style={{ fontSize: '.8rem' }}
             >
+              <Button
+                color='primary'
+                component='a'
+                href={`/vacancies?id=${room.uuid}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                info
+              </Button>
+
               <Button
                 onClick={() => {
                   setTypeListView('subscribed');
                 }}
               >
                 <TocIcon titleAccess='suscritos' />
+                ins
               </Button>
+
               <Button
                 disabled={!props.workDone}
                 onClick={() => {
@@ -228,6 +242,7 @@ const RoomView = (props: RoomViewProps) => {
                 }}
               >
                 <PlaylistAddCheckIcon titleAccess='consolidados' />
+                ok
               </Button>
               <Button
                 component={Link}
@@ -235,7 +250,7 @@ const RoomView = (props: RoomViewProps) => {
               >
                 <EditIcon />
               </Button>
-              <Button>
+              <Button disabled>
                 <DeleteIcon />
               </Button>
             </ButtonGroup>
