@@ -30,6 +30,9 @@ import { IRoom, iRoomConverter } from '../../Models/Classroom.interface';
 import { dbKey } from '../../Models/databaseKeys';
 import { currentContext } from '../../Models/Program';
 import { addHoursDatePicker } from '../../Functions/addHoursDatePicket';
+//icons
+import LocalPlayIcon from '@material-ui/icons/LocalPlay'; //vacancies
+import ArchiveIcon from '@material-ui/icons/Archive';
 
 const Create = (props: any) => {
   //Land type and land list
@@ -86,7 +89,7 @@ const Create = (props: any) => {
   useEffect(() => {
     //for each change of land type, populate autocomplete list
     console.log('land type input state:', landType);
-    setLandList(getTerritoryNames(landType));
+    setLandList(getTerritoryNames(landType, auth.currentUser?.uid));
   }, [landType]);
 
   const handlePlaceDateChange = (event: ChangeEvent<{ value: unknown }>) => {
@@ -228,15 +231,16 @@ const Create = (props: any) => {
           >
             <Grid item xs={12}>
               <Typography variant='subtitle1' color='primary'>
-                nueva actividad
+                nueva actividad {}
               </Typography>
             </Grid>
             <Grid item xs={5}>
               <TextField
                 required
                 id='standard-required'
-                label='código'
+                label='código valida'
                 type='number'
+                title='código temporal e identificación'
                 variant='outlined'
                 {...register('idCal', {
                   max: { value: 999, message: 'muy grande' },
@@ -323,7 +327,7 @@ const Create = (props: any) => {
                 fullWidth
                 {...register('landType', {})}
               >
-                <InputLabel id='type selector'>tipo</InputLabel>
+                <InputLabel id='type selector'>despliegue</InputLabel>
                 <Select
                   labelId='type selector'
                   id='land-type-selector'
@@ -357,8 +361,15 @@ const Create = (props: any) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant='subtitle2' color='primary'>
-                Cupos & Punto de retiro 🚚
+              <Typography
+                variant='subtitle2'
+                color='primary'
+                style={{ display: 'flex', alignItems: 'center' }}
+              >
+                <LocalPlayIcon />
+                cupos &
+                <ArchiveIcon />
+                punto de retiro
               </Typography>
               <Typography variant='caption' color='textSecondary'>
                 Punto de entrega a modificar en caso de entregas diferidas.
@@ -418,7 +429,9 @@ const Create = (props: any) => {
                 focused={inputData.postName ? true : undefined}
                 value={inputData.postName}
                 fullWidth
-                inputProps={{ style: { textTransform: 'capitalize' } }}
+                inputProps={{
+                  style: { textTransform: 'capitalize' },
+                }}
                 {...register('postName', {})}
                 onChange={handleInputChange}
               />

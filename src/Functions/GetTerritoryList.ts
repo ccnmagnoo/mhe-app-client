@@ -1,4 +1,5 @@
 import { cities } from '../Assets/cities';
+import { users } from './usersCode';
 
 /**
  * @function getCityList function return all the cities in the territory requersted
@@ -31,14 +32,21 @@ export function getTerritoryId(
  * @function getTerritoryNames, @return string list of names land
  * @param landType , literal region,city,province
  */
-export function getTerritoryNames(landType: LandType): string[] {
+export function getTerritoryNames(
+  landType: LandType,
+  userUid: string | undefined = 'fa37Q3WqWOUoXCLXyAm0kRwmQaJ2'
+): string[] {
   /**
-   * this function return all the names of specifict land type
+   * this function return all the names of specific land type
    */
-  const territories: string[] = cities.map((land) => {
-    const cityObject: { [key: string]: string } = { ...land };
-    return cityObject[landType];
-  });
+  const territories: string[] = cities
+    .filter((land) => {
+      return land.regionId === users[userUid].regionId;
+    })
+    .map((land) => {
+      const cityObject: { [key: string]: string } = { ...land };
+      return cityObject[landType];
+    });
   //getting unique values of region/province/city
   const unique = territories.filter(function (elem, index, self) {
     return index === self.indexOf(elem);

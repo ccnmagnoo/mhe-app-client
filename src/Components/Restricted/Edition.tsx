@@ -17,6 +17,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { getTerritoryNames, LandType } from '../../Functions/GetTerritoryList';
 
 import EditAttributesIcon from '@material-ui/icons/EditAttributes';
+import { auth } from '../../Config/firebase';
 
 export const Edit = () => {
   //Land type and land list
@@ -26,7 +27,7 @@ export const Edit = () => {
   const [postDate, setPostDate] = React.useState<Date>(new Date());
 
   React.useEffect(() => {
-    setLandList(getTerritoryNames(landType));
+    setLandList(getTerritoryNames(landType, auth.currentUser?.uid));
   }, [landType]);
 
   const handleLandTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
