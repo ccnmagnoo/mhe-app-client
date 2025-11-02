@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import './Vacancies.css';
 import { useLocation } from 'react-router-dom';
-import fetchClassrooms from '../../../Functions/fetchClassrooms';
 import driver from '../../../Database/driver';
 import { IRoom, iRoomConverter } from '../../../Models/Classroom.interface';
 import { dbKey } from '../../../Models/databaseKeys';
 import { currentContext as ctx } from '../../../Models/Program';
+//icons
+import LocalPlayIcon from '@material-ui/icons/LocalPlay'; //vacancies
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'; //subscribed
+import EventSeatIcon from '@material-ui/icons/EventSeat'; //free seats
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn'; //validated
 
 const Vacancies = () => {
   const location = useLocation();
@@ -70,16 +74,18 @@ const Vacancies = () => {
         </section>
         <section className='content-section'>
           <article className='room-data total'>
+            <LocalPlayIcon color='primary'></LocalPlayIcon>
             <h3>cupos</h3>
             <p>{room?.vacancies}</p>
           </article>
           <article className='room-data used'>
+            <AssignmentIndIcon color='primary'></AssignmentIndIcon>
             <h3>inscritos</h3>
             <p>{room?.enrolled.length}</p>
           </article>
           <article className='room-data free'>
+            <EventSeatIcon color='primary' />
             <h3>libres</h3>
-
             <p>{restVacancies(room?.vacancies, room?.enrolled.length)}</p>
             <meter
               low={0.3 * (room ? room?.vacancies ?? 0 : 0)}
@@ -90,6 +96,7 @@ const Vacancies = () => {
             ></meter>
           </article>
           <article className='room-data validated'>
+            <AssignmentTurnedInIcon style={{ color: '#fff' }}></AssignmentTurnedInIcon>
             <h3>validados</h3>
             <p>{room ? room.attendees.length : 0}</p>
             <meter
