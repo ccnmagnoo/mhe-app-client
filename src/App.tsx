@@ -9,6 +9,7 @@ import Dashboard from './Components/Restricted/Dashboard';
 import { auth } from './Config/firebase';
 import Subscription from './Components/Public/Subscription';
 import Validation from './Components/Public/Validation';
+import Vacancies from './Components/Public/Vacancies/Vacancies';
 import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
 import './App.css';
@@ -56,6 +57,9 @@ function App() {
             </Route>
             <Route path='/login'>
               <Login />
+            </Route>
+            <Route path='/Vacancies'>
+              <Vacancies />
             </Route>
             <Route path='/resources'>
               <Suspense
