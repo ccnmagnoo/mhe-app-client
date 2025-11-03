@@ -28,6 +28,9 @@
   }
   .validation-code {
     color: #777;
+    display: flex;
+    gap: 6px;
+    align-items: center;
     font-family: monospace;
     font-size: 0.8rem;
     background-color: #ddd;

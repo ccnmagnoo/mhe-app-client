@@ -25,6 +25,7 @@ import { UrlChip } from './UrlChip';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ReplayIcon from '@material-ui/icons/Replay';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 //canvas
 import { useSvgDrawing } from 'react-hooks-svgdrawing';
@@ -272,8 +273,12 @@ const Validation = (props: any) => {
                 direction='row'
               >
                 <Grid item sm={'auto'} xs={12}>
-                  <Typography variant='subtitle2' color='primary'>
-                    Código
+                  <Typography
+                    variant='subtitle2'
+                    color='primary'
+                    style={{ display: 'flex', gap: '4px', alignItems: 'center' }}
+                  >
+                    {<VpnKeyIcon />}Código
                   </Typography>
                 </Grid>
 
@@ -284,7 +289,8 @@ const Validation = (props: any) => {
                     disabled={disable_code_form}
                     required
                     id='input-password'
-                    label='código secreto'
+                    label='código valida'
+                    title='código secreto tipo 👉123.45'
                     defaultValue={validationKey}
                     type='text'
                     variant='outlined'

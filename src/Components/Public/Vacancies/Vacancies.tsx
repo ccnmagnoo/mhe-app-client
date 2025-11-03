@@ -10,6 +10,7 @@ import LocalPlayIcon from '@material-ui/icons/LocalPlay'; //vacancies
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'; //subscribed
 import EventSeatIcon from '@material-ui/icons/EventSeat'; //free seats
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn'; //validated
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 const Vacancies = () => {
   const location = useLocation();
@@ -69,7 +70,8 @@ const Vacancies = () => {
           </article>
           <p></p>
           <p className='validation-code'>
-            código valida <span>{room?.idCal.slice(1)}</span>
+            código valida{<VpnKeyIcon />}
+            <span>{room?.idCal.slice(1)}</span>
           </p>
         </section>
         <section className='content-section'>
