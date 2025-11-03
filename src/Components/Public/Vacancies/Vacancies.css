@@ -26,6 +26,19 @@
     padding: 0;
     font-size: 0.8rem;
   }
+  .article-validation-code {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+
+    .msg-copy {
+      margin: 0;
+      font-size: small;
+      color: rgb(75, 134, 75);
+      font-weight: 400;
+    }
+  }
   .validation-code {
     color: #777;
     display: flex;
@@ -37,8 +50,20 @@
     width: fit-content;
     padding: 5px 10px;
     border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all ease 50ms;
     span {
       font-weight: bold;
+    }
+    &:hover {
+      background-color: #ccc;
+      transform: translateY(1px);
+    }
+    &:active {
+      background-color: #616dba;
+      transform: translateY(2px);
+      color: #fff;
     }
   }
 }

@@ -28,6 +28,16 @@ const Vacancies = () => {
     fetchData();
   }, [uuid]);
 
+  function handleOnClickKey() {
+    room && navigator.clipboard.writeText(room.idCal.slice(1));
+    setKeyCopied(() => true);
+
+    setTimeout(() => {
+      setKeyCopied(() => false);
+    }, 1000);
+  }
+  const [keyCopied, setKeyCopied] = useState<boolean>(false);
+
   async function fetchRoomData() {
     try {
       if (uuid) {
@@ -68,11 +78,13 @@ const Vacancies = () => {
               {room?.placeActivity.name}📅{room?.placeActivity.date.toLocaleDateString()}
             </p>
           </article>
-          <p></p>
-          <p className='validation-code'>
-            código valida{<VpnKeyIcon />}
-            <span>{room?.idCal.slice(1)}</span>
-          </p>
+          <article className='article-validation-code'>
+            <button className='validation-code' onClick={handleOnClickKey}>
+              código valida{<VpnKeyIcon />}
+              <span>{room?.idCal.slice(1)}</span>
+            </button>
+            {keyCopied && <p className='msg-copy'>copiado✅</p>}
+          </article>
         </section>
         <section className='content-section'>
           <article className='room-data total'>
