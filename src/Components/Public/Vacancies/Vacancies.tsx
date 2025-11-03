@@ -6,11 +6,14 @@ import { IRoom, iRoomConverter } from '../../../Models/Classroom.interface';
 import { dbKey } from '../../../Models/databaseKeys';
 import { currentContext as ctx } from '../../../Models/Program';
 //icons
-import LocalPlayIcon from '@material-ui/icons/LocalPlay'; //vacancies
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'; //subscribed
-import EventSeatIcon from '@material-ui/icons/EventSeat'; //free seats
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn'; //validated
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import {
+  KeyIcon,
+  VacancyIcon,
+  SubscribedIcon,
+  FreeIcon,
+  ValidatedIcon,
+  CopyIcon,
+} from '../../../Assets/icon';
 
 const Vacancies = () => {
   const location = useLocation();
@@ -80,25 +83,26 @@ const Vacancies = () => {
           </article>
           <article className='article-validation-code'>
             <button className='validation-code' onClick={handleOnClickKey}>
-              código valida{<VpnKeyIcon />}
+              código valida{<KeyIcon />}
               <span>{room?.idCal.slice(1)}</span>
+              <CopyIcon style={{ color: '#bbb', width: '1.1rem' }} />
             </button>
             {keyCopied && <p className='msg-copy'>copiado✅</p>}
           </article>
         </section>
         <section className='content-section'>
           <article className='room-data total'>
-            <LocalPlayIcon color='primary'></LocalPlayIcon>
+            <VacancyIcon color='primary' />
             <h3>cupos</h3>
             <p>{room?.vacancies}</p>
           </article>
           <article className='room-data used'>
-            <AssignmentIndIcon color='primary'></AssignmentIndIcon>
+            <SubscribedIcon color='primary' />
             <h3>inscritos</h3>
             <p>{room?.enrolled.length}</p>
           </article>
           <article className='room-data free'>
-            <EventSeatIcon color='primary' />
+            <FreeIcon color='primary' />
             <h3>libres</h3>
             <p>{restVacancies(room?.vacancies, room?.enrolled.length)}</p>
             <meter
@@ -110,7 +114,7 @@ const Vacancies = () => {
             ></meter>
           </article>
           <article className='room-data validated'>
-            <AssignmentTurnedInIcon style={{ color: '#fff' }}></AssignmentTurnedInIcon>
+            <ValidatedIcon style={{ color: '#fff' }} />
             <h3>validados</h3>
             <p>{room ? room.attendees.length : 0}</p>
             <meter

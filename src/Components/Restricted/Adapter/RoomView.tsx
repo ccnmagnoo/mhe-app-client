@@ -15,21 +15,21 @@ import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import React, { lazy, Suspense } from 'react';
 import { IRoom } from '../../../Models/Classroom.interface';
-
-//icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import GroupIcon from '@material-ui/icons/Group';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
-import InfoIcon from '@material-ui/icons/Info';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import EventSeatIcon from '@material-ui/icons/EventSeat'; //free seats
-import DeleteIcon from '@material-ui/icons/Delete';
-
 import { UrlChip } from '../../Public/UrlChip';
 // import ListView from './ListView';
 import { Link, useRouteMatch, withRouter } from 'react-router-dom';
-import { SettingsApplications } from '@material-ui/icons';
+
+//icons
+import {
+  ExpandIcon,
+  GroupIcon,
+  DeleteIcon,
+  FreeIcon,
+  SubscribedIcon,
+  SettingsIcon,
+  InfoIcon,
+  ValidatedIcon,
+} from '../../../Assets/icon';
 
 /**
  * @function RoomView panel for individual params of each room
@@ -97,7 +97,7 @@ const RoomView = (props: RoomViewProps) => {
     >
       {/*summary accordion head 🤯🤯*/}
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandIcon />}
         aria-controls='panel1bh-content'
         id='panel1bh-header'
       >
@@ -166,7 +166,7 @@ const RoomView = (props: RoomViewProps) => {
                   <span style={{ fontWeight: 'normal' }}>
                     {room.vacancies ? room.vacancies - room.enrolled.length : '0'}
                   </span>
-                  <EventSeatIcon
+                  <FreeIcon
                     color='action'
                     style={{ height: '1rem' }}
                     titleAccess='vacantes disponibles'
@@ -243,7 +243,7 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('subscribed');
                 }}
               >
-                <AssignmentIndIcon titleAccess='inscritos' />
+                <SubscribedIcon titleAccess='inscritos' />
                 in
               </Button>
 
@@ -253,14 +253,14 @@ const RoomView = (props: RoomViewProps) => {
                   setTypeListView('validated');
                 }}
               >
-                <AssignmentTurnedInIcon titleAccess='consolidados' />
+                <ValidatedIcon titleAccess='consolidados' />
                 ok
               </Button>
               <Button
                 component={Link}
                 to={`${jointed}/editroom/${room.uuid}?workDone=${props.workDone}`}
               >
-                <SettingsApplicationsIcon />
+                <SettingsIcon />
               </Button>
               {/* <Button disabled>
                 <DeleteIcon />
