@@ -114,7 +114,7 @@ h4.myCalendar {
   direction: row;
   align-items: center;
   justify-content: space-evenly;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 500;
   align-content: space-evenly;
 }
@@ -135,7 +135,7 @@ h4.myCalendar {
 }
 
 /* Tag with type of event */
-span.myCalendar {
+.myCalendar {
   font-size: 0.7rem;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -145,23 +145,26 @@ span.myCalendar {
   padding: 2px;
 }
 
-span.myCalendar.tag {
+.tag {
+  display: flex;
   align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 2px;
-  margin: 2px 2px 2px 4px;
-  width: 2rem;
+  margin: 0 2px;
+  width: 1.2rem;
+  font-size: 0.55rem;
   border-radius: 3px;
-  text-shadow: 1px 1px 1px #00000023;
+  /* text-shadow: 1px 1px 1px #00000023; */
 }
 
 @media (max-width: 550px) {
-  span.myCalendar.tag {
+  .tag {
     display: none;
   }
 }
 
-span.myCalendar.tag.permanent {
+.tag.permanent {
   display: flex;
   position: relative;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -180,89 +183,55 @@ span.myCalendar.tag.permanent {
 }
 
 /* popUp with details of each classrooms */
-span.myCalendar.popUp {
-  --width: 300px;
-  --height: 200px;
-  display: flex;
-  justify-content: space-around;
-  font-size: 1rem;
-  min-width: var(--width);
-  max-height: var(--height);
-  padding: 10px;
-  background-color: rgba(61, 65, 126, 0.973);
-  cursor: pointer;
-  user-select: none;
-  z-index: 1;
-  box-shadow: 4px 4px 6px gray;
-  /* margin-top: calc(50vh - var(--height) / 2); */
-}
+.popUp {
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  min-width: 200px;
+  color: #444;
+  font-size: 10px;
+  .header {
+    h4 {
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
 
-@media (max-width: 500px) {
-  .myCalendar.popUp span {
-    flex-direction: column;
+      .tag {
+        width: fit-content;
+        padding: 2px 4px;
+        font-size: 0.7rem;
+
+        .delivery {
+          color: white;
+        }
+      }
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
+  .command {
+    display: flex;
+    justify-content: center;
+    button {
+      border: none;
+      display: flex;
+      gap: 2px;
+      color: #777;
+      align-items: center;
+      border-radius: 4px;
+      padding: 4px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      &:hover {
+        background-color: #ccc;
+      }
+    }
   }
 }
-
-span.myCalendar.popUp.show {
-  visibility: visible;
-  -webkit-animation: fadeIn 0.8s;
-  animation: fadeIn 0.8s;
-}
-
-.myCalendar.popUp .left-panel {
-  display: flex;
-}
-.myCalendar.popUp .right-panel {
-  position: relative;
-  display: block;
-  justify-content: center;
-  border-radius: 5px;
-  height: fit-content;
-  padding: 10px;
-  background: rgba(238, 210, 210, 0.137);
-}
-
-.right-panel > h5 {
-  margin: 0.4em;
-}
-
-.right-panel div {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  justify-content: space-around;
-  align-items: baseline;
-  transform: all 0.5 ease-out;
-}
-
-.myCalendar.popUp .right-panel [data-tier='1'] {
-  position: relative;
-  padding-top: 0;
-  font-size: 3rem;
-  font-weight: 500;
-  color: white;
-}
-.myCalendar.popUp .right-panel [data-tier='2'] {
-  position: relative;
-  padding-top: 0;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: rgb(255, 255, 255);
-}
-
-@media (width< 500px) {
-  .right-panel div {
-    flex-direction: column;
-    align-items: center;
-  }
-  .myCalendar.popUp .right-panel [data-tier='1'] {
-    font-size: 2rem;
-  }
-  .myCalendar.popUp .right-panel [data-tier='2'] {
-    font-size: 1rem;
-  }
-}
-
 /* transparent background of popUp dialog */
 .backgroundPopup {
   visibility: hidden;

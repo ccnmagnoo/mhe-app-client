@@ -75,7 +75,7 @@ const Dashboard = (props: any) => {
             id='private-navigation'
             variant='outlined'
             color='primary'
-            aria-label='dashboad commands'
+            aria-label='dashboard commands'
             fullWidth
           >
             <Button component={Link} to={url}>

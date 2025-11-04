@@ -1,7 +1,9 @@
 import moment from 'moment';
 import React from 'react';
-import { UrlChip } from '../Public/UrlChip';
+import { UrlChip } from '../../Public/UrlChip';
 import { IEvent } from './Calendar';
+import './calendar.css';
+import { CopyIcon, KeyIcon } from '../../../Assets/icon';
 
 const EventWidget = (props: {
   event: IEvent;
@@ -28,7 +30,7 @@ const EventWidget = (props: {
      */
     const permanent = isReactive ? 'permanent' : undefined;
     return (
-      <span className={`myCalendar tag ${permanent} ${event.variant}`}>
+      <span className={`tag ${permanent} ${event.variant}`}>
         {event.variant === 'delivery' ? 'kit' : 'taller'}
       </span>
     );
@@ -36,24 +38,22 @@ const EventWidget = (props: {
 
   const popUpDialog = (
     <div className={popUpClass()}>
-      <span className='myCalendar popUp'>
-        <article className='lef-panel'>
-          {tag(true)}
-          <p>{event.colaborator}</p>
-          <h3>{moment(event.info?.date).format('dd DD/MMM H:mm')}</h3>
-          <p style={{ fontSize: '0.8rem' }}>{event.info?.dir}</p>
-          <UrlChip url={event.info?.dir} textContent={'dirección'} />{' '}
-        </article>
-
-        <article className='right-panel'>
-          <h5>entregas</h5>
-          <div>
-            <div data-tier={1}>{event.benefited ?? 0}</div>
-            <div id='slash'>de</div>
-            <div data-tier={2}>{event.suscribed}</div>
-          </div>
-        </article>
-      </span>
+      <article className='popUp'>
+        <section className='header'>
+          <h4>actividad {tag()}</h4>
+          <p>
+            {event.land?.name}📅
+            {moment(event?.place?.date ?? new Date()).format('DD/MM/YY H:mm')}h
+          </p>
+        </section>
+        <section className='command'>
+          <button className='validate-code-button'>
+            código valida <KeyIcon /> {event.idCal?.slice(1)}{' '}
+            <CopyIcon style={{ color: '#ddd' }} />
+          </button>
+        </section>
+        <section className='statistic'>vacancies, avaliables seats,</section>
+      </article>
     </div>
   );
   return (

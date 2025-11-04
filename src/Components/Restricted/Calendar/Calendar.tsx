@@ -1,18 +1,19 @@
 import moment from 'moment';
-import { LandType } from '../../Functions/GetTerritoryList';
-import { IRoom } from '../../Models/Classroom.interface';
-import { IPlace } from '../../Models/Place.interface';
+import { LandType } from '../../../Functions/GetTerritoryList';
+import { IRoom } from '../../../Models/Classroom.interface';
+import { IPlace } from '../../../Models/Place.interface';
 import './calendar.css';
 import EventWidget from './Calendar.EventWidget';
 
 export interface IEvent {
   idCal: string | undefined;
-  info: IPlace | undefined;
+  place: IPlace | undefined;
   variant: 'activity' | 'delivery';
-  colaborator: string;
+  collaborator: string;
   land?: { type: LandType; name: string };
-  suscribed?: number;
-  benefited?: number;
+  vacancy: number;
+  subscribed: number;
+  validated: number;
 }
 
 const Calendar = (props: { rooms?: IRoom[] }) => {
@@ -25,7 +26,7 @@ const Calendar = (props: { rooms?: IRoom[] }) => {
 
   //since when event data collecting is fetched
   const startDateCollecting = new Date();
-  startDateCollecting.setDate(today.getDate() - 28); /*data colected 28 ago*/
+  startDateCollecting.setDate(today.getDate() - 28); /*data collected 28 ago*/
   startDateCollecting.setHours(0, 0, 0, 0);
 
   //events list
@@ -36,21 +37,23 @@ const Calendar = (props: { rooms?: IRoom[] }) => {
     .forEach((it) => {
       const activity: IEvent = {
         idCal: it.idCal,
-        info: it.placeActivity,
+        place: it.placeActivity,
         variant: 'activity',
-        colaborator: it.colaborator,
+        collaborator: it.colaborator,
         land: it.land,
-        suscribed: it.enrolled.length,
-        benefited: it.attendees.length,
+        vacancy: it.vacancies ?? 0,
+        subscribed: it.enrolled.length,
+        validated: it.attendees.length,
       };
       const delivery: IEvent = {
         idCal: it.idCal,
-        info: it.placeDispatch,
+        place: it.placeDispatch,
         variant: 'delivery',
-        colaborator: it.colaborator,
+        collaborator: it.colaborator,
         land: it.land,
-        suscribed: it.enrolled.length,
-        benefited: it.attendees.length,
+        vacancy: it.vacancies ?? 0,
+        subscribed: it.enrolled.length,
+        validated: it.attendees.length,
       };
       eventList.push(...[activity, delivery]);
     });
@@ -74,7 +77,7 @@ const Calendar = (props: { rooms?: IRoom[] }) => {
 
     //filter events for @dayOfMonth
     const eventListByDay = eventList.filter((it) => {
-      return dayOfMonth.toLocaleDateString() === it.info?.date.toLocaleDateString();
+      return dayOfMonth.toLocaleDateString() === it.place?.date.toLocaleDateString();
     });
 
     //array of day containers
@@ -118,7 +121,7 @@ const EventContainer = (props: { dateSet: Date; events?: IEvent[] }) => {
       <div>{moment(dateSet).format('DD MMM')}</div>
       <div>
         {events
-          ?.sort((a, b) => (a.info?.date! > b.info?.date! ? 1 : -1))
+          ?.sort((a, b) => (a.place?.date! > b.place?.date! ? 1 : -1))
           .map((event, index) => {
             return <EventWidget event={event} index={index} key={index}></EventWidget>;
           })}
