@@ -14,6 +14,7 @@ import {
   ValidatedIcon,
   CopyIcon,
 } from '../../../Assets/icon';
+import restVacancies from '../../../Functions/restVacancies';
 
 const Vacancies = () => {
   const location = useLocation();
@@ -57,17 +58,6 @@ const Vacancies = () => {
     } catch (error) {
       console.error('error fetching room data:', error);
     }
-  }
-  function restVacancies(amount: number | undefined, toRest: number | undefined) {
-    if (amount === undefined || toRest === undefined) {
-      return 0;
-    }
-    const op = amount - toRest;
-
-    if (op <= 0) {
-      return 0;
-    }
-    return op;
   }
 
   return (
