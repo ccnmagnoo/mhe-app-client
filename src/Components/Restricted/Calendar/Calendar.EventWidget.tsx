@@ -21,6 +21,10 @@ const EventWidget = (props: {
   const { event, index } = props;
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
+  function handleOnClickKey() {
+    event.idCal && navigator.clipboard.writeText(event.idCal.slice(1));
+  }
+
   /**@function popUpClass show popUp*/
   function popUpClass() {
     return isActive ? 'backgroundPopup show' : 'backgroundPopup';
@@ -53,9 +57,11 @@ const EventWidget = (props: {
             {event.land?.name}📅
             {moment(event?.place?.date ?? new Date()).format('DD/MM/YY H:mm')}h
           </p>
+          <p className='address'>{event.place?.name}</p>
+          <p className='address'>{event.place?.dir}</p>
         </section>
         <section className='command'>
-          <button className='validate-code-button'>
+          <button className='validate-code-button' onClick={handleOnClickKey}>
             código valida <KeyIcon /> {event.idCal?.slice(1)}{' '}
             <CopyIcon style={{ color: '#ddd' }} />
           </button>
