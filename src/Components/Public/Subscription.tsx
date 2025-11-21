@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Box, LinearProgress, Paper, TextFieldProps } from '@material-ui/core';
 import {
@@ -422,6 +422,8 @@ const Subscription = (props: Props) => {
   const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
     null
   );
+
+  const [subscriber, setSubscriber] = useState<Partial<IPerson> | undefined>(undefined);
   //Room selection form 💖💖💗
   const onSubmitRoom: SubmitHandler<InputSubscription> = async (data) => {
     console.log('form C', data);
@@ -442,6 +444,16 @@ const Subscription = (props: Props) => {
       if (isUploaded) {
         setDialogOpen(() => true);
         setIsUploading(() => false);
+        setSubscriber(() => {
+          return {
+            name: {
+              firstName: data.name!,
+              fatherName: data.fatherName!,
+              motherName: data.motherName,
+            },
+            rut: data.rut!,
+          };
+        });
       } else {
         set_disability_select_room(() => false);
 
@@ -606,7 +618,7 @@ const Subscription = (props: Props) => {
       </DialogTitle>
       <DialogContent>
         {/*dialog content 🧁*/}
-        <OnSuccessSubscription person={subscribedPerson} classroom={selectedRoom} />
+        <OnSuccessSubscription person={subscriber} classroom={selectedRoom} />
       </DialogContent>
       <DialogActions>
         <Button

@@ -10,28 +10,18 @@ import 'moment/locale/es'; // Pasar a español
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { isUrl } from '../../../Functions/IsURL';
 import { Alert } from '@material-ui/lab';
+import convertToUrl from '../../../Functions/contertToUrl';
 
 type SuccessProps = {
   classroom?: IRoom;
-  person?: IPerson;
+  person?: Partial<IPerson>;
 };
 
 export const OnSuccessSubscription = (props: SuccessProps) => {
   //referencias
-  const classroom = props.classroom;
+  const { classroom, person } = props;
 
   //converter Url
-  const convertToUrl = (chain?: string) => {
-    //check definition
-    if (chain === undefined) return undefined;
-    //check if dir is url or physical
-    const gmaps = 'https://www.google.com/maps?q=';
-    if (isUrl(chain)) {
-      return <a href={chain}> {chain}</a>;
-    } else {
-      return <a href={`${gmaps}${chain.replace(' ', '+')}`}>{chain}</a>;
-    }
-  };
 
   return (
     <React.Fragment>
@@ -71,25 +61,25 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                       paragraph
                       align='justify'
                     >
-                      el taller de capacitación de realizará en{' '}
-                      {classroom?.placeActivity.name} con la siguiente dirección <br />
-                      {}
-                      {convertToUrl(classroom?.placeActivity.dir)}
+                      <p>Sus datos de registro</p>
+                      <strong> Nombre:</strong> {person?.name?.firstName}{' '}
+                      {person?.name?.fatherName} <br />
+                      <strong> documento:</strong> {person?.rut} <br />
                     </Typography>
                     {/*snack bar warning 💥*/}
                     <Alert severity='info'>
                       <Typography variant='body1' color='textSecondary'>
-                        Su Kit de Ahorro <strong>se entregará</strong> a partir del <br />
-                        {moment(classroom?.placeDispatch?.date).format(
+                        El taller <strong>se realizará</strong> con fecha <br />
+                        {moment(classroom?.placeActivity?.date).format(
                           'DD [de] MMMM [desde las] h:mm a'
-                        )}
+                        )}{' '}
                         en la siguiente dirección <br />
                         <strong> {classroom?.placeDispatch?.name}</strong> <br />
                         {convertToUrl(classroom?.placeDispatch?.dir)}
                       </Typography>
                       <Typography variant='caption' color='secondary'>
-                        el retiro del kit es de su exclusiva
-                        <strong>responsabilidad</strong> .
+                        la participación en el taller es
+                        <strong> obligatoria</strong> .
                       </Typography>
                     </Alert>
                     <Typography variant='body1' color='textPrimary'>
