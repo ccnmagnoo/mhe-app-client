@@ -444,7 +444,7 @@ const Subscription = (props: Props) => {
         setDialogOpen(() => true);
         setIsUploading(() => false);
 
-        //set state subscriber
+        //set state subscriber for form data on success dialog
         setSubscriber(() => {
           return {
             ...person,
