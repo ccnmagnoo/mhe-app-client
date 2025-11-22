@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import './Subscription.css';
 import QRCode from 'react-qr-code';
+import { useLocation } from 'react-router-dom';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -22,6 +23,7 @@ type SuccessProps = {
 export const OnSuccessSubscription = (props: SuccessProps) => {
   //referencias
   const { classroom, person } = props;
+  //get local url
 
   //converter Url
 
@@ -72,7 +74,9 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                       <div style={{}}>
                         <QRCode
                           size={130}
-                          value={person?.uuid || 'no-data'}
+                          value={`${window.location.origin}/subscription-check?id=${
+                            person?.uuid || ''
+                          }`}
                           fgColor='#888'
                         />
                       </div>
