@@ -474,7 +474,9 @@ const Subscription = (props: Props) => {
         <Grid item xs={12}>
           <Alert severity='success'>
             Inscripción exitosa 👌 , recuerda <strong>no faltar</strong> al taller, es{' '}
-            {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos.
+            {moment(selectedRoom?.dateInstance).endOf('day').fromNow()}, te esperamos{' '}
+            {subscriber?.name?.firstName} {subscriber?.name?.fatherName} (
+            {subscriber?.rut}).
           </Alert>
         </Grid>
       );

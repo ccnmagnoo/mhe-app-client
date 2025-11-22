@@ -14,6 +14,7 @@
     font-size: 0.9rem;
     &.uuid {
       font-family: monospace;
+      font-size: 1rem;
       color: #acacac;
       background-color: #f4f4f4;
       width: fit-content;

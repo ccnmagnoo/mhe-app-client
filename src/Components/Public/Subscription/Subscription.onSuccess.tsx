@@ -6,6 +6,7 @@ import { IPerson } from '../../../Models/Person.Interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
 import './Subscription.css';
+import QRCode from 'react-qr-code';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -68,7 +69,14 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                         {person?.name?.firstName} {person?.name?.fatherName}
                       </p>
                       <p className='rut'>{person?.rut}</p>
-                      <p className='uuid'>código {person?.uuid}</p>
+                      <div style={{}}>
+                        <QRCode
+                          size={130}
+                          value={person?.uuid || 'no-data'}
+                          fgColor='#888'
+                        />
+                      </div>
+                      <p className='uuid'>{person?.uuid}</p>
                     </Typography>
                     {/*snack bar warning 💥*/}
                     <Alert severity='info'>
