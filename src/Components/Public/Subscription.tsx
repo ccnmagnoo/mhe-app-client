@@ -48,7 +48,6 @@ const Subscription = (props: Props) => {
   //objects states
   const [availableClassrooms, setAvailableClassrooms] = React.useState<IRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = React.useState<IRoom | undefined>(undefined);
-  const [subscribedPerson] = React.useState<IPerson | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
   //form is disabled
@@ -434,7 +433,7 @@ const Subscription = (props: Props) => {
 
     //load to firebase Subscribed 🔥🔥🔥
     if (selectedRoom) {
-      const isUploaded = await createSubscription(
+      const [isUploaded, person] = await createSubscription(
         data,
         selectedRoom,
         setErrorC,
@@ -444,14 +443,11 @@ const Subscription = (props: Props) => {
       if (isUploaded) {
         setDialogOpen(() => true);
         setIsUploading(() => false);
+
+        //set state subscriber
         setSubscriber(() => {
           return {
-            name: {
-              firstName: data.name!,
-              fatherName: data.fatherName!,
-              motherName: data.motherName,
-            },
-            rut: data.rut!,
+            ...person,
           };
         });
       } else {
@@ -612,8 +608,7 @@ const Subscription = (props: Props) => {
     >
       <DialogTitle id='index'>
         <Typography variant='subtitle1' color='primary'>
-          Felicidades <strong> {subscribedPerson?.name.firstName} </strong>ya estás
-          inscrit@ 🎉✨
+          Felicidades <strong> {subscriber?.name?.firstName} </strong>ya estás inscrit@ 🎉
         </Typography>
       </DialogTitle>
       <DialogContent>

@@ -16,7 +16,7 @@ async function createSubscription(
   selectedRoom: IRoom,
   errorDispatch: Dispatch<SetStateAction<{ value: boolean; message: string } | null>>,
   rolRequest?: RolRequest
-) {
+): Promise<[boolean | undefined, IPerson | undefined]> {
   try {
     //check if it's there a room selected ❓❓
     if (selectedRoom === undefined) {
@@ -25,7 +25,7 @@ async function createSubscription(
         value: true,
         message: 'no has seleccionado un taller 🙊 ',
       });
-      return false;
+      return [false, undefined];
     }
 
     //check rolRequest null state
@@ -35,7 +35,7 @@ async function createSubscription(
         value: true,
         message: 'rut mal definido 🙊 ',
       });
-      return false;
+      return [false, undefined];
     }
 
     //check the selected ROOM has already this RUT 🔎👤
@@ -60,7 +60,7 @@ async function createSubscription(
         value: true,
         message: 'tranquilidad, ya estabas a este taller 🤔 ',
       });
-      return false;
+      return [false, undefined];
     }
 
     if (!isSubscribed) {
@@ -108,7 +108,7 @@ async function createSubscription(
       };
 
       //set new subscription 🔥🔥🔥
-      await driver.set(dbKey.sus, person, iPersonConverter);
+      const user_uuid = await driver.set(dbKey.sus, person, iPersonConverter);
 
       console.log('subscription success 👌', person.rut, '➡', selectedRoom?.idCal);
       errorDispatch({ value: false, message: 'felicidades, ya estás participando ' });
@@ -120,16 +120,17 @@ async function createSubscription(
         //update classroom enrolled list is doesn't exist, avoid duplication
         //enrolled?.push(person.uuid);
         //refRoom.set({ enrolled: enrolled }, { merge: true });
-        console.log('updated classroom enrolled', person.uuid, 'rut:', person.rut);
+        console.log('updated classroom enrolled', user_uuid, 'rut:', person.rut);
       }
 
-      return true;
+      return [true, { ...person, uuid: user_uuid ?? 'no-uuid' }];
     }
   } catch (error) {
     errorDispatch({ value: false, message: `app error: ${error}` });
     console.log('no upload', error, data);
-    return false;
+    return [false, undefined];
   }
+  return [undefined, undefined];
 }
 
 export default createSubscription;

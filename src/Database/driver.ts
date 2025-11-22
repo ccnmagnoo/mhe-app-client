@@ -65,10 +65,12 @@ const driver = {
         const ref = collection(db, path).withConverter(converter);
         const push = await addDoc(ref, document);
         await setDoc(doc(db, path, push.id), { uuid: push.id }, { merge: true });
+        return push.id;
       } else {
         //defined uuid
         const ref = doc(db, path, uuid).withConverter(converter);
         await setDoc(ref, document, options ?? {});
+        return uuid;
       }
     } catch (error) {
       console.log(error);

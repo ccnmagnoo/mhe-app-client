@@ -1,0 +1,29 @@
+.subscribed_data {
+  margin: 0;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  h5 {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    margin: 0.2rem 0;
+    padding: auto;
+    font-size: 0.9rem;
+    &.uuid {
+      font-family: monospace;
+      color: #acacac;
+      background-color: #f4f4f4;
+      width: fit-content;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.3rem;
+    }
+    &.rut {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #3c68e0;
+    }
+  }
+}

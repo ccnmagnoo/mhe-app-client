@@ -5,6 +5,7 @@ import { IRoom } from '../../../Models/Classroom.interface';
 import { IPerson } from '../../../Models/Person.Interface';
 import moment from 'moment';
 import 'moment/locale/es'; // Pasar a español
+import './Subscription.css';
 
 //icons
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -60,11 +61,14 @@ export const OnSuccessSubscription = (props: SuccessProps) => {
                       color='textPrimary'
                       paragraph
                       align='justify'
+                      className='subscribed_data'
                     >
-                      <p>Sus datos de registro</p>
-                      <strong> Nombre:</strong> {person?.name?.firstName}{' '}
-                      {person?.name?.fatherName} <br />
-                      <strong> documento:</strong> {person?.rut} <br />
+                      <h5>Sus datos de registro</h5>
+                      <p>
+                        {person?.name?.firstName} {person?.name?.fatherName}
+                      </p>
+                      <p className='rut'>{person?.rut}</p>
+                      <p className='uuid'>código {person?.uuid}</p>
                     </Typography>
                     {/*snack bar warning 💥*/}
                     <Alert severity='info'>
