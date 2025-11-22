@@ -12,7 +12,6 @@ import {
 import { db } from '../Config/firebase';
 import Converter from '../Models/Converter.interface';
 import { dbKey } from '../Models/databaseKeys';
-import { Nullable } from '../Models/Nullable';
 
 const driver = {
   //function firebase modular web 9 driver,
@@ -37,8 +36,10 @@ const driver = {
         }
       }
       case 'doc': {
+        if (!uid) return undefined;
         try {
-          const ref = doc(db, path, uid ?? 'no-uuid').withConverter(converter);
+          console.log('fetching document at path:', path, 'with uid:', uid);
+          const ref = doc(db, path, uid).withConverter(converter);
           const snap = await getDoc(ref);
           return snap.data();
         } catch (error) {

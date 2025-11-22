@@ -14,6 +14,7 @@ import { Help } from './Components/Public/Help';
 import { User } from 'firebase/auth';
 import './App.css';
 import SocialProgram, { currentContext, socialContext } from './Models/Program';
+import { SubscriptionCheck } from './Components/Public/Subscription/Subscription.Check';
 //import { EducationalResources } from './Components/Public/EducationalResources';
 const EducationalResources = lazy(
   () => import('./Components/Public/EducationalResources')
@@ -60,6 +61,9 @@ function App() {
             </Route>
             <Route path='/Vacancies'>
               <Vacancies />
+            </Route>
+            <Route path='/subscription-check'>
+              <SubscriptionCheck />
             </Route>
             <Route path='/resources'>
               <Suspense

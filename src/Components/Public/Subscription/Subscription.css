@@ -28,3 +28,59 @@
     }
   }
 }
+
+.subscription-check.container {
+  * {
+    margin: 0;
+    box-sizing: content-box;
+  }
+  .header {
+    h2 {
+      font-size: 1.1rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+    .uuid {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #acacac;
+      background-color: #f4f4f4;
+      width: fit-content;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.3rem;
+    }
+  }
+  .result-tag {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.2rem 0;
+    text-align: center;
+    width: 90px;
+    height: 50px;
+    border-radius: 0.3rem;
+    box-shadow: 1px 1px 1px 1px rgb(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.ok {
+      background-color: greenyellow;
+      color: green;
+    }
+    &.no {
+      background-color: rgb(233, 135, 167);
+      color: rgb(164, 32, 32);
+    }
+  }
+  .data {
+    margin-top: 1rem;
+
+    p:nth-child(2) {
+      color: #8c8c8c;
+      font-size: 0.8rem;
+    }
+    p:last-child {
+      margin-top: 1rem;
+    }
+  }
+}
