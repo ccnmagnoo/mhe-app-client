@@ -75,7 +75,7 @@ export const SubscriptionCheck = () => {
           <div className='row'>
             <span>fecha actividad</span>
             <span>
-              {'📅'}
+              {subs ? '📅' : undefined}
               {subs?.classroom.dateInstance.toLocaleDateString('es-CL', {
                 year: 'numeric',
                 month: 'short',
@@ -86,7 +86,12 @@ export const SubscriptionCheck = () => {
           <div className='row'>
             <span>actividad</span>
             <span>
-              {subs?.address?.city} {subs?.classroom.idCal || '⭕'}
+              {subs?.address?.city}
+              {subs ? (
+                <span className='idCal'>{subs?.classroom.idCal.replace('R', '✓')}</span>
+              ) : (
+                '⭕'
+              )}
             </span>
           </div>
         </section>
