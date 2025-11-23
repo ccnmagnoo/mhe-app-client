@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
+import * as htmlToImage from 'html-to-image';
 import { Box, LinearProgress, Paper, TextFieldProps } from '@material-ui/core';
 import {
   TextField,
@@ -597,10 +598,32 @@ const Subscription = (props: Props) => {
       </Grow>
     </>
   );
+  //save screenshot button
+  const screenshotArea = useRef<HTMLDivElement | null>(null);
+
+  const handleScreenshotDownload = async () => {
+    console.log('screenshot current stat:', screenshotArea.current);
+    if (!screenshotArea.current) return;
+    await htmlToImage.toJpeg(screenshotArea.current).then(downloadFile);
+  };
+  const createFileName = (ext: string | undefined, ...names: string[]) => {
+    if (!ext) return '';
+    return names.join('') + '.' + ext;
+  };
+  const downloadFile = (
+    image: string,
+    { name = 'ticket_registro', ext = 'jpg' } = {}
+  ) => {
+    const a = document.createElement('a');
+    a.href = image;
+    a.download = createFileName(ext, name);
+    a.click();
+  };
 
   //Dialog on success subscription
   const dialogOnSuccess = (
     <Dialog
+      ref={screenshotArea}
       open={dialogOpen}
       onClose={() => {
         setDialogOpen(false);
@@ -618,6 +641,9 @@ const Subscription = (props: Props) => {
         <OnSuccessSubscription person={subscriber} classroom={selectedRoom} />
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleScreenshotDownload} color='primary' variant='contained'>
+          guardar
+        </Button>
         <Button
           onClick={() => {
             setDialogOpen(false);
@@ -625,7 +651,7 @@ const Subscription = (props: Props) => {
           color='primary'
           variant='outlined'
         >
-          Gracias nos vemos
+          cerrar
         </Button>
       </DialogActions>
     </Dialog>
@@ -633,7 +659,7 @@ const Subscription = (props: Props) => {
 
   //SUBSCRIPTION APP
   return (
-    <React.Fragment>
+    <>
       {header}
       <br />
       {form_inputId}
@@ -648,7 +674,7 @@ const Subscription = (props: Props) => {
         <Requirements />
       ) : undefined}
       {dialogOnSuccess}
-    </React.Fragment>
+    </>
   );
 };
 

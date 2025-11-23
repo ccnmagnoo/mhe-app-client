@@ -19,6 +19,7 @@
     "caniuse-lite": "^1.0.30001741",
     "canvg": "^3.0.7",
     "firebase": "^9.7.0",
+    "html-to-image": "^1.11.13",
     "js-levenshtein": "^1.1.6",
     "jszip": "^3.10.0",
     "moment": "^2.29.1",

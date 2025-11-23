@@ -18,18 +18,19 @@ import convertToUrl from '../../../Functions/contertToUrl';
 type SuccessProps = {
   classroom?: IRoom;
   person?: Partial<IPerson>;
+  ref?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export const OnSuccessSubscription = (props: SuccessProps) => {
   //referencias
-  const { classroom, person } = props;
+  const { classroom, person, ref } = props;
   //get local url
 
   //converter Url
 
   return (
     <React.Fragment>
-      <Paper elevation={0}>
+      <Paper elevation={0} ref={ref}>
         <Box p={3}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
