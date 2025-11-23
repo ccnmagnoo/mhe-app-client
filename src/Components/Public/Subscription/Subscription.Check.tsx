@@ -43,21 +43,56 @@ export const SubscriptionCheck = () => {
     <main className='subscription-check container'>
       <section className='header'>
         <h2>estado inscripción</h2>
-        <p className='uuid'>{uuid}</p>
+        {/* <p className='uuid'>{uuid}</p> */}
       </section>
-      <section className={`result-tag ${subs ? 'ok' : 'no'}`}>
-        {subs ? <span>ok</span> : <span>no existe</span>}
-      </section>
-      <section className='data'>
-        <p>
-          {subs?.name.firstName} {subs?.name.fatherName} {subs?.name.motherName} <br />
-          {subs?.rut} <br />
-        </p>
-        <p>
-          inscripción <strong>{subs?.classroom.idCal}</strong>
-          {'📅'}
-          {subs?.classroom.dateInstance.toLocaleDateString('es-CL')}
-        </p>
+      <section className='card'>
+        <section className='card-header'>
+          <div className={`avatar ${subs ? 'ok' : 'no'}`}>
+            {subs?.name.firstName.charAt(0).toUpperCase() || '?'}
+            {subs?.name.fatherName.charAt(0).toUpperCase() || '?'}
+          </div>
+          <div className='fullname'>
+            <p>{subs?.name.firstName}</p>
+            <p>
+              {subs?.name.fatherName}
+              {subs?.name.motherName}
+            </p>
+          </div>
+        </section>
+        <section className='card-body'>
+          <div className='row'>
+            <span>estado</span>
+            <span aria-hidden='true'>
+              <article className={`result-tag ${subs ? 'ok' : 'no'}`}>
+                {subs ? <span>activo</span> : <span>inactivo</span>}
+              </article>
+            </span>
+          </div>
+          <div className='row'>
+            <span>identificador</span>
+            <span>{subs?.rut || '⭕'}</span>
+          </div>
+          <div className='row'>
+            <span>fecha actividad</span>
+            <span>
+              {'📅'}
+              {subs?.classroom.dateInstance.toLocaleDateString('es-CL', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+              }) || '⭕'}
+            </span>
+          </div>
+          <div className='row'>
+            <span>actividad</span>
+            <span>
+              {subs?.address?.city} {subs?.classroom.idCal || '⭕'}
+            </span>
+          </div>
+        </section>
+        <section className='card-bottom'>
+          <span>uid</span> <span>{subs?.uuid || 'no data en server'}</span>
+        </section>
       </section>
     </main>
   );

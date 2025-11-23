@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Card</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --accent: #2563eb;
+        --success: #16a34a;
+        --warning: #dc2626;
+        --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        --radius: 14px;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          sans-serif;
+        background: #f8fafc;
+        color: var(--text);
+        margin: 0;
+        padding: 32px;
+        display: grid;
+        place-items: center;
+      }
+
+      .card {
+        width: 360px;
+        max-width: 92vw;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card-header {
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(180deg, #f3f4f6, #ffffff);
+      }
+
+      .avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .name-block {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+      }
+
+      .full-name {
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .surname {
+        font-size: 0.95rem;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .card-body {
+        padding: 16px 20px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .label {
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+
+      .value {
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      .status {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+      }
+
+      .status--active {
+        color: var(--success);
+        background: #ecfdf5;
+        border-color: #dcfce7;
+      }
+
+      .status--inactive {
+        color: var(--warning);
+        background: #fef2f2;
+        border-color: #fee2e2;
+      }
+
+      .card-footer {
+        padding: 14px 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        background: #fafafa;
+      }
+
+      .btn {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      /* Accessibility and reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="card" role="region" aria-labelledby="user-name">
+      <header class="card-header">
+        <div class="avatar" aria-hidden="true">CS</div>
+        <div class="name-block">
+          <div id="user-name" class="full-name">Carlos</div>
+          <div class="surname">Sandoval</div>
+        </div>
+      </header>
+
+      <section class="card-body">
+        <div class="row">
+          <span class="label">Date of activity</span>
+          <time class="value" datetime="2025-11-22">Nov 22, 2025</time>
+        </div>
+
+        <div class="row">
+          <span class="label">Subscription</span>
+          <span class="status status--active" aria-live="polite">
+            <span aria-hidden="true">●</span> Active
+          </span>
+          <!-- For inactive, swap to: <span class="status status--inactive"><span aria-hidden="true">●</span> Inactive</span> -->
+        </div>
+      </section>
+
+      <footer class="card-footer">
+        <button class="btn" type="button">Details</button>
+        <button class="btn primary" type="button">Manage</button>
+      </footer>
+    </article>
+
+    <!-- Optional: lightweight JS to populate dynamically -->
+    <script>
+      // Example dynamic data
+      const data = {
+        name: 'Carlos',
+        surname: 'Sandoval',
+        dateISO: '2025-11-22',
+        status: 'active', // or "inactive"
+      };
+
+      // Populate fields
+      document.getElementById('user-name').textContent = data.name;
+      document.querySelector('.surname').textContent = data.surname;
+
+      const timeEl = document.querySelector('time.value');
+      timeEl.setAttribute('datetime', data.dateISO);
+      timeEl.textContent = new Date(data.dateISO).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+
+      const statusEl = document.querySelector('.status');
+      const dot = document.createElement('span');
+      dot.setAttribute('aria-hidden', 'true');
+      dot.textContent = '●';
+
+      if (data.status === 'active') {
+        statusEl.className = 'status status--active';
+        statusEl.textContent = '';
+        statusEl.append(dot, document.createTextNode(' Active'));
+      } else {
+        statusEl.className = 'status status--inactive';
+        statusEl.textContent = '';
+        statusEl.append(dot, document.createTextNode(' Inactive'));
+      }
+
+      // Avatar initials
+      const avatarEl = document.querySelector('.avatar');
+      avatarEl.textContent = `${data.name[0] || ''}${
+        data.surname[0] || ''
+      }`.toUpperCase();
+    </script>
+  </body>
+</html>
