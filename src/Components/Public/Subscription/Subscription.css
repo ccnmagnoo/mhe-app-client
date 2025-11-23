@@ -104,24 +104,6 @@
       padding: 1rem 1.5rem;
       background: linear-gradient(90deg, #f3f4f6, #ffffff);
 
-      .card-avatar {
-        display: flex;
-        width: 4rem;
-        height: 4rem;
-        border-radius: 50%;
-        background: radial-gradient(circle at 20% 20%, #b8caf7, #97aeee);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.5rem;
-        font-weight: 400;
-        user-select: none;
-        letter-spacing: 0.15rem;
-        &.no {
-          background: radial-gradient(circle at 20% 20%, #ecdfdf, #f5c8c8);
-        }
-      }
       .fullname {
         color: #707070;
         font-size: 1.15rem;
@@ -132,6 +114,25 @@
         }
       }
     }
+    .card-header .card-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 20% 20%, #b8d2f7, #97baee);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 500;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+      letter-spacing: 0.15rem;
+      &.no {
+        background: radial-gradient(circle at 20% 20%, #ecdfdf, #f5c8c8);
+      }
+    }
+
     .card-body {
       padding: 1.5rem 1.5rem;
       .row {
