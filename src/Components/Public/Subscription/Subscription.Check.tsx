@@ -45,9 +45,9 @@ export const SubscriptionCheck = () => {
         <h2>estado inscripción</h2>
         {/* <p className='uuid'>{uuid}</p> */}
       </section>
-      <section className='card'>
+      <section className='check-card'>
         <section className='card-header'>
-          <div className={`avatar ${subs ? 'ok' : 'no'}`}>
+          <div className={`card-avatar ${subs ? 'ok' : 'no'}`}>
             {subs?.name.firstName.charAt(0).toUpperCase() || '?'}
             {subs?.name.fatherName.charAt(0).toUpperCase() || '?'}
           </div>

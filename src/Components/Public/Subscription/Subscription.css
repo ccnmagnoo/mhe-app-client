@@ -86,7 +86,8 @@
       }
     }
   }
-  .card {
+  .check-card {
+    position: relative;
     margin-top: 1.5rem;
     border: 1px solid #e4e4e4;
     border-radius: 2rem;
@@ -95,6 +96,7 @@
 
     .card-header {
       display: flex;
+      flex-direction: row;
       align-items: center;
       gap: 1rem;
       margin-bottom: 1rem;
@@ -102,7 +104,8 @@
       padding: 1rem 1.5rem;
       background: linear-gradient(90deg, #f3f4f6, #ffffff);
 
-      .avatar {
+      .card-avatar {
+        display: flex;
         width: 4rem;
         height: 4rem;
         border-radius: 50%;
