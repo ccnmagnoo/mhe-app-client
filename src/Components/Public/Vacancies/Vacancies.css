@@ -106,14 +106,28 @@
       }
       background-color: #616dba;
     }
-    meter::-webkit-meter-optimum-value {
-      background-color: #303f9f;
-    }
-    meter::-webkit-meter-suboptimum-value {
-      background-color: #616dba;
-    }
-    meter::-webkit-meter-even-less-good-value {
-      background-color: orange;
+    meter {
+      &::-webkit-meter-bar {
+        background-color: #e6e8f0;
+        padding: 2px;
+        height: 1rem;
+        border-radius: 1rem;
+        border: 0px solid #000;
+        box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.3);
+      }
+      &::-webkit-meter-optimum-value {
+        background-color: #616dba;
+        border-radius: 1rem;
+        border: #848cc0 solid 1px;
+        /* box-shadow: inset 0px 1px 1px rgb(224, 208, 235),
+          0px 1px 1px 1px rgba(0, 0, 0, 0.2); */
+      }
+      &::-webkit-meter-suboptimum-value {
+        background-color: #9d74c4;
+      }
+      &::-webkit-meter-even-less-good-value {
+        background-color: rgb(255, 149, 0);
+      }
     }
   }
 }
