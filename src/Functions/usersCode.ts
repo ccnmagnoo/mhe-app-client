@@ -13,7 +13,7 @@ const users: Users = {
   },
   kYDK4iiWbBarAWuvymrkw3cc7zs1: {
     region: 'Bio Bio',
-    identifier: 'ccamposn@minenergia.cl',
+    identifier: 'biobio@minenergia.cl',
     regionId: '08',
   },
   '8gwIH6GHMdf728iHpmRoFG4LvF63': {
