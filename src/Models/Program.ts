@@ -17,7 +17,7 @@ const socialContext: Record<
     program: 'Con Buena Energía',
     goal: 'educación energética',
     logoUrl: '/cbe_logo.png', // inside /%PUBLIC%/ folder
-    app_background: 'https://i.postimg.cc/d1KwfF93/future-energy-turbine.png',
+    app_background: '/cbe_background.png',
     ppt_cover: 'cbe_cover.png',
     ppt_url:
       'https://www.canva.com/design/DAFTEzGMFcA/t6NmmMB20q7-8IrfbFqVbw/view?utm_content=DAFTEzGMFcA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h2d9e6de5e5',
@@ -26,7 +26,7 @@ const socialContext: Record<
     program: 'Siempre Listos',
     goal: 'resiliencia energética',
     logoUrl: '/siempre_listos_logo.png', // inside /%PUBLIC%/ folder
-    app_background: 'https://i.postimg.cc/CxqKrcVv/i-will-survive.png',
+    app_background: '/siempre_listos_background.png',
     ppt_cover: 'siempre_listos_cover.png',
     ppt_url:
       'https://www.canva.com/design/DAGx7netNPk/Cw_Rc0C545BJCaOn52DqEQ/view?utm_content=DAGx7netNPk&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h2cfa0fc138',
