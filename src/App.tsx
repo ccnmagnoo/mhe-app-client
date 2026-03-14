@@ -17,7 +17,7 @@ import SocialProgram, { currentContext, socialContext } from './Models/Program';
 import { SubscriptionCheck } from './Components/Public/Subscription/Subscription.Check';
 //import { EducationalResources } from './Components/Public/EducationalResources';
 const EducationalResources = lazy(
-  () => import('./Components/Public/EducationalResources')
+  () => import('./Components/Public/EducationalResources'),
 );
 
 function App() {
@@ -91,7 +91,7 @@ function App() {
   return firebaseUser !== false ? (
     <>
       <img
-        src={currentContext.app_background}
+        src={currentContext.app_background_url}
         className='background'
         alt='background'
       ></img>
