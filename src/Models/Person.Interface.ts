@@ -17,6 +17,7 @@ export interface IPerson<DATE = Date> {
   dateUpdate: DATE;
   email: string;
   phone?: string | null;
+  isIndigenous?: boolean | null;
   address?: Dir | null;
   energy: Nullable<EnergyPoll> | null;
   resilience: Nullable<ResiliencePoll> | null;

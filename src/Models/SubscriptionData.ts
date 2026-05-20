@@ -7,6 +7,7 @@ type Subscriber = {
   city: string;
   email: string;
   phone?: string;
+  isIndigenous: boolean;
 };
 type EnergyPoll = {
   electricBill: number;

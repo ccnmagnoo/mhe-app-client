@@ -11,8 +11,11 @@ import {
   DialogContent,
   DialogTitle,
 } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import moment from 'moment';
+// @ts-ignore: moment locale import has no type declarations
 import 'moment/locale/es'; // Pasar a español
 
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -50,6 +53,7 @@ const Subscription = (props: Props) => {
   const [availableClassrooms, setAvailableClassrooms] = React.useState<IRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = React.useState<IRoom | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+  const [isIndigenous, setIsIndigenous] = useState(false);
 
   //form is disabled
   const [disable_form_rol, set_disability_form_rol] = React.useState(false);
@@ -67,7 +71,7 @@ const Subscription = (props: Props) => {
 
   //React hook form
   const form = useForm<InputSubscription>({
-    defaultValues: {},
+    defaultValues: { isIndigenous: false },
   });
   const {
     register,
@@ -186,7 +190,7 @@ const Subscription = (props: Props) => {
               >
                 <Grid item xs={12} sm={'auto'}>
                   <Typography variant='subtitle2' color='primary'>
-                    Paso 1
+                    su Rut
                   </Typography>
                 </Grid>
 
@@ -254,7 +258,7 @@ const Subscription = (props: Props) => {
     const getClassrooms = await fetchClassrooms(
       data,
       setAvailableClassrooms,
-      props.overSubscription
+      props.overSubscription,
     );
     console.log('getClassrooms result', getClassrooms);
     //open form select
@@ -272,6 +276,8 @@ const Subscription = (props: Props) => {
       }, 1000);
     }
   }, [visible_select_room]);
+
+  useEffect(() => {}, [isIndigenous]);
 
   const form_identity = (
     <>
@@ -391,6 +397,27 @@ const Subscription = (props: Props) => {
                     }}
                   />
                 </Grid>
+                {/*Pueblos originarios*/}
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={isIndigenous}
+                        onChange={(e) => {
+                          setIsIndigenous(e.target.checked);
+                          form.setValue('isIndigenous', e.target.checked);
+                        }}
+                        // {...register('isIndigenous', {})}
+                        name='isIndigenous'
+                        color='primary'
+                      />
+                    }
+                    label={
+                      'Se identifica de pueblo originario: ' +
+                      (isIndigenous ? 'si' : 'no')
+                    }
+                  />
+                </Grid>
 
                 {/*Energy Poll ⚡⚡🔌*/}
                 {
@@ -420,7 +447,7 @@ const Subscription = (props: Props) => {
 
   //firebase create Subscribed🔥🔥🔥
   const [errorC, setErrorC] = React.useState<{ value: boolean; message: string } | null>(
-    null
+    null,
   );
 
   const [subscriber, setSubscriber] = useState<Partial<IPerson> | undefined>(undefined);
@@ -438,7 +465,7 @@ const Subscription = (props: Props) => {
         data,
         selectedRoom,
         setErrorC,
-        rolRequest
+        rolRequest,
       );
       console.log('is uploaded?', isUploaded);
       if (isUploaded) {
@@ -612,7 +639,7 @@ const Subscription = (props: Props) => {
   };
   const downloadFile = (
     image: string,
-    { name = 'ticket_registro', ext = 'jpg' } = {}
+    { name = 'ticket_registro', ext = 'jpg' } = {},
   ) => {
     const a = document.createElement('a');
     a.href = image;

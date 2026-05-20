@@ -26,6 +26,7 @@ export const iBeneficiaryConverter: Converter<IBeneficiary> = {
       dateUpdate: it.dateUpdate.toDate(),
       email: it.email,
       phone: it.phone,
+      isIndigenous: it.isIndigenous,
       address: it.address,
       sign: it?.sign,
       dateSign: it.dateSign?.toDate(),
